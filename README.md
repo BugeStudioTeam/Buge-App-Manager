@@ -1,3 +1,3 @@
-# Buge-App-Manager
+# Buge App Manager
 
 Buge App Manager is a powerful Android Material Design 3 utility application designed for advanced app and permission management. Operating with Shizuku authorization, it provides users with granular control over installed applications, distinguishing between user and system apps. The app features a comprehensive Permissions Manager that allows users to view and modify app permissions by category, including microphone, camera, location access and other permissions. With its clean, system-themed interface, Buge App Manager enables users to efficiently browse through all installed apps, check their permission statuses, and make adjustments as needed. The app supports both granted and denied permission views, helping users maintain their privacy and optimize their device's security. 

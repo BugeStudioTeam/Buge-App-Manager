@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Buge App Manager</string>
+    <string name="developer_name">Buge Team</string>
+
+    <!-- Navigation -->
+    <string name="nav_apps">Apps</string>
+    <string name="nav_permissions">Permissions</string>
+    <string name="nav_settings">Settings</string>
+
+    <!-- Main Screen -->
+    <string name="title_app_list">Installed Apps</string>
+    <string name="search_hint">Search apps…</string>
+    <string name="filter_all">All Apps</string>
+    <string name="filter_user">User Apps</string>
+    <string name="filter_system">System Apps</string>
+    <string name="sort_name">Name</string>
+    <string name="sort_size">Size</string>
+    <string name="sort_install_date">Install Date</string>
+    <string name="apps_count">%d apps</string>
+    <string name="loading_apps">Loading apps…</string>
+    <string name="refresh">Refresh</string>
+    <string name="no_apps_found">No apps found</string>
+
+    <!-- App Detail Screen -->
+    <string name="title_app_detail">App Details</string>
+    <string name="package_name">Package Name</string>
+    <string name="version">Version</string>
+    <string name="install_date">Install Date</string>
+    <string name="update_date">Last Updated</string>
+    <string name="app_size">App Size</string>
+    <string name="data_size">Data Size</string>
+    <string name="cache_size">Cache Size</string>
+    <string name="target_sdk">Target SDK</string>
+    <string name="min_sdk">Min SDK</string>
+    <string name="permissions_title">Permissions</string>
+    <string name="granted">Granted</string>
+    <string name="denied">Denied</string>
+    <string name="grant_permission">Grant</string>
+    <string name="revoke_permission">Revoke</string>
+    <string name="open_app">Open App</string>
+    <string name="app_info">App Info</string>
+    <string name="uninstall">Uninstall</string>
+    <string name="force_stop">Force Stop</string>
+    <string name="clear_data">Clear Data</string>
+    <string name="clear_cache">Clear Cache</string>
+    <string name="disable_app">Disable App</string>
+    <string name="enable_app">Enable App</string>
+    <string name="freeze_app">Freeze App</string>
+    <string name="unfreeze_app">Unfreeze App</string>
+
+    <!-- Permissions Screen -->
+    <string name="title_permissions">Permissions Manager</string>
+    <string name="perm_microphone">Microphone</string>
+    <string name="perm_camera">Camera</string>
+    <string name="perm_location">Location</string>
+    <string name="perm_contacts">Contacts</string>
+    <string name="perm_storage">Storage</string>
+    <string name="perm_phone">Phone</string>
+    <string name="perm_sms">SMS</string>
+    <string name="perm_calendar">Calendar</string>
+    <string name="perm_body_sensors">Body Sensors</string>
+    <string name="perm_notifications">Notifications</string>
+    <string name="perm_overlay">Display Over Other Apps</string>
+    <string name="perm_install_unknown">Install Unknown Apps</string>
+    <string name="batch_revoke">Revoke Permission</string>
+    <string name="batch_grant">Grant Permission</string>
+    <string name="confirm_revoke">Revoke permission from %d app(s)?</string>
+    <string name="confirm_grant">Grant permission to %d app(s)?</string>
+    <string name="selected_count">%d selected</string>
+
+    <!-- Settings Screen -->
+    <string name="title_settings">Settings</string>
+    <string name="pref_theme">Theme</string>
+    <string name="pref_theme_light">Light</string>
+    <string name="pref_theme_dark">Dark</string>
+    <string name="pref_theme_auto">System Default</string>
+    <string name="pref_language">Language</string>
+    <string name="pref_language_auto">System Default</string>
+    <string name="pref_language_en">English</string>
+    <string name="pref_language_zh">中文 (Simplified)</string>
+    <string name="pref_show_system_apps">Show System Apps</string>
+    <string name="pref_about">About</string>
+    <string name="about_desc">Buge App Manager is a powerful app management tool with Shizuku support for advanced permission and app control.</string>
+    <string name="about">About</string>
+    <string name="github">GitHub</string>
+    <string name="github_desc">Visit our GitHub repository</string>
+    <string name="open">Open</string>
+    <string name="close">Close</string>
+
+    <!-- Shizuku -->
+    <string name="shizuku_title">Shizuku Authorization</string>
+    <string name="shizuku_desc">Shizuku is required to manage app permissions and perform advanced operations. Please authorize this app in Shizuku.</string>
+    <string name="shizuku_status_ok">Authorized and running</string>
+    <string name="shizuku_status_no_auth">Running but not authorized</string>
+    <string name="shizuku_status_not_running">Not running</string>
+    <string name="shizuku_authorized">Authorized</string>
+    <string name="shizuku_not_authorized">Not Authorized</string>
+    <string name="shizuku_not_running">Not Running</string>
+    <string name="shizuku_request_auth">Request Authorization</string>
+
+    <!-- Common -->
+    <string name="confirm">Confirm</string>
+    <string name="cancel">Cancel</string>
+    <string name="operation_success">Operation successful</string>
+    <string name="operation_failed">Operation failed: %s</string>
+    <string name="error_no_shizuku">Shizuku is not available or not authorized</string>
+    <string name="language_changed_restart">Language changed. Restart the app to apply changes.</string>
+    <string name="restart">Restart</string>
+    <string name="setting_saved">Setting saved</string>
+    <string name="pref_language_ja">日本語 (Japanese)</string>
+    <string name="pref_language_ko">한국어 (Korean)</string>
+    <string name="pref_language_fr">Français (French)</string>
+    <string name="pref_language_de">Deutsch (German)</string>
+    <string name="pref_language_ru">Русский (Russian)</string>
+</resources>

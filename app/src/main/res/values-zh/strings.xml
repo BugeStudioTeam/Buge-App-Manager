@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Buge应用管理器</string>
+    <string name="developer_name">Buge团队</string>
+
+    <!-- Navigation -->
+    <string name="nav_apps">应用</string>
+    <string name="nav_permissions">权限</string>
+    <string name="nav_settings">设置</string>
+
+    <!-- Main Screen -->
+    <string name="title_app_list">已安装应用</string>
+    <string name="search_hint">搜索应用…</string>
+    <string name="filter_all">所有应用</string>
+    <string name="filter_user">用户应用</string>
+    <string name="filter_system">系统应用</string>
+    <string name="sort_name">名称</string>
+    <string name="sort_size">大小</string>
+    <string name="sort_install_date">安装日期</string>
+    <string name="apps_count">%d 个应用</string>
+    <string name="loading_apps">正在加载应用…</string>
+    <string name="refresh">刷新</string>
+    <string name="no_apps_found">未找到应用</string>
+
+    <!-- App Detail Screen -->
+    <string name="title_app_detail">应用详情</string>
+    <string name="package_name">包名</string>
+    <string name="version">版本</string>
+    <string name="install_date">安装日期</string>
+    <string name="update_date">最后更新</string>
+    <string name="app_size">应用大小</string>
+    <string name="data_size">数据大小</string>
+    <string name="cache_size">缓存大小</string>
+    <string name="target_sdk">目标SDK</string>
+    <string name="min_sdk">最小SDK</string>
+    <string name="permissions_title">权限</string>
+    <string name="granted">已授予</string>
+    <string name="denied">已拒绝</string>
+    <string name="grant_permission">授予</string>
+    <string name="revoke_permission">撤销</string>
+    <string name="open_app">打开应用</string>
+    <string name="app_info">应用信息</string>
+    <string name="uninstall">卸载</string>
+    <string name="force_stop">强制停止</string>
+    <string name="clear_data">清除数据</string>
+    <string name="clear_cache">清除缓存</string>
+    <string name="disable_app">禁用应用</string>
+    <string name="enable_app">启用应用</string>
+    <string name="freeze_app">冻结应用</string>
+    <string name="unfreeze_app">解冻应用</string>
+
+    <!-- Permissions Screen -->
+    <string name="title_permissions">权限管理器</string>
+    <string name="perm_microphone">麦克风</string>
+    <string name="perm_camera">摄像头</string>
+    <string name="perm_location">位置</string>
+    <string name="perm_contacts">联系人</string>
+    <string name="perm_storage">存储</string>
+    <string name="perm_phone">电话</string>
+    <string name="perm_sms">短信</string>
+    <string name="perm_calendar">日历</string>
+    <string name="perm_body_sensors">身体传感器</string>
+    <string name="perm_notifications">通知</string>
+    <string name="batch_revoke">撤销权限</string>
+    <string name="batch_grant">授予权限</string>
+    <string name="confirm_revoke">从 %d 个应用撤销权限？</string>
+    <string name="confirm_grant">向 %d 个应用授予权限？</string>
+    <string name="selected_count">已选择 %d 个</string>
+
+    <!-- Settings Screen -->
+    <string name="title_settings">设置</string>
+    <string name="pref_theme">主题</string>
+    <string name="pref_theme_light">浅色</string>
+    <string name="pref_theme_dark">深色</string>
+    <string name="pref_theme_auto">系统默认</string>
+    <string name="pref_language">语言</string>
+    <string name="pref_language_auto">系统默认</string>
+    <string name="pref_language_en">English</string>
+    <string name="pref_language_zh">中文（简体）</string>
+    <string name="pref_show_system_apps">显示系统应用</string>
+    <string name="pref_about">关于</string>
+    <string name="about_desc">Buge应用管理器是一个功能强大的应用管理工具，支持Shizuku以进行高级权限和应用控制。</string>
+
+    <!-- Shizuku -->
+    <string name="shizuku_title">Shizuku授权</string>
+    <string name="shizuku_desc">需要Shizuku来管理应用权限并执行高级操作。请在Shizuku中授权此应用。</string>
+    <string name="shizuku_status_ok">已授权且正在运行</string>
+    <string name="shizuku_status_no_auth">正在运行但未授权</string>
+    <string name="shizuku_status_not_running">未运行</string>
+    <string name="shizuku_authorized">已授权</string>
+    <string name="shizuku_not_authorized">未授权</string>
+    <string name="shizuku_not_running">未运行</string>
+    <string name="shizuku_request_auth">请求授权</string>
+
+    <!-- Common -->
+    <string name="confirm">确认</string>
+    <string name="cancel">取消</string>
+    <string name="operation_success">操作成功</string>
+    <string name="operation_failed">操作失败：%s</string>
+    <string name="error_no_shizuku">Shizuku不可用或未授权</string>
+    <string name="language_changed_restart">语言已更改。重启应用以应用更改。</string>
+    <string name="restart">重启</string>
+    <string name="setting_saved">设置已保存</string>
+</resources>

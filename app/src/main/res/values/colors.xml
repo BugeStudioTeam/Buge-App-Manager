@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- MD3 Light Blue Theme Colors (Light Mode) -->
+    <color name="md_theme_primary">#0077B6</color>
+    <color name="md_theme_onPrimary">#FFFFFF</color>
+    <color name="md_theme_primaryContainer">#C8E6FF</color>
+    <color name="md_theme_onPrimaryContainer">#001E30</color>
+    <color name="md_theme_secondary">#4F9FC8</color>
+    <color name="md_theme_onSecondary">#FFFFFF</color>
+    <color name="md_theme_secondaryContainer">#C8E6FF</color>
+    <color name="md_theme_onSecondaryContainer">#001E30</color>
+    <color name="md_theme_tertiary">#006494</color>
+    <color name="md_theme_onTertiary">#FFFFFF</color>
+    <color name="md_theme_tertiaryContainer">#C8E6FF</color>
+    <color name="md_theme_onTertiaryContainer">#001E30</color>
+    <color name="md_theme_error">#BA1A1A</color>
+    <color name="md_theme_onError">#FFFFFF</color>
+    <color name="md_theme_errorContainer">#FFDAD6</color>
+    <color name="md_theme_onErrorContainer">#410002</color>
+    <color name="md_theme_background">#F8FDFF</color>
+    <color name="md_theme_onBackground">#001F25</color>
+    <color name="md_theme_surface">#F8FDFF</color>
+    <color name="md_theme_onSurface">#001F25</color>
+    <color name="md_theme_surfaceVariant">#DCE3E9</color>
+    <color name="md_theme_onSurfaceVariant">#40484C</color>
+    <color name="md_theme_outline">#70787D</color>
+    <color name="md_theme_outlineVariant">#C0C8CD</color>
+    <color name="md_theme_inverseSurface">#003547</color>
+    <color name="md_theme_inverseOnSurface">#D6F6FF</color>
+    <color name="md_theme_inversePrimary">#90CAFF</color>
+    <color name="md_theme_surfaceTint">#0077B6</color>
+    <color name="md_theme_scrim">#000000</color>
+
+    <!-- Permission status colors -->
+    <color name="color_granted">#2E7D32</color>
+    <color name="color_denied">#C62828</color>
+    <color name="color_granted_container">#E8F5E9</color>
+    <color name="color_denied_container">#FFEBEE</color>
+
+    <!-- App type colors -->
+    <color name="color_user_app">#0077B6</color>
+    <color name="color_system_app">#7B1FA2</color>
+
+    <!-- Launcher icon background -->
+    <color name="ic_launcher_background">#0288D1</color>
+</resources>

@@ -3,6 +3,9 @@
 [![Android](https://img.shields.io/badge/Android-3DDC84?logo=android&logoColor=white)](https://developer.android.com)
 [![Material Design 3](https://img.shields.io/badge/Material%20Design-3-757575?logo=material-design&logoColor=white)](https://m3.material.io)
 
+<img src="https://private-user-images.githubusercontent.com/183712959/558661649-cb36b150-4fd0-4466-87c1-16bf7a4ca010.jpg?jwt=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJnaXRodWIuY29tIiwiYXVkIjoicmF3LmdpdGh1YnVzZXJjb250ZW50LmNvbSIsImtleSI6ImtleTUiLCJleHAiOjE3NzQwOTA2ODksIm5iZiI6MTc3NDA5MDM4OSwicGF0aCI6Ii8xODM3MTI5NTkvNTU4NjYxNjQ5LWNiMzZiMTUwLTRmZDAtNDQ2Ni04N2MxLTE2YmY3YTRjYTAxMC5qcGc_WC1BbXotQWxnb3JpdGhtPUFXUzQtSE1BQy1TSEEyNTYmWC1BbXotQ3JlZGVudGlhbD1BS0lBVkNPRFlMU0E1M1BRSzRaQSUyRjIwMjYwMzIxJTJGdXMtZWFzdC0xJTJGczMlMkZhd3M0X3JlcXVlc3QmWC1BbXotRGF0ZT0yMDI2MDMyMVQxMDUzMDlaJlgtQW16LUV4cGlyZXM9MzAwJlgtQW16LVNpZ25hdHVyZT1kMzVlNjRjNDFmNjBiOGE0YjJmODFiMjlkODcyZTk0Yzk5YjZmMWYzZmFlZTQ1NmE1YjhkNzM0MWU4Yjc0MjZhJlgtQW16LVNpZ25lZEhlYWRlcnM9aG9zdCJ9.UKBGzf6znMHvNGOYfP5JSRr243Li1G7jg1Ql87WEOo4" width="300"/>
+
+
 Buge App Manager is a powerful Android utility application designed for advanced app and permission management. Built with **Material Design 3**, it offers a modern and intuitive interface for granular control over your device.
 
 ## Screenshots

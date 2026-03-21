@@ -5,6 +5,10 @@
 
 Buge App Manager is a powerful Android utility application designed for advanced app and permission management. Built with **Material Design 3**, it offers a modern and intuitive interface for granular control over your device.
 
+## Screenshots
+
+<img src="https://private-user-images.githubusercontent.com/183712959/558661649-cb36b150-4fd0-4466-87c1-16bf7a4ca010.jpg?jwt=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJnaXRodWIuY29tIiwiYXVkIjoicmF3LmdpdGh1YnVzZXJjb250ZW50LmNvbSIsImtleSI6ImtleTUiLCJleHAiOjE3NzQwOTAzMzAsIm5iZiI6MTc3NDA5MDAzMCwicGF0aCI6Ii8xODM3MTI5NTkvNTU4NjYxNjQ5LWNiMzZiMTUwLTRmZDAtNDQ2Ni04N2MxLTE2YmY3YTRjYTAxMC5qcGc_WC1BbXotQWxnb3JpdGhtPUFXUzQtSE1BQy1TSEEyNTYmWC1BbXotQ3JlZGVudGlhbD1BS0lBVkNPRFlMU0E1M1BRSzRaQSUyRjIwMjYwMzIxJTJGdXMtZWFzdC0xJTJGczMlMkZhd3M0X3JlcXVlc3QmWC1BbXotRGF0ZT0yMDI2MDMyMVQxMDQ3MTBaJlgtQW16LUV4cGlyZXM9MzAwJlgtQW16LVNpZ25hdHVyZT0zYWI5YjkxYjk2YmMzMDhmNTE2YzI2MWFkZmVjMGEzYzcyNGZkN2Y1NjBkNTMwNTI5NGI5OGFhNDUwODNiZmQxJlgtQW16LVNpZ25lZEhlYWRlcnM9aG9zdCJ9.KWwFnmFK7R3Iw40UE4UFp8a2sQMnUakdR3EeWkLep0I" alt="App Screenshot" width="300"/>
+
 ## Features
 
 ### 🚀 Core Capabilities

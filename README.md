@@ -36,7 +36,7 @@
 ### 🔐 Permission Manager
 
 - View and modify app permissions by category
-- Supported categories include: Microphone, Camera, Location access, Notifications, Phone & Contacts, Storage
+- Supported categories include: Microphone, Camera, Location access, Notifications, Phone & Contacts, Storage and other
 - Filter permissions by **granted** or **denied** status
 - Batch permission operations for multiple apps
 

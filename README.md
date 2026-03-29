@@ -8,7 +8,7 @@
   <a href="https://developer.android.com"><img src="https://img.shields.io/badge/Android-3DDC84?logo=android&logoColor=white" alt="Android"></a>
   <a href="https://m3.material.io"><img src="https://img.shields.io/badge/Material%20Design-3-757575?logo=material-design&logoColor=white" alt="Material Design 3"></a>
   <a href="https://shizuku.rikka.app/"><img src="https://img.shields.io/badge/Shizuku-Enabled-4CAF50" alt="Shizuku"></a>
-  <a href="LICENSE"><img src="https://img.shields.io/badge/License-Apache%202.0-blue.svg" alt="License"></a>
+  <a href="LICENSE"><img src="https://img.shields.io/badge/License-GPL%203.0-blue.svg" alt="License"></a>
 </p>
 
 **Buge App Manager** is a powerful Android utility application designed for advanced app and permission management. Built with **Material Design 3**, it offers a modern and intuitive interface for granular control over your device.
@@ -66,4 +66,4 @@ Download the latest APK from the [**Releases**](../../releases) page.
 
 ## 📄 License
 
-This project is licensed under the **Apache License 2.0**.
+This project is licensed under the **GNU General Public License v3.0**.

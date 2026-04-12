@@ -1,3 +1,5 @@
+// 文件路径: app/src/main/java/com/buge/appmanager/adapter/PermissionDetailAdapter.kt
+
 package com.buge.appmanager.adapter
 
 import android.view.LayoutInflater
@@ -33,7 +35,6 @@ class PermissionDetailAdapter(
         private val toggleBtn: MaterialButton = itemView.findViewById(R.id.btn_toggle_perm)
 
         fun bind(perm: PermissionInfo) {
-            // Friendly name
             permName.text = getFriendlyPermissionName(perm.name)
             permFullName.text = perm.name.substringAfterLast(".")
 
@@ -45,9 +46,14 @@ class PermissionDetailAdapter(
                 toggleBtn.text = itemView.context.getString(R.string.grant_permission)
             }
 
-            // Only show toggle for dangerous/runtime permissions
+            // SYSTEM_ALERT_WINDOW 和 REQUEST_INSTALL_PACKAGES 是 appop 特殊权限：
+            // protection level 不是 DANGEROUS，所以原来 isDangerous == false，
+            // 导致按钮被隐藏（View.GONE）、点不了。
+            // 修复：这两个权限在 AppRepository 中已将 isDangerous 标记为 true，
+            // 此处直接用 isDangerous 判断即可保持一致，无需额外硬编码权限字符串。
             if (perm.isDangerous) {
                 toggleBtn.visibility = View.VISIBLE
+                toggleBtn.isEnabled = true
                 toggleBtn.setOnClickListener { onToggle(perm) }
             } else {
                 toggleBtn.visibility = View.GONE
@@ -83,6 +89,9 @@ class PermissionDetailAdapter(
                 "android.permission.READ_MEDIA_IMAGES" -> "Media Images"
                 "android.permission.READ_MEDIA_VIDEO" -> "Media Video"
                 "android.permission.READ_MEDIA_AUDIO" -> "Media Audio"
+                // 特殊权限友好名称
+                "android.permission.SYSTEM_ALERT_WINDOW" -> "Display Over Other Apps"
+                "android.permission.REQUEST_INSTALL_PACKAGES" -> "Install Unknown Apps"
                 else -> permission.substringAfterLast(".").replace("_", " ").lowercase()
                     .split(" ").joinToString(" ") { it.replaceFirstChar { c -> c.uppercase() } }
             }

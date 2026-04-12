@@ -1,0 +1,202 @@
+[
+    {
+        "merged": "com.buge.appmanager.app-merged_res-45:/drawable_ic_more_vert.xml.flat",
+        "source": "com.buge.appmanager.app-main-47:/drawable/ic_more_vert.xml"
+    },
+    {
+        "merged": "com.buge.appmanager.app-merged_res-45:/drawable_ic_ac_unit.xml.flat",
+        "source": "com.buge.appmanager.app-main-47:/drawable/ic_ac_unit.xml"
+    },
+    {
+        "merged": "com.buge.appmanager.app-merged_res-45:/mipmap-xxhdpi_ic_launcher_round.png.flat",
+        "source": "com.buge.appmanager.app-main-47:/mipmap-xxhdpi/ic_launcher_round.png"
+    },
+    {
+        "merged": "com.buge.appmanager.app-merged_res-45:/mipmap-hdpi_ic_launcher_round.png.flat",
+        "source": "com.buge.appmanager.app-main-47:/mipmap-hdpi/ic_launcher_round.png"
+    },
+    {
+        "merged": "com.buge.appmanager.app-merged_res-45:/drawable_ic_settings.xml.flat",
+        "source": "com.buge.appmanager.app-main-47:/drawable/ic_settings.xml"
+    },
+    {
+        "merged": "com.buge.appmanager.app-merged_res-45:/drawable_ic_filter.xml.flat",
+        "source": "com.buge.appmanager.app-main-47:/drawable/ic_filter.xml"
+    },
+    {
+        "merged": "com.buge.appmanager.app-merged_res-45:/drawable_ic_github.xml.flat",
+        "source": "com.buge.appmanager.app-main-47:/drawable/ic_github.xml"
+    },
+    {
+        "merged": "com.buge.appmanager.app-merged_res-45:/drawable_ic_security.xml.flat",
+        "source": "com.buge.appmanager.app-main-47:/drawable/ic_security.xml"
+    },
+    {
+        "merged": "com.buge.appmanager.app-merged_res-45:/drawable_ic_camera.xml.flat",
+        "source": "com.buge.appmanager.app-main-47:/drawable/ic_camera.xml"
+    },
+    {
+        "merged": "com.buge.appmanager.app-merged_res-45:/layout_dialog_about.xml.flat",
+        "source": "com.buge.appmanager.app-main-47:/layout/dialog_about.xml"
+    },
+    {
+        "merged": "com.buge.appmanager.app-merged_res-45:/mipmap-xxxhdpi_ic_launcher_round.png.flat",
+        "source": "com.buge.appmanager.app-main-47:/mipmap-xxxhdpi/ic_launcher_round.png"
+    },
+    {
+        "merged": "com.buge.appmanager.app-merged_res-45:/mipmap-mdpi_ic_launcher_round.png.flat",
+        "source": "com.buge.appmanager.app-main-47:/mipmap-mdpi/ic_launcher_round.png"
+    },
+    {
+        "merged": "com.buge.appmanager.app-merged_res-45:/mipmap-xxxhdpi_ic_launcher.png.flat",
+        "source": "com.buge.appmanager.app-main-47:/mipmap-xxxhdpi/ic_launcher.png"
+    },
+    {
+        "merged": "com.buge.appmanager.app-merged_res-45:/layout_activity_main.xml.flat",
+        "source": "com.buge.appmanager.app-main-47:/layout/activity_main.xml"
+    },
+    {
+        "merged": "com.buge.appmanager.app-merged_res-45:/mipmap-xhdpi_ic_launcher.png.flat",
+        "source": "com.buge.appmanager.app-main-47:/mipmap-xhdpi/ic_launcher.png"
+    },
+    {
+        "merged": "com.buge.appmanager.app-merged_res-45:/menu_menu_apps.xml.flat",
+        "source": "com.buge.appmanager.app-main-47:/menu/menu_apps.xml"
+    },
+    {
+        "merged": "com.buge.appmanager.app-merged_res-45:/mipmap-xxxhdpi_ic_launcher_foreground.png.flat",
+        "source": "com.buge.appmanager.app-main-47:/mipmap-xxxhdpi/ic_launcher_foreground.png"
+    },
+    {
+        "merged": "com.buge.appmanager.app-merged_res-45:/layout_fragment_apps.xml.flat",
+        "source": "com.buge.appmanager.app-main-47:/layout/fragment_apps.xml"
+    },
+    {
+        "merged": "com.buge.appmanager.app-merged_res-45:/mipmap-anydpi-v26_ic_launcher_foreground.png.flat",
+        "source": "com.buge.appmanager.app-main-47:/mipmap-anydpi-v26/ic_launcher_foreground.png"
+    },
+    {
+        "merged": "com.buge.appmanager.app-merged_res-45:/menu_bottom_nav_menu.xml.flat",
+        "source": "com.buge.appmanager.app-main-47:/menu/bottom_nav_menu.xml"
+    },
+    {
+        "merged": "com.buge.appmanager.app-merged_res-45:/drawable_ic_mic.xml.flat",
+        "source": "com.buge.appmanager.app-main-47:/drawable/ic_mic.xml"
+    },
+    {
+        "merged": "com.buge.appmanager.app-merged_res-45:/mipmap-xhdpi_ic_launcher_foreground.png.flat",
+        "source": "com.buge.appmanager.app-main-47:/mipmap-xhdpi/ic_launcher_foreground.png"
+    },
+    {
+        "merged": "com.buge.appmanager.app-merged_res-45:/layout_item_info_row.xml.flat",
+        "source": "com.buge.appmanager.app-main-47:/layout/item_info_row.xml"
+    },
+    {
+        "merged": "com.buge.appmanager.app-merged_res-45:/drawable_ic_shield.xml.flat",
+        "source": "com.buge.appmanager.app-main-47:/drawable/ic_shield.xml"
+    },
+    {
+        "merged": "com.buge.appmanager.app-merged_res-45:/layout_activity_app_detail.xml.flat",
+        "source": "com.buge.appmanager.app-main-47:/layout/activity_app_detail.xml"
+    },
+    {
+        "merged": "com.buge.appmanager.app-merged_res-45:/mipmap-hdpi_ic_launcher_foreground.png.flat",
+        "source": "com.buge.appmanager.app-main-47:/mipmap-hdpi/ic_launcher_foreground.png"
+    },
+    {
+        "merged": "com.buge.appmanager.app-merged_res-45:/drawable_ic_search.xml.flat",
+        "source": "com.buge.appmanager.app-main-47:/drawable/ic_search.xml"
+    },
+    {
+        "merged": "com.buge.appmanager.app-merged_res-45:/mipmap-anydpi-v26_ic_launcher.xml.flat",
+        "source": "com.buge.appmanager.app-main-47:/mipmap-anydpi-v26/ic_launcher.xml"
+    },
+    {
+        "merged": "com.buge.appmanager.app-merged_res-45:/mipmap-xxhdpi_ic_launcher_foreground.png.flat",
+        "source": "com.buge.appmanager.app-main-47:/mipmap-xxhdpi/ic_launcher_foreground.png"
+    },
+    {
+        "merged": "com.buge.appmanager.app-merged_res-45:/layout_item_app_permission.xml.flat",
+        "source": "com.buge.appmanager.app-main-47:/layout/item_app_permission.xml"
+    },
+    {
+        "merged": "com.buge.appmanager.app-merged_res-45:/mipmap-hdpi_ic_launcher.png.flat",
+        "source": "com.buge.appmanager.app-main-47:/mipmap-hdpi/ic_launcher.png"
+    },
+    {
+        "merged": "com.buge.appmanager.app-merged_res-45:/drawable_ic_block.xml.flat",
+        "source": "com.buge.appmanager.app-main-47:/drawable/ic_block.xml"
+    },
+    {
+        "merged": "com.buge.appmanager.app-merged_res-45:/drawable_ic_arrow_back.xml.flat",
+        "source": "com.buge.appmanager.app-main-47:/drawable/ic_arrow_back.xml"
+    },
+    {
+        "merged": "com.buge.appmanager.app-merged_res-45:/layout_item_app.xml.flat",
+        "source": "com.buge.appmanager.app-main-47:/layout/item_app.xml"
+    },
+    {
+        "merged": "com.buge.appmanager.app-merged_res-45:/drawable_ic_location.xml.flat",
+        "source": "com.buge.appmanager.app-main-47:/drawable/ic_location.xml"
+    },
+    {
+        "merged": "com.buge.appmanager.app-merged_res-45:/mipmap-xhdpi_ic_launcher_round.png.flat",
+        "source": "com.buge.appmanager.app-main-47:/mipmap-xhdpi/ic_launcher_round.png"
+    },
+    {
+        "merged": "com.buge.appmanager.app-merged_res-45:/drawable_ic_info.xml.flat",
+        "source": "com.buge.appmanager.app-main-47:/drawable/ic_info.xml"
+    },
+    {
+        "merged": "com.buge.appmanager.app-merged_res-45:/drawable_ic_check.xml.flat",
+        "source": "com.buge.appmanager.app-main-47:/drawable/ic_check.xml"
+    },
+    {
+        "merged": "com.buge.appmanager.app-merged_res-45:/drawable_ic_stop.xml.flat",
+        "source": "com.buge.appmanager.app-main-47:/drawable/ic_stop.xml"
+    },
+    {
+        "merged": "com.buge.appmanager.app-merged_res-45:/layout_item_permission.xml.flat",
+        "source": "com.buge.appmanager.app-main-47:/layout/item_permission.xml"
+    },
+    {
+        "merged": "com.buge.appmanager.app-merged_res-45:/layout_fragment_settings.xml.flat",
+        "source": "com.buge.appmanager.app-main-47:/layout/fragment_settings.xml"
+    },
+    {
+        "merged": "com.buge.appmanager.app-merged_res-45:/drawable_ic_delete.xml.flat",
+        "source": "com.buge.appmanager.app-main-47:/drawable/ic_delete.xml"
+    },
+    {
+        "merged": "com.buge.appmanager.app-merged_res-45:/mipmap-mdpi_ic_launcher.png.flat",
+        "source": "com.buge.appmanager.app-main-47:/mipmap-mdpi/ic_launcher.png"
+    },
+    {
+        "merged": "com.buge.appmanager.app-merged_res-45:/drawable_ic_apps.xml.flat",
+        "source": "com.buge.appmanager.app-main-47:/drawable/ic_apps.xml"
+    },
+    {
+        "merged": "com.buge.appmanager.app-merged_res-45:/drawable_ic_open.xml.flat",
+        "source": "com.buge.appmanager.app-main-47:/drawable/ic_open.xml"
+    },
+    {
+        "merged": "com.buge.appmanager.app-merged_res-45:/mipmap-mdpi_ic_launcher_foreground.png.flat",
+        "source": "com.buge.appmanager.app-main-47:/mipmap-mdpi/ic_launcher_foreground.png"
+    },
+    {
+        "merged": "com.buge.appmanager.app-merged_res-45:/drawable_ic_sort.xml.flat",
+        "source": "com.buge.appmanager.app-main-47:/drawable/ic_sort.xml"
+    },
+    {
+        "merged": "com.buge.appmanager.app-merged_res-45:/drawable_ic_shield_badge.xml.flat",
+        "source": "com.buge.appmanager.app-main-47:/drawable/ic_shield_badge.xml"
+    },
+    {
+        "merged": "com.buge.appmanager.app-merged_res-45:/layout_fragment_permissions.xml.flat",
+        "source": "com.buge.appmanager.app-main-47:/layout/fragment_permissions.xml"
+    },
+    {
+        "merged": "com.buge.appmanager.app-merged_res-45:/mipmap-xxhdpi_ic_launcher.png.flat",
+        "source": "com.buge.appmanager.app-main-47:/mipmap-xxhdpi/ic_launcher.png"
+    }
+]

@@ -1,0 +1,19 @@
+<lint-module
+    format="1"
+    dir="/storage/emulated/0/AndroidIDEProjects/BugeAppManager/app"
+    name=":app"
+    type="APP"
+    maven="BugeAppManager:app:"
+    agpVersion="8.2.2"
+    buildFolder="build"
+    bootClassPath="/data/user/0/com.tom.rv2ide/files/home/android-sdk/platforms/android-34/android.jar:/data/user/0/com.tom.rv2ide/files/home/android-sdk/build-tools/34.0.0/core-lambda-stubs.jar"
+    javaSourceLevel="17"
+    compileTarget="android-34"
+    neverShrinking="true">
+  <lintOptions
+      abortOnError="true"
+      absolutePaths="true"
+      checkReleaseBuilds="true"
+      explainIssues="true"/>
+  <variant name="release"/>
+</lint-module>

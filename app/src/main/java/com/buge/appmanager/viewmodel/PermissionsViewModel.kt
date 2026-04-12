@@ -1,3 +1,5 @@
+// 文件路径: app/src/main/java/com/buge/appmanager/viewmodel/PermissionsViewModel.kt
+
 package com.buge.appmanager.viewmodel
 
 import android.app.Application
@@ -9,10 +11,10 @@ import com.buge.appmanager.data.AppRepository
 import com.buge.appmanager.model.AppInfo
 import com.buge.appmanager.shizuku.ShizukuManager
 import com.buge.appmanager.shizuku.ShizukuResult
+import com.buge.appmanager.util.PreferencesManager
 import kotlinx.coroutines.launch
 
 class PermissionsViewModel(application: Application) : AndroidViewModel(application) {
-
     private val repository = AppRepository(application)
 
     private val _appsWithPermission = MutableLiveData<List<Pair<AppInfo, Map<String, Boolean>>>>()
@@ -31,7 +33,9 @@ class PermissionsViewModel(application: Application) : AndroidViewModel(applicat
         viewModelScope.launch {
             _isLoading.value = true
             try {
-                val result = repository.getAppsWithPermissionCategory(permissions)
+                // 读取设置里的"显示系统应用"开关，权限页面与应用页面保持一致
+                val showSystemApps = PreferencesManager.getShowSystemApps(getApplication())
+                val result = repository.getAppsWithPermissionCategory(permissions, showSystemApps)
                 _appsWithPermission.value = result
             } catch (e: Exception) {
                 _appsWithPermission.value = emptyList()

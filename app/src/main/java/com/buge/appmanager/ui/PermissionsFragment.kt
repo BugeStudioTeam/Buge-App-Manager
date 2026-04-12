@@ -1,3 +1,5 @@
+// 文件路径: app/src/main/java/com/buge/appmanager/ui/PermissionsFragment.kt
+
 package com.buge.appmanager.ui
 
 import android.os.Bundle
@@ -13,19 +15,15 @@ import com.buge.appmanager.adapter.AppPermissionItem
 import com.buge.appmanager.data.AppRepository
 import com.buge.appmanager.databinding.FragmentPermissionsBinding
 import com.buge.appmanager.model.AppInfo
-import com.buge.appmanager.shizuku.ShizukuManager
 import com.buge.appmanager.viewmodel.PermissionsViewModel
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.snackbar.Snackbar
 
 class PermissionsFragment : Fragment() {
-
     private var _binding: FragmentPermissionsBinding? = null
     private val binding get() = _binding!!
-
     private val viewModel: PermissionsViewModel by viewModels()
     private lateinit var adapter: AppPermissionAdapter
-
     private var currentPermissions: List<String> = AppRepository.PERMISSION_MICROPHONE
     private var currentPermissionLabel: String = ""
 
@@ -39,13 +37,19 @@ class PermissionsFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
         currentPermissionLabel = getString(R.string.perm_microphone)
         setupRecyclerView()
         setupPermissionChips()
         setupBatchActions()
         observeViewModel()
+        viewModel.loadAppsForPermissions(currentPermissions)
+    }
 
+    /**
+     * 每次返回此页面时重新加载，确保设置里"显示系统应用"开关变更后立即生效。
+     */
+    override fun onResume() {
+        super.onResume()
         viewModel.loadAppsForPermissions(currentPermissions)
     }
 
@@ -92,7 +96,6 @@ class PermissionsFragment : Fragment() {
         binding.btnBatchRevoke.setOnClickListener {
             val selected = adapter.getSelectedItems()
             if (selected.isEmpty()) return@setOnClickListener
-
             MaterialAlertDialogBuilder(requireContext())
                 .setTitle(R.string.batch_revoke)
                 .setMessage(getString(R.string.confirm_revoke, selected.size))
@@ -108,11 +111,9 @@ class PermissionsFragment : Fragment() {
                 .setNegativeButton(R.string.cancel, null)
                 .show()
         }
-
         binding.btnBatchGrant.setOnClickListener {
             val selected = adapter.getSelectedItems()
             if (selected.isEmpty()) return@setOnClickListener
-
             MaterialAlertDialogBuilder(requireContext())
                 .setTitle(R.string.batch_grant)
                 .setMessage(getString(R.string.confirm_grant, selected.size))
@@ -170,11 +171,9 @@ class PermissionsFragment : Fragment() {
             adapter.submitList(items)
             binding.toolbar.subtitle = getString(R.string.apps_count, items.size)
         }
-
         viewModel.isLoading.observe(viewLifecycleOwner) { isLoading ->
             binding.progressBar.visibility = if (isLoading) View.VISIBLE else View.GONE
         }
-
         viewModel.operationResult.observe(viewLifecycleOwner) { result ->
             result ?: return@observe
             val msg = if (result.success) {

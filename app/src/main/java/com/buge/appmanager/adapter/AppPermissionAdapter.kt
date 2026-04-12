@@ -1,3 +1,5 @@
+// 文件路径: app/src/main/java/com/buge/appmanager/adapter/AppPermissionAdapter.kt
+
 package com.buge.appmanager.adapter
 
 import android.view.LayoutInflater
@@ -74,9 +76,10 @@ class AppPermissionAdapter(
             checkbox.visibility = if (selectionMode) View.VISIBLE else View.GONE
             checkbox.isChecked = item.isSelected
 
-            // Determine primary permission status
+            // 权限状态由 AppRepository.getAppsWithPermissionCategory() 提供，
+            // 特殊权限（SYSTEM_ALERT_WINDOW / REQUEST_INSTALL_PACKAGES）已在
+            // Repository 层用专用 API 正确读取，此处直接使用即可。
             val isGranted = item.permissionMap[item.primaryPermission] ?: false
-
             if (isGranted) {
                 permStatusChip.text = itemView.context.getString(R.string.granted)
                 permStatusChip.setChipBackgroundColorResource(R.color.color_granted_container)
@@ -117,12 +120,18 @@ class AppPermissionAdapter(
     }
 
     class DiffCallback : DiffUtil.ItemCallback<AppPermissionItem>() {
-        override fun areItemsTheSame(oldItem: AppPermissionItem, newItem: AppPermissionItem): Boolean {
+        override fun areItemsTheSame(
+            oldItem: AppPermissionItem,
+            newItem: AppPermissionItem
+        ): Boolean {
             return oldItem.app.packageName == newItem.app.packageName
         }
 
-        override fun areContentsTheSame(oldItem: AppPermissionItem, newItem: AppPermissionItem): Boolean {
-            return oldItem.permissionMap.size == newItem.permissionMap.size && 
+        override fun areContentsTheSame(
+            oldItem: AppPermissionItem,
+            newItem: AppPermissionItem
+        ): Boolean {
+            return oldItem.permissionMap.size == newItem.permissionMap.size &&
                    oldItem.permissionMap.all { (key, value) -> newItem.permissionMap[key] == value } &&
                    oldItem.isSelected == newItem.isSelected
         }

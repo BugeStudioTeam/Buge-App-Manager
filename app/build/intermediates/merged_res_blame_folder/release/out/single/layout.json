@@ -1,0 +1,42 @@
+[
+    {
+        "merged": "com.buge.appmanager.app-mergeReleaseResources-44:/layout/fragment_permissions.xml",
+        "source": "com.buge.appmanager.app-main-46:/layout/fragment_permissions.xml"
+    },
+    {
+        "merged": "com.buge.appmanager.app-mergeReleaseResources-44:/layout/item_info_row.xml",
+        "source": "com.buge.appmanager.app-main-46:/layout/item_info_row.xml"
+    },
+    {
+        "merged": "com.buge.appmanager.app-mergeReleaseResources-44:/layout/dialog_about.xml",
+        "source": "com.buge.appmanager.app-main-46:/layout/dialog_about.xml"
+    },
+    {
+        "merged": "com.buge.appmanager.app-mergeReleaseResources-44:/layout/item_app.xml",
+        "source": "com.buge.appmanager.app-main-46:/layout/item_app.xml"
+    },
+    {
+        "merged": "com.buge.appmanager.app-mergeReleaseResources-44:/layout/activity_app_detail.xml",
+        "source": "com.buge.appmanager.app-main-46:/layout/activity_app_detail.xml"
+    },
+    {
+        "merged": "com.buge.appmanager.app-mergeReleaseResources-44:/layout/fragment_apps.xml",
+        "source": "com.buge.appmanager.app-main-46:/layout/fragment_apps.xml"
+    },
+    {
+        "merged": "com.buge.appmanager.app-mergeReleaseResources-44:/layout/fragment_settings.xml",
+        "source": "com.buge.appmanager.app-main-46:/layout/fragment_settings.xml"
+    },
+    {
+        "merged": "com.buge.appmanager.app-mergeReleaseResources-44:/layout/item_permission.xml",
+        "source": "com.buge.appmanager.app-main-46:/layout/item_permission.xml"
+    },
+    {
+        "merged": "com.buge.appmanager.app-mergeReleaseResources-44:/layout/activity_main.xml",
+        "source": "com.buge.appmanager.app-main-46:/layout/activity_main.xml"
+    },
+    {
+        "merged": "com.buge.appmanager.app-mergeReleaseResources-44:/layout/item_app_permission.xml",
+        "source": "com.buge.appmanager.app-main-46:/layout/item_app_permission.xml"
+    }
+]

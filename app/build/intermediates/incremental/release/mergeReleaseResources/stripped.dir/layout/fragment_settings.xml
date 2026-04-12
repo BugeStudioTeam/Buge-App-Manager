@@ -300,7 +300,7 @@
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="v2.2.0"
+                                android:text="v2.3.3"
                                 android:alpha="0.6"
                                 style="@style/TextAppearance.Material3.BodySmall" />
 

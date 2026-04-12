@@ -331,12 +331,14 @@ class AppRepository(private val context: Context) {
 
     /**
      * Get apps with any permission from a category
+     * @param showSystemApps 是否包含系统应用，与设置页面的开关保持联动
      */
     suspend fun getAppsWithPermissionCategory(
-        permissions: List<String>
+        permissions: List<String>,
+        showSystemApps: Boolean = false
     ): List<Pair<AppInfo, Map<String, Boolean>>> = withContext(Dispatchers.IO) {
         try {
-            val allApps = getInstalledApps()
+            val allApps = getInstalledApps(showSystemApps = showSystemApps)
             val result = mutableListOf<Pair<AppInfo, Map<String, Boolean>>>()
             for (app in allApps) {
                 try {

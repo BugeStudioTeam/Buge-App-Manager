@@ -58,6 +58,12 @@
 
 ---
 
+## Star History
+
+[![Star History Chart](https://api.star-history.com/svg?repos=BugeStudioTeam/Buge-App-Manager&type=Date)](https://star-history.com/#BugeStudioTeam/Buge-App-Manager&Date)
+
+---
+
 ## 📦 Installation
 
 Download the latest APK from the [**Releases**](../../releases) page.

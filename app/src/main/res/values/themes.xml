@@ -35,5 +35,34 @@
         <!-- Outline -->
         <item name="colorOutline">@color/md_theme_outline</item>
         <item name="colorOutlineVariant">@color/md_theme_outlineVariant</item>
+
+        <!-- Dialog button style - MD3 text buttons -->
+        <item name="materialAlertDialogTheme">@style/Theme.BugeAppManager.MaterialAlertDialog</item>
+    </style>
+
+    <!-- MaterialAlertDialog custom theme for text buttons -->
+    <style name="Theme.BugeAppManager.MaterialAlertDialog" parent="@style/ThemeOverlay.Material3.MaterialAlertDialog">
+        <item name="buttonBarPositiveButtonStyle">@style/Widget.BugeAppManager.MaterialAlertDialog.PositiveButton</item>
+        <item name="buttonBarNegativeButtonStyle">@style/Widget.BugeAppManager.MaterialAlertDialog.NegativeButton</item>
+        <item name="buttonBarNeutralButtonStyle">@style/Widget.BugeAppManager.MaterialAlertDialog.NeutralButton</item>
+    </style>
+
+    <!-- Positive button (Confirm/OK) style -->
+    <style name="Widget.BugeAppManager.MaterialAlertDialog.PositiveButton" parent="Widget.Material3.Button.TextButton">
+        <item name="android:textColor">@color/md_theme_primary</item>
+        <item name="android:textSize">14sp</item>
+        <item name="android:fontFamily">sans-serif-medium</item>
+    </style>
+
+    <!-- Negative button (Cancel) style -->
+    <style name="Widget.BugeAppManager.MaterialAlertDialog.NegativeButton" parent="Widget.Material3.Button.TextButton">
+        <item name="android:textColor">@color/md_theme_onSurfaceVariant</item>
+        <item name="android:textSize">14sp</item>
+    </style>
+
+    <!-- Neutral button style -->
+    <style name="Widget.BugeAppManager.MaterialAlertDialog.NeutralButton" parent="Widget.Material3.Button.TextButton">
+        <item name="android:textColor">@color/md_theme_onSurfaceVariant</item>
+        <item name="android:textSize">14sp</item>
     </style>
 </resources>

@@ -1,202 +1,258 @@
 [
     {
-        "merged": "com.buge.appmanager.app-merged_res-45:/drawable_ic_more_vert.xml.flat",
-        "source": "com.buge.appmanager.app-main-46:/drawable/ic_more_vert.xml"
+        "merged": "/data/user/0/com.tom.rv2ide/files/home/.gradle/daemon/8.4/com.buge.appmanager.app-merged_res-45:/drawable_dialog_positive_button_background.xml.flat",
+        "source": "/data/user/0/com.tom.rv2ide/files/home/.gradle/daemon/8.4/com.buge.appmanager.app-main-46:/drawable/dialog_positive_button_background.xml"
     },
     {
-        "merged": "com.buge.appmanager.app-merged_res-45:/drawable_ic_ac_unit.xml.flat",
-        "source": "com.buge.appmanager.app-main-46:/drawable/ic_ac_unit.xml"
+        "merged": "/data/user/0/com.tom.rv2ide/files/home/.gradle/daemon/8.4/com.buge.appmanager.app-merged_res-45:/mipmap-hdpi_ic_launcher.png.flat",
+        "source": "/data/user/0/com.tom.rv2ide/files/home/.gradle/daemon/8.4/com.buge.appmanager.app-main-46:/mipmap-hdpi/ic_launcher.png"
     },
     {
-        "merged": "com.buge.appmanager.app-merged_res-45:/mipmap-xxhdpi_ic_launcher_round.png.flat",
-        "source": "com.buge.appmanager.app-main-46:/mipmap-xxhdpi/ic_launcher_round.png"
+        "merged": "/data/user/0/com.tom.rv2ide/files/home/.gradle/daemon/8.4/com.buge.appmanager.app-merged_res-45:/drawable_ic_camera.xml.flat",
+        "source": "/data/user/0/com.tom.rv2ide/files/home/.gradle/daemon/8.4/com.buge.appmanager.app-main-46:/drawable/ic_camera.xml"
     },
     {
-        "merged": "com.buge.appmanager.app-merged_res-45:/mipmap-hdpi_ic_launcher_round.png.flat",
-        "source": "com.buge.appmanager.app-main-46:/mipmap-hdpi/ic_launcher_round.png"
+        "merged": "/data/user/0/com.tom.rv2ide/files/home/.gradle/daemon/8.4/com.buge.appmanager.app-merged_res-45:/mipmap_ic_launcher_foreground.png.flat",
+        "source": "/data/user/0/com.tom.rv2ide/files/home/.gradle/daemon/8.4/com.buge.appmanager.app-main-46:/mipmap/ic_launcher_foreground.png"
     },
     {
-        "merged": "com.buge.appmanager.app-merged_res-45:/drawable_ic_settings.xml.flat",
-        "source": "com.buge.appmanager.app-main-46:/drawable/ic_settings.xml"
+        "merged": "/data/user/0/com.tom.rv2ide/files/home/.gradle/daemon/8.4/com.buge.appmanager.app-merged_res-45:/drawable_ic_delete.xml.flat",
+        "source": "/data/user/0/com.tom.rv2ide/files/home/.gradle/daemon/8.4/com.buge.appmanager.app-main-46:/drawable/ic_delete.xml"
     },
     {
-        "merged": "com.buge.appmanager.app-merged_res-45:/drawable_ic_filter.xml.flat",
-        "source": "com.buge.appmanager.app-main-46:/drawable/ic_filter.xml"
+        "merged": "/data/user/0/com.tom.rv2ide/files/home/.gradle/daemon/8.4/com.buge.appmanager.app-merged_res-45:/drawable-xhdpi_ic_launcher_foreground.png.flat",
+        "source": "/data/user/0/com.tom.rv2ide/files/home/.gradle/daemon/8.4/com.buge.appmanager.app-main-46:/drawable-xhdpi/ic_launcher_foreground.png"
     },
     {
-        "merged": "com.buge.appmanager.app-merged_res-45:/drawable_ic_github.xml.flat",
-        "source": "com.buge.appmanager.app-main-46:/drawable/ic_github.xml"
+        "merged": "/data/user/0/com.tom.rv2ide/files/home/.gradle/daemon/8.4/com.buge.appmanager.app-merged_res-45:/drawable_dialog_background.xml.flat",
+        "source": "/data/user/0/com.tom.rv2ide/files/home/.gradle/daemon/8.4/com.buge.appmanager.app-main-46:/drawable/dialog_background.xml"
     },
     {
-        "merged": "com.buge.appmanager.app-merged_res-45:/drawable_ic_security.xml.flat",
-        "source": "com.buge.appmanager.app-main-46:/drawable/ic_security.xml"
+        "merged": "/data/user/0/com.tom.rv2ide/files/home/.gradle/daemon/8.4/com.buge.appmanager.app-merged_res-45:/drawable_ic_filter.xml.flat",
+        "source": "/data/user/0/com.tom.rv2ide/files/home/.gradle/daemon/8.4/com.buge.appmanager.app-main-46:/drawable/ic_filter.xml"
     },
     {
-        "merged": "com.buge.appmanager.app-merged_res-45:/drawable_ic_camera.xml.flat",
-        "source": "com.buge.appmanager.app-main-46:/drawable/ic_camera.xml"
+        "merged": "/data/user/0/com.tom.rv2ide/files/home/.gradle/daemon/8.4/com.buge.appmanager.app-merged_res-45:/drawable-hdpi_ic_launcher_foreground.png.flat",
+        "source": "/data/user/0/com.tom.rv2ide/files/home/.gradle/daemon/8.4/com.buge.appmanager.app-main-46:/drawable-hdpi/ic_launcher_foreground.png"
     },
     {
-        "merged": "com.buge.appmanager.app-merged_res-45:/layout_dialog_about.xml.flat",
-        "source": "com.buge.appmanager.app-main-46:/layout/dialog_about.xml"
+        "merged": "/data/user/0/com.tom.rv2ide/files/home/.gradle/daemon/8.4/com.buge.appmanager.app-merged_res-45:/drawable_ic_github.xml.flat",
+        "source": "/data/user/0/com.tom.rv2ide/files/home/.gradle/daemon/8.4/com.buge.appmanager.app-main-46:/drawable/ic_github.xml"
     },
     {
-        "merged": "com.buge.appmanager.app-merged_res-45:/mipmap-xxxhdpi_ic_launcher_round.png.flat",
-        "source": "com.buge.appmanager.app-main-46:/mipmap-xxxhdpi/ic_launcher_round.png"
+        "merged": "/data/user/0/com.tom.rv2ide/files/home/.gradle/daemon/8.4/com.buge.appmanager.app-merged_res-45:/drawable_dialog_positive_button_bg_dark.xml.flat",
+        "source": "/data/user/0/com.tom.rv2ide/files/home/.gradle/daemon/8.4/com.buge.appmanager.app-main-46:/drawable/dialog_positive_button_bg_dark.xml"
     },
     {
-        "merged": "com.buge.appmanager.app-merged_res-45:/mipmap-mdpi_ic_launcher_round.png.flat",
-        "source": "com.buge.appmanager.app-main-46:/mipmap-mdpi/ic_launcher_round.png"
+        "merged": "/data/user/0/com.tom.rv2ide/files/home/.gradle/daemon/8.4/com.buge.appmanager.app-merged_res-45:/drawable_ic_arrow_back.xml.flat",
+        "source": "/data/user/0/com.tom.rv2ide/files/home/.gradle/daemon/8.4/com.buge.appmanager.app-main-46:/drawable/ic_arrow_back.xml"
     },
     {
-        "merged": "com.buge.appmanager.app-merged_res-45:/mipmap-xxxhdpi_ic_launcher.png.flat",
-        "source": "com.buge.appmanager.app-main-46:/mipmap-xxxhdpi/ic_launcher.png"
+        "merged": "/data/user/0/com.tom.rv2ide/files/home/.gradle/daemon/8.4/com.buge.appmanager.app-merged_res-45:/drawable_ic_stop.xml.flat",
+        "source": "/data/user/0/com.tom.rv2ide/files/home/.gradle/daemon/8.4/com.buge.appmanager.app-main-46:/drawable/ic_stop.xml"
     },
     {
-        "merged": "com.buge.appmanager.app-merged_res-45:/layout_activity_main.xml.flat",
-        "source": "com.buge.appmanager.app-main-46:/layout/activity_main.xml"
+        "merged": "/data/user/0/com.tom.rv2ide/files/home/.gradle/daemon/8.4/com.buge.appmanager.app-merged_res-45:/mipmap-xxhdpi_ic_launcher_round.png.flat",
+        "source": "/data/user/0/com.tom.rv2ide/files/home/.gradle/daemon/8.4/com.buge.appmanager.app-main-46:/mipmap-xxhdpi/ic_launcher_round.png"
     },
     {
-        "merged": "com.buge.appmanager.app-merged_res-45:/mipmap-xhdpi_ic_launcher.png.flat",
-        "source": "com.buge.appmanager.app-main-46:/mipmap-xhdpi/ic_launcher.png"
+        "merged": "/data/user/0/com.tom.rv2ide/files/home/.gradle/daemon/8.4/com.buge.appmanager.app-merged_res-45:/drawable_dialog_positive_button_bg.xml.flat",
+        "source": "/data/user/0/com.tom.rv2ide/files/home/.gradle/daemon/8.4/com.buge.appmanager.app-main-46:/drawable/dialog_positive_button_bg.xml"
     },
     {
-        "merged": "com.buge.appmanager.app-merged_res-45:/menu_menu_apps.xml.flat",
-        "source": "com.buge.appmanager.app-main-46:/menu/menu_apps.xml"
+        "merged": "/data/user/0/com.tom.rv2ide/files/home/.gradle/daemon/8.4/com.buge.appmanager.app-merged_res-45:/drawable_ic_shield.xml.flat",
+        "source": "/data/user/0/com.tom.rv2ide/files/home/.gradle/daemon/8.4/com.buge.appmanager.app-main-46:/drawable/ic_shield.xml"
     },
     {
-        "merged": "com.buge.appmanager.app-merged_res-45:/mipmap-xxxhdpi_ic_launcher_foreground.png.flat",
-        "source": "com.buge.appmanager.app-main-46:/mipmap-xxxhdpi/ic_launcher_foreground.png"
+        "merged": "/data/user/0/com.tom.rv2ide/files/home/.gradle/daemon/8.4/com.buge.appmanager.app-merged_res-45:/drawable_ic_info.xml.flat",
+        "source": "/data/user/0/com.tom.rv2ide/files/home/.gradle/daemon/8.4/com.buge.appmanager.app-main-46:/drawable/ic_info.xml"
     },
     {
-        "merged": "com.buge.appmanager.app-merged_res-45:/layout_fragment_apps.xml.flat",
-        "source": "com.buge.appmanager.app-main-46:/layout/fragment_apps.xml"
+        "merged": "/data/user/0/com.tom.rv2ide/files/home/.gradle/daemon/8.4/com.buge.appmanager.app-merged_res-45:/layout_activity_app_detail.xml.flat",
+        "source": "/data/user/0/com.tom.rv2ide/files/home/.gradle/daemon/8.4/com.buge.appmanager.app-main-46:/layout/activity_app_detail.xml"
     },
     {
-        "merged": "com.buge.appmanager.app-merged_res-45:/mipmap-anydpi-v26_ic_launcher_foreground.png.flat",
-        "source": "com.buge.appmanager.app-main-46:/mipmap-anydpi-v26/ic_launcher_foreground.png"
+        "merged": "/data/user/0/com.tom.rv2ide/files/home/.gradle/daemon/8.4/com.buge.appmanager.app-merged_res-45:/mipmap-xxhdpi_ic_launcher.png.flat",
+        "source": "/data/user/0/com.tom.rv2ide/files/home/.gradle/daemon/8.4/com.buge.appmanager.app-main-46:/mipmap-xxhdpi/ic_launcher.png"
     },
     {
-        "merged": "com.buge.appmanager.app-merged_res-45:/menu_bottom_nav_menu.xml.flat",
-        "source": "com.buge.appmanager.app-main-46:/menu/bottom_nav_menu.xml"
+        "merged": "/data/user/0/com.tom.rv2ide/files/home/.gradle/daemon/8.4/com.buge.appmanager.app-merged_res-45:/mipmap-xhdpi_ic_launcher_foreground.png.flat",
+        "source": "/data/user/0/com.tom.rv2ide/files/home/.gradle/daemon/8.4/com.buge.appmanager.app-main-46:/mipmap-xhdpi/ic_launcher_foreground.png"
     },
     {
-        "merged": "com.buge.appmanager.app-merged_res-45:/drawable_ic_mic.xml.flat",
-        "source": "com.buge.appmanager.app-main-46:/drawable/ic_mic.xml"
+        "merged": "/data/user/0/com.tom.rv2ide/files/home/.gradle/daemon/8.4/com.buge.appmanager.app-merged_res-45:/mipmap-xxxhdpi_ic_launcher_foreground.png.flat",
+        "source": "/data/user/0/com.tom.rv2ide/files/home/.gradle/daemon/8.4/com.buge.appmanager.app-main-46:/mipmap-xxxhdpi/ic_launcher_foreground.png"
     },
     {
-        "merged": "com.buge.appmanager.app-merged_res-45:/mipmap-xhdpi_ic_launcher_foreground.png.flat",
-        "source": "com.buge.appmanager.app-main-46:/mipmap-xhdpi/ic_launcher_foreground.png"
+        "merged": "/data/user/0/com.tom.rv2ide/files/home/.gradle/daemon/8.4/com.buge.appmanager.app-merged_res-45:/drawable_dialog_negative_button_background.xml.flat",
+        "source": "/data/user/0/com.tom.rv2ide/files/home/.gradle/daemon/8.4/com.buge.appmanager.app-main-46:/drawable/dialog_negative_button_background.xml"
     },
     {
-        "merged": "com.buge.appmanager.app-merged_res-45:/layout_item_info_row.xml.flat",
-        "source": "com.buge.appmanager.app-main-46:/layout/item_info_row.xml"
+        "merged": "/data/user/0/com.tom.rv2ide/files/home/.gradle/daemon/8.4/com.buge.appmanager.app-merged_res-45:/layout_item_app.xml.flat",
+        "source": "/data/user/0/com.tom.rv2ide/files/home/.gradle/daemon/8.4/com.buge.appmanager.app-main-46:/layout/item_app.xml"
     },
     {
-        "merged": "com.buge.appmanager.app-merged_res-45:/drawable_ic_shield.xml.flat",
-        "source": "com.buge.appmanager.app-main-46:/drawable/ic_shield.xml"
+        "merged": "/data/user/0/com.tom.rv2ide/files/home/.gradle/daemon/8.4/com.buge.appmanager.app-merged_res-45:/layout_dialog_about.xml.flat",
+        "source": "/data/user/0/com.tom.rv2ide/files/home/.gradle/daemon/8.4/com.buge.appmanager.app-main-46:/layout/dialog_about.xml"
     },
     {
-        "merged": "com.buge.appmanager.app-merged_res-45:/layout_activity_app_detail.xml.flat",
-        "source": "com.buge.appmanager.app-main-46:/layout/activity_app_detail.xml"
+        "merged": "/data/user/0/com.tom.rv2ide/files/home/.gradle/daemon/8.4/com.buge.appmanager.app-merged_res-45:/mipmap-hdpi_ic_launcher_foreground.png.flat",
+        "source": "/data/user/0/com.tom.rv2ide/files/home/.gradle/daemon/8.4/com.buge.appmanager.app-main-46:/mipmap-hdpi/ic_launcher_foreground.png"
     },
     {
-        "merged": "com.buge.appmanager.app-merged_res-45:/mipmap-hdpi_ic_launcher_foreground.png.flat",
-        "source": "com.buge.appmanager.app-main-46:/mipmap-hdpi/ic_launcher_foreground.png"
+        "merged": "/data/user/0/com.tom.rv2ide/files/home/.gradle/daemon/8.4/com.buge.appmanager.app-merged_res-45:/mipmap-xhdpi_ic_launcher.png.flat",
+        "source": "/data/user/0/com.tom.rv2ide/files/home/.gradle/daemon/8.4/com.buge.appmanager.app-main-46:/mipmap-xhdpi/ic_launcher.png"
     },
     {
-        "merged": "com.buge.appmanager.app-merged_res-45:/drawable_ic_search.xml.flat",
-        "source": "com.buge.appmanager.app-main-46:/drawable/ic_search.xml"
+        "merged": "/data/user/0/com.tom.rv2ide/files/home/.gradle/daemon/8.4/com.buge.appmanager.app-merged_res-45:/drawable_ic_location.xml.flat",
+        "source": "/data/user/0/com.tom.rv2ide/files/home/.gradle/daemon/8.4/com.buge.appmanager.app-main-46:/drawable/ic_location.xml"
     },
     {
-        "merged": "com.buge.appmanager.app-merged_res-45:/mipmap-anydpi-v26_ic_launcher.xml.flat",
-        "source": "com.buge.appmanager.app-main-46:/mipmap-anydpi-v26/ic_launcher.xml"
+        "merged": "/data/user/0/com.tom.rv2ide/files/home/.gradle/daemon/8.4/com.buge.appmanager.app-merged_res-45:/mipmap-hdpi_ic_launcher_round.png.flat",
+        "source": "/data/user/0/com.tom.rv2ide/files/home/.gradle/daemon/8.4/com.buge.appmanager.app-main-46:/mipmap-hdpi/ic_launcher_round.png"
     },
     {
-        "merged": "com.buge.appmanager.app-merged_res-45:/mipmap-xxhdpi_ic_launcher_foreground.png.flat",
-        "source": "com.buge.appmanager.app-main-46:/mipmap-xxhdpi/ic_launcher_foreground.png"
+        "merged": "/data/user/0/com.tom.rv2ide/files/home/.gradle/daemon/8.4/com.buge.appmanager.app-merged_res-45:/drawable_ic_more_vert.xml.flat",
+        "source": "/data/user/0/com.tom.rv2ide/files/home/.gradle/daemon/8.4/com.buge.appmanager.app-main-46:/drawable/ic_more_vert.xml"
     },
     {
-        "merged": "com.buge.appmanager.app-merged_res-45:/layout_item_app_permission.xml.flat",
-        "source": "com.buge.appmanager.app-main-46:/layout/item_app_permission.xml"
+        "merged": "/data/user/0/com.tom.rv2ide/files/home/.gradle/daemon/8.4/com.buge.appmanager.app-merged_res-45:/drawable_ic_settings.xml.flat",
+        "source": "/data/user/0/com.tom.rv2ide/files/home/.gradle/daemon/8.4/com.buge.appmanager.app-main-46:/drawable/ic_settings.xml"
     },
     {
-        "merged": "com.buge.appmanager.app-merged_res-45:/mipmap-hdpi_ic_launcher.png.flat",
-        "source": "com.buge.appmanager.app-main-46:/mipmap-hdpi/ic_launcher.png"
+        "merged": "/data/user/0/com.tom.rv2ide/files/home/.gradle/daemon/8.4/com.buge.appmanager.app-merged_res-45:/layout_fragment_permissions.xml.flat",
+        "source": "/data/user/0/com.tom.rv2ide/files/home/.gradle/daemon/8.4/com.buge.appmanager.app-main-46:/layout/fragment_permissions.xml"
     },
     {
-        "merged": "com.buge.appmanager.app-merged_res-45:/drawable_ic_block.xml.flat",
-        "source": "com.buge.appmanager.app-main-46:/drawable/ic_block.xml"
+        "merged": "/data/user/0/com.tom.rv2ide/files/home/.gradle/daemon/8.4/com.buge.appmanager.app-merged_res-45:/drawable-night_dialog_positive_button_bg.xml.flat",
+        "source": "/data/user/0/com.tom.rv2ide/files/home/.gradle/daemon/8.4/com.buge.appmanager.app-main-46:/drawable-night/dialog_positive_button_bg.xml"
     },
     {
-        "merged": "com.buge.appmanager.app-merged_res-45:/drawable_ic_arrow_back.xml.flat",
-        "source": "com.buge.appmanager.app-main-46:/drawable/ic_arrow_back.xml"
+        "merged": "/data/user/0/com.tom.rv2ide/files/home/.gradle/daemon/8.4/com.buge.appmanager.app-merged_res-45:/mipmap-xhdpi_ic_launcher_round.png.flat",
+        "source": "/data/user/0/com.tom.rv2ide/files/home/.gradle/daemon/8.4/com.buge.appmanager.app-main-46:/mipmap-xhdpi/ic_launcher_round.png"
     },
     {
-        "merged": "com.buge.appmanager.app-merged_res-45:/layout_item_app.xml.flat",
-        "source": "com.buge.appmanager.app-main-46:/layout/item_app.xml"
+        "merged": "/data/user/0/com.tom.rv2ide/files/home/.gradle/daemon/8.4/com.buge.appmanager.app-merged_res-45:/mipmap-xxhdpi_ic_launcher_foreground.png.flat",
+        "source": "/data/user/0/com.tom.rv2ide/files/home/.gradle/daemon/8.4/com.buge.appmanager.app-main-46:/mipmap-xxhdpi/ic_launcher_foreground.png"
     },
     {
-        "merged": "com.buge.appmanager.app-merged_res-45:/drawable_ic_location.xml.flat",
-        "source": "com.buge.appmanager.app-main-46:/drawable/ic_location.xml"
+        "merged": "/data/user/0/com.tom.rv2ide/files/home/.gradle/daemon/8.4/com.buge.appmanager.app-merged_res-45:/layout_activity_main.xml.flat",
+        "source": "/data/user/0/com.tom.rv2ide/files/home/.gradle/daemon/8.4/com.buge.appmanager.app-main-46:/layout/activity_main.xml"
     },
     {
-        "merged": "com.buge.appmanager.app-merged_res-45:/mipmap-xhdpi_ic_launcher_round.png.flat",
-        "source": "com.buge.appmanager.app-main-46:/mipmap-xhdpi/ic_launcher_round.png"
+        "merged": "/data/user/0/com.tom.rv2ide/files/home/.gradle/daemon/8.4/com.buge.appmanager.app-merged_res-45:/mipmap-xxxhdpi_ic_launcher_round.png.flat",
+        "source": "/data/user/0/com.tom.rv2ide/files/home/.gradle/daemon/8.4/com.buge.appmanager.app-main-46:/mipmap-xxxhdpi/ic_launcher_round.png"
     },
     {
-        "merged": "com.buge.appmanager.app-merged_res-45:/drawable_ic_info.xml.flat",
-        "source": "com.buge.appmanager.app-main-46:/drawable/ic_info.xml"
+        "merged": "/data/user/0/com.tom.rv2ide/files/home/.gradle/daemon/8.4/com.buge.appmanager.app-merged_res-45:/drawable_ic_mic.xml.flat",
+        "source": "/data/user/0/com.tom.rv2ide/files/home/.gradle/daemon/8.4/com.buge.appmanager.app-main-46:/drawable/ic_mic.xml"
     },
     {
-        "merged": "com.buge.appmanager.app-merged_res-45:/drawable_ic_check.xml.flat",
-        "source": "com.buge.appmanager.app-main-46:/drawable/ic_check.xml"
+        "merged": "/data/user/0/com.tom.rv2ide/files/home/.gradle/daemon/8.4/com.buge.appmanager.app-merged_res-45:/layout_fragment_apps.xml.flat",
+        "source": "/data/user/0/com.tom.rv2ide/files/home/.gradle/daemon/8.4/com.buge.appmanager.app-main-46:/layout/fragment_apps.xml"
     },
     {
-        "merged": "com.buge.appmanager.app-merged_res-45:/drawable_ic_stop.xml.flat",
-        "source": "com.buge.appmanager.app-main-46:/drawable/ic_stop.xml"
+        "merged": "/data/user/0/com.tom.rv2ide/files/home/.gradle/daemon/8.4/com.buge.appmanager.app-merged_res-45:/mipmap-mdpi_ic_launcher.png.flat",
+        "source": "/data/user/0/com.tom.rv2ide/files/home/.gradle/daemon/8.4/com.buge.appmanager.app-main-46:/mipmap-mdpi/ic_launcher.png"
     },
     {
-        "merged": "com.buge.appmanager.app-merged_res-45:/layout_item_permission.xml.flat",
-        "source": "com.buge.appmanager.app-main-46:/layout/item_permission.xml"
+        "merged": "/data/user/0/com.tom.rv2ide/files/home/.gradle/daemon/8.4/com.buge.appmanager.app-merged_res-45:/menu_menu_apps.xml.flat",
+        "source": "/data/user/0/com.tom.rv2ide/files/home/.gradle/daemon/8.4/com.buge.appmanager.app-main-46:/menu/menu_apps.xml"
+    },
+    {
+        "merged": "/data/user/0/com.tom.rv2ide/files/home/.gradle/daemon/8.4/com.buge.appmanager.app-merged_res-45:/menu_bottom_nav_menu.xml.flat",
+        "source": "/data/user/0/com.tom.rv2ide/files/home/.gradle/daemon/8.4/com.buge.appmanager.app-main-46:/menu/bottom_nav_menu.xml"
+    },
+    {
+        "merged": "/data/user/0/com.tom.rv2ide/files/home/.gradle/daemon/8.4/com.buge.appmanager.app-merged_res-45:/drawable_ic_security.xml.flat",
+        "source": "/data/user/0/com.tom.rv2ide/files/home/.gradle/daemon/8.4/com.buge.appmanager.app-main-46:/drawable/ic_security.xml"
+    },
+    {
+        "merged": "/data/user/0/com.tom.rv2ide/files/home/.gradle/daemon/8.4/com.buge.appmanager.app-merged_res-45:/drawable_ic_search.xml.flat",
+        "source": "/data/user/0/com.tom.rv2ide/files/home/.gradle/daemon/8.4/com.buge.appmanager.app-main-46:/drawable/ic_search.xml"
     },
     {
         "merged": "com.buge.appmanager.app-merged_res-45:/layout_fragment_settings.xml.flat",
         "source": "com.buge.appmanager.app-main-46:/layout/fragment_settings.xml"
     },
     {
-        "merged": "com.buge.appmanager.app-merged_res-45:/drawable_ic_delete.xml.flat",
-        "source": "com.buge.appmanager.app-main-46:/drawable/ic_delete.xml"
+        "merged": "/data/user/0/com.tom.rv2ide/files/home/.gradle/daemon/8.4/com.buge.appmanager.app-merged_res-45:/drawable-v24_ic_launcher_foreground.xml.flat",
+        "source": "/data/user/0/com.tom.rv2ide/files/home/.gradle/daemon/8.4/com.buge.appmanager.app-main-46:/drawable-v24/ic_launcher_foreground.xml"
     },
     {
-        "merged": "com.buge.appmanager.app-merged_res-45:/mipmap-mdpi_ic_launcher.png.flat",
-        "source": "com.buge.appmanager.app-main-46:/mipmap-mdpi/ic_launcher.png"
+        "merged": "/data/user/0/com.tom.rv2ide/files/home/.gradle/daemon/8.4/com.buge.appmanager.app-merged_res-45:/layout_item_permission.xml.flat",
+        "source": "/data/user/0/com.tom.rv2ide/files/home/.gradle/daemon/8.4/com.buge.appmanager.app-main-46:/layout/item_permission.xml"
     },
     {
-        "merged": "com.buge.appmanager.app-merged_res-45:/drawable_ic_apps.xml.flat",
-        "source": "com.buge.appmanager.app-main-46:/drawable/ic_apps.xml"
+        "merged": "/data/user/0/com.tom.rv2ide/files/home/.gradle/daemon/8.4/com.buge.appmanager.app-merged_res-45:/layout_item_app_permission.xml.flat",
+        "source": "/data/user/0/com.tom.rv2ide/files/home/.gradle/daemon/8.4/com.buge.appmanager.app-main-46:/layout/item_app_permission.xml"
     },
     {
-        "merged": "com.buge.appmanager.app-merged_res-45:/drawable_ic_open.xml.flat",
-        "source": "com.buge.appmanager.app-main-46:/drawable/ic_open.xml"
+        "merged": "/data/user/0/com.tom.rv2ide/files/home/.gradle/daemon/8.4/com.buge.appmanager.app-merged_res-45:/drawable_ic_open.xml.flat",
+        "source": "/data/user/0/com.tom.rv2ide/files/home/.gradle/daemon/8.4/com.buge.appmanager.app-main-46:/drawable/ic_open.xml"
     },
     {
-        "merged": "com.buge.appmanager.app-merged_res-45:/mipmap-mdpi_ic_launcher_foreground.png.flat",
-        "source": "com.buge.appmanager.app-main-46:/mipmap-mdpi/ic_launcher_foreground.png"
+        "merged": "/data/user/0/com.tom.rv2ide/files/home/.gradle/daemon/8.4/com.buge.appmanager.app-merged_res-45:/layout_fragment_settings.xml.flat",
+        "source": "/data/user/0/com.tom.rv2ide/files/home/.gradle/daemon/8.4/com.buge.appmanager.app-main-46:/layout/fragment_settings.xml"
     },
     {
-        "merged": "com.buge.appmanager.app-merged_res-45:/drawable_ic_sort.xml.flat",
-        "source": "com.buge.appmanager.app-main-46:/drawable/ic_sort.xml"
+        "merged": "/data/user/0/com.tom.rv2ide/files/home/.gradle/daemon/8.4/com.buge.appmanager.app-merged_res-45:/mipmap-anydpi-v26_ic_launcher.xml.flat",
+        "source": "/data/user/0/com.tom.rv2ide/files/home/.gradle/daemon/8.4/com.buge.appmanager.app-main-46:/mipmap-anydpi-v26/ic_launcher.xml"
     },
     {
-        "merged": "com.buge.appmanager.app-merged_res-45:/drawable_ic_shield_badge.xml.flat",
-        "source": "com.buge.appmanager.app-main-46:/drawable/ic_shield_badge.xml"
+        "merged": "/data/user/0/com.tom.rv2ide/files/home/.gradle/daemon/8.4/com.buge.appmanager.app-merged_res-45:/drawable_ic_sort.xml.flat",
+        "source": "/data/user/0/com.tom.rv2ide/files/home/.gradle/daemon/8.4/com.buge.appmanager.app-main-46:/drawable/ic_sort.xml"
     },
     {
-        "merged": "com.buge.appmanager.app-merged_res-45:/layout_fragment_permissions.xml.flat",
-        "source": "com.buge.appmanager.app-main-46:/layout/fragment_permissions.xml"
+        "merged": "/data/user/0/com.tom.rv2ide/files/home/.gradle/daemon/8.4/com.buge.appmanager.app-merged_res-45:/drawable-mdpi_ic_launcher_foreground.png.flat",
+        "source": "/data/user/0/com.tom.rv2ide/files/home/.gradle/daemon/8.4/com.buge.appmanager.app-main-46:/drawable-mdpi/ic_launcher_foreground.png"
     },
     {
-        "merged": "com.buge.appmanager.app-merged_res-45:/mipmap-xxhdpi_ic_launcher.png.flat",
-        "source": "com.buge.appmanager.app-main-46:/mipmap-xxhdpi/ic_launcher.png"
+        "merged": "/data/user/0/com.tom.rv2ide/files/home/.gradle/daemon/8.4/com.buge.appmanager.app-merged_res-45:/mipmap-mdpi_ic_launcher_round.png.flat",
+        "source": "/data/user/0/com.tom.rv2ide/files/home/.gradle/daemon/8.4/com.buge.appmanager.app-main-46:/mipmap-mdpi/ic_launcher_round.png"
+    },
+    {
+        "merged": "/data/user/0/com.tom.rv2ide/files/home/.gradle/daemon/8.4/com.buge.appmanager.app-merged_res-45:/drawable_ic_block.xml.flat",
+        "source": "/data/user/0/com.tom.rv2ide/files/home/.gradle/daemon/8.4/com.buge.appmanager.app-main-46:/drawable/ic_block.xml"
+    },
+    {
+        "merged": "/data/user/0/com.tom.rv2ide/files/home/.gradle/daemon/8.4/com.buge.appmanager.app-merged_res-45:/layout_item_info_row.xml.flat",
+        "source": "/data/user/0/com.tom.rv2ide/files/home/.gradle/daemon/8.4/com.buge.appmanager.app-main-46:/layout/item_info_row.xml"
+    },
+    {
+        "merged": "/data/user/0/com.tom.rv2ide/files/home/.gradle/daemon/8.4/com.buge.appmanager.app-merged_res-45:/drawable-xxxhdpi_ic_launcher_foreground.png.flat",
+        "source": "/data/user/0/com.tom.rv2ide/files/home/.gradle/daemon/8.4/com.buge.appmanager.app-main-46:/drawable-xxxhdpi/ic_launcher_foreground.png"
+    },
+    {
+        "merged": "/data/user/0/com.tom.rv2ide/files/home/.gradle/daemon/8.4/com.buge.appmanager.app-merged_res-45:/mipmap-mdpi_ic_launcher_foreground.png.flat",
+        "source": "/data/user/0/com.tom.rv2ide/files/home/.gradle/daemon/8.4/com.buge.appmanager.app-main-46:/mipmap-mdpi/ic_launcher_foreground.png"
+    },
+    {
+        "merged": "/data/user/0/com.tom.rv2ide/files/home/.gradle/daemon/8.4/com.buge.appmanager.app-merged_res-45:/drawable_ic_shield_badge.xml.flat",
+        "source": "/data/user/0/com.tom.rv2ide/files/home/.gradle/daemon/8.4/com.buge.appmanager.app-main-46:/drawable/ic_shield_badge.xml"
+    },
+    {
+        "merged": "/data/user/0/com.tom.rv2ide/files/home/.gradle/daemon/8.4/com.buge.appmanager.app-merged_res-45:/drawable_ic_apps.xml.flat",
+        "source": "/data/user/0/com.tom.rv2ide/files/home/.gradle/daemon/8.4/com.buge.appmanager.app-main-46:/drawable/ic_apps.xml"
+    },
+    {
+        "merged": "/data/user/0/com.tom.rv2ide/files/home/.gradle/daemon/8.4/com.buge.appmanager.app-merged_res-45:/drawable_ic_check.xml.flat",
+        "source": "/data/user/0/com.tom.rv2ide/files/home/.gradle/daemon/8.4/com.buge.appmanager.app-main-46:/drawable/ic_check.xml"
+    },
+    {
+        "merged": "/data/user/0/com.tom.rv2ide/files/home/.gradle/daemon/8.4/com.buge.appmanager.app-merged_res-45:/drawable_ic_ac_unit.xml.flat",
+        "source": "/data/user/0/com.tom.rv2ide/files/home/.gradle/daemon/8.4/com.buge.appmanager.app-main-46:/drawable/ic_ac_unit.xml"
+    },
+    {
+        "merged": "/data/user/0/com.tom.rv2ide/files/home/.gradle/daemon/8.4/com.buge.appmanager.app-merged_res-45:/drawable-xxhdpi_ic_launcher_foreground.png.flat",
+        "source": "/data/user/0/com.tom.rv2ide/files/home/.gradle/daemon/8.4/com.buge.appmanager.app-main-46:/drawable-xxhdpi/ic_launcher_foreground.png"
+    },
+    {
+        "merged": "/data/user/0/com.tom.rv2ide/files/home/.gradle/daemon/8.4/com.buge.appmanager.app-merged_res-45:/mipmap-xxxhdpi_ic_launcher.png.flat",
+        "source": "/data/user/0/com.tom.rv2ide/files/home/.gradle/daemon/8.4/com.buge.appmanager.app-main-46:/mipmap-xxxhdpi/ic_launcher.png"
+    },
+    {
+        "merged": "/data/user/0/com.tom.rv2ide/files/home/.gradle/daemon/8.4/com.buge.appmanager.app-merged_res-45:/mipmap-anydpi-v26_ic_launcher_foreground.png.flat",
+        "source": "/data/user/0/com.tom.rv2ide/files/home/.gradle/daemon/8.4/com.buge.appmanager.app-main-46:/mipmap-anydpi-v26/ic_launcher_foreground.png"
     }
 ]

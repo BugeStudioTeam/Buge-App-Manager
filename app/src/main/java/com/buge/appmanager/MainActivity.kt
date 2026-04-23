@@ -18,23 +18,19 @@ class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
 
     private val requestPermissionResultListener = Shizuku.OnRequestPermissionResultListener { requestCode, grantResult ->
-        // Handled in SettingsFragment
     }
 
     override fun attachBaseContext(newBase: Context?) {
         if (newBase != null) {
             val savedLanguage = LocaleManager.getLanguage(newBase)
-            if (savedLanguage.isNotEmpty()) {
-                val context = LocaleManager.createContextWithLocale(newBase, savedLanguage)
-                super.attachBaseContext(context)
-                return
-            }
+            val context = LocaleManager.createContextWithLocale(newBase, savedLanguage)
+            super.attachBaseContext(context)
+        } else {
+            super.attachBaseContext(newBase)
         }
-        super.attachBaseContext(newBase)
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        // Apply saved theme BEFORE calling super.onCreate()
         val savedTheme = PreferencesManager.getThemeMode(this)
         AppCompatDelegate.setDefaultNightMode(savedTheme)
         
@@ -70,7 +66,6 @@ class MainActivity : AppCompatActivity() {
                 else -> false
             }
         }
-        // Select apps fragment by default
         binding.bottomNav.selectedItemId = R.id.nav_apps
     }
 

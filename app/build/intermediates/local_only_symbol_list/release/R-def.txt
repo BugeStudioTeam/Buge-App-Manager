@@ -1,5 +1,6 @@
 R_DEF: Internal format may change without notice
 local
+color bottom_nav_background
 color color_denied
 color color_denied_container
 color color_granted
@@ -46,6 +47,7 @@ drawable ic_delete
 drawable ic_filter
 drawable ic_github
 drawable ic_info
+drawable ic_launcher_foreground
 drawable ic_location
 drawable ic_mic
 drawable ic_more_vert
@@ -241,3 +243,7 @@ string uninstall
 string update_date
 string version
 style Theme.BugeAppManager
+style Theme.BugeAppManager.MaterialAlertDialog
+style Widget.BugeAppManager.MaterialAlertDialog.NegativeButton
+style Widget.BugeAppManager.MaterialAlertDialog.NeutralButton
+style Widget.BugeAppManager.MaterialAlertDialog.PositiveButton

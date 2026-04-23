@@ -1426,6 +1426,7 @@ color background_floating_material_dark
 color background_floating_material_light
 color background_material_dark
 color background_material_light
+color bottom_nav_background
 color bright_foreground_disabled_material_dark
 color bright_foreground_disabled_material_light
 color bright_foreground_inverse_material_dark
@@ -3118,6 +3119,7 @@ drawable ic_filter
 drawable ic_github
 drawable ic_info
 drawable ic_keyboard_black_24dp
+drawable ic_launcher_foreground
 drawable ic_location
 drawable ic_m3_chip_check
 drawable ic_m3_chip_checked_circle
@@ -4870,6 +4872,7 @@ style Theme_AppCompat_Light_DialogWhenLarge
 style Theme_AppCompat_Light_NoActionBar
 style Theme_AppCompat_NoActionBar
 style Theme_BugeAppManager
+style Theme_BugeAppManager_MaterialAlertDialog
 style Theme_Design
 style Theme_Design_BottomSheetDialog
 style Theme_Design_Light
@@ -5137,6 +5140,9 @@ style Widget_AppCompat_TextView
 style Widget_AppCompat_TextView_SpinnerItem
 style Widget_AppCompat_Toolbar
 style Widget_AppCompat_Toolbar_Button_Navigation
+style Widget_BugeAppManager_MaterialAlertDialog_NegativeButton
+style Widget_BugeAppManager_MaterialAlertDialog_NeutralButton
+style Widget_BugeAppManager_MaterialAlertDialog_PositiveButton
 style Widget_Compat_NotificationActionContainer
 style Widget_Compat_NotificationActionText
 style Widget_Design_AppBarLayout

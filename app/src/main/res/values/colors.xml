@@ -31,6 +31,9 @@
     <color name="md_theme_surfaceTint">#0077B6</color>
     <color name="md_theme_scrim">#000000</color>
 
+    <!-- Bottom Navigation Bar Background -->
+    <color name="bottom_nav_background">#EAEEF6</color>
+
     <!-- Permission status colors -->
     <color name="color_granted">#2E7D32</color>
     <color name="color_denied">#C62828</color>

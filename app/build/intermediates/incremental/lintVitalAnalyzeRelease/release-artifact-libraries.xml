@@ -65,10 +65,10 @@
       externalAnnotations="annotations.zip"
       proguardRules="proguard.txt"/>
   <library
-      name="com.github.bumptech.glide:glide:4.16.0@aar"
-      jars="/data/user/0/com.tom.rv2ide/files/home/.gradle/caches/transforms-3/85781de96fd6cbb256e57b4f31982945/transformed/glide-4.16.0/jars/classes.jar"
-      resolved="com.github.bumptech.glide:glide:4.16.0"
-      folder="/data/user/0/com.tom.rv2ide/files/home/.gradle/caches/transforms-3/85781de96fd6cbb256e57b4f31982945/transformed/glide-4.16.0"
+      name="com.github.bumptech.glide:glide:5.0.5@aar"
+      jars="/data/user/0/com.tom.rv2ide/files/home/.gradle/caches/transforms-3/7f21a972d6de7670e7014d5b7d954ea1/transformed/glide-5.0.5/jars/classes.jar"
+      resolved="com.github.bumptech.glide:glide:5.0.5"
+      folder="/data/user/0/com.tom.rv2ide/files/home/.gradle/caches/transforms-3/7f21a972d6de7670e7014d5b7d954ea1/transformed/glide-5.0.5"
       manifest="AndroidManifest.xml"
       resFolder="res"
       assetsFolder="assets"
@@ -566,19 +566,6 @@
       externalAnnotations="annotations.zip"
       proguardRules="proguard.txt"/>
   <library
-      name="com.github.bumptech.glide:gifdecoder:4.16.0@aar"
-      jars="/data/user/0/com.tom.rv2ide/files/home/.gradle/caches/transforms-3/040bdd8e4e138373016778abba3530a3/transformed/gifdecoder-4.16.0/jars/classes.jar"
-      resolved="com.github.bumptech.glide:gifdecoder:4.16.0"
-      folder="/data/user/0/com.tom.rv2ide/files/home/.gradle/caches/transforms-3/040bdd8e4e138373016778abba3530a3/transformed/gifdecoder-4.16.0"
-      manifest="AndroidManifest.xml"
-      resFolder="res"
-      assetsFolder="assets"
-      lintJar="lint.jar"
-      publicResources="public.txt"
-      symbolFile="R.txt"
-      externalAnnotations="annotations.zip"
-      proguardRules="proguard.txt"/>
-  <library
       name="androidx.versionedparcelable:versionedparcelable:1.1.1@aar"
       jars="/data/user/0/com.tom.rv2ide/files/home/.gradle/caches/transforms-3/4431dc15771925f9c73f462bf37582cd/transformed/versionedparcelable-1.1.1/jars/classes.jar"
       resolved="androidx.versionedparcelable:versionedparcelable:1.1.1"
@@ -652,9 +639,9 @@
       externalAnnotations="annotations.zip"
       proguardRules="proguard.txt"/>
   <library
-      name="androidx.annotation:annotation-jvm:1.6.0@jar"
-      jars="/data/user/0/com.tom.rv2ide/files/home/.gradle/caches/modules-2/files-2.1/androidx.annotation/annotation-jvm/1.6.0/a7257339a052df0f91433cf9651231bbb802b502/annotation-jvm-1.6.0.jar"
-      resolved="androidx.annotation:annotation-jvm:1.6.0"/>
+      name="androidx.annotation:annotation-jvm:1.7.1@jar"
+      jars="/data/user/0/com.tom.rv2ide/files/home/.gradle/caches/modules-2/files-2.1/androidx.annotation/annotation-jvm/1.7.1/920472d40adcdef5e18708976b3e314f9a636fcd/annotation-jvm-1.7.1.jar"
+      resolved="androidx.annotation:annotation-jvm:1.7.1"/>
   <library
       name="org.jetbrains.kotlin:kotlin-stdlib-jdk7:1.8.22@jar"
       jars="/data/user/0/com.tom.rv2ide/files/home/.gradle/caches/modules-2/files-2.1/org.jetbrains.kotlin/kotlin-stdlib-jdk7/1.8.22/4dabb8248310d833bb6a8b516024a91fd3d275c/kotlin-stdlib-jdk7-1.8.22.jar"
@@ -750,13 +737,35 @@
       externalAnnotations="annotations.zip"
       proguardRules="proguard.txt"/>
   <library
-      name="com.github.bumptech.glide:disklrucache:4.16.0@jar"
-      jars="/data/user/0/com.tom.rv2ide/files/home/.gradle/caches/modules-2/files-2.1/com.github.bumptech.glide/disklrucache/4.16.0/411aa175d50d10b37c7a1a04d21a4e7145249557/disklrucache-4.16.0.jar"
-      resolved="com.github.bumptech.glide:disklrucache:4.16.0"/>
+      name="com.github.bumptech.glide:gifdecoder:5.0.5@aar"
+      jars="/data/user/0/com.tom.rv2ide/files/home/.gradle/caches/transforms-3/8867cff899cf7b0fc66167063043aa76/transformed/gifdecoder-5.0.5/jars/classes.jar"
+      resolved="com.github.bumptech.glide:gifdecoder:5.0.5"
+      folder="/data/user/0/com.tom.rv2ide/files/home/.gradle/caches/transforms-3/8867cff899cf7b0fc66167063043aa76/transformed/gifdecoder-5.0.5"
+      manifest="AndroidManifest.xml"
+      resFolder="res"
+      assetsFolder="assets"
+      lintJar="lint.jar"
+      publicResources="public.txt"
+      symbolFile="R.txt"
+      externalAnnotations="annotations.zip"
+      proguardRules="proguard.txt"/>
   <library
-      name="com.github.bumptech.glide:annotations:4.16.0@jar"
-      jars="/data/user/0/com.tom.rv2ide/files/home/.gradle/caches/modules-2/files-2.1/com.github.bumptech.glide/annotations/4.16.0/90730f6498299d207aa0878124ab7585969808f0/annotations-4.16.0.jar"
-      resolved="com.github.bumptech.glide:annotations:4.16.0"/>
+      name="com.github.bumptech.glide:disklrucache:5.0.5@aar"
+      jars="/data/user/0/com.tom.rv2ide/files/home/.gradle/caches/transforms-3/63849329de02cbe124e19325d20c510e/transformed/disklrucache-5.0.5/jars/classes.jar"
+      resolved="com.github.bumptech.glide:disklrucache:5.0.5"
+      folder="/data/user/0/com.tom.rv2ide/files/home/.gradle/caches/transforms-3/63849329de02cbe124e19325d20c510e/transformed/disklrucache-5.0.5"
+      manifest="AndroidManifest.xml"
+      resFolder="res"
+      assetsFolder="assets"
+      lintJar="lint.jar"
+      publicResources="public.txt"
+      symbolFile="R.txt"
+      externalAnnotations="annotations.zip"
+      proguardRules="proguard.txt"/>
+  <library
+      name="com.github.bumptech.glide:annotations:5.0.5@jar"
+      jars="/data/user/0/com.tom.rv2ide/files/home/.gradle/caches/modules-2/files-2.1/com.github.bumptech.glide/annotations/5.0.5/e7cee784c4d54bb6863ed9787185cbc7e974ff6a/annotations-5.0.5.jar"
+      resolved="com.github.bumptech.glide:annotations:5.0.5"/>
   <library
       name="androidx.exifinterface:exifinterface:1.3.6@aar"
       jars="/data/user/0/com.tom.rv2ide/files/home/.gradle/caches/transforms-3/4a68241d5114f85e63d5ae7e37edd6b9/transformed/exifinterface-1.3.6/jars/classes.jar"

@@ -89,7 +89,6 @@ class SettingsFragment : Fragment() {
                     AppCompatDelegate.setDefaultNightMode(mode)
                     dialog.dismiss()
                     
-                    // Restart the entire app to apply theme
                     restartApp()
                 }
                 .show()
@@ -123,7 +122,6 @@ class SettingsFragment : Fragment() {
                     binding.languageValue.text = options[which]
                     dialog.dismiss()
                     
-                    // Restart the entire app to apply language
                     restartApp()
                 }
                 .show()

@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <color name="bottom_nav_background">#EAEEF6</color>
     <color name="color_denied">#C62828</color>
     <color name="color_denied_container">#FFEBEE</color>
     <color name="color_granted">#2E7D32</color>
@@ -169,5 +170,26 @@
         
         <item name="colorOutline">@color/md_theme_outline</item>
         <item name="colorOutlineVariant">@color/md_theme_outlineVariant</item>
+
+        
+        <item name="materialAlertDialogTheme">@style/Theme.BugeAppManager.MaterialAlertDialog</item>
+    </style>
+    <style name="Theme.BugeAppManager.MaterialAlertDialog" parent="@style/ThemeOverlay.Material3.MaterialAlertDialog">
+        <item name="buttonBarPositiveButtonStyle">@style/Widget.BugeAppManager.MaterialAlertDialog.PositiveButton</item>
+        <item name="buttonBarNegativeButtonStyle">@style/Widget.BugeAppManager.MaterialAlertDialog.NegativeButton</item>
+        <item name="buttonBarNeutralButtonStyle">@style/Widget.BugeAppManager.MaterialAlertDialog.NeutralButton</item>
+    </style>
+    <style name="Widget.BugeAppManager.MaterialAlertDialog.NegativeButton" parent="Widget.Material3.Button.TextButton">
+        <item name="android:textColor">@color/md_theme_onSurfaceVariant</item>
+        <item name="android:textSize">14sp</item>
+    </style>
+    <style name="Widget.BugeAppManager.MaterialAlertDialog.NeutralButton" parent="Widget.Material3.Button.TextButton">
+        <item name="android:textColor">@color/md_theme_onSurfaceVariant</item>
+        <item name="android:textSize">14sp</item>
+    </style>
+    <style name="Widget.BugeAppManager.MaterialAlertDialog.PositiveButton" parent="Widget.Material3.Button.TextButton">
+        <item name="android:textColor">@color/md_theme_primary</item>
+        <item name="android:textSize">14sp</item>
+        <item name="android:fontFamily">sans-serif-medium</item>
     </style>
 </resources>

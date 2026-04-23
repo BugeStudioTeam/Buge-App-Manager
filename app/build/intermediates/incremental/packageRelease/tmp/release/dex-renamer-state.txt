@@ -1,4 +1,4 @@
-#Sun Apr 12 07:25:56 GMT 2026
+#Thu Apr 23 13:46:04 GMT 2026
 base.1=/storage/emulated/0/AndroidIDEProjects/BugeAppManager/app/build/intermediates/dex/release/mergeDexRelease/classes2.dex
 path.1=classes2.dex
 base.0=/storage/emulated/0/AndroidIDEProjects/BugeAppManager/app/build/intermediates/dex/release/mergeDexRelease/classes.dex

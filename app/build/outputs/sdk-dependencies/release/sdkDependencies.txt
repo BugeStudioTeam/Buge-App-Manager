@@ -17,7 +17,7 @@ library {
   maven_library {
     groupId: "androidx.annotation"
     artifactId: "annotation"
-    version: "1.6.0"
+    version: "1.7.1"
   }
   repo_index {
   }
@@ -26,10 +26,10 @@ library {
   maven_library {
     groupId: "androidx.annotation"
     artifactId: "annotation-jvm"
-    version: "1.6.0"
+    version: "1.7.1"
   }
   digests {
-    sha256: "`\261\v^\365v\233yW\001r\340\025\270\025\224\005\311/\003K\250\213\223\221\251wX\234\235\353N"
+    sha256: "\343k\216K\203\223\244\255\307N=J\262*\325\243c\226\360\316\242\344\vW4\352\341I7\337\322$"
   }
   repo_index {
   }
@@ -966,10 +966,10 @@ library {
   maven_library {
     groupId: "com.github.bumptech.glide"
     artifactId: "glide"
-    version: "4.16.0"
+    version: "5.0.5"
   }
   digests {
-    sha256: "\211\201\034c\335&jHQ\375\033y\306\374\f\230)\226\354\3445\365\377H?\2700\312l\265<\324"
+    sha256: "s\355\212\366v\b}F@\017{k\236\224\016C<?*\237\3318{6\027&\244\333-m\'|"
   }
   repo_index {
     value: 1
@@ -979,10 +979,10 @@ library {
   maven_library {
     groupId: "com.github.bumptech.glide"
     artifactId: "gifdecoder"
-    version: "4.16.0"
+    version: "5.0.5"
   }
   digests {
-    sha256: "\225_\207*\364\322\243!\376\242\243F\374G\"%\242\271\225$\254\304g\201I\027\022\343\233j!O"
+    sha256: "\337\236F \350{h\267\031\357\212\363\321\0002J\024K\374\210\3645\030\257\232\0016t\020\237\340x"
   }
   repo_index {
     value: 1
@@ -992,10 +992,10 @@ library {
   maven_library {
     groupId: "com.github.bumptech.glide"
     artifactId: "disklrucache"
-    version: "4.16.0"
+    version: "5.0.5"
   }
   digests {
-    sha256: "\242\'\366U\234\020J\245\245\310\213\np\351\307\343\333hY\343\vGt\363\202\221!\337\236bst"
+    sha256: "P\237\224\313\350^:\243\223\300\031\260&\254\220N.\354\343U\245\'\225\343U\330.>wK$\031"
   }
   repo_index {
     value: 1
@@ -1005,10 +1005,10 @@ library {
   maven_library {
     groupId: "com.github.bumptech.glide"
     artifactId: "annotations"
-    version: "4.16.0"
+    version: "5.0.5"
   }
   digests {
-    sha256: "\305\2369\261\263\033MU\222\'|\331\000\022\024\235t\vV\235C8\365dC\312\310,?\275\243\321"
+    sha256: "\373>Yj`\301\202\363%\021p\275\036-\3762\312\035\037\ryv4\b\321\277\026\214\201\326\032\341"
   }
   repo_index {
     value: 1

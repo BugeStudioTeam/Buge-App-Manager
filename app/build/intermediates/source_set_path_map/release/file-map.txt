@@ -17,8 +17,8 @@ com.buge.appmanager.app-lifecycle-process-2.7.0-15 /data/user/0/com.tom.rv2ide/f
 com.buge.appmanager.app-lifecycle-livedata-core-ktx-2.7.0-16 /data/user/0/com.tom.rv2ide/files/home/.gradle/caches/transforms-3/73cefbbddc55fb382820d0a6aaeda3ea/transformed/lifecycle-livedata-core-ktx-2.7.0/res
 com.buge.appmanager.app-savedstate-1.2.1-17 /data/user/0/com.tom.rv2ide/files/home/.gradle/caches/transforms-3/7591184b4e14fbc0b911fe042afac8fc/transformed/savedstate-1.2.1/res
 com.buge.appmanager.app-cardview-1.0.0-18 /data/user/0/com.tom.rv2ide/files/home/.gradle/caches/transforms-3/7699407632c8565d1473dd4abc2f238b/transformed/cardview-1.0.0/res
-com.buge.appmanager.app-lifecycle-livedata-2.7.0-19 /data/user/0/com.tom.rv2ide/files/home/.gradle/caches/transforms-3/80ad4911834ffd0fcbe625bac5b97fa9/transformed/lifecycle-livedata-2.7.0/res
-com.buge.appmanager.app-glide-4.16.0-20 /data/user/0/com.tom.rv2ide/files/home/.gradle/caches/transforms-3/85781de96fd6cbb256e57b4f31982945/transformed/glide-4.16.0/res
+com.buge.appmanager.app-glide-5.0.5-19 /data/user/0/com.tom.rv2ide/files/home/.gradle/caches/transforms-3/7f21a972d6de7670e7014d5b7d954ea1/transformed/glide-5.0.5/res
+com.buge.appmanager.app-lifecycle-livedata-2.7.0-20 /data/user/0/com.tom.rv2ide/files/home/.gradle/caches/transforms-3/80ad4911834ffd0fcbe625bac5b97fa9/transformed/lifecycle-livedata-2.7.0/res
 com.buge.appmanager.app-lifecycle-livedata-core-2.7.0-21 /data/user/0/com.tom.rv2ide/files/home/.gradle/caches/transforms-3/87e3063b4d5fa080a3d860cfb5fce3be/transformed/lifecycle-livedata-core-2.7.0/res
 com.buge.appmanager.app-customview-poolingcontainer-1.0.0-22 /data/user/0/com.tom.rv2ide/files/home/.gradle/caches/transforms-3/95a60d7fd29a45ee5b16a596ab57b607/transformed/customview-poolingcontainer-1.0.0/res
 com.buge.appmanager.app-recyclerview-1.3.2-23 /data/user/0/com.tom.rv2ide/files/home/.gradle/caches/transforms-3/9a450142c94966ce51ef0d69e18ba8b3/transformed/recyclerview-1.3.2/res

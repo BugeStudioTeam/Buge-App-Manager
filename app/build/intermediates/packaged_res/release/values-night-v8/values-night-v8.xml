@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <color name="bottom_nav_background">#2D2F33</color>
     <color name="color_denied">#EF9A9A</color>
     <color name="color_denied_container">#7F0000</color>
     <color name="color_granted">#A5D6A7</color>

@@ -2,9 +2,12 @@
 <resources>
     <string name="app_name">Buge App-Manager</string>
     <string name="developer_name">Buge-Team</string>
+
     <string name="nav_apps">Apps</string>
+    <string name="nav_activities">Aktivitäten</string>
     <string name="nav_permissions">Berechtigungen</string>
     <string name="nav_settings">Einstellungen</string>
+
     <string name="title_app_list">Installierte Apps</string>
     <string name="search_hint">Apps durchsuchen…</string>
     <string name="filter_all">Alle Apps</string>
@@ -17,6 +20,7 @@
     <string name="loading_apps">Apps werden geladen…</string>
     <string name="refresh">Aktualisieren</string>
     <string name="no_apps_found">Keine Apps gefunden</string>
+
     <string name="title_app_detail">App-Details</string>
     <string name="package_name">Paketname</string>
     <string name="version">Version</string>
@@ -42,22 +46,30 @@
     <string name="enable_app">App aktivieren</string>
     <string name="freeze_app">App einfrieren</string>
     <string name="unfreeze_app">App auftauen</string>
+
     <string name="title_permissions">Berechtigungsmanager</string>
     <string name="perm_microphone">Mikrofon</string>
     <string name="perm_camera">Kamera</string>
     <string name="perm_location">Standort</string>
     <string name="perm_contacts">Kontakte</string>
     <string name="perm_storage">Speicher</string>
+    <string name="perm_manage_storage">Alle Dateien zugreifen</string>
+    <string name="perm_notification_access">Benachrichtigungszugriff</string>
     <string name="perm_phone">Telefon</string>
     <string name="perm_sms">SMS</string>
     <string name="perm_calendar">Kalender</string>
     <string name="perm_body_sensors">Körpersensoren</string>
     <string name="perm_notifications">Benachrichtigungen</string>
+    <string name="perm_overlay">Über anderen Apps anzeigen</string>
+    <string name="perm_install_unknown">Unbekannte Apps installieren</string>
     <string name="batch_revoke">Berechtigung widerrufen</string>
     <string name="batch_grant">Berechtigung gewähren</string>
     <string name="confirm_revoke">Berechtigung von %d App(s) widerrufen?</string>
     <string name="confirm_grant">Berechtigung für %d App(s) gewähren?</string>
     <string name="selected_count">%d ausgewählt</string>
+    <string name="open_system_settings">Systemeinstellungen öffnen</string>
+    <string name="notification_access_hint">Benachrichtigungszugriff muss in den Systemeinstellungen verwaltet werden</string>
+
     <string name="title_settings">Einstellungen</string>
     <string name="pref_theme">Design</string>
     <string name="pref_theme_light">Hell</string>
@@ -67,11 +79,22 @@
     <string name="pref_language_auto">Systemstandard</string>
     <string name="pref_language_en">English</string>
     <string name="pref_language_zh">中文（简体）</string>
+    <string name="pref_language_ja">日本語</string>
+    <string name="pref_language_ko">한국어</string>
+    <string name="pref_language_fr">Français</string>
+    <string name="pref_language_de">Deutsch</string>
+    <string name="pref_language_ru">Русский</string>
     <string name="pref_show_system_apps">System-Apps anzeigen</string>
     <string name="pref_about">Über</string>
-    <string name="about_desc">Buge App-Manager ist ein leistungsstarkes App-Verwaltungstool mit Shizuku-Unterstützung.</string>
+    <string name="about">Über</string>
+    <string name="about_desc">Buge App-Manager ist ein leistungsstarkes App-Verwaltungstool mit Shizuku-Unterstützung für erweiterte Berechtigungs- und App-Kontrolle.</string>
+    <string name="github">GitHub</string>
+    <string name="github_desc">Besuchen Sie unser GitHub-Repository</string>
+    <string name="open">Öffnen</string>
+    <string name="close">Schließen</string>
+
     <string name="shizuku_title">Shizuku-Genehmigung</string>
-    <string name="shizuku_desc">Shizuku ist erforderlich, um App-Berechtigungen zu verwalten und erweiterte Operationen durchzuführen.</string>
+    <string name="shizuku_desc">Shizuku ist erforderlich, um App-Berechtigungen zu verwalten und erweiterte Operationen durchzuführen. Bitte autorisieren Sie diese App in Shizuku.</string>
     <string name="shizuku_status_ok">Genehmigt und läuft</string>
     <string name="shizuku_status_no_auth">Läuft, aber nicht genehmigt</string>
     <string name="shizuku_status_not_running">Läuft nicht</string>
@@ -79,6 +102,7 @@
     <string name="shizuku_not_authorized">Nicht genehmigt</string>
     <string name="shizuku_not_running">Läuft nicht</string>
     <string name="shizuku_request_auth">Genehmigung anfordern</string>
+
     <string name="confirm">Bestätigen</string>
     <string name="cancel">Abbrechen</string>
     <string name="operation_success">Operation erfolgreich</string>
@@ -87,4 +111,11 @@
     <string name="language_changed_restart">Sprache geändert. Starten Sie die App neu, um die Änderungen zu übernehmen.</string>
     <string name="restart">Neu starten</string>
     <string name="setting_saved">Einstellung gespeichert</string>
+
+    <string name="title_activities">Aktivitätsmanager</string>
+    <string name="title_activity_detail">Aktivitätsdetails</string>
+    <string name="search_activity_hint">Aktivitäten suchen…</string>
+    <string name="launch">Starten</string>
+    <string name="back_to_apps">Zurück zu Apps</string>
+    <string name="no_activities_found">Keine Aktivitäten gefunden</string>
 </resources>

@@ -208,9 +208,9 @@ class SettingsFragment : Fragment() {
 
     private fun restartApp() {
         val intent = Intent(requireContext(), MainActivity::class.java)
-        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_NEW_TASK)
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK)
         startActivity(intent)
-        requireActivity().finish()
+        requireActivity().finishAffinity()
     }
 
     override fun onDestroyView() {

@@ -3,12 +3,11 @@
     <string name="app_name">Buge应用管理器</string>
     <string name="developer_name">Buge团队</string>
 
-    <!-- Navigation -->
     <string name="nav_apps">应用</string>
+    <string name="nav_activities">活动</string>
     <string name="nav_permissions">权限</string>
     <string name="nav_settings">设置</string>
 
-    <!-- Main Screen -->
     <string name="title_app_list">已安装应用</string>
     <string name="search_hint">搜索应用…</string>
     <string name="filter_all">所有应用</string>
@@ -22,7 +21,6 @@
     <string name="refresh">刷新</string>
     <string name="no_apps_found">未找到应用</string>
 
-    <!-- App Detail Screen -->
     <string name="title_app_detail">应用详情</string>
     <string name="package_name">包名</string>
     <string name="version">版本</string>
@@ -49,25 +47,29 @@
     <string name="freeze_app">冻结应用</string>
     <string name="unfreeze_app">解冻应用</string>
 
-    <!-- Permissions Screen -->
     <string name="title_permissions">权限管理器</string>
     <string name="perm_microphone">麦克风</string>
     <string name="perm_camera">摄像头</string>
     <string name="perm_location">位置</string>
     <string name="perm_contacts">联系人</string>
     <string name="perm_storage">存储</string>
+    <string name="perm_manage_storage">所有文件访问</string>
+    <string name="perm_notification_access">通知访问权限</string>
     <string name="perm_phone">电话</string>
     <string name="perm_sms">短信</string>
     <string name="perm_calendar">日历</string>
     <string name="perm_body_sensors">身体传感器</string>
     <string name="perm_notifications">通知</string>
+    <string name="perm_overlay">悬浮窗</string>
+    <string name="perm_install_unknown">安装未知应用</string>
     <string name="batch_revoke">撤销权限</string>
     <string name="batch_grant">授予权限</string>
     <string name="confirm_revoke">从 %d 个应用撤销权限？</string>
     <string name="confirm_grant">向 %d 个应用授予权限？</string>
     <string name="selected_count">已选择 %d 个</string>
+    <string name="open_system_settings">打开系统设置</string>
+    <string name="notification_access_hint">通知访问权限需要在系统设置中管理</string>
 
-    <!-- Settings Screen -->
     <string name="title_settings">设置</string>
     <string name="pref_theme">主题</string>
     <string name="pref_theme_light">浅色</string>
@@ -77,11 +79,20 @@
     <string name="pref_language_auto">系统默认</string>
     <string name="pref_language_en">English</string>
     <string name="pref_language_zh">中文（简体）</string>
+    <string name="pref_language_ja">日本語</string>
+    <string name="pref_language_ko">한국어</string>
+    <string name="pref_language_fr">Français</string>
+    <string name="pref_language_de">Deutsch</string>
+    <string name="pref_language_ru">Русский</string>
     <string name="pref_show_system_apps">显示系统应用</string>
     <string name="pref_about">关于</string>
+    <string name="about">关于</string>
     <string name="about_desc">Buge应用管理器是一个功能强大的应用管理工具，支持Shizuku以进行高级权限和应用控制。</string>
+    <string name="github">GitHub</string>
+    <string name="github_desc">访问我们的GitHub仓库</string>
+    <string name="open">打开</string>
+    <string name="close">关闭</string>
 
-    <!-- Shizuku -->
     <string name="shizuku_title">Shizuku授权</string>
     <string name="shizuku_desc">需要Shizuku来管理应用权限并执行高级操作。请在Shizuku中授权此应用。</string>
     <string name="shizuku_status_ok">已授权且正在运行</string>
@@ -92,7 +103,6 @@
     <string name="shizuku_not_running">未运行</string>
     <string name="shizuku_request_auth">请求授权</string>
 
-    <!-- Common -->
     <string name="confirm">确认</string>
     <string name="cancel">取消</string>
     <string name="operation_success">操作成功</string>
@@ -101,4 +111,11 @@
     <string name="language_changed_restart">语言已更改。重启应用以应用更改。</string>
     <string name="restart">重启</string>
     <string name="setting_saved">设置已保存</string>
+
+    <string name="title_activities">活动管理器</string>
+    <string name="title_activity_detail">活动详情</string>
+    <string name="search_activity_hint">搜索活动…</string>
+    <string name="launch">启动</string>
+    <string name="back_to_apps">返回应用列表</string>
+    <string name="no_activities_found">未找到活动</string>
 </resources>

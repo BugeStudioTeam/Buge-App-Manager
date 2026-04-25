@@ -13,6 +13,7 @@ import com.buge.appmanager.model.AppFilter
 import com.buge.appmanager.model.AppInfo
 import com.buge.appmanager.model.AppSortOrder
 import com.buge.appmanager.model.PermissionInfo
+import com.buge.appmanager.shizuku.ShizukuManager
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 
@@ -22,7 +23,6 @@ class AppRepository(private val context: Context) {
     companion object {
         private const val TAG = "AppRepository"
 
-        // Permission categories
         val PERMISSION_MICROPHONE = listOf(
             "android.permission.RECORD_AUDIO"
         )
@@ -97,37 +97,32 @@ class AppRepository(private val context: Context) {
         val PERMISSION_INSTALL_UNKNOWN_APPS = listOf(
             "android.permission.REQUEST_INSTALL_PACKAGES"
         )
+        val PERMISSION_MANAGE_STORAGE = listOf(
+            "android.permission.MANAGE_EXTERNAL_STORAGE"
+        )
         val ALL_DANGEROUS_PERMISSIONS = (
             PERMISSION_MICROPHONE + PERMISSION_CAMERA + PERMISSION_LOCATION +
             PERMISSION_BACKGROUND_LOCATION + PERMISSION_CONTACTS + PERMISSION_STORAGE +
             PERMISSION_PHONE + PERMISSION_SMS + PERMISSION_CALENDAR + PERMISSION_SENSORS +
             PERMISSION_ACTIVITY + PERMISSION_NEARBY + PERMISSION_NOTIFICATIONS +
             PERMISSION_MEDIA_IMAGES + PERMISSION_MEDIA_VIDEO + PERMISSION_MEDIA_AUDIO +
-            PERMISSION_OVERLAY + PERMISSION_INSTALL_UNKNOWN_APPS
+            PERMISSION_OVERLAY + PERMISSION_INSTALL_UNKNOWN_APPS + PERMISSION_MANAGE_STORAGE
         ).toSet()
 
-        // 这两个权限是 appop / special 权限，Android 的
-        // PackageInfo.REQUESTED_PERMISSION_GRANTED flag 无法反映其真实状态，
-        // 必须使用专用 API 单独判断。
         val SPECIAL_PERMISSIONS = setOf(
             "android.permission.SYSTEM_ALERT_WINDOW",
             "android.permission.REQUEST_INSTALL_PACKAGES"
         )
+
+        val APPOP_ONLY_PERMISSIONS = setOf(
+            "android.permission.MANAGE_EXTERNAL_STORAGE"
+        )
     }
 
-    /**
-     * 判断特殊权限（appop 权限）的真实授权状态。
-     * - SYSTEM_ALERT_WINDOW  → AppOpsManager.checkOpNoThrow(OPSTR_SYSTEM_ALERT_WINDOW)
-     * - REQUEST_INSTALL_PACKAGES → AppOpsManager.checkOpNoThrow()
-     * 返回 null 表示该权限不是特殊权限，调用方应走普通逻辑。
-     */
     private fun getSpecialPermissionStatus(packageName: String, permission: String): Boolean? {
         return try {
             when (permission) {
                 "android.permission.SYSTEM_ALERT_WINDOW" -> {
-                    // Settings.canDrawOverlays(context) 只能查当前应用自身，
-                    // 无论传入哪个 Context，底层都读的是调用者 UID，无法查询其他应用。
-                    // 必须通过 AppOpsManager 用目标应用的 UID 来查询。
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
                         val appOps = context.getSystemService(AppOpsManager::class.java)
                         val uid = pm.getApplicationInfo(packageName, 0).uid
@@ -138,7 +133,6 @@ class AppRepository(private val context: Context) {
                         )
                         mode == AppOpsManager.MODE_ALLOWED
                     } else {
-                        // Android 6 以下无此运行时权限管控，声明即拥有
                         true
                     }
                 }
@@ -146,8 +140,6 @@ class AppRepository(private val context: Context) {
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
                         val appOps = context.getSystemService(AppOpsManager::class.java)
                         val uid = pm.getApplicationInfo(packageName, 0).uid
-                        // OPSTR_REQUEST_INSTALL_PACKAGES 在部分 SDK 版本中未暴露为常量，
-                        // 直接使用字符串字面量，与系统行为完全等价
                         val mode = appOps.checkOpNoThrow(
                             "android:request_install_packages",
                             uid,
@@ -155,11 +147,10 @@ class AppRepository(private val context: Context) {
                         )
                         mode == AppOpsManager.MODE_ALLOWED
                     } else {
-                        // Android 8 以下无安装来源管控，声明了就允许
                         true
                     }
                 }
-                else -> null // 不是特殊权限
+                else -> null
             }
         } catch (e: Exception) {
             Log.w(TAG, "getSpecialPermissionStatus error for $packageName / $permission: ${e.message}")
@@ -167,9 +158,15 @@ class AppRepository(private val context: Context) {
         }
     }
 
-    /**
-     * Get all installed apps with optional filtering and sorting
-     */
+    private suspend fun getManageExternalStorageStatus(packageName: String): Boolean? {
+        return try {
+            ShizukuManager.getManageExternalStorageStatus(packageName)
+        } catch (e: Exception) {
+            Log.w(TAG, "Error getting MANAGE_EXTERNAL_STORAGE status: ${e.message}")
+            null
+        }
+    }
+
     suspend fun getInstalledApps(
         filter: AppFilter = AppFilter.ALL,
         sortOrder: AppSortOrder = AppSortOrder.NAME,
@@ -215,20 +212,17 @@ class AppRepository(private val context: Context) {
                     null
                 }
             }
-            // Apply filter
             apps = when (filter) {
                 AppFilter.ALL -> if (showSystemApps) apps else apps.filter { !it.isSystemApp }
                 AppFilter.USER -> apps.filter { !it.isSystemApp }
                 AppFilter.SYSTEM -> apps.filter { it.isSystemApp }
             }
-            // Apply search
             if (searchQuery.isNotEmpty()) {
                 apps = apps.filter {
                     it.appName.contains(searchQuery, ignoreCase = true) ||
                     it.packageName.contains(searchQuery, ignoreCase = true)
                 }
             }
-            // Apply sort
             apps = when (sortOrder) {
                 AppSortOrder.NAME -> apps.sortedBy { it.appName.lowercase() }
                 AppSortOrder.SIZE -> apps.sortedByDescending { it.versionCode }
@@ -241,9 +235,6 @@ class AppRepository(private val context: Context) {
         }
     }
 
-    /**
-     * Get detailed permissions for a specific app
-     */
     suspend fun getAppPermissions(packageName: String): List<PermissionInfo> = withContext(Dispatchers.IO) {
         try {
             val pkgInfo = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
@@ -258,10 +249,22 @@ class AppRepository(private val context: Context) {
             val requestedPermissions = pkgInfo.requestedPermissions ?: return@withContext emptyList()
             val permissionFlags = pkgInfo.requestedPermissionsFlags ?: return@withContext emptyList()
 
-            requestedPermissions.mapIndexed { index, permName ->
-                // 特殊权限用专用 API 读状态；普通权限走 flag 判断
-                val isGranted = getSpecialPermissionStatus(packageName, permName)
-                    ?: ((permissionFlags[index] and PackageInfo.REQUESTED_PERMISSION_GRANTED) != 0)
+            val permissions = mutableListOf<PermissionInfo>()
+
+            for (index in requestedPermissions.indices) {
+                val permName = requestedPermissions[index]
+
+                val isGranted = when {
+                    permName == "android.permission.MANAGE_EXTERNAL_STORAGE" -> {
+                        getManageExternalStorageStatus(packageName) ?: false
+                    }
+                    permName in SPECIAL_PERMISSIONS -> {
+                        getSpecialPermissionStatus(packageName, permName) ?: false
+                    }
+                    else -> {
+                        (permissionFlags[index] and PackageInfo.REQUESTED_PERMISSION_GRANTED) != 0
+                    }
+                }
 
                 val isDangerous = try {
                     val permInfo = @Suppress("DEPRECATION") pm.getPermissionInfo(permName, 0)
@@ -274,25 +277,26 @@ class AppRepository(private val context: Context) {
                     false
                 }
 
-                // 特殊权限虽然 protection 不是 DANGEROUS，但仍需要可操作的开关
                 val isSpecial = permName in SPECIAL_PERMISSIONS
+                val isAppOpOnly = permName in APPOP_ONLY_PERMISSIONS
 
-                PermissionInfo(
-                    name = permName,
-                    isGranted = isGranted,
-                    isRuntime = isDangerous || isSpecial,
-                    isDangerous = isDangerous || isSpecial  // 让 Adapter 显示操作按钮
+                permissions.add(
+                    PermissionInfo(
+                        name = permName,
+                        isGranted = isGranted,
+                        isRuntime = isDangerous || isSpecial || isAppOpOnly,
+                        isDangerous = isDangerous || isSpecial || isAppOpOnly
+                    )
                 )
-            }.sortedWith(compareByDescending<PermissionInfo> { it.isDangerous }.thenBy { it.name })
+            }
+
+            permissions.sortedWith(compareByDescending<PermissionInfo> { it.isDangerous }.thenBy { it.name })
         } catch (e: Exception) {
             Log.e(TAG, "Error getting permissions for $packageName: ${e.message}")
             emptyList()
         }
     }
 
-    /**
-     * Get apps that have requested a specific permission
-     */
     suspend fun getAppsWithPermission(permission: String): List<Pair<AppInfo, Boolean>> =
         withContext(Dispatchers.IO) {
             try {
@@ -300,26 +304,33 @@ class AppRepository(private val context: Context) {
                 val result = mutableListOf<Pair<AppInfo, Boolean>>()
                 for (app in allApps) {
                     try {
-                        val pkgInfo = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-                            pm.getPackageInfo(
-                                app.packageName,
-                                PackageManager.PackageInfoFlags.of(PackageManager.GET_PERMISSIONS.toLong())
-                            )
-                        } else {
-                            @Suppress("DEPRECATION")
-                            pm.getPackageInfo(app.packageName, PackageManager.GET_PERMISSIONS)
+                        val isGranted = when (permission) {
+                            "android.permission.MANAGE_EXTERNAL_STORAGE" -> {
+                                getManageExternalStorageStatus(app.packageName) ?: false
+                            }
+                            else -> {
+                                val pkgInfo = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+                                    pm.getPackageInfo(
+                                        app.packageName,
+                                        PackageManager.PackageInfoFlags.of(PackageManager.GET_PERMISSIONS.toLong())
+                                    )
+                                } else {
+                                    @Suppress("DEPRECATION")
+                                    pm.getPackageInfo(app.packageName, PackageManager.GET_PERMISSIONS)
+                                }
+                                val permissions = pkgInfo.requestedPermissions ?: continue
+                                val permFlags = pkgInfo.requestedPermissionsFlags ?: continue
+                                val permIndex = permissions.indexOf(permission)
+                                if (permIndex >= 0) {
+                                    getSpecialPermissionStatus(app.packageName, permission)
+                                        ?: ((permFlags[permIndex] and PackageInfo.REQUESTED_PERMISSION_GRANTED) != 0)
+                                } else {
+                                    continue
+                                }
+                            }
                         }
-                        val permissions = pkgInfo.requestedPermissions ?: continue
-                        val permFlags = pkgInfo.requestedPermissionsFlags ?: continue
-                        val permIndex = permissions.indexOf(permission)
-                        if (permIndex >= 0) {
-                            // 特殊权限用专用 API 查真实状态
-                            val isGranted = getSpecialPermissionStatus(app.packageName, permission)
-                                ?: ((permFlags[permIndex] and PackageInfo.REQUESTED_PERMISSION_GRANTED) != 0)
-                            result.add(Pair(app, isGranted))
-                        }
+                        result.add(Pair(app, isGranted))
                     } catch (e: Exception) {
-                        // Skip apps with errors
                     }
                 }
                 result.sortedBy { it.first.appName.lowercase() }
@@ -329,10 +340,6 @@ class AppRepository(private val context: Context) {
             }
         }
 
-    /**
-     * Get apps with any permission from a category
-     * @param showSystemApps 是否包含系统应用，与设置页面的开关保持联动
-     */
     suspend fun getAppsWithPermissionCategory(
         permissions: List<String>,
         showSystemApps: Boolean = false
@@ -357,9 +364,15 @@ class AppRepository(private val context: Context) {
                     for (targetPerm in permissions) {
                         val idx = requestedPerms.indexOf(targetPerm)
                         if (idx >= 0) {
-                            // 特殊权限用专用 API 查真实状态
-                            val isGranted = getSpecialPermissionStatus(app.packageName, targetPerm)
-                                ?: ((permFlags[idx] and PackageInfo.REQUESTED_PERMISSION_GRANTED) != 0)
+                            val isGranted = when (targetPerm) {
+                                "android.permission.MANAGE_EXTERNAL_STORAGE" -> {
+                                    getManageExternalStorageStatus(app.packageName) ?: false
+                                }
+                                else -> {
+                                    getSpecialPermissionStatus(app.packageName, targetPerm)
+                                        ?: ((permFlags[idx] and PackageInfo.REQUESTED_PERMISSION_GRANTED) != 0)
+                                }
+                            }
                             appPermMap[targetPerm] = isGranted
                         }
                     }
@@ -367,7 +380,6 @@ class AppRepository(private val context: Context) {
                         result.add(Pair(app, appPermMap))
                     }
                 } catch (e: Exception) {
-                    // Skip
                 }
             }
             result.sortedBy { it.first.appName.lowercase() }

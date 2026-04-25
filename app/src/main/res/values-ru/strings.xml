@@ -2,9 +2,12 @@
 <resources>
     <string name="app_name">Диспетчер приложений Buge</string>
     <string name="developer_name">Команда Buge</string>
+
     <string name="nav_apps">Приложения</string>
+    <string name="nav_activities">Активности</string>
     <string name="nav_permissions">Разрешения</string>
     <string name="nav_settings">Параметры</string>
+
     <string name="title_app_list">Установленные приложения</string>
     <string name="search_hint">Поиск приложений…</string>
     <string name="filter_all">Все приложения</string>
@@ -17,6 +20,7 @@
     <string name="loading_apps">Загрузка приложений…</string>
     <string name="refresh">Обновить</string>
     <string name="no_apps_found">Приложения не найдены</string>
+
     <string name="title_app_detail">Сведения о приложении</string>
     <string name="package_name">Имя пакета</string>
     <string name="version">Версия</string>
@@ -42,22 +46,30 @@
     <string name="enable_app">Включить приложение</string>
     <string name="freeze_app">Заморозить приложение</string>
     <string name="unfreeze_app">Разморозить приложение</string>
+
     <string name="title_permissions">Диспетчер разрешений</string>
     <string name="perm_microphone">Микрофон</string>
     <string name="perm_camera">Камера</string>
     <string name="perm_location">Местоположение</string>
     <string name="perm_contacts">Контакты</string>
     <string name="perm_storage">Хранилище</string>
+    <string name="perm_manage_storage">Доступ ко всем файлам</string>
+    <string name="perm_notification_access">Доступ к уведомлениям</string>
     <string name="perm_phone">Телефон</string>
     <string name="perm_sms">SMS</string>
     <string name="perm_calendar">Календарь</string>
     <string name="perm_body_sensors">Датчики тела</string>
     <string name="perm_notifications">Уведомления</string>
+    <string name="perm_overlay">Поверх других приложений</string>
+    <string name="perm_install_unknown">Установка из неизвестных источников</string>
     <string name="batch_revoke">Отозвать разрешение</string>
     <string name="batch_grant">Предоставить разрешение</string>
     <string name="confirm_revoke">Отозвать разрешение у %d приложения(й)?</string>
     <string name="confirm_grant">Предоставить разрешение %d приложению(ям)?</string>
     <string name="selected_count">%d выбрано</string>
+    <string name="open_system_settings">Открыть системные настройки</string>
+    <string name="notification_access_hint">Доступ к уведомлениям должен управляться в системных настройках</string>
+
     <string name="title_settings">Параметры</string>
     <string name="pref_theme">Тема</string>
     <string name="pref_theme_light">Светлая</string>
@@ -67,11 +79,22 @@
     <string name="pref_language_auto">По умолчанию системы</string>
     <string name="pref_language_en">English</string>
     <string name="pref_language_zh">中文（简体）</string>
+    <string name="pref_language_ja">日本語</string>
+    <string name="pref_language_ko">한국어</string>
+    <string name="pref_language_fr">Français</string>
+    <string name="pref_language_de">Deutsch</string>
+    <string name="pref_language_ru">Русский</string>
     <string name="pref_show_system_apps">Показать системные приложения</string>
     <string name="pref_about">О программе</string>
-    <string name="about_desc">Диспетчер приложений Buge — это мощный инструмент управления приложениями с поддержкой Shizuku.</string>
+    <string name="about">О программе</string>
+    <string name="about_desc">Диспетчер приложений Buge — это мощный инструмент управления приложениями с поддержкой Shizuku для расширенного контроля разрешений и приложений.</string>
+    <string name="github">GitHub</string>
+    <string name="github_desc">Посетите наш репозиторий GitHub</string>
+    <string name="open">Открыть</string>
+    <string name="close">Закрыть</string>
+
     <string name="shizuku_title">Авторизация Shizuku</string>
-    <string name="shizuku_desc">Shizuku требуется для управления разрешениями приложений и выполнения расширенных операций.</string>
+    <string name="shizuku_desc">Shizuku требуется для управления разрешениями приложений и выполнения расширенных операций. Пожалуйста, авторизуйте это приложение в Shizuku.</string>
     <string name="shizuku_status_ok">Авторизовано и работает</string>
     <string name="shizuku_status_no_auth">Работает, но не авторизовано</string>
     <string name="shizuku_status_not_running">Не работает</string>
@@ -79,6 +102,7 @@
     <string name="shizuku_not_authorized">Не авторизовано</string>
     <string name="shizuku_not_running">Не работает</string>
     <string name="shizuku_request_auth">Запросить авторизацию</string>
+
     <string name="confirm">Подтвердить</string>
     <string name="cancel">Отмена</string>
     <string name="operation_success">Операция успешна</string>
@@ -87,4 +111,11 @@
     <string name="language_changed_restart">Язык изменен. Перезагрузите приложение, чтобы применить изменения.</string>
     <string name="restart">Перезагрузить</string>
     <string name="setting_saved">Параметр сохранен</string>
+
+    <string name="title_activities">Менеджер активностей</string>
+    <string name="title_activity_detail">Детали активности</string>
+    <string name="search_activity_hint">Поиск активностей…</string>
+    <string name="launch">Запустить</string>
+    <string name="back_to_apps">Назад к приложениям</string>
+    <string name="no_activities_found">Активности не найдены</string>
 </resources>

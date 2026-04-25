@@ -1,5 +1,3 @@
-// 文件路径: app/src/main/java/com/buge/appmanager/ui/PermissionsFragment.kt
-
 package com.buge.appmanager.ui
 
 import android.os.Bundle
@@ -45,9 +43,6 @@ class PermissionsFragment : Fragment() {
         viewModel.loadAppsForPermissions(currentPermissions)
     }
 
-    /**
-     * 每次返回此页面时重新加载，确保设置里"显示系统应用"开关变更后立即生效。
-     */
     override fun onResume() {
         super.onResume()
         viewModel.loadAppsForPermissions(currentPermissions)
@@ -74,6 +69,7 @@ class PermissionsFragment : Fragment() {
                 checkedIds.contains(R.id.chip_location) -> Pair(AppRepository.PERMISSION_LOCATION, getString(R.string.perm_location))
                 checkedIds.contains(R.id.chip_contacts) -> Pair(AppRepository.PERMISSION_CONTACTS, getString(R.string.perm_contacts))
                 checkedIds.contains(R.id.chip_storage) -> Pair(AppRepository.PERMISSION_STORAGE, getString(R.string.perm_storage))
+                checkedIds.contains(R.id.chip_manage_storage) -> Pair(AppRepository.PERMISSION_MANAGE_STORAGE, getString(R.string.perm_manage_storage))
                 checkedIds.contains(R.id.chip_phone) -> Pair(AppRepository.PERMISSION_PHONE, getString(R.string.perm_phone))
                 checkedIds.contains(R.id.chip_sms) -> Pair(AppRepository.PERMISSION_SMS, getString(R.string.perm_sms))
                 checkedIds.contains(R.id.chip_calendar) -> Pair(AppRepository.PERMISSION_CALENDAR, getString(R.string.perm_calendar))

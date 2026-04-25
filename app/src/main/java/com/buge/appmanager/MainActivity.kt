@@ -6,6 +6,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.fragment.app.Fragment
 import com.buge.appmanager.databinding.ActivityMainBinding
+import com.buge.appmanager.ui.ActivitiesFragment
 import com.buge.appmanager.ui.AppsFragment
 import com.buge.appmanager.ui.PermissionsFragment
 import com.buge.appmanager.ui.SettingsFragment
@@ -16,9 +17,9 @@ import rikka.shizuku.Shizuku
 class MainActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityMainBinding
+    private var currentFragment: Fragment? = null
 
-    private val requestPermissionResultListener = Shizuku.OnRequestPermissionResultListener { requestCode, grantResult ->
-    }
+    private val requestPermissionResultListener = Shizuku.OnRequestPermissionResultListener { _, _ -> }
 
     override fun attachBaseContext(newBase: Context?) {
         if (newBase != null) {
@@ -48,6 +49,13 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+    override fun onResume() {
+        super.onResume()
+        if (currentFragment is ActivitiesFragment) {
+            (currentFragment as? ActivitiesFragment)?.refresh()
+        }
+    }
+
     private fun setupBottomNavigation() {
         binding.bottomNav.setOnItemSelectedListener { item ->
             when (item.itemId) {
@@ -57,6 +65,10 @@ class MainActivity : AppCompatActivity() {
                 }
                 R.id.nav_permissions -> {
                     loadFragment(PermissionsFragment())
+                    true
+                }
+                R.id.nav_activities -> {
+                    loadFragment(ActivitiesFragment())
                     true
                 }
                 R.id.nav_settings -> {
@@ -70,6 +82,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun loadFragment(fragment: Fragment) {
+        currentFragment = fragment
         supportFragmentManager.beginTransaction()
             .replace(R.id.fragment_container, fragment)
             .commit()

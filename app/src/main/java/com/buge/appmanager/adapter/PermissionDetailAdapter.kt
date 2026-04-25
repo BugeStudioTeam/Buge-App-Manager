@@ -1,5 +1,3 @@
-// 文件路径: app/src/main/java/com/buge/appmanager/adapter/PermissionDetailAdapter.kt
-
 package com.buge.appmanager.adapter
 
 import android.view.LayoutInflater
@@ -46,11 +44,6 @@ class PermissionDetailAdapter(
                 toggleBtn.text = itemView.context.getString(R.string.grant_permission)
             }
 
-            // SYSTEM_ALERT_WINDOW 和 REQUEST_INSTALL_PACKAGES 是 appop 特殊权限：
-            // protection level 不是 DANGEROUS，所以原来 isDangerous == false，
-            // 导致按钮被隐藏（View.GONE）、点不了。
-            // 修复：这两个权限在 AppRepository 中已将 isDangerous 标记为 true，
-            // 此处直接用 isDangerous 判断即可保持一致，无需额外硬编码权限字符串。
             if (perm.isDangerous) {
                 toggleBtn.visibility = View.VISIBLE
                 toggleBtn.isEnabled = true
@@ -72,6 +65,7 @@ class PermissionDetailAdapter(
                 "android.permission.GET_ACCOUNTS" -> "Get Accounts"
                 "android.permission.READ_EXTERNAL_STORAGE" -> "Read Storage"
                 "android.permission.WRITE_EXTERNAL_STORAGE" -> "Write Storage"
+                "android.permission.MANAGE_EXTERNAL_STORAGE" -> "All Files Access"
                 "android.permission.READ_PHONE_STATE" -> "Phone State"
                 "android.permission.CALL_PHONE" -> "Make Calls"
                 "android.permission.READ_CALL_LOG" -> "Read Call Log"
@@ -89,7 +83,6 @@ class PermissionDetailAdapter(
                 "android.permission.READ_MEDIA_IMAGES" -> "Media Images"
                 "android.permission.READ_MEDIA_VIDEO" -> "Media Video"
                 "android.permission.READ_MEDIA_AUDIO" -> "Media Audio"
-                // 特殊权限友好名称
                 "android.permission.SYSTEM_ALERT_WINDOW" -> "Display Over Other Apps"
                 "android.permission.REQUEST_INSTALL_PACKAGES" -> "Install Unknown Apps"
                 else -> permission.substringAfterLast(".").replace("_", " ").lowercase()

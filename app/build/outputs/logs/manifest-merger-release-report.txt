@@ -1,24 +1,24 @@
 -- Merging decision tree log ---
 provider#rikka.shizuku.ShizukuProvider
-INJECTED from /storage/emulated/0/AndroidIDEProjects/BugeAppManager/app/src/main/AndroidManifest.xml:44:9-50:82
+INJECTED from /storage/emulated/0/AndroidIDEProjects/BugeAppManager/app/src/main/AndroidManifest.xml:55:9-61:82
 	android:enabled
-		ADDED from /storage/emulated/0/AndroidIDEProjects/BugeAppManager/app/src/main/AndroidManifest.xml:48:13-35
+		ADDED from /storage/emulated/0/AndroidIDEProjects/BugeAppManager/app/src/main/AndroidManifest.xml:59:13-35
 	android:authorities
 		INJECTED from /storage/emulated/0/AndroidIDEProjects/BugeAppManager/app/src/main/AndroidManifest.xml
-		ADDED from /storage/emulated/0/AndroidIDEProjects/BugeAppManager/app/src/main/AndroidManifest.xml:46:13-59
+		ADDED from /storage/emulated/0/AndroidIDEProjects/BugeAppManager/app/src/main/AndroidManifest.xml:57:13-59
 	android:multiprocess
-		ADDED from /storage/emulated/0/AndroidIDEProjects/BugeAppManager/app/src/main/AndroidManifest.xml:47:13-41
+		ADDED from /storage/emulated/0/AndroidIDEProjects/BugeAppManager/app/src/main/AndroidManifest.xml:58:13-41
 	android:exported
-		ADDED from /storage/emulated/0/AndroidIDEProjects/BugeAppManager/app/src/main/AndroidManifest.xml:49:13-36
+		ADDED from /storage/emulated/0/AndroidIDEProjects/BugeAppManager/app/src/main/AndroidManifest.xml:60:13-36
 	android:permission
-		ADDED from /storage/emulated/0/AndroidIDEProjects/BugeAppManager/app/src/main/AndroidManifest.xml:50:13-79
+		ADDED from /storage/emulated/0/AndroidIDEProjects/BugeAppManager/app/src/main/AndroidManifest.xml:61:13-79
 	android:name
-		ADDED from /storage/emulated/0/AndroidIDEProjects/BugeAppManager/app/src/main/AndroidManifest.xml:45:13-57
+		ADDED from /storage/emulated/0/AndroidIDEProjects/BugeAppManager/app/src/main/AndroidManifest.xml:56:13-57
 manifest
-ADDED from /storage/emulated/0/AndroidIDEProjects/BugeAppManager/app/src/main/AndroidManifest.xml:2:1-54:12
-INJECTED from /storage/emulated/0/AndroidIDEProjects/BugeAppManager/app/src/main/AndroidManifest.xml:2:1-54:12
-INJECTED from /storage/emulated/0/AndroidIDEProjects/BugeAppManager/app/src/main/AndroidManifest.xml:2:1-54:12
-INJECTED from /storage/emulated/0/AndroidIDEProjects/BugeAppManager/app/src/main/AndroidManifest.xml:2:1-54:12
+ADDED from /storage/emulated/0/AndroidIDEProjects/BugeAppManager/app/src/main/AndroidManifest.xml:2:1-65:12
+INJECTED from /storage/emulated/0/AndroidIDEProjects/BugeAppManager/app/src/main/AndroidManifest.xml:2:1-65:12
+INJECTED from /storage/emulated/0/AndroidIDEProjects/BugeAppManager/app/src/main/AndroidManifest.xml:2:1-65:12
+INJECTED from /storage/emulated/0/AndroidIDEProjects/BugeAppManager/app/src/main/AndroidManifest.xml:2:1-65:12
 MERGED from [androidx.databinding:viewbinding:8.2.2] /data/user/0/com.tom.rv2ide/files/home/.gradle/caches/transforms-3/1e80f947aa6b73069745b1ab5a51799f/transformed/viewbinding-8.2.2/AndroidManifest.xml:2:1-7:12
 MERGED from [com.google.android.material:material:1.11.0] /data/user/0/com.tom.rv2ide/files/home/.gradle/caches/transforms-3/c006c7e4abea24f449d8c80c9e056f58/transformed/material-1.11.0/AndroidManifest.xml:17:1-24:12
 MERGED from [androidx.constraintlayout:constraintlayout:2.1.4] /data/user/0/com.tom.rv2ide/files/home/.gradle/caches/transforms-3/2a79237028878ecf82651907de158179/transformed/constraintlayout-2.1.4/AndroidManifest.xml:2:1-11:12
@@ -107,8 +107,8 @@ ADDED from /storage/emulated/0/AndroidIDEProjects/BugeAppManager/app/src/main/An
 	android:name
 		ADDED from /storage/emulated/0/AndroidIDEProjects/BugeAppManager/app/src/main/AndroidManifest.xml:9:23-70
 application
-ADDED from /storage/emulated/0/AndroidIDEProjects/BugeAppManager/app/src/main/AndroidManifest.xml:13:5-52:19
-INJECTED from /storage/emulated/0/AndroidIDEProjects/BugeAppManager/app/src/main/AndroidManifest.xml:13:5-52:19
+ADDED from /storage/emulated/0/AndroidIDEProjects/BugeAppManager/app/src/main/AndroidManifest.xml:13:5-63:19
+INJECTED from /storage/emulated/0/AndroidIDEProjects/BugeAppManager/app/src/main/AndroidManifest.xml:13:5-63:19
 MERGED from [com.google.android.material:material:1.11.0] /data/user/0/com.tom.rv2ide/files/home/.gradle/caches/transforms-3/c006c7e4abea24f449d8c80c9e056f58/transformed/material-1.11.0/AndroidManifest.xml:22:5-20
 MERGED from [com.google.android.material:material:1.11.0] /data/user/0/com.tom.rv2ide/files/home/.gradle/caches/transforms-3/c006c7e4abea24f449d8c80c9e056f58/transformed/material-1.11.0/AndroidManifest.xml:22:5-20
 MERGED from [androidx.constraintlayout:constraintlayout:2.1.4] /data/user/0/com.tom.rv2ide/files/home/.gradle/caches/transforms-3/2a79237028878ecf82651907de158179/transformed/constraintlayout-2.1.4/AndroidManifest.xml:9:5-20
@@ -138,11 +138,13 @@ MERGED from [androidx.versionedparcelable:versionedparcelable:1.1.1] /data/user/
 	android:label
 		ADDED from /storage/emulated/0/AndroidIDEProjects/BugeAppManager/app/src/main/AndroidManifest.xml:17:9-41
 	xmlns:tools
-		ADDED from /storage/emulated/0/AndroidIDEProjects/BugeAppManager/app/src/main/AndroidManifest.xml:21:9-55
+		ADDED from /storage/emulated/0/AndroidIDEProjects/BugeAppManager/app/src/main/AndroidManifest.xml:22:9-55
 	tools:ignore
-		ADDED from /storage/emulated/0/AndroidIDEProjects/BugeAppManager/app/src/main/AndroidManifest.xml:20:9-44
+		ADDED from /storage/emulated/0/AndroidIDEProjects/BugeAppManager/app/src/main/AndroidManifest.xml:21:9-44
 	android:roundIcon
 		ADDED from /storage/emulated/0/AndroidIDEProjects/BugeAppManager/app/src/main/AndroidManifest.xml:16:9-54
+	android:persistent
+		ADDED from /storage/emulated/0/AndroidIDEProjects/BugeAppManager/app/src/main/AndroidManifest.xml:20:9-35
 	android:icon
 		ADDED from /storage/emulated/0/AndroidIDEProjects/BugeAppManager/app/src/main/AndroidManifest.xml:15:9-43
 	android:allowBackup
@@ -150,31 +152,51 @@ MERGED from [androidx.versionedparcelable:versionedparcelable:1.1.1] /data/user/
 	android:theme
 		ADDED from /storage/emulated/0/AndroidIDEProjects/BugeAppManager/app/src/main/AndroidManifest.xml:19:9-52
 activity#com.buge.appmanager.MainActivity
-ADDED from /storage/emulated/0/AndroidIDEProjects/BugeAppManager/app/src/main/AndroidManifest.xml:23:9-31:20
+ADDED from /storage/emulated/0/AndroidIDEProjects/BugeAppManager/app/src/main/AndroidManifest.xml:24:9-33:20
+	android:launchMode
+		ADDED from /storage/emulated/0/AndroidIDEProjects/BugeAppManager/app/src/main/AndroidManifest.xml:27:13-43
 	android:windowSoftInputMode
-		ADDED from /storage/emulated/0/AndroidIDEProjects/BugeAppManager/app/src/main/AndroidManifest.xml:26:13-55
+		ADDED from /storage/emulated/0/AndroidIDEProjects/BugeAppManager/app/src/main/AndroidManifest.xml:28:13-55
 	android:exported
-		ADDED from /storage/emulated/0/AndroidIDEProjects/BugeAppManager/app/src/main/AndroidManifest.xml:25:13-36
+		ADDED from /storage/emulated/0/AndroidIDEProjects/BugeAppManager/app/src/main/AndroidManifest.xml:26:13-36
 	android:name
-		ADDED from /storage/emulated/0/AndroidIDEProjects/BugeAppManager/app/src/main/AndroidManifest.xml:24:13-41
+		ADDED from /storage/emulated/0/AndroidIDEProjects/BugeAppManager/app/src/main/AndroidManifest.xml:25:13-41
 intent-filter#action:name:android.intent.action.MAIN+category:name:android.intent.category.LAUNCHER
-ADDED from /storage/emulated/0/AndroidIDEProjects/BugeAppManager/app/src/main/AndroidManifest.xml:27:13-30:29
+ADDED from /storage/emulated/0/AndroidIDEProjects/BugeAppManager/app/src/main/AndroidManifest.xml:29:13-32:29
 activity#com.buge.appmanager.AppDetailActivity
-ADDED from /storage/emulated/0/AndroidIDEProjects/BugeAppManager/app/src/main/AndroidManifest.xml:33:9-36:58
+ADDED from /storage/emulated/0/AndroidIDEProjects/BugeAppManager/app/src/main/AndroidManifest.xml:35:9-39:46
 	android:parentActivityName
-		ADDED from /storage/emulated/0/AndroidIDEProjects/BugeAppManager/app/src/main/AndroidManifest.xml:36:13-55
+		ADDED from /storage/emulated/0/AndroidIDEProjects/BugeAppManager/app/src/main/AndroidManifest.xml:38:13-55
+	android:launchMode
+		ADDED from /storage/emulated/0/AndroidIDEProjects/BugeAppManager/app/src/main/AndroidManifest.xml:39:13-43
 	android:exported
-		ADDED from /storage/emulated/0/AndroidIDEProjects/BugeAppManager/app/src/main/AndroidManifest.xml:35:13-37
+		ADDED from /storage/emulated/0/AndroidIDEProjects/BugeAppManager/app/src/main/AndroidManifest.xml:37:13-37
 	android:name
-		ADDED from /storage/emulated/0/AndroidIDEProjects/BugeAppManager/app/src/main/AndroidManifest.xml:34:13-46
+		ADDED from /storage/emulated/0/AndroidIDEProjects/BugeAppManager/app/src/main/AndroidManifest.xml:36:13-46
 activity#com.buge.appmanager.SettingsActivity
-ADDED from /storage/emulated/0/AndroidIDEProjects/BugeAppManager/app/src/main/AndroidManifest.xml:38:9-41:58
+ADDED from /storage/emulated/0/AndroidIDEProjects/BugeAppManager/app/src/main/AndroidManifest.xml:41:9-45:46
 	android:parentActivityName
-		ADDED from /storage/emulated/0/AndroidIDEProjects/BugeAppManager/app/src/main/AndroidManifest.xml:41:13-55
+		ADDED from /storage/emulated/0/AndroidIDEProjects/BugeAppManager/app/src/main/AndroidManifest.xml:44:13-55
+	android:launchMode
+		ADDED from /storage/emulated/0/AndroidIDEProjects/BugeAppManager/app/src/main/AndroidManifest.xml:45:13-43
 	android:exported
-		ADDED from /storage/emulated/0/AndroidIDEProjects/BugeAppManager/app/src/main/AndroidManifest.xml:40:13-37
+		ADDED from /storage/emulated/0/AndroidIDEProjects/BugeAppManager/app/src/main/AndroidManifest.xml:43:13-37
 	android:name
-		ADDED from /storage/emulated/0/AndroidIDEProjects/BugeAppManager/app/src/main/AndroidManifest.xml:39:13-45
+		ADDED from /storage/emulated/0/AndroidIDEProjects/BugeAppManager/app/src/main/AndroidManifest.xml:42:13-45
+activity#com.buge.appmanager.ActivityDetailActivity
+ADDED from /storage/emulated/0/AndroidIDEProjects/BugeAppManager/app/src/main/AndroidManifest.xml:47:9-53:52
+	android:parentActivityName
+		ADDED from /storage/emulated/0/AndroidIDEProjects/BugeAppManager/app/src/main/AndroidManifest.xml:50:13-55
+	android:launchMode
+		ADDED from /storage/emulated/0/AndroidIDEProjects/BugeAppManager/app/src/main/AndroidManifest.xml:51:13-43
+	android:exported
+		ADDED from /storage/emulated/0/AndroidIDEProjects/BugeAppManager/app/src/main/AndroidManifest.xml:49:13-37
+	android:configChanges
+		ADDED from /storage/emulated/0/AndroidIDEProjects/BugeAppManager/app/src/main/AndroidManifest.xml:52:13-74
+	android:alwaysRetainTaskState
+		ADDED from /storage/emulated/0/AndroidIDEProjects/BugeAppManager/app/src/main/AndroidManifest.xml:53:13-49
+	android:name
+		ADDED from /storage/emulated/0/AndroidIDEProjects/BugeAppManager/app/src/main/AndroidManifest.xml:48:13-51
 uses-sdk
 INJECTED from /storage/emulated/0/AndroidIDEProjects/BugeAppManager/app/src/main/AndroidManifest.xml reason: use-sdk injection requested
 INJECTED from /storage/emulated/0/AndroidIDEProjects/BugeAppManager/app/src/main/AndroidManifest.xml

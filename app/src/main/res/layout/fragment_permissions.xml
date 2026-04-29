@@ -140,11 +140,11 @@
             android:id="@+id/batch_action_bar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:visibility="gone"
             android:orientation="horizontal"
             android:paddingHorizontal="16dp"
             android:paddingVertical="8dp"
-            android:gravity="center_vertical"
-            android:visibility="gone">
+            android:gravity="center_vertical">
 
             <TextView
                 android:id="@+id/selected_count_text"

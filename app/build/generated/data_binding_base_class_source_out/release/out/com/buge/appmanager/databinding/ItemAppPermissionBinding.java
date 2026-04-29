@@ -4,6 +4,7 @@ package com.buge.appmanager.databinding;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
@@ -37,15 +38,19 @@ public final class ItemAppPermissionBinding implements ViewBinding {
   @NonNull
   public final Chip permStatusChip;
 
+  @NonNull
+  public final FrameLayout systemAppBadge;
+
   private ItemAppPermissionBinding(@NonNull MaterialCardView rootView, @NonNull ImageView appIcon,
       @NonNull TextView appName, @NonNull MaterialCheckBox checkbox, @NonNull TextView packageName,
-      @NonNull Chip permStatusChip) {
+      @NonNull Chip permStatusChip, @NonNull FrameLayout systemAppBadge) {
     this.rootView = rootView;
     this.appIcon = appIcon;
     this.appName = appName;
     this.checkbox = checkbox;
     this.packageName = packageName;
     this.permStatusChip = permStatusChip;
+    this.systemAppBadge = systemAppBadge;
   }
 
   @Override
@@ -105,8 +110,14 @@ public final class ItemAppPermissionBinding implements ViewBinding {
         break missingId;
       }
 
+      id = R.id.system_app_badge;
+      FrameLayout systemAppBadge = ViewBindings.findChildViewById(rootView, id);
+      if (systemAppBadge == null) {
+        break missingId;
+      }
+
       return new ItemAppPermissionBinding((MaterialCardView) rootView, appIcon, appName, checkbox,
-          packageName, permStatusChip);
+          packageName, permStatusChip, systemAppBadge);
     }
     String missingId = rootView.getResources().getResourceName(id);
     throw new NullPointerException("Missing required view with ID: ".concat(missingId));

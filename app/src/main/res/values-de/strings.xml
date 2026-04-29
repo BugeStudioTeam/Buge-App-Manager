@@ -8,6 +8,13 @@
     <string name="nav_permissions">Berechtigungen</string>
     <string name="nav_settings">Einstellungen</string>
 
+    <string name="title_activities">Aktivitätsmanager</string>
+    <string name="title_activity_detail">Aktivitätsdetails</string>
+    <string name="search_activity_hint">Aktivitäten suchen…</string>
+    <string name="launch">Starten</string>
+    <string name="back_to_apps">Zurück zu Apps</string>
+    <string name="no_activities_found">Keine Aktivitäten gefunden</string>
+
     <string name="title_app_list">Installierte Apps</string>
     <string name="search_hint">Apps durchsuchen…</string>
     <string name="filter_all">Alle Apps</string>
@@ -111,11 +118,4 @@
     <string name="language_changed_restart">Sprache geändert. Starten Sie die App neu, um die Änderungen zu übernehmen.</string>
     <string name="restart">Neu starten</string>
     <string name="setting_saved">Einstellung gespeichert</string>
-
-    <string name="title_activities">Aktivitätsmanager</string>
-    <string name="title_activity_detail">Aktivitätsdetails</string>
-    <string name="search_activity_hint">Aktivitäten suchen…</string>
-    <string name="launch">Starten</string>
-    <string name="back_to_apps">Zurück zu Apps</string>
-    <string name="no_activities_found">Keine Aktivitäten gefunden</string>
 </resources>

@@ -7,6 +7,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatDelegate
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import com.buge.appmanager.MainActivity
 import com.buge.appmanager.R
@@ -14,6 +15,7 @@ import com.buge.appmanager.databinding.FragmentSettingsBinding
 import com.buge.appmanager.shizuku.ShizukuManager
 import com.buge.appmanager.util.LocaleManager
 import com.buge.appmanager.util.PreferencesManager
+import com.buge.appmanager.util.SpringAnimationHelper
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.snackbar.Snackbar
 import rikka.shizuku.Shizuku
@@ -28,6 +30,7 @@ class SettingsFragment : Fragment() {
             updateShizukuStatus()
             Snackbar.make(binding.root, R.string.shizuku_authorized, Snackbar.LENGTH_SHORT).show()
         } else {
+            updateShizukuStatus()
             Snackbar.make(binding.root, R.string.shizuku_not_authorized, Snackbar.LENGTH_SHORT).show()
         }
     }
@@ -45,12 +48,50 @@ class SettingsFragment : Fragment() {
 
         Shizuku.addRequestPermissionResultListener(shizukuPermissionListener)
 
+        setupVersionDisplay()
         setupShizukuSection()
         setupThemePref()
         setupLanguagePref()
         setupSystemAppsToggle()
+        setupUndeclaredActivitiesToggle()
         setupAboutSection()
         updateShizukuStatus()
+
+        runSpringEnterAnimation()
+    }
+
+    private fun setupVersionDisplay() {
+        try {
+            val packageInfo = requireContext().packageManager.getPackageInfo(requireContext().packageName, 0)
+            val versionName = packageInfo.versionName
+            binding.versionText.text = "v$versionName"
+        } catch (e: Exception) {
+            binding.versionText.text = "v2.2.3"
+        }
+    }
+
+    private fun runSpringEnterAnimation() {
+        binding.shizukuCard.alpha = 0f
+        binding.shizukuCard.translationY = 30f
+        binding.appearanceCard.alpha = 0f
+        binding.appearanceCard.translationY = 30f
+        binding.aboutCard.alpha = 0f
+        binding.aboutCard.translationY = 30f
+
+        binding.shizukuCard.post {
+            SpringAnimationHelper.animateAlpha(binding.shizukuCard, 1f)
+            SpringAnimationHelper.animateTranslationY(binding.shizukuCard, 0f)
+        }
+
+        binding.appearanceCard.postDelayed({
+            SpringAnimationHelper.animateAlpha(binding.appearanceCard, 1f)
+            SpringAnimationHelper.animateTranslationY(binding.appearanceCard, 0f)
+        }, 50)
+
+        binding.aboutCard.postDelayed({
+            SpringAnimationHelper.animateAlpha(binding.aboutCard, 1f)
+            SpringAnimationHelper.animateTranslationY(binding.aboutCard, 0f)
+        }, 100)
     }
 
     private fun setupShizukuSection() {
@@ -88,7 +129,6 @@ class SettingsFragment : Fragment() {
                     PreferencesManager.setThemeMode(requireContext(), mode)
                     AppCompatDelegate.setDefaultNightMode(mode)
                     dialog.dismiss()
-                    
                     restartApp()
                 }
                 .show()
@@ -119,9 +159,8 @@ class SettingsFragment : Fragment() {
                 .setSingleChoiceItems(options, currentIndex) { dialog, which ->
                     val selectedCode = codes[which]
                     LocaleManager.setLanguage(requireContext(), selectedCode)
-                    binding.languageValue.text = options[which]
+                    updateLanguageDisplay()
                     dialog.dismiss()
-                    
                     restartApp()
                 }
                 .show()
@@ -143,24 +182,24 @@ class SettingsFragment : Fragment() {
             isAvailable && hasPermission -> {
                 binding.shizukuStatusText.text = getString(R.string.shizuku_status_ok)
                 binding.shizukuStatusText.setTextColor(requireContext().getColor(R.color.color_granted))
-                binding.shizukuStatusChip.text = getString(R.string.shizuku_authorized)
-                binding.shizukuStatusChip.setChipBackgroundColorResource(R.color.color_granted_container)
+                binding.shizukuIcon.setImageResource(R.drawable.ic_shield)
+                binding.shizukuIcon.setColorFilter(null)
                 binding.btnRequestShizuku.isEnabled = false
                 binding.btnRequestShizuku.text = getString(R.string.shizuku_authorized)
             }
             isAvailable && !hasPermission -> {
                 binding.shizukuStatusText.text = getString(R.string.shizuku_status_no_auth)
                 binding.shizukuStatusText.setTextColor(requireContext().getColor(com.google.android.material.R.color.design_default_color_error))
-                binding.shizukuStatusChip.text = getString(R.string.shizuku_not_authorized)
-                binding.shizukuStatusChip.setChipBackgroundColorResource(R.color.color_denied_container)
+                binding.shizukuIcon.setImageResource(R.drawable.ic_shield_badge_x)
+                binding.shizukuIcon.setColorFilter(null)
                 binding.btnRequestShizuku.isEnabled = true
                 binding.btnRequestShizuku.text = getString(R.string.shizuku_request_auth)
             }
             else -> {
                 binding.shizukuStatusText.text = getString(R.string.shizuku_status_not_running)
                 binding.shizukuStatusText.setTextColor(requireContext().getColor(com.google.android.material.R.color.design_default_color_error))
-                binding.shizukuStatusChip.text = getString(R.string.shizuku_not_running)
-                binding.shizukuStatusChip.setChipBackgroundColorResource(R.color.color_denied_container)
+                binding.shizukuIcon.setImageResource(R.drawable.ic_shield_badge_x)
+                binding.shizukuIcon.setColorFilter(null)
                 binding.btnRequestShizuku.isEnabled = true
                 binding.btnRequestShizuku.text = getString(R.string.shizuku_request_auth)
             }
@@ -177,6 +216,15 @@ class SettingsFragment : Fragment() {
         binding.switchShowSystem.isChecked = showSystemApps
         binding.switchShowSystem.setOnCheckedChangeListener { _, isChecked ->
             PreferencesManager.setShowSystemApps(requireContext(), isChecked)
+            Snackbar.make(binding.root, R.string.setting_saved, Snackbar.LENGTH_SHORT).show()
+        }
+    }
+
+    private fun setupUndeclaredActivitiesToggle() {
+        val showUndeclaredActivities = PreferencesManager.getShowUndeclaredActivities(requireContext())
+        binding.switchShowUndeclaredActivities.isChecked = showUndeclaredActivities
+        binding.switchShowUndeclaredActivities.setOnCheckedChangeListener { _, isChecked ->
+            PreferencesManager.setShowUndeclaredActivities(requireContext(), isChecked)
             Snackbar.make(binding.root, R.string.setting_saved, Snackbar.LENGTH_SHORT).show()
         }
     }

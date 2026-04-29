@@ -51,6 +51,9 @@ public final class FragmentPermissionsBinding implements ViewBinding {
   public final Chip chipLocation;
 
   @NonNull
+  public final Chip chipManageStorage;
+
+  @NonNull
   public final Chip chipMic;
 
   @NonNull
@@ -90,9 +93,9 @@ public final class FragmentPermissionsBinding implements ViewBinding {
       @NonNull LinearLayout batchActionBar, @NonNull MaterialButton btnBatchGrant,
       @NonNull MaterialButton btnBatchRevoke, @NonNull Chip chipCalendar, @NonNull Chip chipCamera,
       @NonNull Chip chipContacts, @NonNull Chip chipInstallUnknown, @NonNull Chip chipLocation,
-      @NonNull Chip chipMic, @NonNull Chip chipNotifications, @NonNull Chip chipOverlay,
-      @NonNull Chip chipPhone, @NonNull Chip chipSensors, @NonNull Chip chipSms,
-      @NonNull Chip chipStorage, @NonNull ChipGroup permissionChipGroup,
+      @NonNull Chip chipManageStorage, @NonNull Chip chipMic, @NonNull Chip chipNotifications,
+      @NonNull Chip chipOverlay, @NonNull Chip chipPhone, @NonNull Chip chipSensors,
+      @NonNull Chip chipSms, @NonNull Chip chipStorage, @NonNull ChipGroup permissionChipGroup,
       @NonNull LinearProgressIndicator progressBar, @NonNull RecyclerView recyclerView,
       @NonNull TextView selectedCountText, @NonNull MaterialToolbar toolbar) {
     this.rootView = rootView;
@@ -104,6 +107,7 @@ public final class FragmentPermissionsBinding implements ViewBinding {
     this.chipContacts = chipContacts;
     this.chipInstallUnknown = chipInstallUnknown;
     this.chipLocation = chipLocation;
+    this.chipManageStorage = chipManageStorage;
     this.chipMic = chipMic;
     this.chipNotifications = chipNotifications;
     this.chipOverlay = chipOverlay;
@@ -193,6 +197,12 @@ public final class FragmentPermissionsBinding implements ViewBinding {
         break missingId;
       }
 
+      id = R.id.chip_manage_storage;
+      Chip chipManageStorage = ViewBindings.findChildViewById(rootView, id);
+      if (chipManageStorage == null) {
+        break missingId;
+      }
+
       id = R.id.chip_mic;
       Chip chipMic = ViewBindings.findChildViewById(rootView, id);
       if (chipMic == null) {
@@ -267,8 +277,9 @@ public final class FragmentPermissionsBinding implements ViewBinding {
 
       return new FragmentPermissionsBinding((CoordinatorLayout) rootView, batchActionBar,
           btnBatchGrant, btnBatchRevoke, chipCalendar, chipCamera, chipContacts, chipInstallUnknown,
-          chipLocation, chipMic, chipNotifications, chipOverlay, chipPhone, chipSensors, chipSms,
-          chipStorage, permissionChipGroup, progressBar, recyclerView, selectedCountText, toolbar);
+          chipLocation, chipManageStorage, chipMic, chipNotifications, chipOverlay, chipPhone,
+          chipSensors, chipSms, chipStorage, permissionChipGroup, progressBar, recyclerView,
+          selectedCountText, toolbar);
     }
     String missingId = rootView.getResources().getResourceName(id);
     throw new NullPointerException("Missing required view with ID: ".concat(missingId));

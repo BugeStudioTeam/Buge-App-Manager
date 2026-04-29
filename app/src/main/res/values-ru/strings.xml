@@ -8,6 +8,13 @@
     <string name="nav_permissions">Разрешения</string>
     <string name="nav_settings">Параметры</string>
 
+    <string name="title_activities">Менеджер активностей</string>
+    <string name="title_activity_detail">Детали активности</string>
+    <string name="search_activity_hint">Поиск активностей…</string>
+    <string name="launch">Запустить</string>
+    <string name="back_to_apps">Назад к приложениям</string>
+    <string name="no_activities_found">Активности не найдены</string>
+
     <string name="title_app_list">Установленные приложения</string>
     <string name="search_hint">Поиск приложений…</string>
     <string name="filter_all">Все приложения</string>
@@ -111,11 +118,4 @@
     <string name="language_changed_restart">Язык изменен. Перезагрузите приложение, чтобы применить изменения.</string>
     <string name="restart">Перезагрузить</string>
     <string name="setting_saved">Параметр сохранен</string>
-
-    <string name="title_activities">Менеджер активностей</string>
-    <string name="title_activity_detail">Детали активности</string>
-    <string name="search_activity_hint">Поиск активностей…</string>
-    <string name="launch">Запустить</string>
-    <string name="back_to_apps">Назад к приложениям</string>
-    <string name="no_activities_found">Активности не найдены</string>
 </resources>

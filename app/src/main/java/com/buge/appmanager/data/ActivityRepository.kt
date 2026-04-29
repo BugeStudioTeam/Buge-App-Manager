@@ -65,7 +65,7 @@ class ActivityRepository(private val context: Context) {
         }
     }
 
-    suspend fun getAppActivities(packageName: String): List<ActivityDetail> = withContext(Dispatchers.IO) {
+    suspend fun getAppActivities(packageName: String, showUndeclared: Boolean): List<ActivityDetail> = withContext(Dispatchers.IO) {
         try {
             val packageInfo = pm.getPackageInfo(packageName, PackageManager.GET_ACTIVITIES)
             val activities = packageInfo.activities ?: return@withContext emptyList()
@@ -73,17 +73,23 @@ class ActivityRepository(private val context: Context) {
             val result = mutableListOf<ActivityDetail>()
             
             for (activityInfo in activities) {
-                result.add(
-                    ActivityDetail(
-                        name = try { activityInfo.loadLabel(pm).toString() } catch (e: Exception) { activityInfo.name.substringAfterLast(".") },
-                        className = activityInfo.name,
-                        isExported = activityInfo.exported,
-                        intentFilterCount = 0,
-                        permission = activityInfo.permission ?: "None",
-                        launchMode = getLaunchModeString(activityInfo.launchMode),
-                        parentActivityName = activityInfo.parentActivityName ?: "None"
-                    )
+                val activity = ActivityDetail(
+                    name = try { activityInfo.loadLabel(pm).toString() } catch (e: Exception) { activityInfo.name.substringAfterLast(".") },
+                    className = activityInfo.name,
+                    isExported = activityInfo.exported,
+                    intentFilterCount = 0,
+                    permission = activityInfo.permission ?: "None",
+                    launchMode = getLaunchModeString(activityInfo.launchMode),
+                    parentActivityName = activityInfo.parentActivityName ?: "None"
                 )
+                
+                if (showUndeclared) {
+                    result.add(activity)
+                } else {
+                    if (activity.isExported) {
+                        result.add(activity)
+                    }
+                }
             }
             
             result.sortedBy { it.name.lowercase() }
@@ -100,6 +106,21 @@ class ActivityRepository(private val context: Context) {
             android.content.pm.ActivityInfo.LAUNCH_SINGLE_TASK -> "singleTask"
             android.content.pm.ActivityInfo.LAUNCH_SINGLE_INSTANCE -> "singleInstance"
             else -> "unknown"
+        }
+    }
+
+    fun launchActivity(packageName: String, className: String): Boolean {
+        return try {
+            val componentName = ComponentName(packageName, className)
+            val intent = Intent().apply {
+                setComponent(componentName)
+                addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+            }
+            context.startActivity(intent)
+            true
+        } catch (e: Exception) {
+            Log.e(TAG, "Error launching activity: ${e.message}")
+            false
         }
     }
 }

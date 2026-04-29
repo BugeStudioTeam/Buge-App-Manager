@@ -1,58 +1,62 @@
 [
     {
-        "merged": "com.buge.appmanager.app-mergeReleaseResources-44:/layout/fragment_permissions.xml",
-        "source": "com.buge.appmanager.app-main-46:/layout/fragment_permissions.xml"
+        "merged": "/data/user/0/com.tom.rv2ide/files/home/.gradle/daemon/8.4/com.buge.appmanager.app-mergeReleaseResources-45:/layout/item_app_permission.xml",
+        "source": "/data/user/0/com.tom.rv2ide/files/home/.gradle/daemon/8.4/com.buge.appmanager.app-main-47:/layout/item_app_permission.xml"
     },
     {
-        "merged": "com.buge.appmanager.app-mergeReleaseResources-44:/layout/item_activity_detail.xml",
-        "source": "com.buge.appmanager.app-main-46:/layout/item_activity_detail.xml"
+        "merged": "/data/user/0/com.tom.rv2ide/files/home/.gradle/daemon/8.4/com.buge.appmanager.app-mergeReleaseResources-45:/layout/dialog_about.xml",
+        "source": "/data/user/0/com.tom.rv2ide/files/home/.gradle/daemon/8.4/com.buge.appmanager.app-main-47:/layout/dialog_about.xml"
     },
     {
-        "merged": "com.buge.appmanager.app-mergeReleaseResources-44:/layout/fragment_activities.xml",
-        "source": "com.buge.appmanager.app-main-46:/layout/fragment_activities.xml"
+        "merged": "/data/user/0/com.tom.rv2ide/files/home/.gradle/daemon/8.4/com.buge.appmanager.app-mergeReleaseResources-45:/layout/activity_activity_detail.xml",
+        "source": "/data/user/0/com.tom.rv2ide/files/home/.gradle/daemon/8.4/com.buge.appmanager.app-main-47:/layout/activity_activity_detail.xml"
     },
     {
-        "merged": "com.buge.appmanager.app-mergeReleaseResources-44:/layout/item_app_permission.xml",
-        "source": "com.buge.appmanager.app-main-46:/layout/item_app_permission.xml"
+        "merged": "/data/user/0/com.tom.rv2ide/files/home/.gradle/daemon/8.4/com.buge.appmanager.app-mergeReleaseResources-45:/layout/fragment_settings.xml",
+        "source": "/data/user/0/com.tom.rv2ide/files/home/.gradle/daemon/8.4/com.buge.appmanager.app-main-47:/layout/fragment_settings.xml"
     },
     {
-        "merged": "com.buge.appmanager.app-mergeReleaseResources-44:/layout/item_info_row.xml",
-        "source": "com.buge.appmanager.app-main-46:/layout/item_info_row.xml"
+        "merged": "/data/user/0/com.tom.rv2ide/files/home/.gradle/daemon/8.4/com.buge.appmanager.app-mergeReleaseResources-45:/layout/activity_app_detail.xml",
+        "source": "/data/user/0/com.tom.rv2ide/files/home/.gradle/daemon/8.4/com.buge.appmanager.app-main-47:/layout/activity_app_detail.xml"
     },
     {
-        "merged": "com.buge.appmanager.app-mergeReleaseResources-44:/layout/dialog_about.xml",
-        "source": "com.buge.appmanager.app-main-46:/layout/dialog_about.xml"
+        "merged": "/data/user/0/com.tom.rv2ide/files/home/.gradle/daemon/8.4/com.buge.appmanager.app-mergeReleaseResources-45:/layout/activity_main.xml",
+        "source": "/data/user/0/com.tom.rv2ide/files/home/.gradle/daemon/8.4/com.buge.appmanager.app-main-47:/layout/activity_main.xml"
     },
     {
-        "merged": "com.buge.appmanager.app-mergeReleaseResources-44:/layout/activity_activity_detail.xml",
-        "source": "com.buge.appmanager.app-main-46:/layout/activity_activity_detail.xml"
+        "merged": "/data/user/0/com.tom.rv2ide/files/home/.gradle/daemon/8.4/com.buge.appmanager.app-mergeReleaseResources-45:/layout/fragment_apps.xml",
+        "source": "/data/user/0/com.tom.rv2ide/files/home/.gradle/daemon/8.4/com.buge.appmanager.app-main-47:/layout/fragment_apps.xml"
     },
     {
-        "merged": "com.buge.appmanager.app-mergeReleaseResources-44:/layout/item_app.xml",
-        "source": "com.buge.appmanager.app-main-46:/layout/item_app.xml"
+        "merged": "/data/user/0/com.tom.rv2ide/files/home/.gradle/daemon/8.4/com.buge.appmanager.app-mergeReleaseResources-45:/layout/item_activity_app.xml",
+        "source": "/data/user/0/com.tom.rv2ide/files/home/.gradle/daemon/8.4/com.buge.appmanager.app-main-47:/layout/item_activity_app.xml"
     },
     {
-        "merged": "com.buge.appmanager.app-mergeReleaseResources-44:/layout/activity_app_detail.xml",
-        "source": "com.buge.appmanager.app-main-46:/layout/activity_app_detail.xml"
+        "merged": "com.buge.appmanager.app-mergeReleaseResources-45:/layout/item_app_permission.xml",
+        "source": "com.buge.appmanager.app-main-47:/layout/item_app_permission.xml"
     },
     {
-        "merged": "com.buge.appmanager.app-mergeReleaseResources-44:/layout/fragment_apps.xml",
-        "source": "com.buge.appmanager.app-main-46:/layout/fragment_apps.xml"
+        "merged": "/data/user/0/com.tom.rv2ide/files/home/.gradle/daemon/8.4/com.buge.appmanager.app-mergeReleaseResources-45:/layout/item_permission.xml",
+        "source": "/data/user/0/com.tom.rv2ide/files/home/.gradle/daemon/8.4/com.buge.appmanager.app-main-47:/layout/item_permission.xml"
     },
     {
-        "merged": "com.buge.appmanager.app-mergeReleaseResources-44:/layout/fragment_settings.xml",
-        "source": "com.buge.appmanager.app-main-46:/layout/fragment_settings.xml"
+        "merged": "/data/user/0/com.tom.rv2ide/files/home/.gradle/daemon/8.4/com.buge.appmanager.app-mergeReleaseResources-45:/layout/item_activity_detail.xml",
+        "source": "/data/user/0/com.tom.rv2ide/files/home/.gradle/daemon/8.4/com.buge.appmanager.app-main-47:/layout/item_activity_detail.xml"
     },
     {
-        "merged": "com.buge.appmanager.app-mergeReleaseResources-44:/layout/item_activity_app.xml",
-        "source": "com.buge.appmanager.app-main-46:/layout/item_activity_app.xml"
+        "merged": "/data/user/0/com.tom.rv2ide/files/home/.gradle/daemon/8.4/com.buge.appmanager.app-mergeReleaseResources-45:/layout/fragment_activities.xml",
+        "source": "/data/user/0/com.tom.rv2ide/files/home/.gradle/daemon/8.4/com.buge.appmanager.app-main-47:/layout/fragment_activities.xml"
     },
     {
-        "merged": "com.buge.appmanager.app-mergeReleaseResources-44:/layout/activity_main.xml",
-        "source": "com.buge.appmanager.app-main-46:/layout/activity_main.xml"
+        "merged": "/data/user/0/com.tom.rv2ide/files/home/.gradle/daemon/8.4/com.buge.appmanager.app-mergeReleaseResources-45:/layout/item_info_row.xml",
+        "source": "/data/user/0/com.tom.rv2ide/files/home/.gradle/daemon/8.4/com.buge.appmanager.app-main-47:/layout/item_info_row.xml"
     },
     {
-        "merged": "com.buge.appmanager.app-mergeReleaseResources-44:/layout/item_permission.xml",
-        "source": "com.buge.appmanager.app-main-46:/layout/item_permission.xml"
+        "merged": "/data/user/0/com.tom.rv2ide/files/home/.gradle/daemon/8.4/com.buge.appmanager.app-mergeReleaseResources-45:/layout/item_app.xml",
+        "source": "/data/user/0/com.tom.rv2ide/files/home/.gradle/daemon/8.4/com.buge.appmanager.app-main-47:/layout/item_app.xml"
+    },
+    {
+        "merged": "/data/user/0/com.tom.rv2ide/files/home/.gradle/daemon/8.4/com.buge.appmanager.app-mergeReleaseResources-45:/layout/fragment_permissions.xml",
+        "source": "/data/user/0/com.tom.rv2ide/files/home/.gradle/daemon/8.4/com.buge.appmanager.app-main-47:/layout/fragment_permissions.xml"
     }
 ]

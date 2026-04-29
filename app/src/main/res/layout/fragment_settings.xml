@@ -6,8 +6,10 @@
     android:layout_height="match_parent">
 
     <com.google.android.material.appbar.AppBarLayout
+        android:id="@+id/app_bar"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:fitsSystemWindows="true">
 
         <com.google.android.material.appbar.MaterialToolbar
             android:id="@+id/toolbar"
@@ -20,25 +22,29 @@
     <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:fillViewport="true"
+        android:clipToPadding="false"
+        android:paddingTop="8dp"
+        android:paddingBottom="80dp"
         app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:padding="16dp"
-            android:paddingBottom="100dp">
+            android:paddingHorizontal="16dp">
 
             <!-- Shizuku Status Card -->
             <com.google.android.material.card.MaterialCardView
                 android:id="@+id/shizuku_card"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
                 android:layout_marginBottom="16dp"
+                app:cardCornerRadius="12dp"
                 app:cardElevation="0dp"
-                app:strokeWidth="1dp"
-                app:strokeColor="?attr/colorOutlineVariant"
-                app:cardCornerRadius="16dp">
+                app:strokeWidth="0dp"
+                app:cardBackgroundColor="?attr/colorSurfaceContainerHigh">
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -52,10 +58,13 @@
                         android:orientation="horizontal"
                         android:gravity="center_vertical">
 
+                        <!-- 动态盾牌图标 -->
                         <ImageView
+                            android:id="@+id/shizuku_icon"
                             android:layout_width="40dp"
                             android:layout_height="40dp"
-                            android:src="@drawable/ic_shield" />
+                            android:src="@drawable/ic_shield"
+                            app:tint="?attr/colorPrimary" />
 
                         <LinearLayout
                             android:layout_width="0dp"
@@ -75,18 +84,10 @@
                                 android:id="@+id/shizuku_status_text"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="@string/shizuku_not_running"
-                                style="@style/TextAppearance.Material3.BodySmall"
-                                android:textColor="?attr/colorError" />
+                                android:text="@string/shizuku_status_not_running"
+                                style="@style/TextAppearance.Material3.BodySmall" />
 
                         </LinearLayout>
-
-                        <com.google.android.material.chip.Chip
-                            android:id="@+id/shizuku_status_chip"
-                            style="@style/Widget.Material3.Chip.Assist"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="@string/shizuku_not_running" />
 
                     </LinearLayout>
 
@@ -110,37 +111,29 @@
 
             </com.google.android.material.card.MaterialCardView>
 
-            <!-- Appearance Settings -->
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Appearance"
-                android:layout_marginBottom="8dp"
-                android:layout_marginStart="4dp"
-                style="@style/TextAppearance.Material3.LabelLarge"
-                android:textColor="?attr/colorPrimary" />
-
+            <!-- App 外观卡片 -->
             <com.google.android.material.card.MaterialCardView
+                android:id="@+id/appearance_card"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="16dp"
+                app:cardCornerRadius="12dp"
                 app:cardElevation="0dp"
-                app:strokeWidth="1dp"
-                app:strokeColor="?attr/colorOutlineVariant"
-                app:cardCornerRadius="12dp">
+                app:strokeWidth="0dp"
+                app:cardBackgroundColor="?attr/colorSurfaceContainerHigh">
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical">
 
-                    <!-- Theme -->
                     <LinearLayout
                         android:id="@+id/pref_theme_row"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:orientation="horizontal"
-                        android:padding="16dp"
+                        android:paddingHorizontal="16dp"
+                        android:paddingVertical="16dp"
                         android:gravity="center_vertical"
                         android:clickable="true"
                         android:focusable="true"
@@ -173,15 +166,16 @@
                     <com.google.android.material.divider.MaterialDivider
                         android:layout_width="match_parent"
                         android:layout_height="1dp"
-                        android:layout_marginHorizontal="16dp" />
+                        android:layout_marginStart="16dp"
+                        android:layout_marginEnd="16dp" />
 
-                    <!-- Language -->
                     <LinearLayout
                         android:id="@+id/pref_language_row"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:orientation="horizontal"
-                        android:padding="16dp"
+                        android:paddingHorizontal="16dp"
+                        android:paddingVertical="16dp"
                         android:gravity="center_vertical"
                         android:clickable="true"
                         android:focusable="true"
@@ -214,14 +208,15 @@
                     <com.google.android.material.divider.MaterialDivider
                         android:layout_width="match_parent"
                         android:layout_height="1dp"
-                        android:layout_marginHorizontal="16dp" />
+                        android:layout_marginStart="16dp"
+                        android:layout_marginEnd="16dp" />
 
-                    <!-- Show System Apps -->
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:orientation="horizontal"
-                        android:padding="16dp"
+                        android:paddingHorizontal="16dp"
+                        android:paddingVertical="16dp"
                         android:gravity="center_vertical">
 
                         <TextView
@@ -238,42 +233,61 @@
 
                     </LinearLayout>
 
+                    <com.google.android.material.divider.MaterialDivider
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:layout_marginStart="16dp"
+                        android:layout_marginEnd="16dp" />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:paddingHorizontal="16dp"
+                        android:paddingVertical="16dp"
+                        android:gravity="center_vertical">
+
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="@string/pref_show_undeclared_activities"
+                            style="@style/TextAppearance.Material3.BodyLarge" />
+
+                        <com.google.android.material.materialswitch.MaterialSwitch
+                            android:id="@+id/switch_show_undeclared_activities"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content" />
+
+                    </LinearLayout>
+
                 </LinearLayout>
 
             </com.google.android.material.card.MaterialCardView>
 
-            <!-- About Section -->
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/pref_about"
-                android:layout_marginBottom="8dp"
-                android:layout_marginStart="4dp"
-                style="@style/TextAppearance.Material3.LabelLarge"
-                android:textColor="?attr/colorPrimary" />
-
+            <!-- About 卡片 -->
             <com.google.android.material.card.MaterialCardView
+                android:id="@+id/about_card"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginBottom="16dp"
+                app:cardCornerRadius="12dp"
                 app:cardElevation="0dp"
-                app:strokeWidth="1dp"
-                app:strokeColor="?attr/colorOutlineVariant"
-                app:cardCornerRadius="12dp">
+                app:strokeWidth="0dp"
+                app:cardBackgroundColor="?attr/colorSurfaceContainerHigh">
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    android:padding="16dp">
+                    android:orientation="vertical">
 
-                    <!-- App Info -->
                     <LinearLayout
                         android:id="@+id/about_row"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:orientation="horizontal"
                         android:gravity="center_vertical"
-                        android:layout_marginBottom="16dp"
+                        android:padding="16dp"
                         android:clickable="true"
                         android:focusable="true"
                         android:background="?attr/selectableItemBackground">
@@ -281,7 +295,9 @@
                         <ImageView
                             android:layout_width="48dp"
                             android:layout_height="48dp"
-                            android:src="@mipmap/ic_launcher" />
+                            android:src="@mipmap/ic_launcher"
+                            android:scaleType="centerCrop"
+                            app:cornerRadius="8dp" />
 
                         <LinearLayout
                             android:layout_width="0dp"
@@ -298,9 +314,10 @@
                                 style="@style/TextAppearance.Material3.TitleMedium" />
 
                             <TextView
+                                android:id="@+id/version_text"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="v2.5.9"
+                                android:text=""
                                 android:alpha="0.6"
                                 style="@style/TextAppearance.Material3.BodySmall" />
 
@@ -318,13 +335,15 @@
                     <com.google.android.material.divider.MaterialDivider
                         android:layout_width="match_parent"
                         android:layout_height="1dp"
-                        android:layout_marginBottom="8dp" />
+                        android:layout_marginStart="16dp"
+                        android:layout_marginEnd="16dp" />
 
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:text="@string/about_desc"
                         android:alpha="0.7"
+                        android:padding="16dp"
                         style="@style/TextAppearance.Material3.BodySmall" />
 
                 </LinearLayout>

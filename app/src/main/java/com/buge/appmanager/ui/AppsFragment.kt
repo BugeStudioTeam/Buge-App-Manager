@@ -10,11 +10,13 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.buge.appmanager.AppDetailActivity
+import com.buge.appmanager.R
 import com.buge.appmanager.adapter.AppsAdapter
 import com.buge.appmanager.databinding.FragmentAppsBinding
 import com.buge.appmanager.model.AppFilter
 import com.buge.appmanager.model.AppInfo
 import com.buge.appmanager.model.AppSortOrder
+import com.buge.appmanager.util.SpringAnimationHelper
 import com.buge.appmanager.viewmodel.AppsViewModel
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 
@@ -46,6 +48,15 @@ class AppsFragment : Fragment() {
         binding.swipeRefresh.setOnRefreshListener {
             viewModel.loadApps()
         }
+
+        runSpringEnterAnimation(binding.recyclerView)
+    }
+
+    private fun runSpringEnterAnimation(view: View) {
+        view.alpha = 0f
+        view.translationY = 30f
+        SpringAnimationHelper.animateAlpha(view, 1f)
+        SpringAnimationHelper.animateTranslationY(view, 0f)
     }
 
     private fun setupRecyclerView() {
@@ -114,8 +125,6 @@ class AppsFragment : Fragment() {
             adapter.submitList(apps)
             binding.emptyState.visibility = if (apps.isEmpty()) View.VISIBLE else View.GONE
             binding.recyclerView.visibility = if (apps.isEmpty()) View.GONE else View.VISIBLE
-
-            // Update count in toolbar subtitle
             binding.toolbar.subtitle = getString(com.buge.appmanager.R.string.apps_count, apps.size)
         }
 

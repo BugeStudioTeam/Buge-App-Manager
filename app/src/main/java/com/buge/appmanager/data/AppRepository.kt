@@ -1,5 +1,3 @@
-// 文件路径: app/src/main/java/com/buge/appmanager/data/AppRepository.kt
-
 package com.buge.appmanager.data
 
 import android.app.AppOpsManager
@@ -158,7 +156,7 @@ class AppRepository(private val context: Context) {
         }
     }
 
-    private suspend fun getManageExternalStorageStatus(packageName: String): Boolean? {
+    suspend fun getManageExternalStorageStatus(packageName: String): Boolean? {
         return try {
             ShizukuManager.getManageExternalStorageStatus(packageName)
         } catch (e: Exception) {

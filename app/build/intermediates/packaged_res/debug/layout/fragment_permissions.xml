@@ -23,7 +23,6 @@
         android:orientation="vertical"
         app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
-        <!-- Permission Category Selector -->
         <HorizontalScrollView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -78,6 +77,13 @@
                     android:text="@string/perm_storage" />
 
                 <com.google.android.material.chip.Chip
+                    android:id="@+id/chip_manage_storage"
+                    style="@style/Widget.Material3.Chip.Filter"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/perm_manage_storage" />
+
+                <com.google.android.material.chip.Chip
                     android:id="@+id/chip_phone"
                     style="@style/Widget.Material3.Chip.Filter"
                     android:layout_width="wrap_content"
@@ -130,16 +136,15 @@
 
         </HorizontalScrollView>
 
-        <!-- Batch action bar -->
         <LinearLayout
             android:id="@+id/batch_action_bar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:visibility="gone"
             android:orientation="horizontal"
             android:paddingHorizontal="16dp"
             android:paddingVertical="8dp"
-            android:gravity="center_vertical"
-            android:visibility="gone">
+            android:gravity="center_vertical">
 
             <TextView
                 android:id="@+id/selected_count_text"
@@ -165,7 +170,6 @@
 
         </LinearLayout>
 
-        <!-- Apps list with permission -->
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recycler_view"
             android:layout_width="match_parent"

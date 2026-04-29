@@ -5,16 +5,21 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
-import androidx.recyclerview.widget.DiffUtil
-import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.buge.appmanager.R
 import com.buge.appmanager.model.AppInfo
-import com.google.android.material.chip.Chip
+import com.buge.appmanager.util.SpringAnimationHelper
 
 class AppsAdapter(
     private val onAppClick: (AppInfo) -> Unit
-) : ListAdapter<AppInfo, AppsAdapter.AppViewHolder>(AppDiffCallback()) {
+) : RecyclerView.Adapter<AppsAdapter.AppViewHolder>() {
+
+    private var items: List<AppInfo> = emptyList()
+
+    fun submitList(newItems: List<AppInfo>) {
+        items = newItems
+        notifyDataSetChanged()
+    }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): AppViewHolder {
         val view = LayoutInflater.from(parent.context)
@@ -23,7 +28,21 @@ class AppsAdapter(
     }
 
     override fun onBindViewHolder(holder: AppViewHolder, position: Int) {
-        holder.bind(getItem(position))
+        holder.bind(items[position])
+        runSpringEnterAnimation(holder.itemView, position)
+    }
+
+    override fun getItemCount(): Int = items.size
+
+    private fun runSpringEnterAnimation(view: View, position: Int) {
+        if (position > 0) {
+            view.alpha = 0f
+            view.translationY = 50f
+            view.post {
+                SpringAnimationHelper.animateAlpha(view, 1f)
+                SpringAnimationHelper.animateTranslationY(view, 0f)
+            }
+        }
     }
 
     inner class AppViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
@@ -46,18 +65,6 @@ class AppsAdapter(
             }
 
             itemView.setOnClickListener { onAppClick(app) }
-        }
-    }
-
-    class AppDiffCallback : DiffUtil.ItemCallback<AppInfo>() {
-        override fun areItemsTheSame(oldItem: AppInfo, newItem: AppInfo): Boolean {
-            return oldItem.packageName == newItem.packageName
-        }
-
-        override fun areContentsTheSame(oldItem: AppInfo, newItem: AppInfo): Boolean {
-            return oldItem.packageName == newItem.packageName &&
-                   oldItem.isEnabled == newItem.isEnabled &&
-                   oldItem.versionName == newItem.versionName
         }
     }
 }

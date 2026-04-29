@@ -1,5 +1,3 @@
-// 文件路径: app/src/main/java/com/buge/appmanager/adapter/AppPermissionAdapter.kt
-
 package com.buge.appmanager.adapter
 
 import android.view.LayoutInflater
@@ -66,19 +64,22 @@ class AppPermissionAdapter(
         private val appName: TextView = itemView.findViewById(R.id.app_name)
         private val packageName: TextView = itemView.findViewById(R.id.package_name)
         private val permStatusChip: Chip = itemView.findViewById(R.id.perm_status_chip)
+        private val systemAppBadge: View = itemView.findViewById(R.id.system_app_badge)
 
         fun bind(item: AppPermissionItem) {
             appIcon.setImageDrawable(item.app.icon)
             appName.text = item.app.appName
             packageName.text = item.app.packageName
 
-            // Show checkbox in selection mode
+            if (item.app.isSystemApp) {
+                systemAppBadge.visibility = View.VISIBLE
+            } else {
+                systemAppBadge.visibility = View.GONE
+            }
+
             checkbox.visibility = if (selectionMode) View.VISIBLE else View.GONE
             checkbox.isChecked = item.isSelected
 
-            // 权限状态由 AppRepository.getAppsWithPermissionCategory() 提供，
-            // 特殊权限（SYSTEM_ALERT_WINDOW / REQUEST_INSTALL_PACKAGES）已在
-            // Repository 层用专用 API 正确读取，此处直接使用即可。
             val isGranted = item.permissionMap[item.primaryPermission] ?: false
             if (isGranted) {
                 permStatusChip.text = itemView.context.getString(R.string.granted)

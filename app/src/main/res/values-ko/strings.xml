@@ -8,6 +8,13 @@
     <string name="nav_permissions">권한</string>
     <string name="nav_settings">설정</string>
 
+    <string name="title_activities">활동 관리자</string>
+    <string name="title_activity_detail">활동 세부정보</string>
+    <string name="search_activity_hint">활동 검색…</string>
+    <string name="launch">실행</string>
+    <string name="back_to_apps">앱으로 돌아가기</string>
+    <string name="no_activities_found">활동을 찾을 수 없음</string>
+
     <string name="title_app_list">설치된 앱</string>
     <string name="search_hint">앱 검색…</string>
     <string name="filter_all">모든 앱</string>
@@ -111,11 +118,4 @@
     <string name="language_changed_restart">언어가 변경되었습니다. 변경 사항을 적용하려면 앱을 다시 시작하세요.</string>
     <string name="restart">다시 시작</string>
     <string name="setting_saved">설정이 저장되었습니다</string>
-
-    <string name="title_activities">활동 관리자</string>
-    <string name="title_activity_detail">활동 세부정보</string>
-    <string name="search_activity_hint">활동 검색…</string>
-    <string name="launch">실행</string>
-    <string name="back_to_apps">앱으로 돌아가기</string>
-    <string name="no_activities_found">활동을 찾을 수 없음</string>
 </resources>

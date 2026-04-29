@@ -1,68 +1,59 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <!-- Base application theme with MD3 light blue -->
-    <style name="Theme.BugeAppManager" parent="Theme.Material3.DayNight.NoActionBar">
-        <!-- Disable dynamic colors (Material You) -->
-        <item name="android:colorAccent">@color/md_theme_primary</item>
-        <!-- Primary brand color: Light Blue -->
+    <style name="Theme.BugeAppManager" parent="Theme.Material3.Light.NoActionBar">
+        <!-- 基础颜色 -->
         <item name="colorPrimary">@color/md_theme_primary</item>
         <item name="colorOnPrimary">@color/md_theme_onPrimary</item>
         <item name="colorPrimaryContainer">@color/md_theme_primaryContainer</item>
         <item name="colorOnPrimaryContainer">@color/md_theme_onPrimaryContainer</item>
-        <!-- Secondary brand color -->
         <item name="colorSecondary">@color/md_theme_secondary</item>
         <item name="colorOnSecondary">@color/md_theme_onSecondary</item>
         <item name="colorSecondaryContainer">@color/md_theme_secondaryContainer</item>
         <item name="colorOnSecondaryContainer">@color/md_theme_onSecondaryContainer</item>
-        <!-- Tertiary brand color -->
         <item name="colorTertiary">@color/md_theme_tertiary</item>
         <item name="colorOnTertiary">@color/md_theme_onTertiary</item>
         <item name="colorTertiaryContainer">@color/md_theme_tertiaryContainer</item>
         <item name="colorOnTertiaryContainer">@color/md_theme_onTertiaryContainer</item>
-        <!-- Error color -->
         <item name="colorError">@color/md_theme_error</item>
         <item name="colorOnError">@color/md_theme_onError</item>
         <item name="colorErrorContainer">@color/md_theme_errorContainer</item>
         <item name="colorOnErrorContainer">@color/md_theme_onErrorContainer</item>
-        <!-- Background color -->
         <item name="android:colorBackground">@color/md_theme_background</item>
         <item name="colorOnBackground">@color/md_theme_onBackground</item>
-        <!-- Surface color -->
         <item name="colorSurface">@color/md_theme_surface</item>
         <item name="colorOnSurface">@color/md_theme_onSurface</item>
         <item name="colorSurfaceVariant">@color/md_theme_surfaceVariant</item>
         <item name="colorOnSurfaceVariant">@color/md_theme_onSurfaceVariant</item>
-        <!-- Outline -->
         <item name="colorOutline">@color/md_theme_outline</item>
         <item name="colorOutlineVariant">@color/md_theme_outlineVariant</item>
+        <item name="colorSurfaceInverse">@color/md_theme_inverseSurface</item>
+        <item name="colorOnSurfaceInverse">@color/md_theme_inverseOnSurface</item>
+        <item name="colorPrimaryInverse">@color/md_theme_inversePrimary</item>
 
-        <!-- Dialog button style - MD3 text buttons -->
-        <item name="materialAlertDialogTheme">@style/Theme.BugeAppManager.MaterialAlertDialog</item>
-    </style>
+        <!-- 表面颜色层级 -->
+        <item name="colorSurfaceDim">@color/md_theme_surfaceDim</item>
+        <item name="colorSurfaceBright">@color/md_theme_surfaceBright</item>
+        <item name="colorSurfaceContainerLowest">@color/md_theme_surfaceContainerLowest</item>
+        <item name="colorSurfaceContainerLow">@color/md_theme_surfaceContainerLow</item>
+        <item name="colorSurfaceContainer">@color/md_theme_surfaceContainer</item>
+        <item name="colorSurfaceContainerHigh">@color/md_theme_surfaceContainerHigh</item>
+        <item name="colorSurfaceContainerHighest">@color/md_theme_surfaceContainerHighest</item>
 
-    <!-- MaterialAlertDialog custom theme for text buttons -->
-    <style name="Theme.BugeAppManager.MaterialAlertDialog" parent="@style/ThemeOverlay.Material3.MaterialAlertDialog">
-        <item name="buttonBarPositiveButtonStyle">@style/Widget.BugeAppManager.MaterialAlertDialog.PositiveButton</item>
-        <item name="buttonBarNegativeButtonStyle">@style/Widget.BugeAppManager.MaterialAlertDialog.NegativeButton</item>
-        <item name="buttonBarNeutralButtonStyle">@style/Widget.BugeAppManager.MaterialAlertDialog.NeutralButton</item>
-    </style>
+        <!-- 固定颜色 -->
+        <item name="colorPrimaryFixed">@color/md_theme_primaryFixed</item>
+        <item name="colorOnPrimaryFixed">@color/md_theme_onPrimaryFixed</item>
+        <item name="colorPrimaryFixedDim">@color/md_theme_primaryFixedDim</item>
+        <item name="colorOnPrimaryFixedVariant">@color/md_theme_onPrimaryFixedVariant</item>
+        <item name="colorSecondaryFixed">@color/md_theme_secondaryFixed</item>
+        <item name="colorOnSecondaryFixed">@color/md_theme_onSecondaryFixed</item>
+        <item name="colorSecondaryFixedDim">@color/md_theme_secondaryFixedDim</item>
+        <item name="colorOnSecondaryFixedVariant">@color/md_theme_onSecondaryFixedVariant</item>
+        <item name="colorTertiaryFixed">@color/md_theme_tertiaryFixed</item>
+        <item name="colorOnTertiaryFixed">@color/md_theme_onTertiaryFixed</item>
+        <item name="colorTertiaryFixedDim">@color/md_theme_tertiaryFixedDim</item>
+        <item name="colorOnTertiaryFixedVariant">@color/md_theme_onTertiaryFixedVariant</item>
 
-    <!-- Positive button (Confirm/OK) style -->
-    <style name="Widget.BugeAppManager.MaterialAlertDialog.PositiveButton" parent="Widget.Material3.Button.TextButton">
-        <item name="android:textColor">@color/md_theme_primary</item>
-        <item name="android:textSize">14sp</item>
-        <item name="android:fontFamily">sans-serif-medium</item>
-    </style>
-
-    <!-- Negative button (Cancel) style -->
-    <style name="Widget.BugeAppManager.MaterialAlertDialog.NegativeButton" parent="Widget.Material3.Button.TextButton">
-        <item name="android:textColor">@color/md_theme_onSurfaceVariant</item>
-        <item name="android:textSize">14sp</item>
-    </style>
-
-    <!-- Neutral button style -->
-    <style name="Widget.BugeAppManager.MaterialAlertDialog.NeutralButton" parent="Widget.Material3.Button.TextButton">
-        <item name="android:textColor">@color/md_theme_onSurfaceVariant</item>
-        <item name="android:textSize">14sp</item>
+        <item name="android:statusBarColor">?attr/colorSurface</item>
+        <item name="android:navigationBarColor">?attr/colorSurface</item>
     </style>
 </resources>

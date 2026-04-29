@@ -1,7 +1,7 @@
 {
     "logs": [
         {
-            "outputFile": "com.buge.appmanager.app-mergeReleaseResources-43:/values-large-v4/values-large-v4.xml",
+            "outputFile": "com.buge.appmanager.app-mergeReleaseResources-44:/values-large-v4/values-large-v4.xml",
             "map": [
                 {
                     "source": "/data/user/0/com.tom.rv2ide/files/home/.gradle/caches/transforms-3/bd4b3a0f9ce03c46acf898a6cf446411/transformed/appcompat-1.6.1/res/values-large-v4/values-large-v4.xml",
@@ -14,7 +14,7 @@
                     }
                 },
                 {
-                    "source": "/data/user/0/com.tom.rv2ide/files/home/.gradle/caches/transforms-3/c006c7e4abea24f449d8c80c9e056f58/transformed/material-1.11.0/res/values-large-v4/values-large-v4.xml",
+                    "source": "/data/user/0/com.tom.rv2ide/files/home/.gradle/caches/transforms-3/2dee8091642ce5d6e5a15fe62c170882/transformed/material-1.12.0/res/values-large-v4/values-large-v4.xml",
                     "from": {
                         "startLines": "2,3,4,5",
                         "startColumns": "4,4,4,4",

@@ -1,42 +1,154 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="bottom_nav_background">#EAEEF6</color>
+    <color name="bottom_nav_background">#F9F9FF</color>
     <color name="color_denied">#C62828</color>
     <color name="color_denied_container">#FFEBEE</color>
     <color name="color_granted">#2E7D32</color>
     <color name="color_granted_container">#E8F5E9</color>
-    <color name="color_system_app">#7B1FA2</color>
-    <color name="color_user_app">#0077B6</color>
-    <color name="ic_launcher_background">#0288D1</color>
-    <color name="md_theme_background">#F8FDFF</color>
+    <color name="color_system_app">#705575</color>
+    <color name="color_user_app">#415F91</color>
+    <color name="ic_launcher_background">#415F91</color>
+    <color name="md_theme_background">#F9F9FF</color>
+    <color name="md_theme_background_highContrast">#F9F9FF</color>
+    <color name="md_theme_background_mediumContrast">#F9F9FF</color>
     <color name="md_theme_error">#BA1A1A</color>
     <color name="md_theme_errorContainer">#FFDAD6</color>
-    <color name="md_theme_inverseOnSurface">#D6F6FF</color>
-    <color name="md_theme_inversePrimary">#90CAFF</color>
-    <color name="md_theme_inverseSurface">#003547</color>
-    <color name="md_theme_onBackground">#001F25</color>
+    <color name="md_theme_errorContainer_highContrast">#98000A</color>
+    <color name="md_theme_errorContainer_mediumContrast">#CF2C27</color>
+    <color name="md_theme_error_highContrast">#600004</color>
+    <color name="md_theme_error_mediumContrast">#740006</color>
+    <color name="md_theme_inverseOnSurface">#F0F0F7</color>
+    <color name="md_theme_inverseOnSurface_highContrast">#FFFFFF</color>
+    <color name="md_theme_inverseOnSurface_mediumContrast">#F0F0F7</color>
+    <color name="md_theme_inversePrimary">#AAC7FF</color>
+    <color name="md_theme_inversePrimary_highContrast">#AAC7FF</color>
+    <color name="md_theme_inversePrimary_mediumContrast">#AAC7FF</color>
+    <color name="md_theme_inverseSurface">#2E3036</color>
+    <color name="md_theme_inverseSurface_highContrast">#2E3036</color>
+    <color name="md_theme_inverseSurface_mediumContrast">#2E3036</color>
+    <color name="md_theme_onBackground">#191C20</color>
+    <color name="md_theme_onBackground_highContrast">#191C20</color>
+    <color name="md_theme_onBackground_mediumContrast">#191C20</color>
     <color name="md_theme_onError">#FFFFFF</color>
-    <color name="md_theme_onErrorContainer">#410002</color>
+    <color name="md_theme_onErrorContainer">#93000A</color>
+    <color name="md_theme_onErrorContainer_highContrast">#FFFFFF</color>
+    <color name="md_theme_onErrorContainer_mediumContrast">#FFFFFF</color>
+    <color name="md_theme_onError_highContrast">#FFFFFF</color>
+    <color name="md_theme_onError_mediumContrast">#FFFFFF</color>
     <color name="md_theme_onPrimary">#FFFFFF</color>
-    <color name="md_theme_onPrimaryContainer">#001E30</color>
+    <color name="md_theme_onPrimaryContainer">#284777</color>
+    <color name="md_theme_onPrimaryContainer_highContrast">#FFFFFF</color>
+    <color name="md_theme_onPrimaryContainer_mediumContrast">#FFFFFF</color>
+    <color name="md_theme_onPrimaryFixed">#001B3E</color>
+    <color name="md_theme_onPrimaryFixedVariant">#284777</color>
+    <color name="md_theme_onPrimaryFixedVariant_highContrast">#FFFFFF</color>
+    <color name="md_theme_onPrimaryFixedVariant_mediumContrast">#FFFFFF</color>
+    <color name="md_theme_onPrimaryFixed_highContrast">#FFFFFF</color>
+    <color name="md_theme_onPrimaryFixed_mediumContrast">#FFFFFF</color>
+    <color name="md_theme_onPrimary_highContrast">#FFFFFF</color>
+    <color name="md_theme_onPrimary_mediumContrast">#FFFFFF</color>
     <color name="md_theme_onSecondary">#FFFFFF</color>
-    <color name="md_theme_onSecondaryContainer">#001E30</color>
-    <color name="md_theme_onSurface">#001F25</color>
-    <color name="md_theme_onSurfaceVariant">#40484C</color>
+    <color name="md_theme_onSecondaryContainer">#3E4759</color>
+    <color name="md_theme_onSecondaryContainer_highContrast">#FFFFFF</color>
+    <color name="md_theme_onSecondaryContainer_mediumContrast">#FFFFFF</color>
+    <color name="md_theme_onSecondaryFixed">#131C2B</color>
+    <color name="md_theme_onSecondaryFixedVariant">#3E4759</color>
+    <color name="md_theme_onSecondaryFixedVariant_highContrast">#FFFFFF</color>
+    <color name="md_theme_onSecondaryFixedVariant_mediumContrast">#FFFFFF</color>
+    <color name="md_theme_onSecondaryFixed_highContrast">#FFFFFF</color>
+    <color name="md_theme_onSecondaryFixed_mediumContrast">#FFFFFF</color>
+    <color name="md_theme_onSecondary_highContrast">#FFFFFF</color>
+    <color name="md_theme_onSecondary_mediumContrast">#FFFFFF</color>
+    <color name="md_theme_onSurface">#191C20</color>
+    <color name="md_theme_onSurfaceVariant">#44474E</color>
+    <color name="md_theme_onSurfaceVariant_highContrast">#000000</color>
+    <color name="md_theme_onSurfaceVariant_mediumContrast">#33363E</color>
+    <color name="md_theme_onSurface_highContrast">#000000</color>
+    <color name="md_theme_onSurface_mediumContrast">#0F1116</color>
     <color name="md_theme_onTertiary">#FFFFFF</color>
-    <color name="md_theme_onTertiaryContainer">#001E30</color>
-    <color name="md_theme_outline">#70787D</color>
-    <color name="md_theme_outlineVariant">#C0C8CD</color>
-    <color name="md_theme_primary">#0077B6</color>
-    <color name="md_theme_primaryContainer">#C8E6FF</color>
+    <color name="md_theme_onTertiaryContainer">#573E5C</color>
+    <color name="md_theme_onTertiaryContainer_highContrast">#FFFFFF</color>
+    <color name="md_theme_onTertiaryContainer_mediumContrast">#FFFFFF</color>
+    <color name="md_theme_onTertiaryFixed">#28132E</color>
+    <color name="md_theme_onTertiaryFixedVariant">#573E5C</color>
+    <color name="md_theme_onTertiaryFixedVariant_highContrast">#FFFFFF</color>
+    <color name="md_theme_onTertiaryFixedVariant_mediumContrast">#FFFFFF</color>
+    <color name="md_theme_onTertiaryFixed_highContrast">#FFFFFF</color>
+    <color name="md_theme_onTertiaryFixed_mediumContrast">#FFFFFF</color>
+    <color name="md_theme_onTertiary_highContrast">#FFFFFF</color>
+    <color name="md_theme_onTertiary_mediumContrast">#FFFFFF</color>
+    <color name="md_theme_outline">#74777F</color>
+    <color name="md_theme_outlineVariant">#C4C6D0</color>
+    <color name="md_theme_outlineVariant_highContrast">#464951</color>
+    <color name="md_theme_outlineVariant_mediumContrast">#6A6D75</color>
+    <color name="md_theme_outline_highContrast">#292C33</color>
+    <color name="md_theme_outline_mediumContrast">#4F525A</color>
+    <color name="md_theme_primary">#415F91</color>
+    <color name="md_theme_primaryContainer">#D6E3FF</color>
+    <color name="md_theme_primaryContainer_highContrast">#2A497A</color>
+    <color name="md_theme_primaryContainer_mediumContrast">#506DA0</color>
+    <color name="md_theme_primaryFixed">#D6E3FF</color>
+    <color name="md_theme_primaryFixedDim">#AAC7FF</color>
+    <color name="md_theme_primaryFixedDim_highContrast">#0E3262</color>
+    <color name="md_theme_primaryFixedDim_mediumContrast">#375586</color>
+    <color name="md_theme_primaryFixed_highContrast">#2A497A</color>
+    <color name="md_theme_primaryFixed_mediumContrast">#506DA0</color>
+    <color name="md_theme_primary_highContrast">#032B5B</color>
+    <color name="md_theme_primary_mediumContrast">#133665</color>
     <color name="md_theme_scrim">#000000</color>
-    <color name="md_theme_secondary">#4F9FC8</color>
-    <color name="md_theme_secondaryContainer">#C8E6FF</color>
-    <color name="md_theme_surface">#F8FDFF</color>
-    <color name="md_theme_surfaceTint">#0077B6</color>
-    <color name="md_theme_surfaceVariant">#DCE3E9</color>
-    <color name="md_theme_tertiary">#006494</color>
-    <color name="md_theme_tertiaryContainer">#C8E6FF</color>
+    <color name="md_theme_scrim_highContrast">#000000</color>
+    <color name="md_theme_scrim_mediumContrast">#000000</color>
+    <color name="md_theme_secondary">#565F71</color>
+    <color name="md_theme_secondaryContainer">#DAE2F9</color>
+    <color name="md_theme_secondaryContainer_highContrast">#41495B</color>
+    <color name="md_theme_secondaryContainer_mediumContrast">#646D80</color>
+    <color name="md_theme_secondaryFixed">#DAE2F9</color>
+    <color name="md_theme_secondaryFixedDim">#BEC6DC</color>
+    <color name="md_theme_secondaryFixedDim_highContrast">#2A3344</color>
+    <color name="md_theme_secondaryFixedDim_mediumContrast">#4C5567</color>
+    <color name="md_theme_secondaryFixed_highContrast">#41495B</color>
+    <color name="md_theme_secondaryFixed_mediumContrast">#646D80</color>
+    <color name="md_theme_secondary_highContrast">#232C3D</color>
+    <color name="md_theme_secondary_mediumContrast">#2E3647</color>
+    <color name="md_theme_surface">#F9F9FF</color>
+    <color name="md_theme_surfaceBright">#F9F9FF</color>
+    <color name="md_theme_surfaceBright_highContrast">#F9F9FF</color>
+    <color name="md_theme_surfaceBright_mediumContrast">#F9F9FF</color>
+    <color name="md_theme_surfaceContainer">#EDEDF4</color>
+    <color name="md_theme_surfaceContainerHigh">#E7E8EE</color>
+    <color name="md_theme_surfaceContainerHigh_highContrast">#D3D4DB</color>
+    <color name="md_theme_surfaceContainerHigh_mediumContrast">#DCDCE3</color>
+    <color name="md_theme_surfaceContainerHighest">#E2E2E9</color>
+    <color name="md_theme_surfaceContainerHighest_highContrast">#C5C6CD</color>
+    <color name="md_theme_surfaceContainerHighest_mediumContrast">#D1D1D8</color>
+    <color name="md_theme_surfaceContainerLow">#F3F3FA</color>
+    <color name="md_theme_surfaceContainerLow_highContrast">#F0F0F7</color>
+    <color name="md_theme_surfaceContainerLow_mediumContrast">#F3F3FA</color>
+    <color name="md_theme_surfaceContainerLowest">#FFFFFF</color>
+    <color name="md_theme_surfaceContainerLowest_highContrast">#FFFFFF</color>
+    <color name="md_theme_surfaceContainerLowest_mediumContrast">#FFFFFF</color>
+    <color name="md_theme_surfaceContainer_highContrast">#E2E2E9</color>
+    <color name="md_theme_surfaceContainer_mediumContrast">#E7E8EE</color>
+    <color name="md_theme_surfaceDim">#D9D9E0</color>
+    <color name="md_theme_surfaceDim_highContrast">#B8B8BF</color>
+    <color name="md_theme_surfaceDim_mediumContrast">#C5C6CD</color>
+    <color name="md_theme_surfaceVariant">#E0E2EC</color>
+    <color name="md_theme_surfaceVariant_highContrast">#E0E2EC</color>
+    <color name="md_theme_surfaceVariant_mediumContrast">#E0E2EC</color>
+    <color name="md_theme_surface_highContrast">#F9F9FF</color>
+    <color name="md_theme_surface_mediumContrast">#F9F9FF</color>
+    <color name="md_theme_tertiary">#705575</color>
+    <color name="md_theme_tertiaryContainer">#FAD8FD</color>
+    <color name="md_theme_tertiaryContainer_highContrast">#59405E</color>
+    <color name="md_theme_tertiaryContainer_mediumContrast">#7F6484</color>
+    <color name="md_theme_tertiaryFixed">#FAD8FD</color>
+    <color name="md_theme_tertiaryFixedDim">#DDBCE0</color>
+    <color name="md_theme_tertiaryFixedDim_highContrast">#412A47</color>
+    <color name="md_theme_tertiaryFixedDim_mediumContrast">#654C6B</color>
+    <color name="md_theme_tertiaryFixed_highContrast">#59405E</color>
+    <color name="md_theme_tertiaryFixed_mediumContrast">#7F6484</color>
+    <color name="md_theme_tertiary_highContrast">#3A2440</color>
+    <color name="md_theme_tertiary_mediumContrast">#452E4A</color>
     <string name="about">About</string>
     <string name="about_desc">Buge App Manager is a powerful app management tool with Shizuku support for advanced permission and app control.</string>
     <string name="app_info">App Info</string>
@@ -80,7 +192,6 @@
     <string name="nav_settings">Settings</string>
     <string name="no_activities_found">No activities found</string>
     <string name="no_apps_found">No apps found</string>
-    <string name="notification_access_hint">Notification access must be managed in system settings</string>
     <string name="open">Open</string>
     <string name="open_app">Open App</string>
     <string name="open_system_settings">Open Settings</string>
@@ -95,7 +206,6 @@
     <string name="perm_location">Location</string>
     <string name="perm_manage_storage">All Files Access</string>
     <string name="perm_microphone">Microphone</string>
-    <string name="perm_notification_access">Notification Access</string>
     <string name="perm_notifications">Notifications</string>
     <string name="perm_overlay">Display Over Other Apps</string>
     <string name="perm_phone">Phone</string>
@@ -113,6 +223,7 @@
     <string name="pref_language_ru">Русский</string>
     <string name="pref_language_zh">中文 (Simplified)</string>
     <string name="pref_show_system_apps">Show System Apps</string>
+    <string name="pref_show_undeclared_activities">Show undeclared activities</string>
     <string name="pref_theme">Theme</string>
     <string name="pref_theme_auto">System Default</string>
     <string name="pref_theme_dark">Dark</string>
@@ -147,60 +258,172 @@
     <string name="uninstall">Uninstall</string>
     <string name="update_date">Last Updated</string>
     <string name="version">Version</string>
-    <style name="Theme.BugeAppManager" parent="Theme.Material3.DayNight.NoActionBar">
-        
-        <item name="android:colorAccent">@color/md_theme_primary</item>
+    <style name="ShapeAppearance.M3.ExtraLarge" parent="ShapeAppearance.MaterialComponents">
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSize">40dp</item>
+    </style>
+    <style name="ShapeAppearance.M3.Large" parent="ShapeAppearance.MaterialComponents">
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSize">28dp</item>
+    </style>
+    <style name="ShapeAppearance.M3.Medium" parent="ShapeAppearance.MaterialComponents">
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSize">12dp</item>
+    </style>
+    <style name="ShapeAppearance.M3.Small" parent="ShapeAppearance.MaterialComponents">
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSize">4dp</item>
+    </style>
+    <style name="Theme.BugeAppManager" parent="Theme.Material3.Light.NoActionBar">
         
         <item name="colorPrimary">@color/md_theme_primary</item>
         <item name="colorOnPrimary">@color/md_theme_onPrimary</item>
         <item name="colorPrimaryContainer">@color/md_theme_primaryContainer</item>
         <item name="colorOnPrimaryContainer">@color/md_theme_onPrimaryContainer</item>
-        
         <item name="colorSecondary">@color/md_theme_secondary</item>
         <item name="colorOnSecondary">@color/md_theme_onSecondary</item>
         <item name="colorSecondaryContainer">@color/md_theme_secondaryContainer</item>
         <item name="colorOnSecondaryContainer">@color/md_theme_onSecondaryContainer</item>
-        
         <item name="colorTertiary">@color/md_theme_tertiary</item>
         <item name="colorOnTertiary">@color/md_theme_onTertiary</item>
         <item name="colorTertiaryContainer">@color/md_theme_tertiaryContainer</item>
         <item name="colorOnTertiaryContainer">@color/md_theme_onTertiaryContainer</item>
-        
         <item name="colorError">@color/md_theme_error</item>
         <item name="colorOnError">@color/md_theme_onError</item>
         <item name="colorErrorContainer">@color/md_theme_errorContainer</item>
         <item name="colorOnErrorContainer">@color/md_theme_onErrorContainer</item>
-        
         <item name="android:colorBackground">@color/md_theme_background</item>
         <item name="colorOnBackground">@color/md_theme_onBackground</item>
-        
         <item name="colorSurface">@color/md_theme_surface</item>
         <item name="colorOnSurface">@color/md_theme_onSurface</item>
         <item name="colorSurfaceVariant">@color/md_theme_surfaceVariant</item>
         <item name="colorOnSurfaceVariant">@color/md_theme_onSurfaceVariant</item>
-        
         <item name="colorOutline">@color/md_theme_outline</item>
         <item name="colorOutlineVariant">@color/md_theme_outlineVariant</item>
+        <item name="colorSurfaceInverse">@color/md_theme_inverseSurface</item>
+        <item name="colorOnSurfaceInverse">@color/md_theme_inverseOnSurface</item>
+        <item name="colorPrimaryInverse">@color/md_theme_inversePrimary</item>
 
         
-        <item name="materialAlertDialogTheme">@style/Theme.BugeAppManager.MaterialAlertDialog</item>
+        <item name="colorSurfaceDim">@color/md_theme_surfaceDim</item>
+        <item name="colorSurfaceBright">@color/md_theme_surfaceBright</item>
+        <item name="colorSurfaceContainerLowest">@color/md_theme_surfaceContainerLowest</item>
+        <item name="colorSurfaceContainerLow">@color/md_theme_surfaceContainerLow</item>
+        <item name="colorSurfaceContainer">@color/md_theme_surfaceContainer</item>
+        <item name="colorSurfaceContainerHigh">@color/md_theme_surfaceContainerHigh</item>
+        <item name="colorSurfaceContainerHighest">@color/md_theme_surfaceContainerHighest</item>
+
+        
+        <item name="colorPrimaryFixed">@color/md_theme_primaryFixed</item>
+        <item name="colorOnPrimaryFixed">@color/md_theme_onPrimaryFixed</item>
+        <item name="colorPrimaryFixedDim">@color/md_theme_primaryFixedDim</item>
+        <item name="colorOnPrimaryFixedVariant">@color/md_theme_onPrimaryFixedVariant</item>
+        <item name="colorSecondaryFixed">@color/md_theme_secondaryFixed</item>
+        <item name="colorOnSecondaryFixed">@color/md_theme_onSecondaryFixed</item>
+        <item name="colorSecondaryFixedDim">@color/md_theme_secondaryFixedDim</item>
+        <item name="colorOnSecondaryFixedVariant">@color/md_theme_onSecondaryFixedVariant</item>
+        <item name="colorTertiaryFixed">@color/md_theme_tertiaryFixed</item>
+        <item name="colorOnTertiaryFixed">@color/md_theme_onTertiaryFixed</item>
+        <item name="colorTertiaryFixedDim">@color/md_theme_tertiaryFixedDim</item>
+        <item name="colorOnTertiaryFixedVariant">@color/md_theme_onTertiaryFixedVariant</item>
+
+        <item name="android:statusBarColor">?attr/colorSurface</item>
+        <item name="android:navigationBarColor">?attr/colorSurface</item>
     </style>
-    <style name="Theme.BugeAppManager.MaterialAlertDialog" parent="@style/ThemeOverlay.Material3.MaterialAlertDialog">
-        <item name="buttonBarPositiveButtonStyle">@style/Widget.BugeAppManager.MaterialAlertDialog.PositiveButton</item>
-        <item name="buttonBarNegativeButtonStyle">@style/Widget.BugeAppManager.MaterialAlertDialog.NegativeButton</item>
-        <item name="buttonBarNeutralButtonStyle">@style/Widget.BugeAppManager.MaterialAlertDialog.NeutralButton</item>
+    <style name="ThemeOverlay.BugeAppManager.HighContrast" parent="Theme.Material3.Light.NoActionBar">
+        <item name="colorPrimary">@color/md_theme_primary_highContrast</item>
+        <item name="colorOnPrimary">@color/md_theme_onPrimary_highContrast</item>
+        <item name="colorPrimaryContainer">@color/md_theme_primaryContainer_highContrast</item>
+        <item name="colorOnPrimaryContainer">@color/md_theme_onPrimaryContainer_highContrast</item>
+        <item name="colorSecondary">@color/md_theme_secondary_highContrast</item>
+        <item name="colorOnSecondary">@color/md_theme_onSecondary_highContrast</item>
+        <item name="colorSecondaryContainer">@color/md_theme_secondaryContainer_highContrast</item>
+        <item name="colorOnSecondaryContainer">@color/md_theme_onSecondaryContainer_highContrast</item>
+        <item name="colorTertiary">@color/md_theme_tertiary_highContrast</item>
+        <item name="colorOnTertiary">@color/md_theme_onTertiary_highContrast</item>
+        <item name="colorTertiaryContainer">@color/md_theme_tertiaryContainer_highContrast</item>
+        <item name="colorOnTertiaryContainer">@color/md_theme_onTertiaryContainer_highContrast</item>
+        <item name="colorError">@color/md_theme_error_highContrast</item>
+        <item name="colorOnError">@color/md_theme_onError_highContrast</item>
+        <item name="colorErrorContainer">@color/md_theme_errorContainer_highContrast</item>
+        <item name="colorOnErrorContainer">@color/md_theme_onErrorContainer_highContrast</item>
+        <item name="android:colorBackground">@color/md_theme_background_highContrast</item>
+        <item name="colorOnBackground">@color/md_theme_onBackground_highContrast</item>
+        <item name="colorSurface">@color/md_theme_surface_highContrast</item>
+        <item name="colorOnSurface">@color/md_theme_onSurface_highContrast</item>
+        <item name="colorSurfaceVariant">@color/md_theme_surfaceVariant_highContrast</item>
+        <item name="colorOnSurfaceVariant">@color/md_theme_onSurfaceVariant_highContrast</item>
+        <item name="colorOutline">@color/md_theme_outline_highContrast</item>
+        <item name="colorOutlineVariant">@color/md_theme_outlineVariant_highContrast</item>
+        <item name="colorSurfaceInverse">@color/md_theme_inverseSurface_highContrast</item>
+        <item name="colorOnSurfaceInverse">@color/md_theme_inverseOnSurface_highContrast</item>
+        <item name="colorPrimaryInverse">@color/md_theme_inversePrimary_highContrast</item>
+        <item name="colorPrimaryFixed">@color/md_theme_primaryFixed_highContrast</item>
+        <item name="colorOnPrimaryFixed">@color/md_theme_onPrimaryFixed_highContrast</item>
+        <item name="colorPrimaryFixedDim">@color/md_theme_primaryFixedDim_highContrast</item>
+        <item name="colorOnPrimaryFixedVariant">@color/md_theme_onPrimaryFixedVariant_highContrast</item>
+        <item name="colorSecondaryFixed">@color/md_theme_secondaryFixed_highContrast</item>
+        <item name="colorOnSecondaryFixed">@color/md_theme_onSecondaryFixed_highContrast</item>
+        <item name="colorSecondaryFixedDim">@color/md_theme_secondaryFixedDim_highContrast</item>
+        <item name="colorOnSecondaryFixedVariant">@color/md_theme_onSecondaryFixedVariant_highContrast</item>
+        <item name="colorTertiaryFixed">@color/md_theme_tertiaryFixed_highContrast</item>
+        <item name="colorOnTertiaryFixed">@color/md_theme_onTertiaryFixed_highContrast</item>
+        <item name="colorTertiaryFixedDim">@color/md_theme_tertiaryFixedDim_highContrast</item>
+        <item name="colorOnTertiaryFixedVariant">@color/md_theme_onTertiaryFixedVariant_highContrast</item>
+        <item name="colorSurfaceDim">@color/md_theme_surfaceDim_highContrast</item>
+        <item name="colorSurfaceBright">@color/md_theme_surfaceBright_highContrast</item>
+        <item name="colorSurfaceContainerLowest">@color/md_theme_surfaceContainerLowest_highContrast</item>
+        <item name="colorSurfaceContainerLow">@color/md_theme_surfaceContainerLow_highContrast</item>
+        <item name="colorSurfaceContainer">@color/md_theme_surfaceContainer_highContrast</item>
+        <item name="colorSurfaceContainerHigh">@color/md_theme_surfaceContainerHigh_highContrast</item>
+        <item name="colorSurfaceContainerHighest">@color/md_theme_surfaceContainerHighest_highContrast</item>
     </style>
-    <style name="Widget.BugeAppManager.MaterialAlertDialog.NegativeButton" parent="Widget.Material3.Button.TextButton">
-        <item name="android:textColor">@color/md_theme_onSurfaceVariant</item>
-        <item name="android:textSize">14sp</item>
-    </style>
-    <style name="Widget.BugeAppManager.MaterialAlertDialog.NeutralButton" parent="Widget.Material3.Button.TextButton">
-        <item name="android:textColor">@color/md_theme_onSurfaceVariant</item>
-        <item name="android:textSize">14sp</item>
-    </style>
-    <style name="Widget.BugeAppManager.MaterialAlertDialog.PositiveButton" parent="Widget.Material3.Button.TextButton">
-        <item name="android:textColor">@color/md_theme_primary</item>
-        <item name="android:textSize">14sp</item>
-        <item name="android:fontFamily">sans-serif-medium</item>
+    <style name="ThemeOverlay.BugeAppManager.MediumContrast" parent="Theme.Material3.Light.NoActionBar">
+        <item name="colorPrimary">@color/md_theme_primary_mediumContrast</item>
+        <item name="colorOnPrimary">@color/md_theme_onPrimary_mediumContrast</item>
+        <item name="colorPrimaryContainer">@color/md_theme_primaryContainer_mediumContrast</item>
+        <item name="colorOnPrimaryContainer">@color/md_theme_onPrimaryContainer_mediumContrast</item>
+        <item name="colorSecondary">@color/md_theme_secondary_mediumContrast</item>
+        <item name="colorOnSecondary">@color/md_theme_onSecondary_mediumContrast</item>
+        <item name="colorSecondaryContainer">@color/md_theme_secondaryContainer_mediumContrast</item>
+        <item name="colorOnSecondaryContainer">@color/md_theme_onSecondaryContainer_mediumContrast</item>
+        <item name="colorTertiary">@color/md_theme_tertiary_mediumContrast</item>
+        <item name="colorOnTertiary">@color/md_theme_onTertiary_mediumContrast</item>
+        <item name="colorTertiaryContainer">@color/md_theme_tertiaryContainer_mediumContrast</item>
+        <item name="colorOnTertiaryContainer">@color/md_theme_onTertiaryContainer_mediumContrast</item>
+        <item name="colorError">@color/md_theme_error_mediumContrast</item>
+        <item name="colorOnError">@color/md_theme_onError_mediumContrast</item>
+        <item name="colorErrorContainer">@color/md_theme_errorContainer_mediumContrast</item>
+        <item name="colorOnErrorContainer">@color/md_theme_onErrorContainer_mediumContrast</item>
+        <item name="android:colorBackground">@color/md_theme_background_mediumContrast</item>
+        <item name="colorOnBackground">@color/md_theme_onBackground_mediumContrast</item>
+        <item name="colorSurface">@color/md_theme_surface_mediumContrast</item>
+        <item name="colorOnSurface">@color/md_theme_onSurface_mediumContrast</item>
+        <item name="colorSurfaceVariant">@color/md_theme_surfaceVariant_mediumContrast</item>
+        <item name="colorOnSurfaceVariant">@color/md_theme_onSurfaceVariant_mediumContrast</item>
+        <item name="colorOutline">@color/md_theme_outline_mediumContrast</item>
+        <item name="colorOutlineVariant">@color/md_theme_outlineVariant_mediumContrast</item>
+        <item name="colorSurfaceInverse">@color/md_theme_inverseSurface_mediumContrast</item>
+        <item name="colorOnSurfaceInverse">@color/md_theme_inverseOnSurface_mediumContrast</item>
+        <item name="colorPrimaryInverse">@color/md_theme_inversePrimary_mediumContrast</item>
+        <item name="colorPrimaryFixed">@color/md_theme_primaryFixed_mediumContrast</item>
+        <item name="colorOnPrimaryFixed">@color/md_theme_onPrimaryFixed_mediumContrast</item>
+        <item name="colorPrimaryFixedDim">@color/md_theme_primaryFixedDim_mediumContrast</item>
+        <item name="colorOnPrimaryFixedVariant">@color/md_theme_onPrimaryFixedVariant_mediumContrast</item>
+        <item name="colorSecondaryFixed">@color/md_theme_secondaryFixed_mediumContrast</item>
+        <item name="colorOnSecondaryFixed">@color/md_theme_onSecondaryFixed_mediumContrast</item>
+        <item name="colorSecondaryFixedDim">@color/md_theme_secondaryFixedDim_mediumContrast</item>
+        <item name="colorOnSecondaryFixedVariant">@color/md_theme_onSecondaryFixedVariant_mediumContrast</item>
+        <item name="colorTertiaryFixed">@color/md_theme_tertiaryFixed_mediumContrast</item>
+        <item name="colorOnTertiaryFixed">@color/md_theme_onTertiaryFixed_mediumContrast</item>
+        <item name="colorTertiaryFixedDim">@color/md_theme_tertiaryFixedDim_mediumContrast</item>
+        <item name="colorOnTertiaryFixedVariant">@color/md_theme_onTertiaryFixedVariant_mediumContrast</item>
+        <item name="colorSurfaceDim">@color/md_theme_surfaceDim_mediumContrast</item>
+        <item name="colorSurfaceBright">@color/md_theme_surfaceBright_mediumContrast</item>
+        <item name="colorSurfaceContainerLowest">@color/md_theme_surfaceContainerLowest_mediumContrast</item>
+        <item name="colorSurfaceContainerLow">@color/md_theme_surfaceContainerLow_mediumContrast</item>
+        <item name="colorSurfaceContainer">@color/md_theme_surfaceContainer_mediumContrast</item>
+        <item name="colorSurfaceContainerHigh">@color/md_theme_surfaceContainerHigh_mediumContrast</item>
+        <item name="colorSurfaceContainerHighest">@color/md_theme_surfaceContainerHighest_mediumContrast</item>
     </style>
 </resources>

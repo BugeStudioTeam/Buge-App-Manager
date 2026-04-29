@@ -1,10 +1,10 @@
 {
     "logs": [
         {
-            "outputFile": "com.buge.appmanager.app-mergeDebugResources-43:/values-w400dp-port-v13/values-w400dp-port-v13.xml",
+            "outputFile": "com.buge.appmanager.app-mergeDebugResources-44:/values-w400dp-port-v13/values-w400dp-port-v13.xml",
             "map": [
                 {
-                    "source": "/data/user/0/com.tom.rv2ide/files/home/.gradle/caches/transforms-3/c006c7e4abea24f449d8c80c9e056f58/transformed/material-1.11.0/res/values-w400dp-port-v13/values-w400dp-port-v13.xml",
+                    "source": "/data/user/0/com.tom.rv2ide/files/home/.gradle/caches/transforms-3/2dee8091642ce5d6e5a15fe62c170882/transformed/material-1.12.0/res/values-w400dp-port-v13/values-w400dp-port-v13.xml",
                     "from": {
                         "startLines": "2,3,4,5,6,7,8,9",
                         "startColumns": "4,4,4,4,4,4,4,4",

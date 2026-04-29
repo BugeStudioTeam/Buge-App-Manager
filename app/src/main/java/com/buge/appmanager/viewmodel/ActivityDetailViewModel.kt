@@ -7,6 +7,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.buge.appmanager.data.ActivityRepository
 import com.buge.appmanager.model.ActivityDetail
+import com.buge.appmanager.util.PreferencesManager
 import kotlinx.coroutines.launch
 
 class ActivityDetailViewModel(application: Application) : AndroidViewModel(application) {
@@ -22,7 +23,8 @@ class ActivityDetailViewModel(application: Application) : AndroidViewModel(appli
         viewModelScope.launch {
             _isLoading.value = true
             try {
-                val activities = repository.getAppActivities(packageName)
+                val showUndeclared = PreferencesManager.getShowUndeclaredActivities(getApplication())
+                val activities = repository.getAppActivities(packageName, showUndeclared)
                 _activities.value = activities
             } catch (e: Exception) {
                 _activities.value = emptyList()

@@ -8,6 +8,13 @@
     <string name="nav_permissions">权限</string>
     <string name="nav_settings">设置</string>
 
+    <string name="title_activities">活动管理器</string>
+    <string name="title_activity_detail">活动详情</string>
+    <string name="search_activity_hint">搜索活动…</string>
+    <string name="launch">启动</string>
+    <string name="back_to_apps">返回应用列表</string>
+    <string name="no_activities_found">未找到活动</string>
+
     <string name="title_app_list">已安装应用</string>
     <string name="search_hint">搜索应用…</string>
     <string name="filter_all">所有应用</string>
@@ -111,11 +118,4 @@
     <string name="language_changed_restart">语言已更改。重启应用以应用更改。</string>
     <string name="restart">重启</string>
     <string name="setting_saved">设置已保存</string>
-
-    <string name="title_activities">活动管理器</string>
-    <string name="title_activity_detail">活动详情</string>
-    <string name="search_activity_hint">搜索活动…</string>
-    <string name="launch">启动</string>
-    <string name="back_to_apps">返回应用列表</string>
-    <string name="no_activities_found">未找到活动</string>
 </resources>

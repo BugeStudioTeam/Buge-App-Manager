@@ -90,11 +90,7 @@ class ActivityDetailAdapter(
                 }
             }
 
-            itemView.setOnClickListener {
-                if (activity.isExported) {
-                    onActivityClick(activity)
-                }
-            }
+            itemView.setOnClickListener(null)
         }
     }
 

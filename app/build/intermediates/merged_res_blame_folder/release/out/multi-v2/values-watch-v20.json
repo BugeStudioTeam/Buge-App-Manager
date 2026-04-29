@@ -1,7 +1,7 @@
 {
     "logs": [
         {
-            "outputFile": "com.buge.appmanager.app-mergeReleaseResources-43:/values-watch-v20/values-watch-v20.xml",
+            "outputFile": "com.buge.appmanager.app-mergeReleaseResources-44:/values-watch-v20/values-watch-v20.xml",
             "map": [
                 {
                     "source": "/data/user/0/com.tom.rv2ide/files/home/.gradle/caches/transforms-3/bd4b3a0f9ce03c46acf898a6cf446411/transformed/appcompat-1.6.1/res/values-watch-v20/values-watch-v20.xml",

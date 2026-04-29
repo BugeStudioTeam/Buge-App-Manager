@@ -1,5 +1,3 @@
-// 文件路径: app/src/main/java/com/buge/appmanager/viewmodel/PermissionsViewModel.kt
-
 package com.buge.appmanager.viewmodel
 
 import android.app.Application
@@ -33,7 +31,6 @@ class PermissionsViewModel(application: Application) : AndroidViewModel(applicat
         viewModelScope.launch {
             _isLoading.value = true
             try {
-                // 读取设置里的"显示系统应用"开关，权限页面与应用页面保持一致
                 val showSystemApps = PreferencesManager.getShowSystemApps(getApplication())
                 val result = repository.getAppsWithPermissionCategory(permissions, showSystemApps)
                 _appsWithPermission.value = result

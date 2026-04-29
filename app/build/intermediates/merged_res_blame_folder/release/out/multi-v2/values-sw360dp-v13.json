@@ -1,7 +1,7 @@
 {
     "logs": [
         {
-            "outputFile": "com.buge.appmanager.app-mergeReleaseResources-43:/values-sw360dp-v13/values-sw360dp-v13.xml",
+            "outputFile": "com.buge.appmanager.app-mergeReleaseResources-44:/values-sw360dp-v13/values-sw360dp-v13.xml",
             "map": [
                 {
                     "source": "/data/user/0/com.tom.rv2ide/files/home/.gradle/caches/transforms-3/e0bcc1aaee8340436a48100d841f3786/transformed/preference-1.2.1/res/values-sw360dp-v13/values-sw360dp-v13.xml",

@@ -1,8 +1,8 @@
 1<?xml version="1.0" encoding="utf-8"?>
 2<manifest xmlns:android="http://schemas.android.com/apk/res/android"
 3    package="com.buge.appmanager"
-4    android:versionCode="21"
-5    android:versionName="2.5.9" >
+4    android:versionCode="22"
+5    android:versionName="3.6.11" >
 6
 7    <uses-sdk
 8        android:minSdkVersion="26"
@@ -27,15 +27,15 @@
 19    </queries>
 20
 21    <permission
-21-->[androidx.core:core:1.12.0] /data/user/0/com.tom.rv2ide/files/home/.gradle/caches/transforms-3/01be542a8a7642ecba403b94caa2bdf6/transformed/core-1.12.0/AndroidManifest.xml:22:5-24:47
+21-->[androidx.core:core:1.13.0] /data/user/0/com.tom.rv2ide/files/home/.gradle/caches/transforms-3/9d6069b5af1469d62629ca8686bf21a0/transformed/core-1.13.0/AndroidManifest.xml:22:5-24:47
 22        android:name="com.buge.appmanager.DYNAMIC_RECEIVER_NOT_EXPORTED_PERMISSION"
-22-->[androidx.core:core:1.12.0] /data/user/0/com.tom.rv2ide/files/home/.gradle/caches/transforms-3/01be542a8a7642ecba403b94caa2bdf6/transformed/core-1.12.0/AndroidManifest.xml:23:9-81
+22-->[androidx.core:core:1.13.0] /data/user/0/com.tom.rv2ide/files/home/.gradle/caches/transforms-3/9d6069b5af1469d62629ca8686bf21a0/transformed/core-1.13.0/AndroidManifest.xml:23:9-81
 23        android:protectionLevel="signature" />
-23-->[androidx.core:core:1.12.0] /data/user/0/com.tom.rv2ide/files/home/.gradle/caches/transforms-3/01be542a8a7642ecba403b94caa2bdf6/transformed/core-1.12.0/AndroidManifest.xml:24:9-44
+23-->[androidx.core:core:1.13.0] /data/user/0/com.tom.rv2ide/files/home/.gradle/caches/transforms-3/9d6069b5af1469d62629ca8686bf21a0/transformed/core-1.13.0/AndroidManifest.xml:24:9-44
 24
 25    <uses-permission android:name="com.buge.appmanager.DYNAMIC_RECEIVER_NOT_EXPORTED_PERMISSION" />
-25-->[androidx.core:core:1.12.0] /data/user/0/com.tom.rv2ide/files/home/.gradle/caches/transforms-3/01be542a8a7642ecba403b94caa2bdf6/transformed/core-1.12.0/AndroidManifest.xml:26:5-97
-25-->[androidx.core:core:1.12.0] /data/user/0/com.tom.rv2ide/files/home/.gradle/caches/transforms-3/01be542a8a7642ecba403b94caa2bdf6/transformed/core-1.12.0/AndroidManifest.xml:26:22-94
+25-->[androidx.core:core:1.13.0] /data/user/0/com.tom.rv2ide/files/home/.gradle/caches/transforms-3/9d6069b5af1469d62629ca8686bf21a0/transformed/core-1.13.0/AndroidManifest.xml:26:5-97
+25-->[androidx.core:core:1.13.0] /data/user/0/com.tom.rv2ide/files/home/.gradle/caches/transforms-3/9d6069b5af1469d62629ca8686bf21a0/transformed/core-1.13.0/AndroidManifest.xml:26:22-94
 26    <uses-permission android:name="moe.shizuku.manager.permission.API_V23" />
 26-->[dev.rikka.shizuku:provider:13.1.5] /data/user/0/com.tom.rv2ide/files/home/.gradle/caches/transforms-3/be4d85bf91aa8ca93672ea6a3b1ff2ed/transformed/provider-13.1.5/AndroidManifest.xml:8:5-78
 26-->[dev.rikka.shizuku:provider:13.1.5] /data/user/0/com.tom.rv2ide/files/home/.gradle/caches/transforms-3/be4d85bf91aa8ca93672ea6a3b1ff2ed/transformed/provider-13.1.5/AndroidManifest.xml:8:22-75
@@ -45,7 +45,7 @@
 29        android:allowBackup="true"
 29-->/storage/emulated/0/AndroidIDEProjects/BugeAppManager/app/src/main/AndroidManifest.xml:14:9-35
 30        android:appComponentFactory="androidx.core.app.CoreComponentFactory"
-30-->[androidx.core:core:1.12.0] /data/user/0/com.tom.rv2ide/files/home/.gradle/caches/transforms-3/01be542a8a7642ecba403b94caa2bdf6/transformed/core-1.12.0/AndroidManifest.xml:28:18-86
+30-->[androidx.core:core:1.13.0] /data/user/0/com.tom.rv2ide/files/home/.gradle/caches/transforms-3/9d6069b5af1469d62629ca8686bf21a0/transformed/core-1.13.0/AndroidManifest.xml:28:18-86
 31        android:extractNativeLibs="false"
 32        android:icon="@mipmap/ic_launcher"
 32-->/storage/emulated/0/AndroidIDEProjects/BugeAppManager/app/src/main/AndroidManifest.xml:15:9-43

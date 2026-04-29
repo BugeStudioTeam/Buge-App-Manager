@@ -8,6 +8,13 @@
     <string name="nav_permissions">権限</string>
     <string name="nav_settings">設定</string>
 
+    <string name="title_activities">アクティビティマネージャー</string>
+    <string name="title_activity_detail">アクティビティ詳細</string>
+    <string name="search_activity_hint">アクティビティを検索…</string>
+    <string name="launch">起動</string>
+    <string name="back_to_apps">アプリに戻る</string>
+    <string name="no_activities_found">アクティビティが見つかりません</string>
+
     <string name="title_app_list">インストール済みアプリ</string>
     <string name="search_hint">アプリを検索…</string>
     <string name="filter_all">すべてのアプリ</string>
@@ -111,11 +118,4 @@
     <string name="language_changed_restart">言語が変更されました。アプリを再起動して変更を適用してください。</string>
     <string name="restart">再起動</string>
     <string name="setting_saved">設定を保存しました</string>
-
-    <string name="title_activities">アクティビティマネージャー</string>
-    <string name="title_activity_detail">アクティビティ詳細</string>
-    <string name="search_activity_hint">アクティビティを検索…</string>
-    <string name="launch">起動</string>
-    <string name="back_to_apps">アプリに戻る</string>
-    <string name="no_activities_found">アクティビティが見つかりません</string>
 </resources>

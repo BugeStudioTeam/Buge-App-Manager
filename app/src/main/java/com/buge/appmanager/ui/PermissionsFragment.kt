@@ -13,6 +13,8 @@ import com.buge.appmanager.adapter.AppPermissionItem
 import com.buge.appmanager.data.AppRepository
 import com.buge.appmanager.databinding.FragmentPermissionsBinding
 import com.buge.appmanager.model.AppInfo
+import com.buge.appmanager.shizuku.ShizukuManager
+import com.buge.appmanager.util.SpringAnimationHelper
 import com.buge.appmanager.viewmodel.PermissionsViewModel
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.snackbar.Snackbar
@@ -41,6 +43,17 @@ class PermissionsFragment : Fragment() {
         setupBatchActions()
         observeViewModel()
         viewModel.loadAppsForPermissions(currentPermissions)
+
+        runSpringEnterAnimation()
+    }
+
+    private fun runSpringEnterAnimation() {
+        binding.recyclerView.alpha = 0f
+        binding.recyclerView.translationY = 30f
+        binding.recyclerView.post {
+            SpringAnimationHelper.animateAlpha(binding.recyclerView, 1f)
+            SpringAnimationHelper.animateTranslationY(binding.recyclerView, 0f)
+        }
     }
 
     override fun onResume() {

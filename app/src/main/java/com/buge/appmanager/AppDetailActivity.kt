@@ -5,6 +5,7 @@ import android.net.Uri
 import android.os.Bundle
 import android.provider.Settings
 import android.view.LayoutInflater
+import android.view.MenuItem
 import android.view.View
 import android.widget.TextView
 import androidx.activity.viewModels
@@ -51,13 +52,27 @@ class AppDetailActivity : AppCompatActivity() {
     }
 
     private fun setupToolbar() {
-        binding.toolbar.setNavigationOnClickListener { onBackPressedDispatcher.onBackPressed() }
+        setSupportActionBar(binding.toolbar)
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
+        supportActionBar?.setDisplayShowHomeEnabled(true)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when (item.itemId) {
+            android.R.id.home -> {
+                onBackPressedDispatcher.onBackPressed()
+                return true
+            }
+        }
+        return super.onOptionsItemSelected(item)
     }
 
     private fun setupPermissionsRecycler() {
-        permAdapter = PermissionDetailAdapter { perm ->
-            handlePermissionToggle(perm)
-        }
+        permAdapter = PermissionDetailAdapter(
+            onToggle = { perm ->
+                handlePermissionToggle(perm)
+            }
+        )
         binding.permissionsRecycler.layoutManager = LinearLayoutManager(this)
         binding.permissionsRecycler.adapter = permAdapter
     }
@@ -151,7 +166,6 @@ class AppDetailActivity : AppCompatActivity() {
     private fun observeViewModel() {
         viewModel.appInfo.observe(this) { app ->
             app ?: return@observe
-            // Fix system app icon display - use default icon if null
             if (app.icon != null) {
                 binding.appIcon.setImageDrawable(app.icon)
             } else {
@@ -166,14 +180,12 @@ class AppDetailActivity : AppCompatActivity() {
             binding.packageName.text = app.packageName
             binding.appVersion.text = "v${app.versionName} (${app.versionCode})"
 
-            // Update disable/enable button
             binding.btnDisableEnable.text = if (app.isEnabled) {
                 getString(R.string.disable_app)
             } else {
                 getString(R.string.enable_app)
             }
 
-            // Populate info rows
             binding.infoContainer.removeAllViews()
             val dateFormat = SimpleDateFormat("yyyy-MM-dd HH:mm", Locale.getDefault())
             addInfoRow(getString(R.string.install_date), dateFormat.format(Date(app.installTime)))
@@ -184,12 +196,10 @@ class AppDetailActivity : AppCompatActivity() {
         }
 
         viewModel.permissions.observe(this) { perms ->
-            // Fix system app permissions - ensure list is not empty
             if (perms.isNotEmpty()) {
                 permAdapter.submitList(perms)
                 binding.permCount.text = "${perms.count { it.isGranted }}/${perms.size}"
             } else {
-                // Try to reload permissions for system apps
                 viewModel.loadApp(packageName)
             }
         }

@@ -20,6 +20,10 @@
 <p>
   <img src="https://github.com/BugeStudioTeam/Buge-App-Manager/blob/main/images/Screenshot_Apps.png" alt="App Screenshot - apps" width="200"/>
 
+  <img src="https://github.com/BugeStudioTeam/Buge-App-Manager/blob/main/images/Screenshot_Permissions.png" alt="App Screenshot - permissions" width="200"/>
+
+  <img src="https://github.com/BugeStudioTeam/Buge-App-Manager/blob/main/images/Screenshot_Activities.png" alt="App Screenshot - activities" width="200"/>
+
   <img src="https://github.com/BugeStudioTeam/Buge-App-Manager/blob/main/images/Screenshot_Settings.png" alt="App Screenshot - settings" width="200"/>
 </p>
 

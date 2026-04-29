@@ -18,13 +18,13 @@
 ## 📱 Screenshots
 
 <p>
-  <img src="https://github.com/BugeStudioTeam/Buge-App-Manager/blob/main/images/Screenshot_Apps.png" alt="App Screenshot - apps" width="180"/>
+  <img src="https://github.com/BugeStudioTeam/Buge-App-Manager/blob/main/images/Screenshot_Apps.png" alt="App Screenshot - apps" width="150"/>
 
-  <img src="https://github.com/BugeStudioTeam/Buge-App-Manager/blob/main/images/Screenshot_Permissions.png" alt="App Screenshot - permissions" width="180"/>
+  <img src="https://github.com/BugeStudioTeam/Buge-App-Manager/blob/main/images/Screenshot_Permissions.png" alt="App Screenshot - permissions" width="150"/>
 
-  <img src="https://github.com/BugeStudioTeam/Buge-App-Manager/blob/main/images/Screenshot_Activities.png" alt="App Screenshot - activities" width="180"/>
+  <img src="https://github.com/BugeStudioTeam/Buge-App-Manager/blob/main/images/Screenshot_Activities.png" alt="App Screenshot - activities" width="150"/>
 
-  <img src="https://github.com/BugeStudioTeam/Buge-App-Manager/blob/main/images/Screenshot_Settings.png" alt="App Screenshot - settings" width="180"/>
+  <img src="https://github.com/BugeStudioTeam/Buge-App-Manager/blob/main/images/Screenshot_Settings.png" alt="App Screenshot - settings" width="150"/>
 </p>
 
 ---

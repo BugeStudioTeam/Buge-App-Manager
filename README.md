@@ -21,7 +21,7 @@
   <img src="https://github.com/BugeStudioTeam/Buge-App-Manager/blob/main/images/Screenshot_Apps.png" alt="App Screenshot - apps" width="280"/>
 </p>
 
-<p align="center">
+<p>
   <img src="https://github.com/BugeStudioTeam/Buge-App-Manager/blob/main/images/Screenshot_Settings.png" alt="App Screenshot - settings" width="280"/>
 </p>
 

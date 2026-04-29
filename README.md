@@ -18,7 +18,7 @@
 ## 📱 Screenshots
 
 <p align="center">
-  <img src="https://raw.githubusercontent.com/BugeStudioTeam/Buge-App-Manager/refs/heads/main/" alt="App Screenshot" width="280"/>
+  <img src="https://github.com/BugeStudioTeam/Buge-App-Manager/blob/main/images/Screenshot_Apps.png" alt="App Screenshot" width="280"/>
 </p>
 
 ---

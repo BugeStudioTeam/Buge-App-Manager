@@ -18,9 +18,9 @@
 ## 📱 Screenshots
 
 <p>
-  <img src="https://github.com/BugeStudioTeam/Buge-App-Manager/blob/main/images/Screenshot_Apps.png" alt="App Screenshot - apps" width="280"/>
+  <img src="https://github.com/BugeStudioTeam/Buge-App-Manager/blob/main/images/Screenshot_Apps.png" alt="App Screenshot - apps" width="200"/>
 
-  <img src="https://github.com/BugeStudioTeam/Buge-App-Manager/blob/main/images/Screenshot_Settings.png" alt="App Screenshot - settings" width="280"/>
+  <img src="https://github.com/BugeStudioTeam/Buge-App-Manager/blob/main/images/Screenshot_Settings.png" alt="App Screenshot - settings" width="200"/>
 </p>
 
 ---

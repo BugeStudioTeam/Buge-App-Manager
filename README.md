@@ -64,6 +64,16 @@
 
 ---
 
+## 🎓 Tutorial: How to Perform Batch Permission Operations for Your Apps
+
+Follow this step-by-step guide to manage the same permission type across multiple applications simultaneously.
+
+### 📹 Video Tutorial
+
+[![Batch Permission Operations Tutorial](https://img.shields.io/badge/Watch-Tutorial%20Video-red?logo=youtube&logoColor=white)](https://github.com/BugeStudioTeam/Buge-App-Manager/blob/main/videos/Tutorial-MP.mp4)
+
+---
+
 ## Star History
 
 [![Star History Chart](https://api.star-history.com/svg?repos=BugeStudioTeam/Buge-App-Manager&type=Date)](https://star-history.com/#BugeStudioTeam/Buge-App-Manager&Date)

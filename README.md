@@ -70,7 +70,11 @@ Follow this step-by-step guide to manage the same permission type across multipl
 
 ### 📹 Video Tutorial
 
-[![Batch Permission Operations Tutorial](https://img.shields.io/badge/Watch-Tutorial%20Video-red?logo=youtube&logoColor=white)](https://github.com/BugeStudioTeam/Buge-App-Manager/blob/main/videos/Tutorial-MP.mp4)
+<p align="center">
+  <a href="https://github.com/BugeStudioTeam/Buge-App-Manager/blob/main/videos/Tutorial-MP.mp4">
+    <img src="https://img.shields.io/badge/▶️_Watch_Tutorial_on_GitHub-181717?logo=github&logoColor=white" alt="Watch Tutorial">
+  </a>
+</p>
 
 ---
 

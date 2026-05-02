@@ -61,7 +61,6 @@
     <string name="perm_contacts">연락처</string>
     <string name="perm_storage">저장소</string>
     <string name="perm_manage_storage">모든 파일 액세스</string>
-    <string name="perm_notification_access">알림 액세스</string>
     <string name="perm_phone">전화</string>
     <string name="perm_sms">SMS</string>
     <string name="perm_calendar">캘린더</string>
@@ -75,7 +74,6 @@
     <string name="confirm_grant">%d개의 앱에 권한을 허용하시겠습니까?</string>
     <string name="selected_count">%d개 선택됨</string>
     <string name="open_system_settings">시스템 설정 열기</string>
-    <string name="notification_access_hint">알림 액세스는 시스템 설정에서 관리해야 합니다</string>
 
     <string name="title_settings">설정</string>
     <string name="pref_theme">테마</string>
@@ -92,6 +90,7 @@
     <string name="pref_language_de">Deutsch</string>
     <string name="pref_language_ru">Русский</string>
     <string name="pref_show_system_apps">시스템 앱 표시</string>
+    <string name="pref_show_undeclared_activities">선언되지 않은 활동 표시</string>
     <string name="pref_about">정보</string>
     <string name="about">정보</string>
     <string name="about_desc">Buge앱 관리자는 Shizuku를 지원하는 강력한 앱 관리 도구로, 고급 권한 및 앱 제어 기능을 제공합니다.</string>

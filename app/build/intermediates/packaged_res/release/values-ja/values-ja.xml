@@ -43,7 +43,6 @@
     <string name="nav_settings">設定</string>
     <string name="no_activities_found">アクティビティが見つかりません</string>
     <string name="no_apps_found">アプリが見つかりません</string>
-    <string name="notification_access_hint">通知アクセスはシステム設定で管理する必要があります</string>
     <string name="open">開く</string>
     <string name="open_app">アプリを開く</string>
     <string name="open_system_settings">システム設定を開く</string>
@@ -58,7 +57,6 @@
     <string name="perm_location">位置情報</string>
     <string name="perm_manage_storage">すべてのファイルへのアクセス</string>
     <string name="perm_microphone">マイク</string>
-    <string name="perm_notification_access">通知アクセス</string>
     <string name="perm_notifications">通知</string>
     <string name="perm_overlay">他のアプリの上に表示</string>
     <string name="perm_phone">電話</string>
@@ -76,6 +74,7 @@
     <string name="pref_language_ru">Русский</string>
     <string name="pref_language_zh">中文（简体）</string>
     <string name="pref_show_system_apps">システムアプリを表示</string>
+    <string name="pref_show_undeclared_activities">未宣言のアクティビティを表示</string>
     <string name="pref_theme">テーマ</string>
     <string name="pref_theme_auto">システムデフォルト</string>
     <string name="pref_theme_dark">ダーク</string>

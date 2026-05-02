@@ -61,7 +61,6 @@
     <string name="perm_contacts">Контакты</string>
     <string name="perm_storage">Хранилище</string>
     <string name="perm_manage_storage">Доступ ко всем файлам</string>
-    <string name="perm_notification_access">Доступ к уведомлениям</string>
     <string name="perm_phone">Телефон</string>
     <string name="perm_sms">SMS</string>
     <string name="perm_calendar">Календарь</string>
@@ -75,7 +74,6 @@
     <string name="confirm_grant">Предоставить разрешение %d приложению(ям)?</string>
     <string name="selected_count">%d выбрано</string>
     <string name="open_system_settings">Открыть системные настройки</string>
-    <string name="notification_access_hint">Доступ к уведомлениям должен управляться в системных настройках</string>
 
     <string name="title_settings">Параметры</string>
     <string name="pref_theme">Тема</string>
@@ -92,6 +90,7 @@
     <string name="pref_language_de">Deutsch</string>
     <string name="pref_language_ru">Русский</string>
     <string name="pref_show_system_apps">Показать системные приложения</string>
+    <string name="pref_show_undeclared_activities">Показать необъявленные активности</string>
     <string name="pref_about">О программе</string>
     <string name="about">О программе</string>
     <string name="about_desc">Диспетчер приложений Buge — это мощный инструмент управления приложениями с поддержкой Shizuku для расширенного контроля разрешений и приложений.</string>

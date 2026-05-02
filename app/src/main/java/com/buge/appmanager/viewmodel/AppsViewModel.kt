@@ -9,6 +9,7 @@ import com.buge.appmanager.data.AppRepository
 import com.buge.appmanager.model.AppFilter
 import com.buge.appmanager.model.AppInfo
 import com.buge.appmanager.model.AppSortOrder
+import com.buge.appmanager.util.LogManager
 import com.buge.appmanager.util.PreferencesManager
 import kotlinx.coroutines.launch
 
@@ -38,11 +39,14 @@ class AppsViewModel(application: Application) : AndroidViewModel(application) {
             _isLoading.value = true
             _error.value = null
             try {
-                val showSystemApps = PreferencesManager.getShowSystemApps(getApplication())
-                val result = repository.getInstalledApps(currentFilter, currentSort, searchQuery, showSystemApps)
+                val showSystemApps = true
+                val showDisabledApps = PreferencesManager.getShowDisabledApps(getApplication())
+                val result = repository.getInstalledApps(currentFilter, currentSort, searchQuery, showSystemApps, showDisabledApps)
                 _apps.value = result
+                LogManager.info(getApplication(), "Apps loaded", "Count: ${result.size}, Filter: $currentFilter, Sort: $currentSort, Search: $searchQuery")
             } catch (e: Exception) {
                 _error.value = e.message
+                LogManager.error(getApplication(), "Failed to load apps", e.message)
             } finally {
                 _isLoading.value = false
             }

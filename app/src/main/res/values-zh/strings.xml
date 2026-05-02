@@ -61,7 +61,6 @@
     <string name="perm_contacts">联系人</string>
     <string name="perm_storage">存储</string>
     <string name="perm_manage_storage">所有文件访问</string>
-    <string name="perm_notification_access">通知访问权限</string>
     <string name="perm_phone">电话</string>
     <string name="perm_sms">短信</string>
     <string name="perm_calendar">日历</string>
@@ -75,7 +74,6 @@
     <string name="confirm_grant">向 %d 个应用授予权限？</string>
     <string name="selected_count">已选择 %d 个</string>
     <string name="open_system_settings">打开系统设置</string>
-    <string name="notification_access_hint">通知访问权限需要在系统设置中管理</string>
 
     <string name="title_settings">设置</string>
     <string name="pref_theme">主题</string>
@@ -92,6 +90,7 @@
     <string name="pref_language_de">Deutsch</string>
     <string name="pref_language_ru">Русский</string>
     <string name="pref_show_system_apps">显示系统应用</string>
+    <string name="pref_show_undeclared_activities">显示未导出的活动</string>
     <string name="pref_about">关于</string>
     <string name="about">关于</string>
     <string name="about_desc">Buge应用管理器是一个功能强大的应用管理工具，支持Shizuku以进行高级权限和应用控制。</string>

@@ -5,6 +5,8 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.EditText
+import androidx.activity.OnBackPressedCallback
 import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
@@ -16,7 +18,6 @@ import com.buge.appmanager.databinding.FragmentAppsBinding
 import com.buge.appmanager.model.AppFilter
 import com.buge.appmanager.model.AppInfo
 import com.buge.appmanager.model.AppSortOrder
-import com.buge.appmanager.util.SpringAnimationHelper
 import com.buge.appmanager.viewmodel.AppsViewModel
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 
@@ -39,6 +40,7 @@ class AppsFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        setupBackPressedCallback()
         setupRecyclerView()
         setupSearch()
         setupFilters()
@@ -48,15 +50,21 @@ class AppsFragment : Fragment() {
         binding.swipeRefresh.setOnRefreshListener {
             viewModel.loadApps()
         }
-
-        runSpringEnterAnimation(binding.recyclerView)
     }
 
-    private fun runSpringEnterAnimation(view: View) {
-        view.alpha = 0f
-        view.translationY = 30f
-        SpringAnimationHelper.animateAlpha(view, 1f)
-        SpringAnimationHelper.animateTranslationY(view, 0f)
+    private fun setupBackPressedCallback() {
+        val callback = object : OnBackPressedCallback(true) {
+            override fun handleOnBackPressed() {
+                val searchText = binding.searchEditText.text.toString()
+                if (searchText.isNotEmpty()) {
+                    binding.searchEditText.setText("")
+                } else {
+                    isEnabled = false
+                    requireActivity().onBackPressedDispatcher.onBackPressed()
+                }
+            }
+        }
+        requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner, callback)
     }
 
     private fun setupRecyclerView() {
@@ -125,6 +133,7 @@ class AppsFragment : Fragment() {
             adapter.submitList(apps)
             binding.emptyState.visibility = if (apps.isEmpty()) View.VISIBLE else View.GONE
             binding.recyclerView.visibility = if (apps.isEmpty()) View.GONE else View.VISIBLE
+
             binding.toolbar.subtitle = getString(com.buge.appmanager.R.string.apps_count, apps.size)
         }
 

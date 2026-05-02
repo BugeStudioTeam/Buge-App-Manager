@@ -4,20 +4,15 @@ package com.buge.appmanager.databinding;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
+import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewbinding.ViewBinding;
 import androidx.viewbinding.ViewBindings;
 import com.buge.appmanager.R;
 import com.google.android.material.appbar.AppBarLayout;
 import com.google.android.material.appbar.MaterialToolbar;
-import com.google.android.material.button.MaterialButton;
-import com.google.android.material.card.MaterialCardView;
-import com.google.android.material.materialswitch.MaterialSwitch;
 import java.lang.NullPointerException;
 import java.lang.Override;
 import java.lang.String;
@@ -27,79 +22,20 @@ public final class FragmentSettingsBinding implements ViewBinding {
   private final CoordinatorLayout rootView;
 
   @NonNull
-  public final MaterialCardView aboutCard;
-
-  @NonNull
-  public final LinearLayout aboutRow;
-
-  @NonNull
   public final AppBarLayout appBar;
 
   @NonNull
-  public final MaterialCardView appearanceCard;
-
-  @NonNull
-  public final MaterialButton btnRequestShizuku;
-
-  @NonNull
-  public final TextView languageValue;
-
-  @NonNull
-  public final LinearLayout prefLanguageRow;
-
-  @NonNull
-  public final LinearLayout prefThemeRow;
-
-  @NonNull
-  public final MaterialCardView shizukuCard;
-
-  @NonNull
-  public final ImageView shizukuIcon;
-
-  @NonNull
-  public final TextView shizukuStatusText;
-
-  @NonNull
-  public final MaterialSwitch switchShowSystem;
-
-  @NonNull
-  public final MaterialSwitch switchShowUndeclaredActivities;
-
-  @NonNull
-  public final TextView themeValue;
+  public final RecyclerView recyclerView;
 
   @NonNull
   public final MaterialToolbar toolbar;
 
-  @NonNull
-  public final TextView versionText;
-
-  private FragmentSettingsBinding(@NonNull CoordinatorLayout rootView,
-      @NonNull MaterialCardView aboutCard, @NonNull LinearLayout aboutRow,
-      @NonNull AppBarLayout appBar, @NonNull MaterialCardView appearanceCard,
-      @NonNull MaterialButton btnRequestShizuku, @NonNull TextView languageValue,
-      @NonNull LinearLayout prefLanguageRow, @NonNull LinearLayout prefThemeRow,
-      @NonNull MaterialCardView shizukuCard, @NonNull ImageView shizukuIcon,
-      @NonNull TextView shizukuStatusText, @NonNull MaterialSwitch switchShowSystem,
-      @NonNull MaterialSwitch switchShowUndeclaredActivities, @NonNull TextView themeValue,
-      @NonNull MaterialToolbar toolbar, @NonNull TextView versionText) {
+  private FragmentSettingsBinding(@NonNull CoordinatorLayout rootView, @NonNull AppBarLayout appBar,
+      @NonNull RecyclerView recyclerView, @NonNull MaterialToolbar toolbar) {
     this.rootView = rootView;
-    this.aboutCard = aboutCard;
-    this.aboutRow = aboutRow;
     this.appBar = appBar;
-    this.appearanceCard = appearanceCard;
-    this.btnRequestShizuku = btnRequestShizuku;
-    this.languageValue = languageValue;
-    this.prefLanguageRow = prefLanguageRow;
-    this.prefThemeRow = prefThemeRow;
-    this.shizukuCard = shizukuCard;
-    this.shizukuIcon = shizukuIcon;
-    this.shizukuStatusText = shizukuStatusText;
-    this.switchShowSystem = switchShowSystem;
-    this.switchShowUndeclaredActivities = switchShowUndeclaredActivities;
-    this.themeValue = themeValue;
+    this.recyclerView = recyclerView;
     this.toolbar = toolbar;
-    this.versionText = versionText;
   }
 
   @Override
@@ -129,87 +65,15 @@ public final class FragmentSettingsBinding implements ViewBinding {
     // This is done to optimize the compiled bytecode for size and performance.
     int id;
     missingId: {
-      id = R.id.about_card;
-      MaterialCardView aboutCard = ViewBindings.findChildViewById(rootView, id);
-      if (aboutCard == null) {
-        break missingId;
-      }
-
-      id = R.id.about_row;
-      LinearLayout aboutRow = ViewBindings.findChildViewById(rootView, id);
-      if (aboutRow == null) {
-        break missingId;
-      }
-
       id = R.id.app_bar;
       AppBarLayout appBar = ViewBindings.findChildViewById(rootView, id);
       if (appBar == null) {
         break missingId;
       }
 
-      id = R.id.appearance_card;
-      MaterialCardView appearanceCard = ViewBindings.findChildViewById(rootView, id);
-      if (appearanceCard == null) {
-        break missingId;
-      }
-
-      id = R.id.btn_request_shizuku;
-      MaterialButton btnRequestShizuku = ViewBindings.findChildViewById(rootView, id);
-      if (btnRequestShizuku == null) {
-        break missingId;
-      }
-
-      id = R.id.language_value;
-      TextView languageValue = ViewBindings.findChildViewById(rootView, id);
-      if (languageValue == null) {
-        break missingId;
-      }
-
-      id = R.id.pref_language_row;
-      LinearLayout prefLanguageRow = ViewBindings.findChildViewById(rootView, id);
-      if (prefLanguageRow == null) {
-        break missingId;
-      }
-
-      id = R.id.pref_theme_row;
-      LinearLayout prefThemeRow = ViewBindings.findChildViewById(rootView, id);
-      if (prefThemeRow == null) {
-        break missingId;
-      }
-
-      id = R.id.shizuku_card;
-      MaterialCardView shizukuCard = ViewBindings.findChildViewById(rootView, id);
-      if (shizukuCard == null) {
-        break missingId;
-      }
-
-      id = R.id.shizuku_icon;
-      ImageView shizukuIcon = ViewBindings.findChildViewById(rootView, id);
-      if (shizukuIcon == null) {
-        break missingId;
-      }
-
-      id = R.id.shizuku_status_text;
-      TextView shizukuStatusText = ViewBindings.findChildViewById(rootView, id);
-      if (shizukuStatusText == null) {
-        break missingId;
-      }
-
-      id = R.id.switch_show_system;
-      MaterialSwitch switchShowSystem = ViewBindings.findChildViewById(rootView, id);
-      if (switchShowSystem == null) {
-        break missingId;
-      }
-
-      id = R.id.switch_show_undeclared_activities;
-      MaterialSwitch switchShowUndeclaredActivities = ViewBindings.findChildViewById(rootView, id);
-      if (switchShowUndeclaredActivities == null) {
-        break missingId;
-      }
-
-      id = R.id.theme_value;
-      TextView themeValue = ViewBindings.findChildViewById(rootView, id);
-      if (themeValue == null) {
+      id = R.id.recycler_view;
+      RecyclerView recyclerView = ViewBindings.findChildViewById(rootView, id);
+      if (recyclerView == null) {
         break missingId;
       }
 
@@ -219,16 +83,8 @@ public final class FragmentSettingsBinding implements ViewBinding {
         break missingId;
       }
 
-      id = R.id.version_text;
-      TextView versionText = ViewBindings.findChildViewById(rootView, id);
-      if (versionText == null) {
-        break missingId;
-      }
-
-      return new FragmentSettingsBinding((CoordinatorLayout) rootView, aboutCard, aboutRow, appBar,
-          appearanceCard, btnRequestShizuku, languageValue, prefLanguageRow, prefThemeRow,
-          shizukuCard, shizukuIcon, shizukuStatusText, switchShowSystem,
-          switchShowUndeclaredActivities, themeValue, toolbar, versionText);
+      return new FragmentSettingsBinding((CoordinatorLayout) rootView, appBar, recyclerView,
+          toolbar);
     }
     String missingId = rootView.getResources().getResourceName(id);
     throw new NullPointerException("Missing required view with ID: ".concat(missingId));

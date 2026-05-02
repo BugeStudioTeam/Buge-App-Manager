@@ -10,6 +10,7 @@ import com.buge.appmanager.model.AppInfo
 import com.buge.appmanager.model.PermissionInfo
 import com.buge.appmanager.shizuku.ShizukuManager
 import com.buge.appmanager.shizuku.ShizukuResult
+import com.buge.appmanager.util.LogManager
 import kotlinx.coroutines.launch
 
 class AppDetailViewModel(application: Application) : AndroidViewModel(application) {
@@ -35,22 +36,21 @@ class AppDetailViewModel(application: Application) : AndroidViewModel(applicatio
         viewModelScope.launch {
             _isLoading.value = true
             try {
-                // Get all apps including system apps
                 val apps = repository.getInstalledApps(showSystemApps = true)
                 val app = apps.find { it.packageName == packageName }
                 _appInfo.value = app
                 if (app != null) {
                     val perms = repository.getAppPermissions(packageName)
-                    // Ensure permissions are loaded even for system apps
                     _permissions.value = if (perms.isEmpty()) {
-                        // If no permissions found, try to get them again
                         repository.getAppPermissions(packageName)
                     } else {
                         perms
                     }
+                    LogManager.info(getApplication(), "App loaded", "Package: $packageName, Name: ${app.appName}")
                 }
             } catch (e: Exception) {
                 _appInfo.value = null
+                LogManager.error(getApplication(), "Failed to load app", "Package: $packageName, Error: ${e.message}")
             } finally {
                 _isLoading.value = false
             }
@@ -69,6 +69,9 @@ class AppDetailViewModel(application: Application) : AndroidViewModel(applicatio
             if (result.success) {
                 val perms = repository.getAppPermissions(currentPackageName)
                 _permissions.value = perms
+                LogManager.success(getApplication(), "Permission toggled", "Package: $currentPackageName, Permission: $permissionName, Granted: ${!currentlyGranted}")
+            } else {
+                LogManager.error(getApplication(), "Failed to toggle permission", "Package: $currentPackageName, Permission: $permissionName, Error: ${result.error}")
             }
             _isLoading.value = false
         }
@@ -79,6 +82,11 @@ class AppDetailViewModel(application: Application) : AndroidViewModel(applicatio
             _isLoading.value = true
             val result = ShizukuManager.forceStop(currentPackageName)
             _operationResult.value = result
+            if (result.success) {
+                LogManager.info(getApplication(), "Force stop executed", "Package: $currentPackageName")
+            } else {
+                LogManager.error(getApplication(), "Force stop failed", "Package: $currentPackageName, Error: ${result.error}")
+            }
             _isLoading.value = false
         }
     }
@@ -88,6 +96,11 @@ class AppDetailViewModel(application: Application) : AndroidViewModel(applicatio
             _isLoading.value = true
             val result = ShizukuManager.clearData(currentPackageName)
             _operationResult.value = result
+            if (result.success) {
+                LogManager.info(getApplication(), "Clear data executed", "Package: $currentPackageName")
+            } else {
+                LogManager.error(getApplication(), "Clear data failed", "Package: $currentPackageName, Error: ${result.error}")
+            }
             _isLoading.value = false
         }
     }
@@ -97,8 +110,13 @@ class AppDetailViewModel(application: Application) : AndroidViewModel(applicatio
             _isLoading.value = true
             val result = ShizukuManager.disableApp(currentPackageName)
             _operationResult.value = result
-            if (result.success) loadApp(currentPackageName)
-            else _isLoading.value = false
+            if (result.success) {
+                loadApp(currentPackageName)
+                LogManager.info(getApplication(), "App disabled", "Package: $currentPackageName")
+            } else {
+                LogManager.error(getApplication(), "Disable app failed", "Package: $currentPackageName, Error: ${result.error}")
+                _isLoading.value = false
+            }
         }
     }
 
@@ -107,8 +125,13 @@ class AppDetailViewModel(application: Application) : AndroidViewModel(applicatio
             _isLoading.value = true
             val result = ShizukuManager.enableApp(currentPackageName)
             _operationResult.value = result
-            if (result.success) loadApp(currentPackageName)
-            else _isLoading.value = false
+            if (result.success) {
+                loadApp(currentPackageName)
+                LogManager.info(getApplication(), "App enabled", "Package: $currentPackageName")
+            } else {
+                LogManager.error(getApplication(), "Enable app failed", "Package: $currentPackageName, Error: ${result.error}")
+                _isLoading.value = false
+            }
         }
     }
 
@@ -117,6 +140,11 @@ class AppDetailViewModel(application: Application) : AndroidViewModel(applicatio
             _isLoading.value = true
             val result = ShizukuManager.uninstallApp(currentPackageName)
             _operationResult.value = result
+            if (result.success) {
+                LogManager.info(getApplication(), "App uninstalled", "Package: $currentPackageName")
+            } else {
+                LogManager.error(getApplication(), "Uninstall app failed", "Package: $currentPackageName, Error: ${result.error}")
+            }
             _isLoading.value = false
         }
     }

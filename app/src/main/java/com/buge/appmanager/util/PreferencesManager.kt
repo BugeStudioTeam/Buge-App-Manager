@@ -10,6 +10,10 @@ object PreferencesManager {
     private const val THEME_MODE_KEY = "theme_mode"
     private const val SHOW_SYSTEM_APPS_KEY = "show_system_apps"
     private const val SHOW_UNDECLARED_ACTIVITIES_KEY = "show_undeclared_activities"
+    private const val SHOW_DISABLED_APPS_KEY = "show_disabled_apps"
+    private const val DEFAULT_PAGE_KEY = "default_page"
+    private const val ALLOW_SYSTEM_OPS_KEY = "allow_system_ops"
+    private const val LOGGING_ENABLED_KEY = "logging_enabled"
 
     private fun getPreferences(context: Context): SharedPreferences {
         return context.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE)
@@ -41,5 +45,37 @@ object PreferencesManager {
 
     fun getShowUndeclaredActivities(context: Context): Boolean {
         return getPreferences(context).getBoolean(SHOW_UNDECLARED_ACTIVITIES_KEY, true)
+    }
+
+    fun setShowDisabledApps(context: Context, show: Boolean) {
+        getPreferences(context).edit().putBoolean(SHOW_DISABLED_APPS_KEY, show).apply()
+    }
+
+    fun getShowDisabledApps(context: Context): Boolean {
+        return getPreferences(context).getBoolean(SHOW_DISABLED_APPS_KEY, true)
+    }
+
+    fun setDefaultPage(context: Context, page: String) {
+        getPreferences(context).edit().putString(DEFAULT_PAGE_KEY, page).apply()
+    }
+
+    fun getDefaultPage(context: Context): String {
+        return getPreferences(context).getString(DEFAULT_PAGE_KEY, "apps") ?: "apps"
+    }
+
+    fun setAllowSystemOps(context: Context, allow: Boolean) {
+        getPreferences(context).edit().putBoolean(ALLOW_SYSTEM_OPS_KEY, allow).apply()
+    }
+
+    fun getAllowSystemOps(context: Context): Boolean {
+        return getPreferences(context).getBoolean(ALLOW_SYSTEM_OPS_KEY, true)
+    }
+
+    fun setLoggingEnabled(context: Context, enabled: Boolean) {
+        getPreferences(context).edit().putBoolean(LOGGING_ENABLED_KEY, enabled).apply()
+    }
+
+    fun getLoggingEnabled(context: Context): Boolean {
+        return getPreferences(context).getBoolean(LOGGING_ENABLED_KEY, false)
     }
 }

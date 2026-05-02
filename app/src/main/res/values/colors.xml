@@ -153,6 +153,5 @@
     <color name="color_denied_container">#FFEBEE</color>
     <color name="color_user_app">#415F91</color>
     <color name="color_system_app">#705575</color>
-    <color name="ic_launcher_background">#415F91</color>
     <color name="bottom_nav_background">#F9F9FF</color>
 </resources>

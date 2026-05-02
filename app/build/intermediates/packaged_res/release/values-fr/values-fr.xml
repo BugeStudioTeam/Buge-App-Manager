@@ -43,7 +43,6 @@
     <string name="nav_settings">Paramètres</string>
     <string name="no_activities_found">Aucune activité trouvée</string>
     <string name="no_apps_found">Aucune application trouvée</string>
-    <string name="notification_access_hint">L\'accès aux notifications doit être géré dans les paramètres système</string>
     <string name="open">Ouvrir</string>
     <string name="open_app">Ouvrir l\'application</string>
     <string name="open_system_settings">Ouvrir les paramètres système</string>
@@ -58,7 +57,6 @@
     <string name="perm_location">Localisation</string>
     <string name="perm_manage_storage">Accès à tous les fichiers</string>
     <string name="perm_microphone">Microphone</string>
-    <string name="perm_notification_access">Accès aux notifications</string>
     <string name="perm_notifications">Notifications</string>
     <string name="perm_overlay">Afficher par-dessus les autres applications</string>
     <string name="perm_phone">Téléphone</string>
@@ -76,6 +74,7 @@
     <string name="pref_language_ru">Русский</string>
     <string name="pref_language_zh">中文（简体）</string>
     <string name="pref_show_system_apps">Afficher les applications système</string>
+    <string name="pref_show_undeclared_activities">Afficher les activités non déclarées</string>
     <string name="pref_theme">Thème</string>
     <string name="pref_theme_auto">Défaut du système</string>
     <string name="pref_theme_dark">Sombre</string>

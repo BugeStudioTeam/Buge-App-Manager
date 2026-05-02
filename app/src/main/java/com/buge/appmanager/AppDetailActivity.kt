@@ -3,8 +3,10 @@ package com.buge.appmanager
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
+import android.os.Environment
 import android.provider.Settings
 import android.view.LayoutInflater
+import android.view.Menu
 import android.view.MenuItem
 import android.view.View
 import android.widget.TextView
@@ -15,9 +17,15 @@ import com.buge.appmanager.adapter.PermissionDetailAdapter
 import com.buge.appmanager.databinding.ActivityAppDetailBinding
 import com.buge.appmanager.model.PermissionInfo
 import com.buge.appmanager.shizuku.ShizukuManager
+import com.buge.appmanager.util.LogManager
+import com.buge.appmanager.util.PreferencesManager
+import com.buge.appmanager.util.SystemOpChecker
 import com.buge.appmanager.viewmodel.AppDetailViewModel
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.snackbar.Snackbar
+import java.io.File
+import java.io.FileInputStream
+import java.io.FileOutputStream
 import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
@@ -49,12 +57,19 @@ class AppDetailActivity : AppCompatActivity() {
         observeViewModel()
 
         viewModel.loadApp(packageName)
+        LogManager.info(this, "Opened app details", "Package: $packageName")
     }
 
     private fun setupToolbar() {
         setSupportActionBar(binding.toolbar)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         supportActionBar?.setDisplayShowHomeEnabled(true)
+        supportActionBar?.title = getString(R.string.title_app_detail)
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu): Boolean {
+        menuInflater.inflate(R.menu.menu_app_detail, menu)
+        return true
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
@@ -63,8 +78,65 @@ class AppDetailActivity : AppCompatActivity() {
                 onBackPressedDispatcher.onBackPressed()
                 return true
             }
+            R.id.action_export_apk -> {
+                exportApk()
+                return true
+            }
         }
         return super.onOptionsItemSelected(item)
+    }
+
+    private fun exportApk() {
+        try {
+            val applicationInfo = packageManager.getApplicationInfo(packageName, 0)
+            val sourcePath = applicationInfo.sourceDir
+
+            if (sourcePath.isNullOrEmpty()) {
+                Snackbar.make(binding.root, "APK path not found", Snackbar.LENGTH_SHORT).show()
+                LogManager.error(this, "APK export failed", "APK path not found for $packageName")
+                return
+            }
+
+            val sourceFile = File(sourcePath)
+            if (!sourceFile.exists()) {
+                Snackbar.make(binding.root, "APK file does not exist", Snackbar.LENGTH_SHORT).show()
+                LogManager.error(this, "APK export failed", "APK file does not exist for $packageName")
+                return
+            }
+
+            val appName = try {
+                packageManager.getApplicationLabel(applicationInfo).toString()
+            } catch (e: Exception) {
+                packageName
+            }
+
+            val downloadDir = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS)
+            if (!downloadDir.exists()) {
+                downloadDir.mkdirs()
+            }
+
+            val timestamp = SimpleDateFormat("yyyyMMdd_HHmmss", Locale.getDefault()).format(Date())
+            var destFile = File(downloadDir, "${appName}_${timestamp}.apk")
+            var counter = 1
+            while (destFile.exists()) {
+                destFile = File(downloadDir, "${appName}_${timestamp}_$counter.apk")
+                counter++
+            }
+
+            FileInputStream(sourceFile).use { input ->
+                FileOutputStream(destFile).use { output ->
+                    input.copyTo(output)
+                }
+            }
+
+            Snackbar.make(binding.root, "APK saved to: ${destFile.absolutePath}", Snackbar.LENGTH_LONG).show()
+            LogManager.success(this, "APK exported", "Package: $packageName, Path: ${destFile.absolutePath}")
+
+        } catch (e: Exception) {
+            e.printStackTrace()
+            Snackbar.make(binding.root, "Export failed: ${e.message}", Snackbar.LENGTH_LONG).show()
+            LogManager.error(this, "APK export failed", e.message)
+        }
     }
 
     private fun setupPermissionsRecycler() {
@@ -82,8 +154,10 @@ class AppDetailActivity : AppCompatActivity() {
             val launchIntent = packageManager.getLaunchIntentForPackage(packageName)
             if (launchIntent != null) {
                 startActivity(launchIntent)
+                LogManager.info(this, "App opened", "Package: $packageName")
             } else {
                 Snackbar.make(binding.root, "Cannot launch this app", Snackbar.LENGTH_SHORT).show()
+                LogManager.warning(this, "Cannot launch app", "Package: $packageName")
             }
         }
 
@@ -92,25 +166,40 @@ class AppDetailActivity : AppCompatActivity() {
                 data = Uri.parse("package:$packageName")
             }
             startActivity(intent)
+            LogManager.info(this, "Opened system app info", "Package: $packageName")
         }
 
         binding.btnForceStop.setOnClickListener {
             if (!checkShizuku()) return@setOnClickListener
+            val app = viewModel.appInfo.value ?: return@setOnClickListener
+            if (!SystemOpChecker.canOperate(this, app.isSystemApp)) {
+                showSystemOpBlockedDialog()
+                return@setOnClickListener
+            }
             MaterialAlertDialogBuilder(this)
                 .setTitle(R.string.force_stop)
                 .setMessage("Force stop ${binding.appName.text}?")
-                .setPositiveButton(R.string.confirm) { _, _ -> viewModel.forceStop() }
+                .setPositiveButton(R.string.confirm) { _, _ ->
+                    viewModel.forceStop()
+                    LogManager.info(this, "Force stop executed", "Package: $packageName")
+                }
                 .setNegativeButton(R.string.cancel, null)
                 .show()
         }
 
         binding.btnUninstall.setOnClickListener {
             if (!checkShizuku()) return@setOnClickListener
+            val app = viewModel.appInfo.value ?: return@setOnClickListener
+            if (!SystemOpChecker.canOperate(this, app.isSystemApp)) {
+                showSystemOpBlockedDialog()
+                return@setOnClickListener
+            }
             MaterialAlertDialogBuilder(this)
                 .setTitle(R.string.uninstall)
                 .setMessage("Uninstall ${binding.appName.text}?")
                 .setPositiveButton(R.string.confirm) { _, _ ->
                     viewModel.uninstallApp()
+                    LogManager.info(this, "Uninstall initiated", "Package: $packageName")
                     finish()
                 }
                 .setNegativeButton(R.string.cancel, null)
@@ -119,10 +208,18 @@ class AppDetailActivity : AppCompatActivity() {
 
         binding.btnClearData.setOnClickListener {
             if (!checkShizuku()) return@setOnClickListener
+            val app = viewModel.appInfo.value ?: return@setOnClickListener
+            if (!SystemOpChecker.canOperate(this, app.isSystemApp)) {
+                showSystemOpBlockedDialog()
+                return@setOnClickListener
+            }
             MaterialAlertDialogBuilder(this)
                 .setTitle(R.string.clear_data)
                 .setMessage("Clear all data for ${binding.appName.text}? This cannot be undone.")
-                .setPositiveButton(R.string.confirm) { _, _ -> viewModel.clearData() }
+                .setPositiveButton(R.string.confirm) { _, _ ->
+                    viewModel.clearData()
+                    LogManager.info(this, "Clear data executed", "Package: $packageName")
+                }
                 .setNegativeButton(R.string.cancel, null)
                 .show()
         }
@@ -130,22 +227,45 @@ class AppDetailActivity : AppCompatActivity() {
         binding.btnDisableEnable.setOnClickListener {
             if (!checkShizuku()) return@setOnClickListener
             val app = viewModel.appInfo.value ?: return@setOnClickListener
+            if (!SystemOpChecker.canOperate(this, app.isSystemApp)) {
+                showSystemOpBlockedDialog()
+                return@setOnClickListener
+            }
             if (app.isEnabled) {
                 viewModel.disableApp()
+                LogManager.info(this, "App disabled", "Package: $packageName")
             } else {
                 viewModel.enableApp()
+                LogManager.info(this, "App enabled", "Package: $packageName")
             }
         }
     }
 
+    private fun showSystemOpBlockedDialog() {
+        MaterialAlertDialogBuilder(this)
+            .setTitle(R.string.system_op_blocked_title)
+            .setMessage(R.string.system_op_blocked_message)
+            .setPositiveButton(R.string.confirm, null)
+            .setNegativeButton(R.string.cancel, null)
+            .show()
+    }
+
     private fun handlePermissionToggle(perm: PermissionInfo) {
         if (!checkShizuku()) return
+        
+        val app = viewModel.appInfo.value
+        if (app != null && !SystemOpChecker.canOperate(this, app.isSystemApp)) {
+            showSystemOpBlockedDialog()
+            return
+        }
+        
         val action = if (perm.isGranted) getString(R.string.revoke_permission) else getString(R.string.grant_permission)
         MaterialAlertDialogBuilder(this)
             .setTitle(action)
             .setMessage(perm.name)
             .setPositiveButton(R.string.confirm) { _, _ ->
                 viewModel.togglePermission(perm.name, perm.isGranted)
+                LogManager.permission(this, "Permission toggled", "Package: $packageName, Permission: ${perm.name}, Action: $action")
             }
             .setNegativeButton(R.string.cancel, null)
             .show()
@@ -219,6 +339,9 @@ class AppDetailActivity : AppCompatActivity() {
             val duration = if (result.success) Snackbar.LENGTH_SHORT else Snackbar.LENGTH_LONG
             Snackbar.make(binding.root, msg, duration).show()
             viewModel.clearOperationResult()
+            if (!result.success) {
+                LogManager.error(this, "Operation failed", msg)
+            }
         }
     }
 

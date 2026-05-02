@@ -169,7 +169,8 @@ class AppRepository(private val context: Context) {
         filter: AppFilter = AppFilter.ALL,
         sortOrder: AppSortOrder = AppSortOrder.NAME,
         searchQuery: String = "",
-        showSystemApps: Boolean = false
+        showSystemApps: Boolean = false,
+        showDisabledApps: Boolean = true
     ): List<AppInfo> = withContext(Dispatchers.IO) {
         try {
             val flags = PackageManager.GET_META_DATA
@@ -210,17 +211,28 @@ class AppRepository(private val context: Context) {
                     null
                 }
             }
+            
+            // 应用过滤器
             apps = when (filter) {
                 AppFilter.ALL -> if (showSystemApps) apps else apps.filter { !it.isSystemApp }
                 AppFilter.USER -> apps.filter { !it.isSystemApp }
                 AppFilter.SYSTEM -> apps.filter { it.isSystemApp }
             }
+            
+            // 过滤禁用的应用
+            if (!showDisabledApps) {
+                apps = apps.filter { it.isEnabled }
+            }
+            
+            // 搜索过滤
             if (searchQuery.isNotEmpty()) {
                 apps = apps.filter {
                     it.appName.contains(searchQuery, ignoreCase = true) ||
                     it.packageName.contains(searchQuery, ignoreCase = true)
                 }
             }
+            
+            // 排序
             apps = when (sortOrder) {
                 AppSortOrder.NAME -> apps.sortedBy { it.appName.lowercase() }
                 AppSortOrder.SIZE -> apps.sortedByDescending { it.versionCode }

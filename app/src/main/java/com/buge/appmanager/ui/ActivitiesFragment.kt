@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.EditText
+import androidx.activity.OnBackPressedCallback
 import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
@@ -16,6 +17,7 @@ import com.buge.appmanager.R
 import com.buge.appmanager.adapter.ActivitiesAppAdapter
 import com.buge.appmanager.databinding.FragmentActivitiesBinding
 import com.buge.appmanager.model.AppInfo
+import com.buge.appmanager.util.SpringAnimationHelper
 import com.buge.appmanager.viewmodel.ActivitiesViewModel
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
@@ -40,10 +42,38 @@ class ActivitiesFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        setupBackPressedCallback()
         setupRecyclerView()
         setupSearch()
         observeViewModel()
         viewModel.loadApps()
+
+        runSpringEnterAnimation()
+    }
+
+    private fun setupBackPressedCallback() {
+        val callback = object : OnBackPressedCallback(true) {
+            override fun handleOnBackPressed() {
+                val searchText = binding.searchEditText.text.toString()
+                if (searchText.isNotEmpty()) {
+                    binding.searchEditText.setText("")
+                } else {
+                    isEnabled = false
+                    requireActivity().onBackPressedDispatcher.onBackPressed()
+                }
+            }
+        }
+        requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner, callback)
+    }
+
+    private fun runSpringEnterAnimation() {
+        binding.recyclerView.alpha = 0f
+        binding.recyclerView.translationY = 30f
+        binding.recyclerView.post {
+            SpringAnimationHelper.animateAlpha(binding.recyclerView, 1f)
+            SpringAnimationHelper.animateTranslationY(binding.recyclerView, 0f)
+        }
     }
 
     override fun onResume() {
@@ -57,6 +87,7 @@ class ActivitiesFragment : Fragment() {
 
     private fun setupRecyclerView() {
         appsAdapter = ActivitiesAppAdapter { app ->
+            SpringAnimationHelper.animateClick(binding.recyclerView)
             val intent = Intent(requireContext(), ActivityDetailActivity::class.java).apply {
                 putExtra(ActivityDetailActivity.EXTRA_PACKAGE_NAME, app.packageName)
                 putExtra(ActivityDetailActivity.EXTRA_APP_NAME, app.appName)

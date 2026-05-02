@@ -11,6 +11,7 @@ anim abc_slide_out_bottom
 anim abc_slide_out_top
 anim abc_tooltip_enter
 anim abc_tooltip_exit
+anim anim_fall_down
 anim btn_checkbox_to_checked_box_inner_merged_animation
 anim btn_checkbox_to_checked_box_outer_merged_animation
 anim btn_checkbox_to_checked_icon_null_animation
@@ -28,6 +29,7 @@ anim design_bottom_sheet_slide_out
 anim design_snackbar_in
 anim design_snackbar_out
 anim fragment_fast_out_extra_slow_in
+anim layout_animation_fall_down
 anim linear_indeterminate_line1_head_interpolator
 anim linear_indeterminate_line1_tail_interpolator
 anim linear_indeterminate_line2_head_interpolator
@@ -3216,6 +3218,10 @@ drawable avd_hide_password
 drawable avd_show_password
 drawable badge_background
 drawable badge_circle_background
+drawable bg_setting_item_bottom
+drawable bg_setting_item_middle
+drawable bg_setting_item_single
+drawable bg_setting_item_top
 drawable btn_checkbox_checked_mtrl
 drawable btn_checkbox_checked_to_unchecked_mtrl_animation
 drawable btn_checkbox_unchecked_mtrl
@@ -3234,6 +3240,7 @@ drawable ic_apps
 drawable ic_arrow_back
 drawable ic_arrow_back_black_24
 drawable ic_arrow_down_24dp
+drawable ic_arrow_forward
 drawable ic_block
 drawable ic_call_answer
 drawable ic_call_answer_low
@@ -3246,11 +3253,13 @@ drawable ic_check
 drawable ic_clear_black_24
 drawable ic_clock_black_24dp
 drawable ic_delete
+drawable ic_disabled_apps
 drawable ic_exit_to_app
 drawable ic_filter
 drawable ic_github
 drawable ic_info
 drawable ic_keyboard_black_24dp
+drawable ic_language
 drawable ic_launcher_foreground
 drawable ic_location
 drawable ic_m3_chip_check
@@ -3272,6 +3281,12 @@ drawable ic_shield_badge
 drawable ic_shield_badge_x
 drawable ic_sort
 drawable ic_stop
+drawable ic_system_apps
+drawable ic_telegram
+drawable ic_theme
+drawable ic_undeclared
+drawable ic_update
+drawable ic_web
 drawable indeterminate_static
 drawable m3_avd_hide_password
 drawable m3_avd_show_password
@@ -3363,8 +3378,7 @@ id SHOW_PROGRESS
 id SYM
 id TOP_END
 id TOP_START
-id about_card
-id about_row
+id about_desc
 id accelerate
 id accessibility_action_clickable_span
 id accessibility_custom_action_0
@@ -3412,6 +3426,7 @@ id action_bar_title
 id action_container
 id action_context_bar
 id action_divider
+id action_export_apk
 id action_image
 id action_menu_divider
 id action_menu_presenter
@@ -3438,7 +3453,6 @@ id app_bar
 id app_icon
 id app_name
 id app_version
-id appearance_card
 id arc
 id asConfigured
 id async
@@ -3538,6 +3552,7 @@ id design_menu_item_action_area
 id design_menu_item_action_area_stub
 id design_menu_item_text
 id design_navigation_view
+id developer
 id dialog_button
 id dimensions
 id direct
@@ -3602,6 +3617,7 @@ id gone
 id graph
 id graph_wrap
 id group_divider
+id group_header
 id grouping
 id groups
 id header_title
@@ -3629,12 +3645,12 @@ id invisible
 id inward
 id is_pooling_container_tag
 id italic
+id item_container
 id item_touch_helper_previous_elevation
 id jumpToEnd
 id jumpToStart
 id label
 id labeled
-id language_value
 id launch_mode
 id layout
 id left
@@ -3774,8 +3790,6 @@ id pin
 id pooling_container_listener_holder_tag
 id position
 id postLayout
-id pref_language_row
-id pref_theme_row
 id preferences_detail
 id preferences_header
 id preferences_sliding_pane_layout
@@ -3827,8 +3841,10 @@ id selection_type
 id sharedValueSet
 id sharedValueUnset
 id shizuku_card
+id shizuku_desc
 id shizuku_icon
 id shizuku_status_text
+id shizuku_title
 id shortcut
 id showCustom
 id showHome
@@ -3865,11 +3881,11 @@ id stop
 id stretch
 id submenuarrow
 id submit_area
+id subtitle
 id supportScrollUp
 id swipe_refresh
 id switchWidget
-id switch_show_system
-id switch_show_undeclared_activities
+id switch_control
 id system_app_badge
 id system_badge
 id tabMode
@@ -3886,6 +3902,7 @@ id tag_transition_group
 id tag_unhandled_key_event_manager
 id tag_unhandled_key_listeners
 id tag_window_insets_animation_callback
+id telegram_item
 id text
 id text2
 id textEnd
@@ -3902,7 +3919,6 @@ id textinput_helper_text
 id textinput_placeholder
 id textinput_prefix_text
 id textinput_suffix_text
-id theme_value
 id time
 id title
 id titleDividerNoCustom
@@ -3927,9 +3943,10 @@ id unchecked
 id uniform
 id unlabeled
 id up
+id update_item
 id useLogo
 id value
-id version_text
+id version
 id vertical_only
 id view_offset_helper
 id view_transition
@@ -3939,6 +3956,7 @@ id view_tree_saved_state_registry_owner
 id view_tree_view_model_store_owner
 id visible
 id visible_removing_fragment_view_tag
+id website_item
 id west
 id withText
 id with_icon
@@ -4098,6 +4116,12 @@ layout item_app
 layout item_app_permission
 layout item_info_row
 layout item_permission
+layout item_setting_about
+layout item_setting_group_header
+layout item_setting_link
+layout item_setting_normal
+layout item_setting_shizuku
+layout item_setting_switch
 layout m3_alert_dialog
 layout m3_alert_dialog_actions
 layout m3_alert_dialog_title
@@ -4176,6 +4200,7 @@ layout select_dialog_multichoice_material
 layout select_dialog_singlechoice_material
 layout support_simple_spinner_dropdown_item
 menu bottom_nav_menu
+menu menu_app_detail
 menu menu_apps
 mipmap ic_launcher
 mipmap ic_launcher_foreground
@@ -4237,6 +4262,7 @@ string cancel
 string character_counter_content_description
 string character_counter_overflowed_content_description
 string character_counter_pattern
+string check_for_update
 string clear_cache
 string clear_data
 string clear_text_end_icon_content_description
@@ -4246,6 +4272,11 @@ string confirm_grant
 string confirm_revoke
 string copy
 string data_size
+string default_page_activities
+string default_page_apps
+string default_page_permissions
+string default_page_settings
+string default_page_title
 string denied
 string developer_name
 string disable_app
@@ -4407,6 +4438,8 @@ string perm_sms
 string perm_storage
 string permissions_title
 string pref_about
+string pref_default_page
+string pref_default_page_summary
 string pref_language
 string pref_language_auto
 string pref_language_de
@@ -4416,6 +4449,7 @@ string pref_language_ja
 string pref_language_ko
 string pref_language_ru
 string pref_language_zh
+string pref_show_disabled_apps
 string pref_show_system_apps
 string pref_show_undeclared_activities
 string pref_theme
@@ -4434,6 +4468,10 @@ string searchview_clear_text_content_description
 string searchview_navigation_content_description
 string selected_count
 string setting_saved
+string settings_group_about
+string settings_group_advanced
+string settings_group_appearance
+string settings_group_authorization
 string shizuku_authorized
 string shizuku_desc
 string shizuku_not_authorized
@@ -4451,6 +4489,8 @@ string sort_size
 string status_bar_notification_info_overflow
 string summary_collapsed_preference_list
 string target_sdk
+string telegram
+string telegram_desc
 string title_activities
 string title_activity_detail
 string title_app_detail
@@ -4460,9 +4500,12 @@ string title_settings
 string unfreeze_app
 string uninstall
 string update_date
+string update_desc
 string v7_preference_off
 string v7_preference_on
 string version
+string website
+string website_desc
 style AlertDialog_AppCompat
 style AlertDialog_AppCompat_Light
 style Animation_AppCompat_Dialog
@@ -5802,3 +5845,4 @@ styleable ViewPager2 android_orientation
 styleable ViewStubCompat android_id android_layout android_inflatedId
 styleable ViewTransition android_id SharedValue SharedValueId clearsTag duration ifTagNotSet ifTagSet motionInterpolator motionTarget onStateTransition pathMotionArc setsTag transitionDisable upDuration viewTransitionMode
 styleable include constraintSet
+xml file_paths

@@ -21,9 +21,23 @@ public final class DialogAboutBinding implements ViewBinding {
   @NonNull
   public final LinearLayout githubItem;
 
-  private DialogAboutBinding(@NonNull LinearLayout rootView, @NonNull LinearLayout githubItem) {
+  @NonNull
+  public final LinearLayout telegramItem;
+
+  @NonNull
+  public final LinearLayout updateItem;
+
+  @NonNull
+  public final LinearLayout websiteItem;
+
+  private DialogAboutBinding(@NonNull LinearLayout rootView, @NonNull LinearLayout githubItem,
+      @NonNull LinearLayout telegramItem, @NonNull LinearLayout updateItem,
+      @NonNull LinearLayout websiteItem) {
     this.rootView = rootView;
     this.githubItem = githubItem;
+    this.telegramItem = telegramItem;
+    this.updateItem = updateItem;
+    this.websiteItem = websiteItem;
   }
 
   @Override
@@ -59,7 +73,26 @@ public final class DialogAboutBinding implements ViewBinding {
         break missingId;
       }
 
-      return new DialogAboutBinding((LinearLayout) rootView, githubItem);
+      id = R.id.telegram_item;
+      LinearLayout telegramItem = ViewBindings.findChildViewById(rootView, id);
+      if (telegramItem == null) {
+        break missingId;
+      }
+
+      id = R.id.update_item;
+      LinearLayout updateItem = ViewBindings.findChildViewById(rootView, id);
+      if (updateItem == null) {
+        break missingId;
+      }
+
+      id = R.id.website_item;
+      LinearLayout websiteItem = ViewBindings.findChildViewById(rootView, id);
+      if (websiteItem == null) {
+        break missingId;
+      }
+
+      return new DialogAboutBinding((LinearLayout) rootView, githubItem, telegramItem, updateItem,
+          websiteItem);
     }
     String missingId = rootView.getResources().getResourceName(id);
     throw new NullPointerException("Missing required view with ID: ".concat(missingId));

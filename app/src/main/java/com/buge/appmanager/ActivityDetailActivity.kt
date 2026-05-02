@@ -2,8 +2,8 @@ package com.buge.appmanager
 
 import android.content.Intent
 import android.os.Bundle
-import android.view.MenuItem
 import android.widget.EditText
+import androidx.activity.OnBackPressedCallback
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.widget.addTextChangedListener
@@ -12,6 +12,8 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.buge.appmanager.adapter.ActivityDetailAdapter
 import com.buge.appmanager.databinding.ActivityActivityDetailBinding
 import com.buge.appmanager.model.ActivityDetail
+import com.buge.appmanager.util.LogManager
+import com.buge.appmanager.util.SpringAnimationHelper
 import com.buge.appmanager.viewmodel.ActivityDetailViewModel
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.coroutines.Job
@@ -43,12 +45,30 @@ class ActivityDetailActivity : AppCompatActivity() {
             return
         }
 
+        setupBackPressedCallback()
         setupToolbar()
         setupAppInfo()
         setupRecyclerView()
         setupSearch()
         observeViewModel()
         viewModel.loadActivities(packageName)
+
+        LogManager.info(this, "Activity details opened", "Package: $packageName")
+    }
+
+    private fun setupBackPressedCallback() {
+        val callback = object : OnBackPressedCallback(true) {
+            override fun handleOnBackPressed() {
+                val searchText = binding.searchEditText.text.toString()
+                if (searchText.isNotEmpty()) {
+                    binding.searchEditText.setText("")
+                } else {
+                    isEnabled = false
+                    onBackPressedDispatcher.onBackPressed()
+                }
+            }
+        }
+        onBackPressedDispatcher.addCallback(this, callback)
     }
 
     private fun setupToolbar() {
@@ -58,7 +78,7 @@ class ActivityDetailActivity : AppCompatActivity() {
         supportActionBar?.title = getString(R.string.title_activity_detail)
     }
 
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+    override fun onOptionsItemSelected(item: android.view.MenuItem): Boolean {
         when (item.itemId) {
             android.R.id.home -> {
                 finish()
@@ -82,7 +102,6 @@ class ActivityDetailActivity : AppCompatActivity() {
 
         binding.appName.text = appName
         binding.packageName.text = packageName
-
         binding.systemBadge.visibility = if (isSystem) android.view.View.VISIBLE else android.view.View.GONE
     }
 
@@ -95,7 +114,7 @@ class ActivityDetailActivity : AppCompatActivity() {
     }
 
     private fun setupSearch() {
-        val searchEditText = binding.searchLayout.editText as? EditText
+        val searchEditText = binding.searchEditText
         searchEditText?.addTextChangedListener { text ->
             searchJob?.cancel()
             searchJob = lifecycleScope.launch {
@@ -128,11 +147,14 @@ class ActivityDetailActivity : AppCompatActivity() {
                 }
                 startActivity(intent)
                 Snackbar.make(binding.root, "Launching ${activity.name}", Snackbar.LENGTH_SHORT).show()
+                LogManager.info(this, "Activity launched", "Package: $packageName, Activity: ${activity.className}")
             } catch (e: Exception) {
                 Snackbar.make(binding.root, "Failed to launch: ${e.message}", Snackbar.LENGTH_LONG).show()
+                LogManager.error(this, "Failed to launch activity", "Package: $packageName, Activity: ${activity.className}, Error: ${e.message}")
             }
         } else {
             Snackbar.make(binding.root, "This activity is not exported and cannot be launched", Snackbar.LENGTH_SHORT).show()
+            LogManager.warning(this, "Cannot launch unexported activity", "Package: $packageName, Activity: ${activity.className}")
         }
     }
 

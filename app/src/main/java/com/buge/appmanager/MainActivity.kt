@@ -12,6 +12,7 @@ import com.buge.appmanager.ui.AppsFragment
 import com.buge.appmanager.ui.PermissionsFragment
 import com.buge.appmanager.ui.SettingsFragment
 import com.buge.appmanager.util.LocaleManager
+import com.buge.appmanager.util.LogManager
 import com.buge.appmanager.util.PreferencesManager
 import rikka.shizuku.Shizuku
 
@@ -38,6 +39,9 @@ class MainActivity : AppCompatActivity() {
         
         super.onCreate(savedInstanceState)
         
+        // 初始化日志管理器
+        LogManager.init(this)
+        
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
@@ -46,8 +50,29 @@ class MainActivity : AppCompatActivity() {
         setupBottomNavigation()
 
         if (savedInstanceState == null) {
-            loadFragment(AppsFragment())
+            loadDefaultPage()
         }
+    }
+
+    private fun loadDefaultPage() {
+        val defaultPage = PreferencesManager.getDefaultPage(this)
+        val fragment = when (defaultPage) {
+            "apps" -> AppsFragment()
+            "permissions" -> PermissionsFragment()
+            "activities" -> ActivitiesFragment()
+            "settings" -> SettingsFragment()
+            else -> AppsFragment()
+        }
+        val navId = when (defaultPage) {
+            "apps" -> R.id.nav_apps
+            "permissions" -> R.id.nav_permissions
+            "activities" -> R.id.nav_activities
+            "settings" -> R.id.nav_settings
+            else -> R.id.nav_apps
+        }
+        binding.bottomNav.selectedItemId = navId
+        loadFragment(fragment)
+        LogManager.info(this, "App started, default page: $defaultPage")
     }
 
     override fun onResume() {
@@ -79,7 +104,6 @@ class MainActivity : AppCompatActivity() {
                 else -> false
             }
         }
-        binding.bottomNav.selectedItemId = R.id.nav_apps
     }
 
     private fun loadFragment(fragment: Fragment) {

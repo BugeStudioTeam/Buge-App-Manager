@@ -61,7 +61,6 @@
     <string name="perm_contacts">Kontakte</string>
     <string name="perm_storage">Speicher</string>
     <string name="perm_manage_storage">Alle Dateien zugreifen</string>
-    <string name="perm_notification_access">Benachrichtigungszugriff</string>
     <string name="perm_phone">Telefon</string>
     <string name="perm_sms">SMS</string>
     <string name="perm_calendar">Kalender</string>
@@ -75,7 +74,6 @@
     <string name="confirm_grant">Berechtigung für %d App(s) gewähren?</string>
     <string name="selected_count">%d ausgewählt</string>
     <string name="open_system_settings">Systemeinstellungen öffnen</string>
-    <string name="notification_access_hint">Benachrichtigungszugriff muss in den Systemeinstellungen verwaltet werden</string>
 
     <string name="title_settings">Einstellungen</string>
     <string name="pref_theme">Design</string>
@@ -92,6 +90,7 @@
     <string name="pref_language_de">Deutsch</string>
     <string name="pref_language_ru">Русский</string>
     <string name="pref_show_system_apps">System-Apps anzeigen</string>
+    <string name="pref_show_undeclared_activities">Nicht deklarierte Aktivitäten anzeigen</string>
     <string name="pref_about">Über</string>
     <string name="about">Über</string>
     <string name="about_desc">Buge App-Manager ist ein leistungsstarkes App-Verwaltungstool mit Shizuku-Unterstützung für erweiterte Berechtigungs- und App-Kontrolle.</string>

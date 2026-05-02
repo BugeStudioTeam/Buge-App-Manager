@@ -61,7 +61,6 @@
     <string name="perm_contacts">Contacts</string>
     <string name="perm_storage">Stockage</string>
     <string name="perm_manage_storage">Accès à tous les fichiers</string>
-    <string name="perm_notification_access">Accès aux notifications</string>
     <string name="perm_phone">Téléphone</string>
     <string name="perm_sms">SMS</string>
     <string name="perm_calendar">Calendrier</string>
@@ -75,7 +74,6 @@
     <string name="confirm_grant">Accorder la permission à %d application(s) ?</string>
     <string name="selected_count">%d sélectionné(s)</string>
     <string name="open_system_settings">Ouvrir les paramètres système</string>
-    <string name="notification_access_hint">L\'accès aux notifications doit être géré dans les paramètres système</string>
 
     <string name="title_settings">Paramètres</string>
     <string name="pref_theme">Thème</string>
@@ -92,6 +90,7 @@
     <string name="pref_language_de">Deutsch</string>
     <string name="pref_language_ru">Русский</string>
     <string name="pref_show_system_apps">Afficher les applications système</string>
+    <string name="pref_show_undeclared_activities">Afficher les activités non déclarées</string>
     <string name="pref_about">À propos</string>
     <string name="about">À propos</string>
     <string name="about_desc">Gestionnaire d\'applications Buge est un outil puissant de gestion d\'applications avec support Shizuku pour un contrôle avancé des permissions et des applications.</string>

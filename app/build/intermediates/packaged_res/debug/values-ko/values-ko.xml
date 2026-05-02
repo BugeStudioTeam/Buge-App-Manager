@@ -43,7 +43,6 @@
     <string name="nav_settings">설정</string>
     <string name="no_activities_found">활동을 찾을 수 없음</string>
     <string name="no_apps_found">앱을 찾을 수 없습니다</string>
-    <string name="notification_access_hint">알림 액세스는 시스템 설정에서 관리해야 합니다</string>
     <string name="open">열기</string>
     <string name="open_app">앱 열기</string>
     <string name="open_system_settings">시스템 설정 열기</string>
@@ -58,7 +57,6 @@
     <string name="perm_location">위치</string>
     <string name="perm_manage_storage">모든 파일 액세스</string>
     <string name="perm_microphone">마이크</string>
-    <string name="perm_notification_access">알림 액세스</string>
     <string name="perm_notifications">알림</string>
     <string name="perm_overlay">다른 앱 위에 표시</string>
     <string name="perm_phone">전화</string>
@@ -76,6 +74,7 @@
     <string name="pref_language_ru">Русский</string>
     <string name="pref_language_zh">中文（简体）</string>
     <string name="pref_show_system_apps">시스템 앱 표시</string>
+    <string name="pref_show_undeclared_activities">선언되지 않은 활동 표시</string>
     <string name="pref_theme">테마</string>
     <string name="pref_theme_auto">시스템 기본값</string>
     <string name="pref_theme_dark">어두움</string>

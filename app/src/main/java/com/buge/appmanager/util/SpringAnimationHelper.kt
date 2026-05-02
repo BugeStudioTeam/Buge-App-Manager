@@ -112,4 +112,91 @@ object SpringAnimationHelper {
             start()
         }
     }
+
+    fun animateClick(view: View) {
+        val originalScaleX = view.scaleX
+        val originalScaleY = view.scaleY
+        val springForce = SpringForce().apply {
+            stiffness = SpringForce.STIFFNESS_LOW
+            dampingRatio = SpringForce.DAMPING_RATIO_MEDIUM_BOUNCY
+        }
+        
+        SpringAnimation(view, DynamicAnimation.SCALE_X).apply {
+            this.spring = springForce
+            animateToFinalPosition(originalScaleX * 0.95f)
+            addEndListener { _, _, _, _ ->
+                SpringAnimation(view, DynamicAnimation.SCALE_X).apply {
+                    this.spring = springForce
+                    animateToFinalPosition(originalScaleX)
+                    start()
+                }
+            }
+            start()
+        }
+        
+        SpringAnimation(view, DynamicAnimation.SCALE_Y).apply {
+            this.spring = springForce
+            animateToFinalPosition(originalScaleY * 0.95f)
+            addEndListener { _, _, _, _ ->
+                SpringAnimation(view, DynamicAnimation.SCALE_Y).apply {
+                    this.spring = springForce
+                    animateToFinalPosition(originalScaleY)
+                    start()
+                }
+            }
+            start()
+        }
+    }
+
+    fun animateSpringPopup(view: View) {
+        view.alpha = 0f
+        view.scaleX = 0.8f
+        view.scaleY = 0.8f
+        view.visibility = View.VISIBLE
+        
+        val springForce = createDefaultSpringForce()
+        
+        SpringAnimation(view, DynamicAnimation.ALPHA).apply {
+            this.spring = springForce
+            animateToFinalPosition(1f)
+            start()
+        }
+        
+        SpringAnimation(view, DynamicAnimation.SCALE_X).apply {
+            this.spring = springForce
+            animateToFinalPosition(1f)
+            start()
+        }
+        
+        SpringAnimation(view, DynamicAnimation.SCALE_Y).apply {
+            this.spring = springForce
+            animateToFinalPosition(1f)
+            start()
+        }
+    }
+
+    fun animateSpringHide(view: View) {
+        val springForce = createDefaultSpringForce()
+        
+        SpringAnimation(view, DynamicAnimation.ALPHA).apply {
+            this.spring = springForce
+            animateToFinalPosition(0f)
+            addEndListener { _, _, _, _ ->
+                view.visibility = View.GONE
+            }
+            start()
+        }
+        
+        SpringAnimation(view, DynamicAnimation.SCALE_X).apply {
+            this.spring = springForce
+            animateToFinalPosition(0.8f)
+            start()
+        }
+        
+        SpringAnimation(view, DynamicAnimation.SCALE_Y).apply {
+            this.spring = springForce
+            animateToFinalPosition(0.8f)
+            start()
+        }
+    }
 }

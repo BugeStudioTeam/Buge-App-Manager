@@ -14,6 +14,7 @@ import com.buge.appmanager.data.AppRepository
 import com.buge.appmanager.databinding.FragmentPermissionsBinding
 import com.buge.appmanager.model.AppInfo
 import com.buge.appmanager.shizuku.ShizukuManager
+import com.buge.appmanager.util.PreferencesManager
 import com.buge.appmanager.util.SpringAnimationHelper
 import com.buge.appmanager.viewmodel.PermissionsViewModel
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
@@ -141,17 +142,31 @@ class PermissionsFragment : Fragment() {
     }
 
     private fun handlePermissionToggle(app: AppInfo, permission: String, isGranted: Boolean) {
+        if (app.isSystemApp && !PreferencesManager.getAllowSystemOps(requireContext())) {
+            showSystemOpBlockedDialog()
+            return
+        }
+        
         val actionLabel = if (isGranted) getString(R.string.revoke_permission) else getString(R.string.grant_permission)
         MaterialAlertDialogBuilder(requireContext())
             .setTitle(actionLabel)
             .setMessage("${app.appName}\n${permission}")
             .setPositiveButton(R.string.confirm) { _, _ ->
                 if (isGranted) {
-                    viewModel.revokePermission(app.packageName, permission)
+                    viewModel.revokePermission(app.packageName, permission, app.isSystemApp)
                 } else {
-                    viewModel.grantPermission(app.packageName, permission)
+                    viewModel.grantPermission(app.packageName, permission, app.isSystemApp)
                 }
             }
+            .setNegativeButton(R.string.cancel, null)
+            .show()
+    }
+
+    private fun showSystemOpBlockedDialog() {
+        MaterialAlertDialogBuilder(requireContext())
+            .setTitle(R.string.system_op_blocked_title)
+            .setMessage(R.string.system_op_blocked_message)
+            .setPositiveButton(R.string.confirm, null)
             .setNegativeButton(R.string.cancel, null)
             .show()
     }
@@ -194,6 +209,12 @@ class PermissionsFragment : Fragment() {
             val duration = if (result.success) Snackbar.LENGTH_SHORT else Snackbar.LENGTH_LONG
             Snackbar.make(binding.root, msg, duration).show()
             viewModel.clearOperationResult()
+        }
+        viewModel.systemOpBlocked.observe(viewLifecycleOwner) { blocked ->
+            if (blocked) {
+                showSystemOpBlockedDialog()
+                viewModel.clearSystemOpBlocked()
+            }
         }
     }
 

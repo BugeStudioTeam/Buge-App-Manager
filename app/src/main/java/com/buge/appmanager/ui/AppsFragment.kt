@@ -18,6 +18,7 @@ import com.buge.appmanager.databinding.FragmentAppsBinding
 import com.buge.appmanager.model.AppFilter
 import com.buge.appmanager.model.AppInfo
 import com.buge.appmanager.model.AppSortOrder
+import com.buge.appmanager.util.PreferencesManager
 import com.buge.appmanager.viewmodel.AppsViewModel
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 
@@ -84,6 +85,7 @@ class AppsFragment : Fragment() {
             val filter = when {
                 checkedIds.contains(com.buge.appmanager.R.id.chip_user) -> AppFilter.USER
                 checkedIds.contains(com.buge.appmanager.R.id.chip_system) -> AppFilter.SYSTEM
+                checkedIds.contains(com.buge.appmanager.R.id.chip_favorite) -> AppFilter.FAVORITE
                 else -> AppFilter.ALL
             }
             viewModel.setFilter(filter)

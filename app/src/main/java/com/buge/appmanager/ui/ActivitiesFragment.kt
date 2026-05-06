@@ -46,6 +46,7 @@ class ActivitiesFragment : Fragment() {
         setupBackPressedCallback()
         setupRecyclerView()
         setupSearch()
+        setupSwipeRefresh()
         observeViewModel()
         viewModel.loadApps()
 
@@ -111,6 +112,12 @@ class ActivitiesFragment : Fragment() {
         }
     }
 
+    private fun setupSwipeRefresh() {
+        binding.swipeRefresh.setOnRefreshListener {
+            viewModel.refresh()
+        }
+    }
+
     private fun filterApps(query: String) {
         if (query.isEmpty()) {
             appsAdapter.submitList(allApps)
@@ -130,10 +137,21 @@ class ActivitiesFragment : Fragment() {
             val isEmpty = apps.isEmpty()
             binding.emptyState.visibility = if (isEmpty) View.VISIBLE else View.GONE
             binding.recyclerView.visibility = if (isEmpty) View.GONE else View.VISIBLE
+            // stop
+            binding.swipeRefresh.isRefreshing = false
         }
 
         viewModel.isLoading.observe(viewLifecycleOwner) { isLoading ->
-            binding.progressBar.visibility = if (isLoading) View.VISIBLE else View.GONE
+            // ...
+            if (isLoading && allApps.isEmpty()) {
+                binding.progressBar.visibility = View.VISIBLE
+            } else {
+                binding.progressBar.visibility = View.GONE
+            }
+            // loading plz
+            if (isLoading) {
+                binding.swipeRefresh.isRefreshing = false
+            }
         }
     }
 

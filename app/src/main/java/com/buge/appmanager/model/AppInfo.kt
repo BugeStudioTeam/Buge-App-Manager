@@ -33,7 +33,7 @@ data class PermissionCategory(
 )
 
 enum class AppFilter {
-    ALL, USER, SYSTEM
+    ALL, USER, SYSTEM, FAVORITE
 }
 
 enum class AppSortOrder {

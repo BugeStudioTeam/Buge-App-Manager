@@ -17,6 +17,7 @@ sealed class SettingItem {
     data class Normal(val title: String, val subtitle: String, val iconRes: Int, val isClickable: Boolean = true) : SettingItem()
     data class SwitchItem(val title: String, val isChecked: Boolean, val iconRes: Int, val isEnabled: Boolean = true) : SettingItem()
     data class About(val version: String) : SettingItem()
+    data class AboutMore(val title: String, val subtitle: String) : SettingItem()
     object Shizuku : SettingItem()
 }
 
@@ -32,6 +33,7 @@ class SettingsAdapter(
         private const val TYPE_SWITCH = 3
         private const val TYPE_ABOUT = 4
         private const val TYPE_SHIZUKU = 5
+        private const val TYPE_ABOUT_MORE = 6
     }
 
     override fun getItemViewType(position: Int): Int {
@@ -40,6 +42,7 @@ class SettingsAdapter(
             is SettingItem.Normal -> TYPE_NORMAL
             is SettingItem.SwitchItem -> TYPE_SWITCH
             is SettingItem.About -> TYPE_ABOUT
+            is SettingItem.AboutMore -> TYPE_ABOUT_MORE
             is SettingItem.Shizuku -> TYPE_SHIZUKU
         }
     }
@@ -61,6 +64,10 @@ class SettingsAdapter(
             TYPE_ABOUT -> {
                 val view = LayoutInflater.from(parent.context).inflate(R.layout.item_setting_about, parent, false)
                 AboutViewHolder(view)
+            }
+            TYPE_ABOUT_MORE -> {
+                val view = LayoutInflater.from(parent.context).inflate(R.layout.item_setting_about_more, parent, false)
+                AboutMoreViewHolder(view)
             }
             TYPE_SHIZUKU -> {
                 val view = LayoutInflater.from(parent.context).inflate(R.layout.item_setting_shizuku, parent, false)
@@ -85,6 +92,9 @@ class SettingsAdapter(
             }
             is AboutViewHolder -> {
                 holder.bind(item as SettingItem.About)
+            }
+            is AboutMoreViewHolder -> {
+                holder.bind(item as SettingItem.AboutMore)
             }
             is ShizukuViewHolder -> {
                 holder.bind()
@@ -190,7 +200,6 @@ class SettingsAdapter(
                         }
                     }
                 } else {
-                    // 重新设置为原来的值
                     switchControl.isChecked = item.isChecked
                 }
             }
@@ -205,6 +214,45 @@ class SettingsAdapter(
             version.text = item.version
             developer.text = itemView.context.getString(R.string.developer_name)
             aboutDesc.text = itemView.context.getString(R.string.about_desc)
+            itemView.setOnClickListener { v ->
+                (v.parent as? RecyclerView)?.let { rv ->
+                    val position = rv.getChildAdapterPosition(v)
+                    (rv.adapter as? SettingsAdapter)?.let { adapter ->
+                        ValueAnimator.ofFloat(1f, 0.96f).apply {
+                            duration = 80
+                            addUpdateListener { animator ->
+                                val scale = animator.animatedValue as Float
+                                v.scaleX = scale
+                                v.scaleY = scale
+                            }
+                            doOnEnd {
+                                ValueAnimator.ofFloat(0.96f, 1f).apply {
+                                    duration = 80
+                                    addUpdateListener { animator ->
+                                        val scale = animator.animatedValue as Float
+                                        v.scaleX = scale
+                                        v.scaleY = scale
+                                    }
+                                    start()
+                                }
+                            }
+                            start()
+                        }
+                        adapter.onItemClick(adapter.items[position])
+                    }
+                }
+            }
+        }
+    }
+
+    class AboutMoreViewHolder(itemView: View) : ViewHolder(itemView) {
+        private val icon: ImageView = itemView.findViewById(R.id.icon)
+        private val title: TextView = itemView.findViewById(R.id.title)
+        private val subtitle: TextView = itemView.findViewById(R.id.subtitle)
+        fun bind(item: SettingItem.AboutMore) {
+            icon.setImageResource(R.drawable.ic_about)
+            title.text = item.title
+            subtitle.text = item.subtitle
             itemView.setOnClickListener { v ->
                 (v.parent as? RecyclerView)?.let { rv ->
                     val position = rv.getChildAdapterPosition(v)

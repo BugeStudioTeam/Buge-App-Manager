@@ -11,8 +11,8 @@ android {
         applicationId = "com.buge.appmanager"
         minSdk = 26
         targetSdk = 34
-        versionCode = 25
-        versionName = "4.12.18"
+        versionCode = 27
+        versionName = "4.15.22"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables {
@@ -77,4 +77,5 @@ dependencies {
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.7.3")
     implementation("com.github.bumptech.glide:glide:5.0.5")
     implementation("androidx.dynamicanimation:dynamicanimation:1.1.0")
+    implementation("com.google.code.gson:gson:2.10.1")
 }

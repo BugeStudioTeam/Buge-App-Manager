@@ -20,6 +20,7 @@
     <string name="filter_all">모든 앱</string>
     <string name="filter_user">사용자 앱</string>
     <string name="filter_system">시스템 앱</string>
+    <string name="filter_favorite">즐겨찾기 앱</string>
     <string name="sort_name">이름</string>
     <string name="sort_size">크기</string>
     <string name="sort_install_date">설치 날짜</string>

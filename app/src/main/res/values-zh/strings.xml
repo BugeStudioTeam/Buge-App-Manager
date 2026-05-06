@@ -20,6 +20,7 @@
     <string name="filter_all">所有应用</string>
     <string name="filter_user">用户应用</string>
     <string name="filter_system">系统应用</string>
+    <string name="filter_favorite">收藏应用</string>
     <string name="sort_name">名称</string>
     <string name="sort_size">大小</string>
     <string name="sort_install_date">安装日期</string>

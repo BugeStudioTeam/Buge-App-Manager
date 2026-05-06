@@ -20,6 +20,7 @@
     <string name="filter_all">Alle Apps</string>
     <string name="filter_user">Benutzer-Apps</string>
     <string name="filter_system">System-Apps</string>
+    <string name="filter_favorite">Favoriten-Apps</string>
     <string name="sort_name">Name</string>
     <string name="sort_size">Größe</string>
     <string name="sort_install_date">Installationsdatum</string>

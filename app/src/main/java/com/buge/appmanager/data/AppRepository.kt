@@ -12,6 +12,7 @@ import com.buge.appmanager.model.AppInfo
 import com.buge.appmanager.model.AppSortOrder
 import com.buge.appmanager.model.PermissionInfo
 import com.buge.appmanager.shizuku.ShizukuManager
+import com.buge.appmanager.util.PreferencesManager
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 
@@ -211,28 +212,25 @@ class AppRepository(private val context: Context) {
                     null
                 }
             }
-            
-            // 应用过滤器
+
             apps = when (filter) {
                 AppFilter.ALL -> if (showSystemApps) apps else apps.filter { !it.isSystemApp }
                 AppFilter.USER -> apps.filter { !it.isSystemApp }
                 AppFilter.SYSTEM -> apps.filter { it.isSystemApp }
+                AppFilter.FAVORITE -> apps.filter { PreferencesManager.isFavoriteApp(context, it.packageName) }
             }
-            
-            // 过滤禁用的应用
+
             if (!showDisabledApps) {
                 apps = apps.filter { it.isEnabled }
             }
-            
-            // 搜索过滤
+
             if (searchQuery.isNotEmpty()) {
                 apps = apps.filter {
                     it.appName.contains(searchQuery, ignoreCase = true) ||
                     it.packageName.contains(searchQuery, ignoreCase = true)
                 }
             }
-            
-            // 排序
+
             apps = when (sortOrder) {
                 AppSortOrder.NAME -> apps.sortedBy { it.appName.lowercase() }
                 AppSortOrder.SIZE -> apps.sortedByDescending { it.versionCode }

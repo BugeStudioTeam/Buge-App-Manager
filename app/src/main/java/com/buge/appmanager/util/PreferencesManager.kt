@@ -14,6 +14,7 @@ object PreferencesManager {
     private const val DEFAULT_PAGE_KEY = "default_page"
     private const val ALLOW_SYSTEM_OPS_KEY = "allow_system_ops"
     private const val LOGGING_ENABLED_KEY = "logging_enabled"
+    private const val FAVORITE_APPS_KEY = "favorite_apps"
 
     private fun getPreferences(context: Context): SharedPreferences {
         return context.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE)
@@ -77,5 +78,38 @@ object PreferencesManager {
 
     fun getLoggingEnabled(context: Context): Boolean {
         return getPreferences(context).getBoolean(LOGGING_ENABLED_KEY, false)
+    }
+
+    fun addFavoriteApp(context: Context, packageName: String) {
+        val favorites = getFavoriteApps(context).toMutableSet()
+        favorites.add(packageName)
+        saveFavoriteApps(context, favorites)
+    }
+
+    fun removeFavoriteApp(context: Context, packageName: String) {
+        val favorites = getFavoriteApps(context).toMutableSet()
+        favorites.remove(packageName)
+        saveFavoriteApps(context, favorites)
+    }
+
+    fun isFavoriteApp(context: Context, packageName: String): Boolean {
+        return getFavoriteApps(context).contains(packageName)
+    }
+
+    fun getFavoriteApps(context: Context): Set<String> {
+        val json = getPreferences(context).getString(FAVORITE_APPS_KEY, "[]")
+        return try {
+            val gson = com.google.gson.Gson()
+            val type = object : com.google.gson.reflect.TypeToken<Set<String>>() {}.type
+            gson.fromJson(json, type) ?: emptySet()
+        } catch (e: Exception) {
+            emptySet()
+        }
+    }
+
+    private fun saveFavoriteApps(context: Context, favorites: Set<String>) {
+        val gson = com.google.gson.Gson()
+        val json = gson.toJson(favorites)
+        getPreferences(context).edit().putString(FAVORITE_APPS_KEY, json).apply()
     }
 }

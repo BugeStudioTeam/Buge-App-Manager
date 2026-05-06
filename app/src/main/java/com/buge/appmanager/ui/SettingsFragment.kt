@@ -14,6 +14,7 @@ import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.buge.appmanager.AboutUsActivity
 import com.buge.appmanager.LogViewerActivity
 import com.buge.appmanager.MainActivity
 import com.buge.appmanager.R
@@ -82,6 +83,9 @@ class SettingsFragment : Fragment() {
                     }
                     is SettingItem.About -> {
                         showAboutDialog()
+                    }
+                    is SettingItem.AboutMore -> {
+                        startActivity(Intent(requireContext(), AboutUsActivity::class.java))
                     }
                     else -> {}
                 }
@@ -255,7 +259,8 @@ class SettingsFragment : Fragment() {
             SettingItem.SwitchItem(getString(R.string.pref_show_undeclared_activities), showUndeclared, R.drawable.ic_undeclared),
             SettingItem.Normal(getString(R.string.pref_logging), getString(R.string.pref_logging_summary), R.drawable.ic_log),
             SettingItem.Header(getString(R.string.settings_group_about)),
-            SettingItem.About(getVersionName())
+            SettingItem.About(getVersionName()),
+            SettingItem.AboutMore(getString(R.string.about_more), getString(R.string.about_more_summary))
         )
     }
 

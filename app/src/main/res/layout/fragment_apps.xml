@@ -19,7 +19,6 @@
             app:layout_scrollFlags="scroll|enterAlways|snap"
             app:menu="@menu/menu_apps" />
 
-        <!-- Search Bar using TextInputLayout -->
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/search_bar"
             style="@style/Widget.Material3.TextInputLayout.OutlinedBox"
@@ -40,7 +39,6 @@
 
         </com.google.android.material.textfield.TextInputLayout>
 
-        <!-- Filter Chips -->
         <HorizontalScrollView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -77,7 +75,15 @@
                     android:layout_height="wrap_content"
                     android:text="@string/filter_system" />
 
+                <com.google.android.material.chip.Chip
+                    android:id="@+id/chip_favorite"
+                    style="@style/Widget.Material3.Chip.Filter"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/filter_favorite" />
+
             </com.google.android.material.chip.ChipGroup>
+
         </HorizontalScrollView>
 
     </com.google.android.material.appbar.AppBarLayout>
@@ -97,7 +103,6 @@
 
     </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
-    <!-- Loading indicator -->
     <com.google.android.material.progressindicator.LinearProgressIndicator
         android:id="@+id/progress_bar"
         android:layout_width="match_parent"
@@ -105,7 +110,6 @@
         android:visibility="gone"
         app:layout_behavior="@string/appbar_scrolling_view_behavior" />
 
-    <!-- Empty state -->
     <LinearLayout
         android:id="@+id/empty_state"
         android:layout_width="match_parent"

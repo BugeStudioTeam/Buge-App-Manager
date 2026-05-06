@@ -74,6 +74,13 @@
     <string name="close">Close</string>
     <string name="open">Open</string>
 
+    <!-- About Us Activity -->
+    <string name="about_us">About Us</string>
+    <string name="about_us_title">Buge Studio Team</string>
+    <string name="about_us_description">Buge Studio Team is a passionate group of developers and designers dedicated to creating innovative and practical utility applications for the Android platform. We focus on user privacy, system control, and openness. Our goal is to provide users with transparent, efficient, and reliable tools. Buge App Manager is an open-source project, and it is our first major application. We welcome everyone to participate in its improvement and development together.</string>
+    <string name="about_more">Show more about us</string>
+    <string name="about_more_summary">Learn more about the development team and project vision</string>
+
     <!-- GMS Disable Warning -->
     <string name="gms_disable_warning_title">Disable Google Services?</string>
     <string name="gms_disable_warning_message">Disabling Google Services will affect the following:\n\n• Google Play Store will stop working\n• Apps that rely on Google Play Services may crash\n• Push notifications from Google apps will stop\n• Location services may be affected\n• In-app purchases will not work\n\nAre you sure you want to disable Google Services?</string>
@@ -106,6 +113,7 @@
     <string name="loading_apps">Loading apps…</string>
     <string name="refresh">Refresh</string>
     <string name="no_apps_found">No apps found</string>
+    <string name="filter_favorite">Favorite Apps</string>
 
     <!-- App Detail -->
     <string name="title_app_detail">App Details</string>
@@ -182,4 +190,5 @@
     <string name="pref_language_fr">Français</string>
     <string name="pref_language_de">Deutsch</string>
     <string name="pref_language_ru">Русский</string>
+    
 </resources>

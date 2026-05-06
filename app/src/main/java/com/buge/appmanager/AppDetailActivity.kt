@@ -12,6 +12,7 @@ import android.view.View
 import android.widget.TextView
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.buge.appmanager.adapter.PermissionDetailAdapter
 import com.buge.appmanager.databinding.ActivityAppDetailBinding
@@ -40,6 +41,7 @@ class AppDetailActivity : AppCompatActivity() {
     private val viewModel: AppDetailViewModel by viewModels()
     private lateinit var permAdapter: PermissionDetailAdapter
     private var packageName: String = ""
+    private var favoriteMenuItem: MenuItem? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -69,6 +71,8 @@ class AppDetailActivity : AppCompatActivity() {
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         menuInflater.inflate(R.menu.menu_app_detail, menu)
+        favoriteMenuItem = menu.findItem(R.id.action_favorite)
+        updateFavoriteIcon()
         return true
     }
 
@@ -78,12 +82,46 @@ class AppDetailActivity : AppCompatActivity() {
                 onBackPressedDispatcher.onBackPressed()
                 return true
             }
+            R.id.action_favorite -> {
+                toggleFavorite()
+                return true
+            }
             R.id.action_export_apk -> {
                 exportApk()
                 return true
             }
+            R.id.action_google_play -> {
+                openInGooglePlay()
+                return true
+            }
+            R.id.action_f_droid -> {
+                openInFDroid()
+                return true
+            }
         }
         return super.onOptionsItemSelected(item)
+    }
+
+    private fun toggleFavorite() {
+        if (PreferencesManager.isFavoriteApp(this, packageName)) {
+            PreferencesManager.removeFavoriteApp(this, packageName)
+            LogManager.info(this, "Removed from favorites", "Package: $packageName")
+            Snackbar.make(binding.root, "Removed from favorites", Snackbar.LENGTH_SHORT).show()
+        } else {
+            PreferencesManager.addFavoriteApp(this, packageName)
+            LogManager.info(this, "Added to favorites", "Package: $packageName")
+            Snackbar.make(binding.root, "Added to favorites", Snackbar.LENGTH_SHORT).show()
+        }
+        updateFavoriteIcon()
+    }
+
+    private fun updateFavoriteIcon() {
+        val isFavorite = PreferencesManager.isFavoriteApp(this, packageName)
+        if (isFavorite) {
+            favoriteMenuItem?.icon = ContextCompat.getDrawable(this, R.drawable.ic_favorite_filled)
+        } else {
+            favoriteMenuItem?.icon = ContextCompat.getDrawable(this, R.drawable.ic_favorite)
+        }
     }
 
     private fun exportApk() {
@@ -136,6 +174,43 @@ class AppDetailActivity : AppCompatActivity() {
             e.printStackTrace()
             Snackbar.make(binding.root, "Export failed: ${e.message}", Snackbar.LENGTH_LONG).show()
             LogManager.error(this, "APK export failed", e.message)
+        }
+    }
+
+    private fun openInGooglePlay() {
+        try {
+            val intent = Intent(Intent.ACTION_VIEW).apply {
+                data = Uri.parse("market://details?id=$packageName")
+                addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+            }
+            startActivity(intent)
+            LogManager.info(this, "Opened Google Play", "Package: $packageName")
+        } catch (e: Exception) {
+            try {
+                val intent = Intent(Intent.ACTION_VIEW).apply {
+                    data = Uri.parse("https://play.google.com/store/apps/details?id=$packageName")
+                    addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                }
+                startActivity(intent)
+                LogManager.info(this, "Opened Google Play (web)", "Package: $packageName")
+            } catch (e2: Exception) {
+                Snackbar.make(binding.root, "Cannot open Google Play", Snackbar.LENGTH_SHORT).show()
+                LogManager.error(this, "Failed to open Google Play", e2.message)
+            }
+        }
+    }
+
+    private fun openInFDroid() {
+        try {
+            val intent = Intent(Intent.ACTION_VIEW).apply {
+                data = Uri.parse("https://f-droid.org/packages/$packageName/")
+                addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+            }
+            startActivity(intent)
+            LogManager.info(this, "Opened F-Droid", "Package: $packageName")
+        } catch (e: Exception) {
+            Snackbar.make(binding.root, "Cannot open F-Droid", Snackbar.LENGTH_SHORT).show()
+            LogManager.error(this, "Failed to open F-Droid", e.message)
         }
     }
 
@@ -252,13 +327,13 @@ class AppDetailActivity : AppCompatActivity() {
 
     private fun handlePermissionToggle(perm: PermissionInfo) {
         if (!checkShizuku()) return
-        
+
         val app = viewModel.appInfo.value
         if (app != null && !SystemOpChecker.canOperate(this, app.isSystemApp)) {
             showSystemOpBlockedDialog()
             return
         }
-        
+
         val action = if (perm.isGranted) getString(R.string.revoke_permission) else getString(R.string.grant_permission)
         MaterialAlertDialogBuilder(this)
             .setTitle(action)

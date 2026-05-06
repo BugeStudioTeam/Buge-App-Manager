@@ -20,6 +20,7 @@
     <string name="filter_all">すべてのアプリ</string>
     <string name="filter_user">ユーザーアプリ</string>
     <string name="filter_system">システムアプリ</string>
+    <string name="filter_favorite">お気に入りアプリ</string>
     <string name="sort_name">名前</string>
     <string name="sort_size">サイズ</string>
     <string name="sort_install_date">インストール日</string>

@@ -22,22 +22,25 @@
     <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:fillViewport="true"
+        android:clipToPadding="false"
+        android:paddingTop="8dp"
+        android:paddingBottom="80dp"
         app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:padding="16dp">
+            android:paddingHorizontal="16dp">
 
             <!-- App Header Card -->
-            <com.google.android.material.card.MaterialCardView
+            <FrameLayout
+                android:id="@+id/app_header_container"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                app:cardElevation="0dp"
-                app:strokeWidth="0dp"
-                app:cardCornerRadius="16dp"
-                app:cardBackgroundColor="?attr/colorPrimaryContainer">
+                android:layout_marginBottom="16dp"
+                android:background="@drawable/bg_setting_item_single">
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -58,8 +61,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="12dp"
                         android:textStyle="bold"
-                        style="@style/TextAppearance.Material3.HeadlineSmall"
-                        android:textColor="?attr/colorOnPrimaryContainer" />
+                        style="@style/TextAppearance.Material3.HeadlineSmall" />
 
                     <TextView
                         android:id="@+id/package_name"
@@ -67,7 +69,6 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="4dp"
                         style="@style/TextAppearance.Material3.BodyMedium"
-                        android:textColor="?attr/colorOnPrimaryContainer"
                         android:alpha="0.7" />
 
                     <TextView
@@ -76,116 +77,127 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="4dp"
                         style="@style/TextAppearance.Material3.LabelMedium"
-                        android:textColor="?attr/colorOnPrimaryContainer"
                         android:alpha="0.7" />
 
                 </LinearLayout>
 
-            </com.google.android.material.card.MaterialCardView>
+            </FrameLayout>
 
-            <!-- Action Buttons -->
-            <LinearLayout
+            <!-- Action Buttons Group -->
+            <FrameLayout
+                android:id="@+id/actions_container"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:layout_marginTop="16dp"
-                android:gravity="center">
+                android:layout_marginBottom="16dp"
+                android:background="@drawable/bg_setting_item_single">
 
-                <com.google.android.material.button.MaterialButton
-                    android:id="@+id/btn_open"
-                    style="@style/Widget.Material3.Button.TonalButton"
-                    android:layout_width="0dp"
+                <LinearLayout
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:layout_marginEnd="4dp"
-                    android:text="@string/open_app"
-                    app:icon="@drawable/ic_open" />
+                    android:orientation="vertical"
+                    android:padding="16dp">
 
-                <com.google.android.material.button.MaterialButton
-                    android:id="@+id/btn_app_info"
-                    style="@style/Widget.Material3.Button.OutlinedButton"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:layout_marginStart="4dp"
-                    android:text="@string/app_info"
-                    app:icon="@drawable/ic_info" />
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:gravity="center"
+                        android:layout_marginBottom="8dp">
 
-            </LinearLayout>
+                        <com.google.android.material.button.MaterialButton
+                            android:id="@+id/btn_open"
+                            style="@style/Widget.Material3.Button.TonalButton"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:layout_marginEnd="4dp"
+                            android:text="@string/open_app"
+                            app:icon="@drawable/ic_open" />
 
-            <!-- Danger Zone Buttons -->
-            <LinearLayout
+                        <com.google.android.material.button.MaterialButton
+                            android:id="@+id/btn_app_info"
+                            style="@style/Widget.Material3.Button.OutlinedButton"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:layout_marginStart="4dp"
+                            android:text="@string/app_info"
+                            app:icon="@drawable/ic_info" />
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:gravity="center"
+                        android:layout_marginBottom="8dp">
+
+                        <com.google.android.material.button.MaterialButton
+                            android:id="@+id/btn_force_stop"
+                            style="@style/Widget.Material3.Button.OutlinedButton"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:layout_marginEnd="4dp"
+                            android:text="@string/force_stop"
+                            app:icon="@drawable/ic_stop"
+                            app:iconTint="?attr/colorError"
+                            android:textColor="?attr/colorError"
+                            app:strokeColor="?attr/colorError" />
+
+                        <com.google.android.material.button.MaterialButton
+                            android:id="@+id/btn_uninstall"
+                            style="@style/Widget.Material3.Button.OutlinedButton"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:layout_marginStart="4dp"
+                            android:text="@string/uninstall"
+                            app:icon="@drawable/ic_delete"
+                            app:iconTint="?attr/colorError"
+                            android:textColor="?attr/colorError"
+                            app:strokeColor="?attr/colorError" />
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:gravity="center">
+
+                        <com.google.android.material.button.MaterialButton
+                            android:id="@+id/btn_clear_data"
+                            style="@style/Widget.Material3.Button.OutlinedButton"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:layout_marginEnd="4dp"
+                            android:text="@string/clear_data" />
+
+                        <com.google.android.material.button.MaterialButton
+                            android:id="@+id/btn_disable_enable"
+                            style="@style/Widget.Material3.Button.TonalButton"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:layout_marginStart="4dp"
+                            android:text="@string/disable_app" />
+
+                    </LinearLayout>
+
+                </LinearLayout>
+
+            </FrameLayout>
+
+            <!-- App Info + Permissions Group -->
+            <FrameLayout
+                android:id="@+id/info_container_wrapper"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:layout_marginTop="8dp"
-                android:gravity="center">
-
-                <com.google.android.material.button.MaterialButton
-                    android:id="@+id/btn_force_stop"
-                    style="@style/Widget.Material3.Button.OutlinedButton"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:layout_marginEnd="4dp"
-                    android:text="@string/force_stop"
-                    app:icon="@drawable/ic_stop"
-                    app:iconTint="?attr/colorError"
-                    android:textColor="?attr/colorError"
-                    app:strokeColor="?attr/colorError" />
-
-                <com.google.android.material.button.MaterialButton
-                    android:id="@+id/btn_uninstall"
-                    style="@style/Widget.Material3.Button.OutlinedButton"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:layout_marginStart="4dp"
-                    android:text="@string/uninstall"
-                    app:icon="@drawable/ic_delete"
-                    app:iconTint="?attr/colorError"
-                    android:textColor="?attr/colorError"
-                    app:strokeColor="?attr/colorError" />
-
-            </LinearLayout>
-
-            <!-- More Actions -->
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:layout_marginTop="8dp"
-                android:gravity="center">
-
-                <com.google.android.material.button.MaterialButton
-                    android:id="@+id/btn_clear_data"
-                    style="@style/Widget.Material3.Button.OutlinedButton"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:layout_marginEnd="4dp"
-                    android:text="@string/clear_data" />
-
-                <com.google.android.material.button.MaterialButton
-                    android:id="@+id/btn_disable_enable"
-                    style="@style/Widget.Material3.Button.TonalButton"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:layout_marginStart="4dp"
-                    android:text="@string/disable_app" />
-
-            </LinearLayout>
-
-            <!-- App Info Card -->
-            <com.google.android.material.card.MaterialCardView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
-                app:cardElevation="0dp"
-                app:strokeWidth="1dp"
-                app:strokeColor="?attr/colorOutlineVariant"
-                app:cardCornerRadius="12dp">
+                android:layout_marginBottom="2dp"
+                android:background="@drawable/bg_setting_item_top">
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -197,7 +209,6 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="@string/title_app_detail"
-                        android:layout_marginBottom="12dp"
                         style="@style/TextAppearance.Material3.TitleMedium" />
 
                     <LinearLayout
@@ -208,18 +219,14 @@
 
                 </LinearLayout>
 
-            </com.google.android.material.card.MaterialCardView>
+            </FrameLayout>
 
-            <!-- Permissions Card -->
-            <com.google.android.material.card.MaterialCardView
+            <FrameLayout
+                android:id="@+id/permissions_container_wrapper"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
                 android:layout_marginBottom="16dp"
-                app:cardElevation="0dp"
-                app:strokeWidth="1dp"
-                app:strokeColor="?attr/colorOutlineVariant"
-                app:cardCornerRadius="12dp">
+                android:background="@drawable/bg_setting_item_bottom">
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -258,7 +265,7 @@
 
                 </LinearLayout>
 
-            </com.google.android.material.card.MaterialCardView>
+            </FrameLayout>
 
         </LinearLayout>
 

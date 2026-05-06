@@ -20,6 +20,7 @@
     <string name="filter_all">Все приложения</string>
     <string name="filter_user">Приложения пользователя</string>
     <string name="filter_system">Системные приложения</string>
+    <string name="filter_favorite">Избранные приложения</string>
     <string name="sort_name">Имя</string>
     <string name="sort_size">Размер</string>
     <string name="sort_install_date">Дата установки</string>

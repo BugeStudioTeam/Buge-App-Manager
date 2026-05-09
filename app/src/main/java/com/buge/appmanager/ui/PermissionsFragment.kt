@@ -4,6 +4,8 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.animation.OvershootInterpolator
+import androidx.activity.OnBackPressedCallback
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -39,22 +41,31 @@ class PermissionsFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         currentPermissionLabel = getString(R.string.perm_microphone)
+
+        setupBackPressedCallback()
         setupRecyclerView()
         setupPermissionChips()
         setupBatchActions()
         observeViewModel()
         viewModel.loadAppsForPermissions(currentPermissions)
 
-        runSpringEnterAnimation()
+        // Remove spring enter animation - no animation at all
     }
 
-    private fun runSpringEnterAnimation() {
-        binding.recyclerView.alpha = 0f
-        binding.recyclerView.translationY = 30f
-        binding.recyclerView.post {
-            SpringAnimationHelper.animateAlpha(binding.recyclerView, 1f)
-            SpringAnimationHelper.animateTranslationY(binding.recyclerView, 0f)
+    private fun setupBackPressedCallback() {
+        val callback = object : OnBackPressedCallback(true) {
+            override fun handleOnBackPressed() {
+                if (adapter.isInSelectionMode()) {
+                    adapter.clearSelection()
+                    adapter.setSelectionMode(false)
+                    hideBatchActionBar()
+                } else {
+                    isEnabled = false
+                    requireActivity().onBackPressedDispatcher.onBackPressed()
+                }
+            }
         }
+        requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner, callback)
     }
 
     override fun onResume() {
@@ -97,7 +108,7 @@ class PermissionsFragment : Fragment() {
             currentPermissionLabel = label
             adapter.clearSelection()
             adapter.setSelectionMode(false)
-            binding.batchActionBar.visibility = View.GONE
+            hideBatchActionBar()
             viewModel.loadAppsForPermissions(permissions)
         }
     }
@@ -116,7 +127,7 @@ class PermissionsFragment : Fragment() {
                     )
                     adapter.clearSelection()
                     adapter.setSelectionMode(false)
-                    binding.batchActionBar.visibility = View.GONE
+                    hideBatchActionBar()
                 }
                 .setNegativeButton(R.string.cancel, null)
                 .show()
@@ -134,10 +145,40 @@ class PermissionsFragment : Fragment() {
                     )
                     adapter.clearSelection()
                     adapter.setSelectionMode(false)
-                    binding.batchActionBar.visibility = View.GONE
+                    hideBatchActionBar()
                 }
                 .setNegativeButton(R.string.cancel, null)
                 .show()
+        }
+    }
+
+    private fun showBatchActionBar() {
+        if (binding.batchActionBar.visibility != View.VISIBLE) {
+            binding.batchActionBar.visibility = View.VISIBLE
+            binding.batchActionBar.alpha = 0f
+            binding.batchActionBar.scaleX = 0.8f
+            binding.batchActionBar.scaleY = 0.8f
+            binding.batchActionBar.animate()
+                .alpha(1f)
+                .scaleX(1f)
+                .scaleY(1f)
+                .setDuration(250)
+                .setInterpolator(OvershootInterpolator())
+                .start()
+        }
+    }
+
+    private fun hideBatchActionBar() {
+        if (binding.batchActionBar.visibility == View.VISIBLE) {
+            binding.batchActionBar.animate()
+                .alpha(0f)
+                .scaleX(0.8f)
+                .scaleY(0.8f)
+                .setDuration(200)
+                .withEndAction {
+                    binding.batchActionBar.visibility = View.GONE
+                }
+                .start()
         }
     }
 
@@ -146,7 +187,7 @@ class PermissionsFragment : Fragment() {
             showSystemOpBlockedDialog()
             return
         }
-        
+
         val actionLabel = if (isGranted) getString(R.string.revoke_permission) else getString(R.string.grant_permission)
         MaterialAlertDialogBuilder(requireContext())
             .setTitle(actionLabel)
@@ -173,12 +214,12 @@ class PermissionsFragment : Fragment() {
 
     private fun updateSelectionUI(count: Int) {
         if (count > 0) {
-            binding.batchActionBar.visibility = View.VISIBLE
             binding.selectedCountText.text = getString(R.string.selected_count, count)
             adapter.setSelectionMode(true)
+            showBatchActionBar()
         } else {
-            binding.batchActionBar.visibility = View.GONE
             adapter.setSelectionMode(false)
+            hideBatchActionBar()
         }
     }
 

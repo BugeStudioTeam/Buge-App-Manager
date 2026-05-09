@@ -3,17 +3,23 @@ package com.buge.appmanager.adapter
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.FrameLayout
 import android.widget.ImageView
 import android.widget.TextView
-import androidx.recyclerview.widget.DiffUtil
-import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.buge.appmanager.R
 import com.buge.appmanager.model.AppInfo
 
 class ActivitiesAppAdapter(
     private val onAppClick: (AppInfo) -> Unit
-) : ListAdapter<AppInfo, ActivitiesAppAdapter.AppViewHolder>(AppDiffCallback()) {
+) : RecyclerView.Adapter<ActivitiesAppAdapter.AppViewHolder>() {
+
+    private var items: List<AppInfo> = emptyList()
+
+    fun submitList(newItems: List<AppInfo>) {
+        items = newItems
+        notifyDataSetChanged()
+    }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): AppViewHolder {
         val view = LayoutInflater.from(parent.context)
@@ -22,8 +28,22 @@ class ActivitiesAppAdapter(
     }
 
     override fun onBindViewHolder(holder: AppViewHolder, position: Int) {
-        holder.bind(getItem(position))
+        holder.bind(items[position])
+        
+        // Set corner radius based on position
+        val container = holder.itemView.findViewById<FrameLayout>(R.id.item_container)
+        val size = items.size
+        
+        val background = when {
+            size == 1 -> R.drawable.bg_setting_item_single
+            position == 0 -> R.drawable.bg_setting_item_top
+            position == size - 1 -> R.drawable.bg_setting_item_bottom
+            else -> R.drawable.bg_setting_item_middle
+        }
+        container.setBackgroundResource(background)
     }
+
+    override fun getItemCount(): Int = items.size
 
     inner class AppViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         private val appIcon: ImageView = itemView.findViewById(R.id.app_icon)
@@ -47,18 +67,6 @@ class ActivitiesAppAdapter(
             }
 
             itemView.setOnClickListener { onAppClick(app) }
-        }
-    }
-
-    class AppDiffCallback : DiffUtil.ItemCallback<AppInfo>() {
-        override fun areItemsTheSame(oldItem: AppInfo, newItem: AppInfo): Boolean {
-            return oldItem.packageName == newItem.packageName
-        }
-
-        override fun areContentsTheSame(oldItem: AppInfo, newItem: AppInfo): Boolean {
-            return oldItem.packageName == newItem.packageName &&
-                   oldItem.appName == newItem.appName &&
-                   oldItem.isSystemApp == newItem.isSystemApp
         }
     }
 }

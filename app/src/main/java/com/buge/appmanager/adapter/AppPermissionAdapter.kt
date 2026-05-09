@@ -1,10 +1,15 @@
 package com.buge.appmanager.adapter
 
+import android.animation.Animator
+import android.animation.AnimatorListenerAdapter
+import android.animation.ArgbEvaluator
+import android.animation.ValueAnimator
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.animation.AccelerateDecelerateInterpolator
 import android.view.animation.OvershootInterpolator
+import android.widget.FrameLayout
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.DiffUtil
@@ -73,7 +78,19 @@ class AppPermissionAdapter(
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         holder.bind(getItem(position))
         
-        // 方案二关键：每次绑定时都重新设置长按监听器，确保不被覆盖
+        // Set corner radius based on position
+        val container = holder.itemView.findViewById<FrameLayout>(R.id.item_container)
+        val size = currentList.size
+        
+        val background = when {
+            size == 1 -> R.drawable.bg_setting_item_single
+            position == 0 -> R.drawable.bg_setting_item_top
+            position == size - 1 -> R.drawable.bg_setting_item_bottom
+            else -> R.drawable.bg_setting_item_middle
+        }
+        container.setBackgroundResource(background)
+        
+        // CRITICAL: Re-set long click listener every time to ensure it works
         holder.itemView.setOnLongClickListener(null)
         holder.itemView.setOnLongClickListener {
             if (!selectionMode) {
@@ -88,7 +105,7 @@ class AppPermissionAdapter(
             true
         }
         
-        // 重新设置点击监听器
+        // Re-set click listener
         holder.itemView.setOnClickListener(null)
         holder.itemView.setOnClickListener {
             holder.animateClick()
@@ -104,7 +121,7 @@ class AppPermissionAdapter(
             }
         }
         
-        // 重新设置 checkbox 监听器
+        // Re-set checkbox listener
         holder.checkbox.setOnClickListener(null)
         holder.checkbox.setOnClickListener {
             holder.animateCheckboxClick()
@@ -117,7 +134,7 @@ class AppPermissionAdapter(
             notifyItemChanged(holder.adapterPosition, "selection")
         }
         
-        // 重新设置权限状态 Chip 监听器
+        // Re-set chip listener
         holder.permStatusChip.setOnClickListener(null)
         holder.permStatusChip.setOnClickListener {
             val item = getItem(holder.adapterPosition)
@@ -144,7 +161,8 @@ class AppPermissionAdapter(
         private val packageName: TextView = itemView.findViewById(R.id.package_name)
         val permStatusChip: Chip = itemView.findViewById(R.id.perm_status_chip)
         private val systemAppBadge: View = itemView.findViewById(R.id.system_app_badge)
-        private val cardView: com.google.android.material.card.MaterialCardView = itemView as com.google.android.material.card.MaterialCardView
+        private val cardView: View = itemView
+        private val textContainer: ViewGroup = appName.parent as ViewGroup
 
         fun bind(item: AppPermissionItem) {
             appIcon.setImageDrawable(item.app.icon)
@@ -157,21 +175,22 @@ class AppPermissionAdapter(
                 systemAppBadge.visibility = View.GONE
             }
 
-            checkbox.visibility = if (selectionMode) View.VISIBLE else View.GONE
-            checkbox.isChecked = item.isSelected
-
-            if (selectionMode && checkbox.visibility == View.VISIBLE) {
-                checkbox.alpha = 0f
-                checkbox.scaleX = 0.5f
-                checkbox.scaleY = 0.5f
-                checkbox.animate()
-                    .alpha(1f)
-                    .scaleX(1f)
-                    .scaleY(1f)
-                    .setDuration(200)
-                    .setInterpolator(OvershootInterpolator())
-                    .start()
+            // Set initial state based on selectionMode
+            if (selectionMode) {
+                checkbox.visibility = View.VISIBLE
+                checkbox.alpha = 1f
+                checkbox.scaleX = 1f
+                checkbox.scaleY = 1f
+                appIcon.translationX = 28f
+                textContainer.translationX = 28f
+                packageName.translationX = 28f
+            } else {
+                checkbox.visibility = View.GONE
+                appIcon.translationX = 0f
+                textContainer.translationX = 0f
+                packageName.translationX = 0f
             }
+            checkbox.isChecked = item.isSelected
 
             val isGranted = item.permissionMap[item.primaryPermission] ?: false
             if (isGranted) {
@@ -186,31 +205,72 @@ class AppPermissionAdapter(
         }
 
         fun updateSelectionMode(mode: Boolean, isSelected: Boolean) {
-            val targetVisibility = if (mode) View.VISIBLE else View.GONE
-            if (checkbox.visibility != targetVisibility) {
-                if (mode) {
-                    checkbox.visibility = View.VISIBLE
-                    checkbox.alpha = 0f
-                    checkbox.scaleX = 0.5f
-                    checkbox.scaleY = 0.5f
-                    checkbox.animate()
-                        .alpha(1f)
-                        .scaleX(1f)
-                        .scaleY(1f)
-                        .setDuration(200)
-                        .setInterpolator(OvershootInterpolator())
-                        .start()
-                } else {
-                    checkbox.animate()
-                        .alpha(0f)
-                        .scaleX(0.5f)
-                        .scaleY(0.5f)
-                        .setDuration(150)
-                        .withEndAction {
-                            checkbox.visibility = View.GONE
-                        }
-                        .start()
-                }
+            if (mode) {
+                // Enter selection mode
+                checkbox.visibility = View.VISIBLE
+                checkbox.alpha = 0f
+                checkbox.scaleX = 0.5f
+                checkbox.scaleY = 0.5f
+                
+                // Slide content right by 28dp (just enough for checkbox width)
+                appIcon.animate()
+                    .translationX(28f)
+                    .setDuration(200)
+                    .setInterpolator(AccelerateDecelerateInterpolator())
+                    .start()
+                
+                textContainer.animate()
+                    .translationX(28f)
+                    .setDuration(200)
+                    .setInterpolator(AccelerateDecelerateInterpolator())
+                    .start()
+                
+                packageName.animate()
+                    .translationX(28f)
+                    .setDuration(200)
+                    .setInterpolator(AccelerateDecelerateInterpolator())
+                    .start()
+                
+                // Animate checkbox appearing
+                checkbox.animate()
+                    .alpha(1f)
+                    .scaleX(1f)
+                    .scaleY(1f)
+                    .setDuration(180)
+                    .setInterpolator(OvershootInterpolator())
+                    .start()
+            } else {
+                // Exit selection mode
+                
+                // Slide content back left to original position
+                appIcon.animate()
+                    .translationX(0f)
+                    .setDuration(200)
+                    .setInterpolator(AccelerateDecelerateInterpolator())
+                    .start()
+                
+                textContainer.animate()
+                    .translationX(0f)
+                    .setDuration(200)
+                    .setInterpolator(AccelerateDecelerateInterpolator())
+                    .start()
+                
+                packageName.animate()
+                    .translationX(0f)
+                    .setDuration(200)
+                    .setInterpolator(AccelerateDecelerateInterpolator())
+                    .start()
+                
+                // Animate checkbox disappearing
+                checkbox.animate()
+                    .alpha(0f)
+                    .scaleX(0.5f)
+                    .scaleY(0.5f)
+                    .setDuration(150)
+                    .withEndAction {
+                        checkbox.visibility = View.GONE
+                    }
+                    .start()
             }
             checkbox.isChecked = isSelected
         }

@@ -191,4 +191,9 @@
     <string name="pref_language_de">Deutsch</string>
     <string name="pref_language_ru">Русский</string>
     
+    <string name="restart_required">Restart Required</string>
+    <string name="restart_required_message">The default start page has been changed. Restart the app for the change to take effect.</string>
+    <string name="restart_now">Restart Now</string>
+    <string name="later">Later</string>
+    
 </resources>

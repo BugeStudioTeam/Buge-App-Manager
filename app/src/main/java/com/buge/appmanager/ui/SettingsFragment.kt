@@ -334,7 +334,7 @@ class SettingsFragment : Fragment() {
                 }
             }
         } catch (e: Exception) {
-            // 忽略更新错误，避免闪退
+            // Ignore update errors to avoid crash
         }
     }
 
@@ -361,7 +361,7 @@ class SettingsFragment : Fragment() {
                 PreferencesManager.setThemeMode(requireContext(), mode)
                 AppCompatDelegate.setDefaultNightMode(mode)
                 dialog.dismiss()
-                restartApp()
+                requireActivity().recreate()
             }
             .show()
     }
@@ -379,7 +379,7 @@ class SettingsFragment : Fragment() {
                 val selectedCode = codes[which]
                 LocaleManager.setLanguage(requireContext(), selectedCode)
                 dialog.dismiss()
-                restartApp()
+                requireActivity().recreate()
             }
             .show()
     }
@@ -409,11 +409,29 @@ class SettingsFragment : Fragment() {
                     3 -> "settings"
                     else -> "apps"
                 }
+                val oldPage = PreferencesManager.getDefaultPage(requireContext())
                 PreferencesManager.setDefaultPage(requireContext(), page)
                 dialog.dismiss()
-                restartApp()
+                
+                if (oldPage != page) {
+                    MaterialAlertDialogBuilder(requireContext())
+                        .setTitle("Restart Required")
+                        .setMessage("The default start page has been changed. Restart the app for the change to take effect.")
+                        .setPositiveButton("Restart Now") { _, _ ->
+                            restartApp()
+                        }
+                        .setNegativeButton("Later", null)
+                        .show()
+                }
             }
             .show()
+    }
+
+    private fun restartApp() {
+        val intent = Intent(requireContext(), MainActivity::class.java)
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK)
+        startActivity(intent)
+        requireActivity().finish()
     }
 
     private fun showAboutDialog() {
@@ -471,13 +489,6 @@ class SettingsFragment : Fragment() {
         super.onResume()
         updateShizukuStatus()
         setupRecyclerView()
-    }
-
-    private fun restartApp() {
-        val intent = Intent(requireContext(), MainActivity::class.java)
-        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK)
-        startActivity(intent)
-        requireActivity().finishAffinity()
     }
 
     override fun onDestroyView() {

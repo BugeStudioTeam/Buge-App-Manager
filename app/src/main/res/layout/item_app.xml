@@ -1,15 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
-<com.google.android.material.card.MaterialCardView
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/item_container"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_marginHorizontal="16dp"
-    android:layout_marginVertical="4dp"
-    app:cardElevation="0dp"
-    app:strokeWidth="0dp"
-    app:cardCornerRadius="12dp"
-    app:cardBackgroundColor="?attr/colorSurfaceVariant">
+    android:layout_marginBottom="2dp"
+    android:clickable="true"
+    android:focusable="true"
+    android:background="?attr/selectableItemBackground">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -18,14 +17,12 @@
         android:padding="12dp"
         android:gravity="center_vertical">
 
-        <!-- App Icon -->
         <ImageView
             android:id="@+id/app_icon"
             android:layout_width="48dp"
             android:layout_height="48dp"
             android:scaleType="centerCrop" />
 
-        <!-- App Info -->
         <LinearLayout
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -33,39 +30,22 @@
             android:orientation="vertical"
             android:layout_marginStart="12dp">
 
-            <TextView
-                android:id="@+id/app_name"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:textStyle="bold"
-                android:maxLines="1"
-                android:ellipsize="end"
-                style="@style/TextAppearance.Material3.BodyLarge" />
-
-            <TextView
-                android:id="@+id/package_name"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:maxLines="1"
-                android:ellipsize="end"
-                android:alpha="0.6"
-                style="@style/TextAppearance.Material3.BodySmall" />
-
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
-                android:layout_marginTop="4dp"
                 android:gravity="center_vertical">
 
                 <TextView
-                    android:id="@+id/app_version"
-                    android:layout_width="wrap_content"
+                    android:id="@+id/app_name"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:alpha="0.6"
-                    style="@style/TextAppearance.Material3.LabelSmall" />
+                    android:layout_weight="1"
+                    android:textStyle="bold"
+                    android:maxLines="1"
+                    android:ellipsize="end"
+                    style="@style/TextAppearance.Material3.BodyLarge" />
 
-                <!-- Red Shield Badge for System Apps -->
                 <FrameLayout
                     android:id="@+id/system_app_badge"
                     android:layout_width="20dp"
@@ -83,9 +63,25 @@
 
             </LinearLayout>
 
+            <TextView
+                android:id="@+id/package_name"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:maxLines="1"
+                android:ellipsize="end"
+                android:alpha="0.6"
+                style="@style/TextAppearance.Material3.BodySmall" />
+
+            <TextView
+                android:id="@+id/app_version"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:alpha="0.6"
+                android:layout_marginTop="2dp"
+                style="@style/TextAppearance.Material3.LabelSmall" />
+
         </LinearLayout>
 
-        <!-- Arrow -->
         <ImageView
             android:layout_width="20dp"
             android:layout_height="20dp"
@@ -95,4 +91,4 @@
 
     </LinearLayout>
 
-</com.google.android.material.card.MaterialCardView>
+</FrameLayout>

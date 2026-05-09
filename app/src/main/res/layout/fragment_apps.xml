@@ -40,16 +40,19 @@
         </com.google.android.material.textfield.TextInputLayout>
 
         <HorizontalScrollView
+            android:id="@+id/chip_scroll_view"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:scrollbars="none"
+            android:paddingStart="16dp"
+            android:paddingEnd="16dp"
+            android:clipToPadding="false"
             android:layout_marginBottom="8dp">
 
             <com.google.android.material.chip.ChipGroup
                 android:id="@+id/filter_chip_group"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginHorizontal="16dp"
                 app:singleSelection="true"
                 app:selectionRequired="true">
 

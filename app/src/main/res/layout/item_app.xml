@@ -15,7 +15,8 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:padding="12dp"
-        android:gravity="center_vertical">
+        android:gravity="center_vertical"
+        android:minHeight="72dp">
 
         <ImageView
             android:id="@+id/app_icon"
@@ -44,6 +45,7 @@
                     android:textStyle="bold"
                     android:maxLines="1"
                     android:ellipsize="end"
+                    android:singleLine="true"
                     style="@style/TextAppearance.Material3.BodyLarge" />
 
                 <FrameLayout
@@ -70,6 +72,7 @@
                 android:maxLines="1"
                 android:ellipsize="end"
                 android:alpha="0.6"
+                android:singleLine="true"
                 style="@style/TextAppearance.Material3.BodySmall" />
 
             <TextView
@@ -78,6 +81,7 @@
                 android:layout_height="wrap_content"
                 android:alpha="0.6"
                 android:layout_marginTop="2dp"
+                android:singleLine="true"
                 style="@style/TextAppearance.Material3.LabelSmall" />
 
         </LinearLayout>

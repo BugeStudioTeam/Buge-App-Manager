@@ -3,20 +3,24 @@ package com.buge.appmanager
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
-import androidx.appcompat.app.AppCompatActivity
+import android.view.View
 import androidx.appcompat.app.AppCompatDelegate
+import androidx.core.view.ViewCompat
+import androidx.core.view.WindowInsetsCompat
 import androidx.fragment.app.Fragment
 import com.buge.appmanager.databinding.ActivityMainBinding
 import com.buge.appmanager.ui.ActivitiesFragment
 import com.buge.appmanager.ui.AppsFragment
 import com.buge.appmanager.ui.PermissionsFragment
 import com.buge.appmanager.ui.SettingsFragment
+import com.buge.appmanager.util.FontOverrideHelper
 import com.buge.appmanager.util.LocaleManager
 import com.buge.appmanager.util.LogManager
 import com.buge.appmanager.util.PreferencesManager
 import rikka.shizuku.Shizuku
+import java.util.Locale
 
-class MainActivity : AppCompatActivity() {
+class MainActivity : BaseActivity() {
 
     private lateinit var binding: ActivityMainBinding
     private var currentFragment: Fragment? = null
@@ -28,6 +32,14 @@ class MainActivity : AppCompatActivity() {
             val savedLanguage = LocaleManager.getLanguage(newBase)
             val context = LocaleManager.createContextWithLocale(newBase, savedLanguage)
             super.attachBaseContext(context)
+            
+            val currentLocale = if (savedLanguage.isEmpty()) {
+                Locale.getDefault()
+            } else {
+                Locale(savedLanguage)
+            }
+            val isEnglish = currentLocale.language == "en"
+            FontOverrideHelper.setEnglishLocaleFlag(isEnglish)
         } else {
             super.attachBaseContext(newBase)
         }
@@ -39,11 +51,12 @@ class MainActivity : AppCompatActivity() {
         
         super.onCreate(savedInstanceState)
         
-        // 初始化日志管理器
         LogManager.init(this)
         
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+        setupWindowInsets()
 
         Shizuku.addRequestPermissionResultListener(requestPermissionResultListener)
 
@@ -51,6 +64,22 @@ class MainActivity : AppCompatActivity() {
 
         if (savedInstanceState == null) {
             loadDefaultPage()
+        }
+    }
+
+    private fun setupWindowInsets() {
+        ViewCompat.setOnApplyWindowInsetsListener(binding.root) { view, insets ->
+            val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
+            val bottomNavHeight = binding.bottomNav.height
+            
+            view.setPadding(
+                view.paddingLeft,
+                view.paddingTop + systemBars.top,
+                view.paddingRight,
+                view.paddingBottom + systemBars.bottom
+            )
+            
+            insets
         }
     }
 

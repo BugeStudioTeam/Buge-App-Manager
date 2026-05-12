@@ -11,7 +11,6 @@ import android.view.MenuItem
 import android.view.View
 import android.widget.TextView
 import androidx.activity.viewModels
-import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.buge.appmanager.adapter.PermissionDetailAdapter
@@ -31,7 +30,7 @@ import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
 
-class AppDetailActivity : AppCompatActivity() {
+class AppDetailActivity : BaseActivity() {
 
     companion object {
         const val EXTRA_PACKAGE_NAME = "extra_package_name"

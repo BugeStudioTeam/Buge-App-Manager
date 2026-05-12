@@ -7,7 +7,6 @@ import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
-import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.buge.appmanager.databinding.ActivityLogViewerBinding
@@ -16,7 +15,7 @@ import com.buge.appmanager.util.PreferencesManager
 import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.switchmaterial.SwitchMaterial
 
-class LogViewerActivity : AppCompatActivity() {
+class LogViewerActivity : BaseActivity() {
 
     private lateinit var binding: ActivityLogViewerBinding
     private lateinit var adapter: LogAdapter

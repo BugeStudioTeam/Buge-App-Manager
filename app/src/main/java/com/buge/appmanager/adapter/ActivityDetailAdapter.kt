@@ -3,6 +3,7 @@ package com.buge.appmanager.adapter
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.FrameLayout
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.DiffUtil
@@ -24,6 +25,17 @@ class ActivityDetailAdapter(
 
     override fun onBindViewHolder(holder: ActivityViewHolder, position: Int) {
         holder.bind(getItem(position))
+        
+        val container = holder.itemView.findViewById<FrameLayout>(R.id.item_container)
+        val size = itemCount
+        
+        val background = when {
+            size == 1 -> R.drawable.bg_setting_item_single
+            position == 0 -> R.drawable.bg_setting_item_top
+            position == size - 1 -> R.drawable.bg_setting_item_bottom
+            else -> R.drawable.bg_setting_item_middle
+        }
+        container.setBackgroundResource(background)
     }
 
     inner class ActivityViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
@@ -33,8 +45,6 @@ class ActivityDetailAdapter(
         private val exportStatus: TextView = itemView.findViewById(R.id.export_status)
         private val launchMode: TextView = itemView.findViewById(R.id.launch_mode)
         private val permission: TextView = itemView.findViewById(R.id.permission)
-        private val intentFilterBadge: View = itemView.findViewById(R.id.intent_filter_badge)
-        private val intentFilterCount: TextView = itemView.findViewById(R.id.intent_filter_count)
         private val btnLaunch: MaterialButton = itemView.findViewById(R.id.btn_launch)
 
         fun bind(activity: ActivityDetail) {
@@ -75,13 +85,6 @@ class ActivityDetailAdapter(
                 permission.text = "Required: $permShort"
             } else {
                 permission.visibility = View.GONE
-            }
-
-            if (activity.intentFilterCount > 0) {
-                intentFilterBadge.visibility = View.VISIBLE
-                intentFilterCount.text = activity.intentFilterCount.toString()
-            } else {
-                intentFilterBadge.visibility = View.GONE
             }
 
             btnLaunch.setOnClickListener {

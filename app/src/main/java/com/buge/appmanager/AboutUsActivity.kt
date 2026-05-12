@@ -5,10 +5,9 @@ import android.net.Uri
 import android.os.Bundle
 import android.widget.LinearLayout
 import android.widget.TextView
-import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 
-class AboutUsActivity : AppCompatActivity() {
+class AboutUsActivity : BaseActivity() {
 
     private lateinit var toolbar: Toolbar
     private lateinit var tvVersion: TextView
@@ -75,7 +74,7 @@ class AboutUsActivity : AppCompatActivity() {
             val intent = Intent(Intent.ACTION_VIEW, Uri.parse(url))
             startActivity(intent)
         } catch (e: Exception) {
-            // ADD STH
+            // Do nothing
         }
     }
 

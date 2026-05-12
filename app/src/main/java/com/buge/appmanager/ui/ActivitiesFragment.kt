@@ -5,7 +5,6 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.EditText
 import androidx.activity.OnBackPressedCallback
 import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.Fragment
@@ -13,10 +12,12 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.buge.appmanager.ActivityDetailActivity
+import com.buge.appmanager.BaseActivity
 import com.buge.appmanager.R
 import com.buge.appmanager.adapter.ActivitiesAppAdapter
 import com.buge.appmanager.databinding.FragmentActivitiesBinding
 import com.buge.appmanager.model.AppInfo
+import com.buge.appmanager.util.FontOverrideHelper
 import com.buge.appmanager.util.SpringAnimationHelper
 import com.buge.appmanager.viewmodel.ActivitiesViewModel
 import kotlinx.coroutines.Job
@@ -31,6 +32,7 @@ class ActivitiesFragment : Fragment() {
     private lateinit var appsAdapter: ActivitiesAppAdapter
     private var searchJob: Job? = null
     private var allApps: List<AppInfo> = emptyList()
+    private var fontApplied = false
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -51,6 +53,19 @@ class ActivitiesFragment : Fragment() {
         viewModel.loadApps()
 
         runSpringEnterAnimation()
+    }
+
+    override fun onResume() {
+        super.onResume()
+        if (activity is BaseActivity && !fontApplied) {
+            FontOverrideHelper.applyToActivity(activity as BaseActivity)
+            fontApplied = true
+        }
+        refresh()
+    }
+
+    fun refresh() {
+        viewModel.refresh()
     }
 
     private fun setupBackPressedCallback() {
@@ -75,15 +90,6 @@ class ActivitiesFragment : Fragment() {
             SpringAnimationHelper.animateAlpha(binding.recyclerView, 1f)
             SpringAnimationHelper.animateTranslationY(binding.recyclerView, 0f)
         }
-    }
-
-    override fun onResume() {
-        super.onResume()
-        refresh()
-    }
-
-    fun refresh() {
-        viewModel.refresh()
     }
 
     private fun setupRecyclerView() {
@@ -137,18 +143,15 @@ class ActivitiesFragment : Fragment() {
             val isEmpty = apps.isEmpty()
             binding.emptyState.visibility = if (isEmpty) View.VISIBLE else View.GONE
             binding.recyclerView.visibility = if (isEmpty) View.GONE else View.VISIBLE
-            // stop
             binding.swipeRefresh.isRefreshing = false
         }
 
         viewModel.isLoading.observe(viewLifecycleOwner) { isLoading ->
-            // ...
             if (isLoading && allApps.isEmpty()) {
                 binding.progressBar.visibility = View.VISIBLE
             } else {
                 binding.progressBar.visibility = View.GONE
             }
-            // loading plz
             if (isLoading) {
                 binding.swipeRefresh.isRefreshing = false
             }

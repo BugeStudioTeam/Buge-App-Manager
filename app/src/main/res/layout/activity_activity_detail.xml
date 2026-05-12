@@ -34,13 +34,13 @@
             android:orientation="vertical"
             android:padding="16dp">
 
-            <com.google.android.material.card.MaterialCardView
+            <!-- App Info Card - Single container with rounded corners -->
+            <FrameLayout
+                android:id="@+id/app_info_container"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                app:cardElevation="0dp"
-                app:strokeWidth="1dp"
-                app:strokeColor="?attr/colorOutlineVariant"
-                app:cardCornerRadius="16dp">
+                android:layout_marginBottom="16dp"
+                android:background="@drawable/bg_setting_item_single">
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -105,14 +105,15 @@
 
                 </LinearLayout>
 
-            </com.google.android.material.card.MaterialCardView>
+            </FrameLayout>
 
+            <!-- Search Bar -->
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/search_layout"
                 style="@style/Widget.Material3.TextInputLayout.OutlinedBox"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
+                android:layout_marginBottom="16dp"
                 android:hint="@string/search_activity_hint"
                 app:startIconDrawable="@drawable/ic_search">
 
@@ -126,13 +127,14 @@
 
             </com.google.android.material.textfield.TextInputLayout>
 
+            <!-- Activities List -->
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/recycler_view"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
                 android:nestedScrollingEnabled="false" />
 
+            <!-- Empty State -->
             <LinearLayout
                 android:id="@+id/empty_state"
                 android:layout_width="match_parent"

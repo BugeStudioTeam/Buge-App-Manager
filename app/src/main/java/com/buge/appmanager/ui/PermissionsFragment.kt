@@ -9,6 +9,7 @@ import androidx.activity.OnBackPressedCallback
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.buge.appmanager.BaseActivity
 import com.buge.appmanager.R
 import com.buge.appmanager.adapter.AppPermissionAdapter
 import com.buge.appmanager.adapter.AppPermissionItem
@@ -16,8 +17,8 @@ import com.buge.appmanager.data.AppRepository
 import com.buge.appmanager.databinding.FragmentPermissionsBinding
 import com.buge.appmanager.model.AppInfo
 import com.buge.appmanager.shizuku.ShizukuManager
+import com.buge.appmanager.util.FontOverrideHelper
 import com.buge.appmanager.util.PreferencesManager
-import com.buge.appmanager.util.SpringAnimationHelper
 import com.buge.appmanager.viewmodel.PermissionsViewModel
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.snackbar.Snackbar
@@ -29,6 +30,7 @@ class PermissionsFragment : Fragment() {
     private lateinit var adapter: AppPermissionAdapter
     private var currentPermissions: List<String> = AppRepository.PERMISSION_MICROPHONE
     private var currentPermissionLabel: String = ""
+    private var fontApplied = false
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -48,8 +50,15 @@ class PermissionsFragment : Fragment() {
         setupBatchActions()
         observeViewModel()
         viewModel.loadAppsForPermissions(currentPermissions)
+    }
 
-        // Remove spring enter animation - no animation at all
+    override fun onResume() {
+        super.onResume()
+        if (activity is BaseActivity && !fontApplied) {
+            FontOverrideHelper.applyToActivity(activity as BaseActivity)
+            fontApplied = true
+        }
+        viewModel.loadAppsForPermissions(currentPermissions)
     }
 
     private fun setupBackPressedCallback() {
@@ -66,11 +75,6 @@ class PermissionsFragment : Fragment() {
             }
         }
         requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner, callback)
-    }
-
-    override fun onResume() {
-        super.onResume()
-        viewModel.loadAppsForPermissions(currentPermissions)
     }
 
     private fun setupRecyclerView() {

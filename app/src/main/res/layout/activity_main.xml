@@ -5,11 +5,19 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <androidx.fragment.app.FragmentContainerView
-        android:id="@+id/fragment_container"
+    <FrameLayout
+        android:id="@+id/fragment_container_wrapper"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        app:layout_behavior="@string/appbar_scrolling_view_behavior" />
+        android:layout_marginBottom="?attr/actionBarSize">
+
+        <androidx.fragment.app.FragmentContainerView
+            android:id="@+id/fragment_container"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:layout_behavior="@string/appbar_scrolling_view_behavior" />
+
+    </FrameLayout>
 
     <com.google.android.material.navigationrail.NavigationRailView
         android:id="@+id/nav_rail"
@@ -24,6 +32,7 @@
         android:layout_height="wrap_content"
         android:layout_gravity="bottom"
         android:background="@color/bottom_nav_background"
+        android:elevation="8dp"
         app:menu="@menu/bottom_nav_menu"
         app:labelVisibilityMode="labeled" />
 

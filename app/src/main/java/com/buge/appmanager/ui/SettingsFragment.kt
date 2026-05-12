@@ -15,34 +15,38 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.buge.appmanager.AboutUsActivity
+import com.buge.appmanager.BaseActivity
 import com.buge.appmanager.LogViewerActivity
 import com.buge.appmanager.MainActivity
 import com.buge.appmanager.R
 import com.buge.appmanager.databinding.FragmentSettingsBinding
 import com.buge.appmanager.shizuku.ShizukuManager
+import com.buge.appmanager.util.FontOverrideHelper
 import com.buge.appmanager.util.LocaleManager
 import com.buge.appmanager.util.LogManager
 import com.buge.appmanager.util.PreferencesManager
+import com.buge.appmanager.util.SnackbarHelper
 import com.buge.appmanager.util.SpringAnimationHelper
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
-import com.google.android.material.snackbar.Snackbar
 import kotlinx.coroutines.launch
 import rikka.shizuku.Shizuku
+import java.util.Locale
 
 class SettingsFragment : Fragment() {
 
     private var _binding: FragmentSettingsBinding? = null
     private val binding get() = _binding!!
     private lateinit var adapter: SettingsAdapter
+    private var fontApplied = false
 
     private val shizukuPermissionListener = Shizuku.OnRequestPermissionResultListener { _, grantResult ->
         if (grantResult == PackageManager.PERMISSION_GRANTED) {
             updateShizukuStatus()
-            Snackbar.make(binding.root, R.string.shizuku_authorized, Snackbar.LENGTH_SHORT).show()
+            SnackbarHelper.showSnackbar(binding.root, getString(R.string.shizuku_authorized))
             LogManager.info(requireContext(), "Shizuku authorized")
         } else {
             updateShizukuStatus()
-            Snackbar.make(binding.root, R.string.shizuku_not_authorized, Snackbar.LENGTH_SHORT).show()
+            SnackbarHelper.showSnackbar(binding.root, getString(R.string.shizuku_not_authorized))
             LogManager.warning(requireContext(), "Shizuku authorization failed")
         }
     }
@@ -62,6 +66,16 @@ class SettingsFragment : Fragment() {
 
         setupRecyclerView()
         runSpringEnterAnimation()
+    }
+
+    override fun onResume() {
+        super.onResume()
+        if (activity is BaseActivity && !fontApplied) {
+            FontOverrideHelper.applyToActivity(activity as BaseActivity)
+            fontApplied = true
+        }
+        updateShizukuStatus()
+        setupRecyclerView()
     }
 
     private fun setupRecyclerView() {
@@ -94,23 +108,23 @@ class SettingsFragment : Fragment() {
                 when {
                     item.title == getString(R.string.pref_show_disabled_apps) -> {
                         PreferencesManager.setShowDisabledApps(requireContext(), isChecked)
-                        Snackbar.make(binding.root, R.string.setting_saved, Snackbar.LENGTH_SHORT).show()
+                        SnackbarHelper.showSnackbar(binding.root, getString(R.string.setting_saved))
                         LogManager.info(requireContext(), "Show disabled apps changed to $isChecked")
                     }
                     item.title == getString(R.string.pref_show_system_apps) -> {
                         PreferencesManager.setShowSystemApps(requireContext(), isChecked)
-                        Snackbar.make(binding.root, R.string.setting_saved, Snackbar.LENGTH_SHORT).show()
+                        SnackbarHelper.showSnackbar(binding.root, getString(R.string.setting_saved))
                         updateShizukuStatus()
                         LogManager.info(requireContext(), "Show system apps changed to $isChecked")
                     }
                     item.title == getString(R.string.pref_show_undeclared_activities) -> {
                         PreferencesManager.setShowUndeclaredActivities(requireContext(), isChecked)
-                        Snackbar.make(binding.root, R.string.setting_saved, Snackbar.LENGTH_SHORT).show()
+                        SnackbarHelper.showSnackbar(binding.root, getString(R.string.setting_saved))
                         LogManager.info(requireContext(), "Show undeclared activities changed to $isChecked")
                     }
                     item.title == getString(R.string.pref_allow_system_ops) -> {
                         PreferencesManager.setAllowSystemOps(requireContext(), isChecked)
-                        Snackbar.make(binding.root, R.string.setting_saved, Snackbar.LENGTH_SHORT).show()
+                        SnackbarHelper.showSnackbar(binding.root, getString(R.string.setting_saved))
                         LogManager.info(requireContext(), "Allow system app operations changed to $isChecked")
                     }
                     item.title == getString(R.string.pref_google_services) -> {
@@ -151,14 +165,14 @@ class SettingsFragment : Fragment() {
                 val gmsPackage = "com.google.android.gms"
                 val result = ShizukuManager.disableApp(gmsPackage)
                 if (result.success) {
-                    Snackbar.make(binding.root, "Google Services disabled", Snackbar.LENGTH_SHORT).show()
+                    SnackbarHelper.showSnackbar(binding.root, "Google Services disabled")
                     LogManager.info(requireContext(), "Google Services disabled by user")
                 } else {
-                    Snackbar.make(binding.root, "Failed to disable: ${result.error}", Snackbar.LENGTH_LONG).show()
+                    SnackbarHelper.showSnackbar(binding.root, "Failed to disable: ${result.error}")
                     LogManager.error(requireContext(), "Failed to disable Google Services", result.error)
                 }
             } catch (e: Exception) {
-                Snackbar.make(binding.root, "Error: ${e.message}", Snackbar.LENGTH_LONG).show()
+                SnackbarHelper.showSnackbar(binding.root, "Error: ${e.message}")
                 LogManager.error(requireContext(), "Error disabling Google Services", e.message)
             }
             setupRecyclerView()
@@ -171,14 +185,14 @@ class SettingsFragment : Fragment() {
                 val gmsPackage = "com.google.android.gms"
                 val result = ShizukuManager.enableApp(gmsPackage)
                 if (result.success) {
-                    Snackbar.make(binding.root, "Google Services enabled", Snackbar.LENGTH_SHORT).show()
+                    SnackbarHelper.showSnackbar(binding.root, "Google Services enabled")
                     LogManager.info(requireContext(), "Google Services enabled by user")
                 } else {
-                    Snackbar.make(binding.root, "Failed to enable: ${result.error}", Snackbar.LENGTH_LONG).show()
+                    SnackbarHelper.showSnackbar(binding.root, "Failed to enable: ${result.error}")
                     LogManager.error(requireContext(), "Failed to enable Google Services", result.error)
                 }
             } catch (e: Exception) {
-                Snackbar.make(binding.root, "Error: ${e.message}", Snackbar.LENGTH_LONG).show()
+                SnackbarHelper.showSnackbar(binding.root, "Error: ${e.message}")
                 LogManager.error(requireContext(), "Error enabling Google Services", e.message)
             }
             setupRecyclerView()
@@ -240,7 +254,7 @@ class SettingsFragment : Fragment() {
             SettingItem.Header(getString(R.string.settings_group_appearance)),
             SettingItem.Normal(getString(R.string.pref_theme), themeText, R.drawable.ic_theme),
             SettingItem.Normal(getString(R.string.pref_language), languageText, R.drawable.ic_language),
-            SettingItem.Normal(getString(R.string.pref_default_page), defaultPageText, R.drawable.ic_settings),
+            SettingItem.Normal(getString(R.string.pref_default_page), defaultPageText, R.drawable.ic_home_page),
             SettingItem.Header(getString(R.string.settings_group_apps)),
             SettingItem.SwitchItem(
                 getString(R.string.pref_google_services),
@@ -325,7 +339,7 @@ class SettingsFragment : Fragment() {
                     requestButton?.text = buttonText
                     requestButton?.setOnClickListener {
                         if (!ShizukuManager.isShizukuAvailable()) {
-                            Snackbar.make(binding.root, R.string.shizuku_status_not_running, Snackbar.LENGTH_LONG).show()
+                            SnackbarHelper.showSnackbar(binding.root, getString(R.string.shizuku_status_not_running))
                         } else {
                             ShizukuManager.requestShizukuPermission()
                         }
@@ -361,6 +375,11 @@ class SettingsFragment : Fragment() {
                 PreferencesManager.setThemeMode(requireContext(), mode)
                 AppCompatDelegate.setDefaultNightMode(mode)
                 dialog.dismiss()
+                
+                val isEnglish = Locale.getDefault().language == "en"
+                FontOverrideHelper.setEnglishLocaleFlag(isEnglish)
+                fontApplied = false
+                
                 requireActivity().recreate()
             }
             .show()
@@ -379,6 +398,17 @@ class SettingsFragment : Fragment() {
                 val selectedCode = codes[which]
                 LocaleManager.setLanguage(requireContext(), selectedCode)
                 dialog.dismiss()
+                
+                val isEnglish = when (selectedCode) {
+                    "", "en" -> true
+                    else -> {
+                        val locale = if (selectedCode.isEmpty()) Locale.getDefault() else Locale(selectedCode)
+                        locale.language == "en"
+                    }
+                }
+                FontOverrideHelper.setEnglishLocaleFlag(isEnglish)
+                fontApplied = false
+                
                 requireActivity().recreate()
             }
             .show()
@@ -483,12 +513,6 @@ class SettingsFragment : Fragment() {
             SpringAnimationHelper.animateAlpha(binding.recyclerView, 1f)
             SpringAnimationHelper.animateTranslationY(binding.recyclerView, 0f)
         }
-    }
-
-    override fun onResume() {
-        super.onResume()
-        updateShizukuStatus()
-        setupRecyclerView()
     }
 
     override fun onDestroyView() {

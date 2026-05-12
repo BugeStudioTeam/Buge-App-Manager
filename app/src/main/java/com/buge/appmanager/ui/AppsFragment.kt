@@ -5,19 +5,20 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.EditText
 import androidx.activity.OnBackPressedCallback
 import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.buge.appmanager.AppDetailActivity
+import com.buge.appmanager.BaseActivity
 import com.buge.appmanager.R
 import com.buge.appmanager.adapter.AppsAdapter
 import com.buge.appmanager.databinding.FragmentAppsBinding
 import com.buge.appmanager.model.AppFilter
 import com.buge.appmanager.model.AppInfo
 import com.buge.appmanager.model.AppSortOrder
+import com.buge.appmanager.util.FontOverrideHelper
 import com.buge.appmanager.util.PreferencesManager
 import com.buge.appmanager.viewmodel.AppsViewModel
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
@@ -29,6 +30,7 @@ class AppsFragment : Fragment() {
 
     private val viewModel: AppsViewModel by viewModels()
     private lateinit var adapter: AppsAdapter
+    private var fontApplied = false
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -50,6 +52,14 @@ class AppsFragment : Fragment() {
 
         binding.swipeRefresh.setOnRefreshListener {
             viewModel.loadApps()
+        }
+    }
+
+    override fun onResume() {
+        super.onResume()
+        if (activity is BaseActivity && !fontApplied) {
+            FontOverrideHelper.applyToActivity(activity as BaseActivity)
+            fontApplied = true
         }
     }
 

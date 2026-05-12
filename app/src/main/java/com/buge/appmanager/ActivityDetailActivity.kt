@@ -5,7 +5,6 @@ import android.os.Bundle
 import android.widget.EditText
 import androidx.activity.OnBackPressedCallback
 import androidx.activity.viewModels
-import androidx.appcompat.app.AppCompatActivity
 import androidx.core.widget.addTextChangedListener
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -20,7 +19,7 @@ import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
-class ActivityDetailActivity : AppCompatActivity() {
+class ActivityDetailActivity : BaseActivity() {
 
     companion object {
         const val EXTRA_PACKAGE_NAME = "extra_package_name"

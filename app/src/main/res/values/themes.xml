@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <style name="Theme.BugeAppManager" parent="Theme.Material3.Light.NoActionBar">
-        <!-- 基础颜色 -->
+        <!-- basic color -->
         <item name="colorPrimary">@color/md_theme_primary</item>
         <item name="colorOnPrimary">@color/md_theme_onPrimary</item>
         <item name="colorPrimaryContainer">@color/md_theme_primaryContainer</item>
@@ -30,7 +30,7 @@
         <item name="colorOnSurfaceInverse">@color/md_theme_inverseOnSurface</item>
         <item name="colorPrimaryInverse">@color/md_theme_inversePrimary</item>
 
-        <!-- 表面颜色层级 -->
+        <!-- color lay -->
         <item name="colorSurfaceDim">@color/md_theme_surfaceDim</item>
         <item name="colorSurfaceBright">@color/md_theme_surfaceBright</item>
         <item name="colorSurfaceContainerLowest">@color/md_theme_surfaceContainerLowest</item>
@@ -39,7 +39,7 @@
         <item name="colorSurfaceContainerHigh">@color/md_theme_surfaceContainerHigh</item>
         <item name="colorSurfaceContainerHighest">@color/md_theme_surfaceContainerHighest</item>
 
-        <!-- 固定颜色 -->
+        <!-- color pin-->
         <item name="colorPrimaryFixed">@color/md_theme_primaryFixed</item>
         <item name="colorOnPrimaryFixed">@color/md_theme_onPrimaryFixed</item>
         <item name="colorPrimaryFixedDim">@color/md_theme_primaryFixedDim</item>

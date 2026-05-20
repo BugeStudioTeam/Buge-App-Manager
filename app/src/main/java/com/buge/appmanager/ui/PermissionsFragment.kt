@@ -19,9 +19,9 @@ import com.buge.appmanager.model.AppInfo
 import com.buge.appmanager.shizuku.ShizukuManager
 import com.buge.appmanager.util.FontOverrideHelper
 import com.buge.appmanager.util.PreferencesManager
+import com.buge.appmanager.util.SnackbarHelper
 import com.buge.appmanager.viewmodel.PermissionsViewModel
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
-import com.google.android.material.snackbar.Snackbar
 
 class PermissionsFragment : Fragment() {
     private var _binding: FragmentPermissionsBinding? = null
@@ -251,8 +251,7 @@ class PermissionsFragment : Fragment() {
                 val errorMsg = result.error.ifEmpty { "Operation failed" }
                 getString(R.string.operation_failed, errorMsg)
             }
-            val duration = if (result.success) Snackbar.LENGTH_SHORT else Snackbar.LENGTH_LONG
-            Snackbar.make(binding.root, msg, duration).show()
+            SnackbarHelper.showSnackbar(binding.root, msg)
             viewModel.clearOperationResult()
         }
         viewModel.systemOpBlocked.observe(viewLifecycleOwner) { blocked ->

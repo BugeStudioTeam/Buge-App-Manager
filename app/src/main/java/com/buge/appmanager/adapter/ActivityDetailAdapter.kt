@@ -25,7 +25,27 @@ class ActivityDetailAdapter(
 
     override fun onBindViewHolder(holder: ActivityViewHolder, position: Int) {
         holder.bind(getItem(position))
-        
+        updateItemBackground(holder, position)
+    }
+
+    override fun onBindViewHolder(holder: ActivityViewHolder, position: Int, payloads: MutableList<Any>) {
+        if (payloads.isEmpty()) {
+            super.onBindViewHolder(holder, position, payloads)
+        } else {
+            holder.bind(getItem(position))
+            updateItemBackground(holder, position)
+        }
+    }
+
+    override fun onCurrentListChanged(previousList: MutableList<ActivityDetail>, currentList: MutableList<ActivityDetail>) {
+        super.onCurrentListChanged(previousList, currentList)
+        // Notify all items to update backgrounds when list size changes
+        if (previousList.size != currentList.size) {
+            notifyItemRangeChanged(0, currentList.size, "background")
+        }
+    }
+
+    private fun updateItemBackground(holder: ActivityViewHolder, position: Int) {
         val container = holder.itemView.findViewById<FrameLayout>(R.id.item_container)
         val size = itemCount
         
@@ -36,6 +56,10 @@ class ActivityDetailAdapter(
             else -> R.drawable.bg_setting_item_middle
         }
         container.setBackgroundResource(background)
+    }
+
+    override fun submitList(list: List<ActivityDetail>?) {
+        super.submitList(list)
     }
 
     inner class ActivityViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
@@ -106,6 +130,14 @@ class ActivityDetailAdapter(
             return oldItem.className == newItem.className &&
                    oldItem.isExported == newItem.isExported &&
                    oldItem.name == newItem.name
+        }
+        
+        override fun getChangePayload(oldItem: ActivityDetail, newItem: ActivityDetail): Any? {
+            if (oldItem.isExported != newItem.isExported ||
+                oldItem.name != newItem.name) {
+                return "content"
+            }
+            return null
         }
     }
 }

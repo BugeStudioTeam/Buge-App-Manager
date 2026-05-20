@@ -11,8 +11,8 @@ android {
         applicationId = "com.buge.appmanager"
         minSdk = 26
         targetSdk = 34
-        versionCode = 30
-        versionName = "5.17.29"
+        versionCode = 31
+        versionName = "5.17.31"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables {

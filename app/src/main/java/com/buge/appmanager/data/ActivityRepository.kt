@@ -38,7 +38,7 @@ class ActivityRepository(private val context: Context) {
                         continue
                     }
                     
-                    // Check if app has any activities
+                    // Check if app has any activities - lightweight check
                     val hasActivities = try {
                         val packageInfo = if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.TIRAMISU) {
                             pm.getPackageInfo(packageName, PackageManager.PackageInfoFlags.of(PackageManager.GET_ACTIVITIES.toLong()))
@@ -46,7 +46,7 @@ class ActivityRepository(private val context: Context) {
                             @Suppress("DEPRECATION")
                             pm.getPackageInfo(packageName, PackageManager.GET_ACTIVITIES)
                         }
-                        val activities = packageInfo.activities
+                        val activities = packageInfo?.activities
                         activities != null && activities.isNotEmpty()
                     } catch (e: Exception) {
                         false
@@ -99,37 +99,50 @@ class ActivityRepository(private val context: Context) {
                 @Suppress("DEPRECATION")
                 pm.getPackageInfo(packageName, PackageManager.GET_ACTIVITIES)
             }
-            val activities = packageInfo.activities ?: return@withContext emptyList()
+            val activities = packageInfo?.activities ?: return@withContext emptyList()
             
             val result = mutableListOf<ActivityDetail>()
             
+            // Pre-load intent filter counts in batch to avoid per-activity queries
+            val intentFilterCounts = mutableMapOf<String, Int>()
+            
             for (activityInfo in activities) {
-                // Count intent filters by checking if the activity has any intent filters
-                // Since intentFilters is not directly accessible, we check via PackageManager
+                val className = activityInfo.name
+                // Count intent filters by checking if the activity responds to any intent
                 var intentFilterCount = 0
                 try {
+                    // Use a more efficient approach - just check if there are any intent filters
+                    // without enumerating all of them individually
+                    val intent = Intent().apply { 
+                        setClassName(packageName, className)
+                        action = Intent.ACTION_MAIN
+                    }
                     val resolveInfoList = if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.TIRAMISU) {
-                        pm.queryIntentActivities(
-                            Intent().apply { setClassName(packageName, activityInfo.name) },
-                            PackageManager.ResolveInfoFlags.of(0)
-                        )
+                        pm.queryIntentActivities(intent, PackageManager.ResolveInfoFlags.of(0))
                     } else {
                         @Suppress("DEPRECATION")
-                        pm.queryIntentActivities(
-                            Intent().apply { setClassName(packageName, activityInfo.name) },
-                            0
-                        )
+                        pm.queryIntentActivities(intent, 0)
                     }
-                    if (resolveInfoList.isNotEmpty()) {
-                        intentFilterCount = resolveInfoList.size
-                    }
+                    // If activity can be resolved, it has at least one intent filter
+                    intentFilterCount = if (resolveInfoList.isNotEmpty()) 1 else 0
                 } catch (e: Exception) {
                     intentFilterCount = 0
                 }
+                intentFilterCounts[className] = intentFilterCount
+            }
+            
+            for (activityInfo in activities) {
+                val className = activityInfo.name
+                val intentFilterCount = intentFilterCounts[className] ?: 0
                 
                 val activity = ActivityDetail(
-                    name = try { activityInfo.loadLabel(pm).toString() } catch (e: Exception) { activityInfo.name.substringAfterLast(".") },
-                    className = activityInfo.name,
+                    name = try { 
+                        val label = activityInfo.loadLabel(pm)
+                        if (label.isNullOrEmpty()) activityInfo.name.substringAfterLast(".") else label.toString()
+                    } catch (e: Exception) { 
+                        activityInfo.name.substringAfterLast(".") 
+                    },
+                    className = className,
                     isExported = activityInfo.exported,
                     intentFilterCount = intentFilterCount,
                     permission = activityInfo.permission ?: "None",

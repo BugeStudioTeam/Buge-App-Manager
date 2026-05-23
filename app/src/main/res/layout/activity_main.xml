@@ -1,39 +1,43 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.coordinatorlayout.widget.CoordinatorLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent">
+     xmlns:android="http://schemas.android.com/apk/res/android"
+     xmlns:app="http://schemas.android.com/apk/res-auto"
+     android:layout_height="match_parent"
+     android:layout_width="match_parent">
 
     <FrameLayout
-        android:id="@+id/fragment_container_wrapper"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_marginBottom="?attr/actionBarSize">
+         android:layout_height="match_parent"
+         android:layout_width="match_parent"
+         android:layout_marginBottom="?attr/actionBarSize"
+         android:id="@+id/fragment_container_wrapper">
 
         <androidx.fragment.app.FragmentContainerView
-            android:id="@+id/fragment_container"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            app:layout_behavior="@string/appbar_scrolling_view_behavior" />
+             android:layout_height="match_parent"
+             android:layout_width="match_parent"
+             app:layout_behavior="@string/appbar_scrolling_view_behavior"
+             android:id="@+id/fragment_container" />
 
     </FrameLayout>
 
     <com.google.android.material.navigationrail.NavigationRailView
-        android:id="@+id/nav_rail"
-        android:layout_width="wrap_content"
-        android:layout_height="match_parent"
-        android:visibility="gone"
-        app:menu="@menu/bottom_nav_menu" />
+         android:layout_height="match_parent"
+         android:layout_width="wrap_content"
+         android:visibility="gone"
+         app:menu="@menu/bottom_nav_menu"
+         android:id="@+id/nav_rail">
+
+    </com.google.android.material.navigationrail.NavigationRailView>
 
     <com.google.android.material.bottomnavigation.BottomNavigationView
-        android:id="@+id/bottom_nav"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_gravity="bottom"
-        android:background="@color/bottom_nav_background"
-        android:elevation="8dp"
-        app:menu="@menu/bottom_nav_menu"
-        app:labelVisibilityMode="labeled" />
+         android:layout_height="wrap_content"
+         android:layout_width="match_parent"
+         android:background="@color/bottom_nav_background"
+         app:labelVisibilityMode="labeled"
+         android:elevation="8dp"
+         app:menu="@menu/bottom_nav_menu"
+         android:id="@+id/bottom_nav"
+         android:layout_gravity="bottom">
+
+    </com.google.android.material.bottomnavigation.BottomNavigationView>
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

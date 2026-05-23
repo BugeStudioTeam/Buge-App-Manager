@@ -174,71 +174,111 @@ class AppRepository(private val context: Context) {
         showDisabledApps: Boolean = true
     ): List<AppInfo> = withContext(Dispatchers.IO) {
         try {
-            val flags = PackageManager.GET_META_DATA
-            val packages = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-                pm.getInstalledPackages(PackageManager.PackageInfoFlags.of(flags.toLong()))
+            val packages: List<PackageInfo> = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+                pm.getInstalledPackages(PackageManager.PackageInfoFlags.of(PackageManager.GET_META_DATA.toLong()))
             } else {
                 @Suppress("DEPRECATION")
-                pm.getInstalledPackages(flags)
+                pm.getInstalledPackages(PackageManager.GET_META_DATA)
             }
-            var apps = packages.mapNotNull { pkg ->
+            
+            Log.d(TAG, "Total packages found: ${packages.size}")
+            
+            var apps = mutableListOf<AppInfo>()
+            
+            for (pkg in packages) {
                 try {
-                    val appInfo = pkg.applicationInfo ?: return@mapNotNull null
+                    val appInfo = pkg.applicationInfo
+                    if (appInfo == null) continue
+                    
                     val isSystem = (appInfo.flags and ApplicationInfo.FLAG_SYSTEM) != 0
                     val isEnabled = appInfo.enabled
-                    AppInfo(
+                    
+                    val appName = try {
+                        pm.getApplicationLabel(appInfo).toString()
+                    } catch (e: Exception) {
+                        pkg.packageName
+                    }
+                    
+                    val versionName = pkg.versionName ?: "Unknown"
+                    val versionCode = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
+                        pkg.longVersionCode
+                    } else {
+                        @Suppress("DEPRECATION")
+                        pkg.versionCode.toLong()
+                    }
+                    
+                    val icon = try {
+                        pm.getApplicationIcon(pkg.packageName)
+                    } catch (e: Exception) {
+                        null
+                    }
+                    
+                    val targetSdkVersion = appInfo.targetSdkVersion
+                    val minSdkVersion = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+                        appInfo.minSdkVersion
+                    } else {
+                        0
+                    }
+                    
+                    val apkPath = appInfo.sourceDir ?: ""
+                    
+                    val app = AppInfo(
                         packageName = pkg.packageName,
-                        appName = pm.getApplicationLabel(appInfo).toString(),
-                        versionName = pkg.versionName ?: "N/A",
-                        versionCode = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
-                            pkg.longVersionCode
-                        } else {
-                            @Suppress("DEPRECATION")
-                            pkg.versionCode.toLong()
-                        },
-                        icon = try { pm.getApplicationIcon(pkg.packageName) } catch (e: Exception) { null },
+                        appName = appName,
+                        versionName = versionName,
+                        versionCode = versionCode,
+                        icon = icon,
                         isSystemApp = isSystem,
                         isEnabled = isEnabled,
                         installTime = pkg.firstInstallTime,
                         updateTime = pkg.lastUpdateTime,
-                        targetSdkVersion = appInfo.targetSdkVersion,
-                        minSdkVersion = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-                            appInfo.minSdkVersion
-                        } else 0,
-                        apkPath = appInfo.sourceDir ?: ""
+                        targetSdkVersion = targetSdkVersion,
+                        minSdkVersion = minSdkVersion,
+                        apkPath = apkPath
                     )
+                    
+                    apps.add(app)
                 } catch (e: Exception) {
                     Log.w(TAG, "Error processing package ${pkg.packageName}: ${e.message}")
-                    null
                 }
             }
 
+            Log.d(TAG, "Apps after initial load: ${apps.size}")
+            
+            // Apply filters
             apps = when (filter) {
-                AppFilter.ALL -> if (showSystemApps) apps else apps.filter { !it.isSystemApp }
-                AppFilter.USER -> apps.filter { !it.isSystemApp }
-                AppFilter.SYSTEM -> apps.filter { it.isSystemApp }
-                AppFilter.FAVORITE -> apps.filter { PreferencesManager.isFavoriteApp(context, it.packageName) }
+                AppFilter.ALL -> {
+                    if (showSystemApps) apps else apps.filter { !it.isSystemApp }.toMutableList()
+                }
+                AppFilter.USER -> apps.filter { !it.isSystemApp }.toMutableList()
+                AppFilter.SYSTEM -> apps.filter { it.isSystemApp }.toMutableList()
+                AppFilter.FAVORITE -> apps.filter { PreferencesManager.isFavoriteApp(context, it.packageName) }.toMutableList()
             }
 
+            // Filter disabled apps
             if (!showDisabledApps) {
-                apps = apps.filter { it.isEnabled }
+                apps = apps.filter { it.isEnabled }.toMutableList()
             }
 
+            // Apply search filter
             if (searchQuery.isNotEmpty()) {
                 apps = apps.filter {
                     it.appName.contains(searchQuery, ignoreCase = true) ||
                     it.packageName.contains(searchQuery, ignoreCase = true)
-                }
+                }.toMutableList()
             }
 
+            // Apply sorting
             apps = when (sortOrder) {
-                AppSortOrder.NAME -> apps.sortedBy { it.appName.lowercase() }
-                AppSortOrder.SIZE -> apps.sortedByDescending { it.versionCode }
-                AppSortOrder.INSTALL_DATE -> apps.sortedByDescending { it.installTime }
+                AppSortOrder.NAME -> apps.sortedBy { it.appName.lowercase() }.toMutableList()
+                AppSortOrder.SIZE -> apps.sortedByDescending { it.versionCode }.toMutableList()
+                AppSortOrder.INSTALL_DATE -> apps.sortedByDescending { it.installTime }.toMutableList()
             }
+            
+            Log.d(TAG, "Apps after filters: ${apps.size}")
             apps
         } catch (e: Exception) {
-            Log.e(TAG, "Error getting installed apps: ${e.message}")
+            Log.e(TAG, "Error getting installed apps: ${e.message}", e)
             emptyList()
         }
     }
@@ -254,7 +294,7 @@ class AppRepository(private val context: Context) {
                 @Suppress("DEPRECATION")
                 pm.getPackageInfo(packageName, PackageManager.GET_PERMISSIONS)
             }
-            val requestedPermissions = pkgInfo.requestedPermissions ?: return@withContext emptyList()
+            val requestedPermissions = pkgInfo?.requestedPermissions ?: return@withContext emptyList()
             val permissionFlags = pkgInfo.requestedPermissionsFlags ?: return@withContext emptyList()
 
             val permissions = mutableListOf<PermissionInfo>()
@@ -326,7 +366,7 @@ class AppRepository(private val context: Context) {
                                     @Suppress("DEPRECATION")
                                     pm.getPackageInfo(app.packageName, PackageManager.GET_PERMISSIONS)
                                 }
-                                val permissions = pkgInfo.requestedPermissions ?: continue
+                                val permissions = pkgInfo?.requestedPermissions ?: continue
                                 val permFlags = pkgInfo.requestedPermissionsFlags ?: continue
                                 val permIndex = permissions.indexOf(permission)
                                 if (permIndex >= 0) {
@@ -339,6 +379,7 @@ class AppRepository(private val context: Context) {
                         }
                         result.add(Pair(app, isGranted))
                     } catch (e: Exception) {
+                        Log.w(TAG, "Error checking permission for ${app.packageName}: ${e.message}")
                     }
                 }
                 result.sortedBy { it.first.appName.lowercase() }
@@ -366,7 +407,7 @@ class AppRepository(private val context: Context) {
                         @Suppress("DEPRECATION")
                         pm.getPackageInfo(app.packageName, PackageManager.GET_PERMISSIONS)
                     }
-                    val requestedPerms = pkgInfo.requestedPermissions ?: continue
+                    val requestedPerms = pkgInfo?.requestedPermissions ?: continue
                     val permFlags = pkgInfo.requestedPermissionsFlags ?: continue
                     val appPermMap = mutableMapOf<String, Boolean>()
                     for (targetPerm in permissions) {
@@ -388,11 +429,12 @@ class AppRepository(private val context: Context) {
                         result.add(Pair(app, appPermMap))
                     }
                 } catch (e: Exception) {
+                    Log.w(TAG, "Error getting permissions for ${app.packageName}: ${e.message}")
                 }
             }
             result.sortedBy { it.first.appName.lowercase() }
         } catch (e: Exception) {
-            Log.e(TAG, "Error: ${e.message}")
+            Log.e(TAG, "Error getting apps with permission category: ${e.message}")
             emptyList()
         }
     }

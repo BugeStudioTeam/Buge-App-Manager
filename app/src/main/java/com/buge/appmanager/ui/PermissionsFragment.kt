@@ -106,6 +106,7 @@ class PermissionsFragment : Fragment() {
                 checkedIds.contains(R.id.chip_notifications) -> Pair(AppRepository.PERMISSION_NOTIFICATIONS, getString(R.string.perm_notifications))
                 checkedIds.contains(R.id.chip_overlay) -> Pair(AppRepository.PERMISSION_OVERLAY, getString(R.string.perm_overlay))
                 checkedIds.contains(R.id.chip_install_unknown) -> Pair(AppRepository.PERMISSION_INSTALL_UNKNOWN_APPS, getString(R.string.perm_install_unknown))
+                checkedIds.contains(R.id.chip_write_settings) -> Pair(listOf("android.permission.WRITE_SETTINGS"), getString(R.string.perm_write_settings))
                 else -> Pair(AppRepository.PERMISSION_MICROPHONE, getString(R.string.perm_microphone))
             }
             currentPermissions = permissions

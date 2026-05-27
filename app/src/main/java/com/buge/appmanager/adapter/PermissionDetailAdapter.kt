@@ -44,7 +44,8 @@ class PermissionDetailAdapter(
                 toggleBtn.text = itemView.context.getString(R.string.grant_permission)
             }
 
-            if (perm.isDangerous) {
+            // Always show toggle button for dangerous permissions and WRITE_SETTINGS
+            if (perm.isDangerous || perm.name == "android.permission.WRITE_SETTINGS") {
                 toggleBtn.visibility = View.VISIBLE
                 toggleBtn.isEnabled = true
                 toggleBtn.setOnClickListener { onToggle(perm) }
@@ -85,6 +86,7 @@ class PermissionDetailAdapter(
                 "android.permission.READ_MEDIA_AUDIO" -> "Media Audio"
                 "android.permission.SYSTEM_ALERT_WINDOW" -> "Display Over Other Apps"
                 "android.permission.REQUEST_INSTALL_PACKAGES" -> "Install Unknown Apps"
+                "android.permission.WRITE_SETTINGS" -> "Modify System Settings"
                 else -> permission.substringAfterLast(".").replace("_", " ").lowercase()
                     .split(" ").joinToString(" ") { it.replaceFirstChar { c -> c.uppercase() } }
             }

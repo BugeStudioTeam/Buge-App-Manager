@@ -1,0 +1,201 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">مدير تطبيقات Buge</string>
+    <string name="developer_name">فريق Buge</string>
+
+    <!-- Navigation -->
+    <string name="nav_apps">التطبيقات</string>
+    <string name="nav_activities">الأنشطة</string>
+    <string name="nav_permissions">الأذونات</string>
+    <string name="nav_settings">الإعدادات</string>
+
+    <!-- Settings Groups -->
+    <string name="settings_group_authorization">التفويض</string>
+    <string name="settings_group_appearance">المظهر</string>
+    <string name="settings_group_apps">التطبيقات</string>
+    <string name="settings_group_advanced">متقدم</string>
+    <string name="settings_group_about">حول</string>
+
+    <!-- Basic Settings -->
+    <string name="title_settings">الإعدادات</string>
+    <string name="pref_theme">المظهر</string>
+    <string name="pref_theme_light">فاتح</string>
+    <string name="pref_theme_dark">داكن</string>
+    <string name="pref_theme_auto">افتراضي النظام</string>
+    <string name="pref_language">اللغة</string>
+    <string name="pref_default_page">الصفحة الافتراضية</string>
+    <string name="pref_default_page_summary">اختر الصفحة التي تظهر عند بدء التشغيل</string>
+    <string name="pref_show_system_apps">إظهار تطبيقات النظام</string>
+    <string name="pref_show_disabled_apps">إظهار التطبيقات المعطلة</string>
+    <string name="pref_show_undeclared_activities">إظهار الأنشطة غير المصرح بها</string>
+    <string name="pref_allow_system_ops">السماح بعمليات تطبيقات النظام</string>
+    <string name="pref_allow_system_ops_summary">السماح بتعديل تطبيقات النظام (الأذونات، التعطيل، الإزالة)</string>
+    <string name="pref_about">حول</string>
+    <string name="setting_saved">تم حفظ الإعداد</string>
+
+    <!-- Apps Settings -->
+    <string name="pref_google_services">خدمات Google</string>
+    <string name="pref_google_services_summary">تمكين أو تعطيل خدمات Google Mobile</string>
+    <string name="pref_google_services_disabled">خدمات Google غير متوفرة على هذا الجهاز</string>
+
+    <!-- Log Settings -->
+    <string name="pref_logging">السجلات</string>
+    <string name="pref_logging_summary">تسجيل عمليات المستخدم والأخطاء</string>
+    <string name="log_activity_title">سجل العمليات</string>
+    <string name="log_settings_title">إعدادات السجل</string>
+    <string name="log_enable">تمكين التسجيل</string>
+    <string name="log_enable_summary">تسجيل جميع عمليات المستخدم وأخطاء النظام</string>
+    <string name="log_empty">لم يتم تسجيل سجلات بعد</string>
+    <string name="log_copy">نسخ</string>
+    <string name="log_cleared">تم مسح السجلات</string>
+    <string name="log_copied">تم نسخ السجلات إلى الحافظة</string>
+
+    <!-- Default Page Dialog -->
+    <string name="default_page_title">صفحة البدء الافتراضية</string>
+    <string name="default_page_apps">التطبيقات</string>
+    <string name="default_page_permissions">الأذونات</string>
+    <string name="default_page_activities">الأنشطة</string>
+    <string name="default_page_settings">الإعدادات</string>
+
+    <!-- About Dialog -->
+    <string name="about_desc">مدير تطبيقات Buge هو أداة قوية لإدارة التطبيقات مع دعم Shizuku للتحكم المتقدم في الأذونات والتطبيقات.</string>
+
+    <!-- About Links -->
+    <string name="website">الموقع الإلكتروني</string>
+    <string name="website_desc">قم بزيارة موقعنا الرسمي</string>
+    <string name="github">GitHub</string>
+    <string name="github_desc">قم بزيارة مستودع GitHub الخاص بنا</string>
+    <string name="telegram">تيليجرام</string>
+    <string name="telegram_desc">انضم إلى قناتنا على تيليجرام</string>
+    <string name="check_for_update">التحقق من التحديث</string>
+    <string name="update_desc">التحقق من الإصدارات الجديدة على GitHub</string>
+    <string name="about_more">اعرف المزيد عنا</string>
+    <string name="about_more_summary">تعرف على فريق التطوير ورؤية المشروع</string>
+    <string name="about">حول</string>
+    <string name="close">إغلاق</string>
+    <string name="open">فتح</string>
+
+    <!-- About Us Activity -->
+    <string name="about_us">من نحن</string>
+    <string name="about_us_title">فريق Buge Studio</string>
+    <string name="about_us_description">فريق Buge Studio هو مجموعة شغوفة من المطورين والمصممين المكرسين لإنشاء تطبيقات أدوات عملية مبتكرة لنظام Android. نحن نركز على خصوصية المستخدم والتحكم في النظام والانفتاح. هدفنا هو توفير أدوات شفافة وفعالة وموثوقة للمستخدمين. مدير تطبيقات Buge هو مشروع مفتوح المصدر، وهو أول تطبيق رئيسي لدينا. نرحب بالجميع للمشاركة في تحسينه وتطويره معًا.</string>
+
+    <!-- GMS Disable Warning -->
+    <string name="gms_disable_warning_title">تعطيل خدمات Google؟</string>
+    <string name="gms_disable_warning_message">سيؤدي تعطيل خدمات Google إلى التأثير على ما يلي:\n\n• سيتوقف متجر Google Play عن العمل\n• قد تتعطل التطبيقات التي تعتمد على خدمات Google Play\n• ستتوقف إشعارات تطبيقات Google\n• قد تتأثر خدمات الموقع\n• لن تعمل عمليات الشراء داخل التطبيق\n\nهل أنت متأكد من رغبتك في تعطيل خدمات Google؟</string>
+
+    <!-- System Operation Blocked -->
+    <string name="system_op_blocked_title">العملية محظورة</string>
+    <string name="system_op_blocked_message">عمليات تطبيقات النظام معطلة حالياً.\n\nيمكنك تمكين "السماح بعمليات تطبيقات النظام" في الإعدادات لتنفيذ هذا الإجراء.</string>
+
+    <!-- Shizuku -->
+    <string name="shizuku_title">تفويض Shizuku</string>
+    <string name="shizuku_desc">Shizuku مطلوب لإدارة أذونات التطبيقات وتنفيذ العمليات المتقدمة. يرجى تفويض هذا التطبيق في Shizuku.</string>
+    <string name="shizuku_status_ok">تم التفويض ويعمل</string>
+    <string name="shizuku_status_no_auth">يعمل ولكن لم يتم التفويض</string>
+    <string name="shizuku_status_not_running">لا يعمل</string>
+    <string name="shizuku_authorized">تم التفويض</string>
+    <string name="shizuku_not_authorized">لم يتم التفويض</string>
+    <string name="shizuku_not_running">لا يعمل</string>
+    <string name="shizuku_request_auth">طلب التفويض</string>
+
+    <!-- App List -->
+    <string name="title_app_list">التطبيقات المثبتة</string>
+    <string name="search_hint">ابحث عن التطبيقات...</string>
+    <string name="filter_all">جميع التطبيقات</string>
+    <string name="filter_user">تطبيقات المستخدم</string>
+    <string name="filter_system">تطبيقات النظام</string>
+    <string name="filter_favorite">التطبيقات المفضلة</string>
+    <string name="sort_name">الاسم</string>
+    <string name="sort_size">الحجم</string>
+    <string name="sort_install_date">تاريخ التثبيت</string>
+    <string name="apps_count">%d تطبيق</string>
+    <string name="loading_apps">جاري تحميل التطبيقات...</string>
+    <string name="refresh">تحديث</string>
+    <string name="no_apps_found">لم يتم العثور على تطبيقات</string>
+
+    <!-- App Detail -->
+    <string name="title_app_detail">تفاصيل التطبيق</string>
+    <string name="package_name">اسم الحزمة</string>
+    <string name="version">الإصدار</string>
+    <string name="install_date">تاريخ التثبيت</string>
+    <string name="update_date">آخر تحديث</string>
+    <string name="app_size">حجم التطبيق</string>
+    <string name="data_size">حجم البيانات</string>
+    <string name="cache_size">حجم ذاكرة التخزين المؤقت</string>
+    <string name="target_sdk">SDK الهدف</string>
+    <string name="min_sdk">الحد الأدنى لـ SDK</string>
+    <string name="permissions_title">الأذونات</string>
+    <string name="granted">تم منحه</string>
+    <string name="denied">مرفوض</string>
+    <string name="grant_permission">منح</string>
+    <string name="revoke_permission">سحب</string>
+    <string name="open_app">فتح التطبيق</string>
+    <string name="app_info">معلومات التطبيق</string>
+    <string name="uninstall">إزالة التثبيت</string>
+    <string name="force_stop">إيقاف إجباري</string>
+    <string name="clear_data">مسح البيانات</string>
+    <string name="clear_cache">مسح ذاكرة التخزين المؤقت</string>
+    <string name="disable_app">تعطيل التطبيق</string>
+    <string name="enable_app">تمكين التطبيق</string>
+    <string name="freeze_app">تجميد التطبيق</string>
+    <string name="unfreeze_app">إلغاء تجميد التطبيق</string>
+
+    <!-- Permissions List -->
+    <string name="title_permissions">مدير الأذونات</string>
+    <string name="perm_microphone">الميكروفون</string>
+    <string name="perm_camera">الكاميرا</string>
+    <string name="perm_location">الموقع</string>
+    <string name="perm_contacts">جهات الاتصال</string>
+    <string name="perm_storage">التخزين</string>
+    <string name="perm_manage_storage">الوصول إلى جميع الملفات</string>
+    <string name="perm_phone">الهاتف</string>
+    <string name="perm_sms">الرسائل النصية</string>
+    <string name="perm_calendar">التقويم</string>
+    <string name="perm_body_sensors">مستشعرات الجسم</string>
+    <string name="perm_notifications">الإشعارات</string>
+    <string name="perm_overlay">العرض فوق التطبيقات الأخرى</string>
+    <string name="perm_install_unknown">تثبيت تطبيقات غير معروفة</string>
+    <string name="batch_revoke">سحب الإذن</string>
+    <string name="batch_grant">منح الإذن</string>
+    <string name="confirm_revoke">سحب الإذن من %d تطبيق؟</string>
+    <string name="confirm_grant">منح الإذن لـ %d تطبيق؟</string>
+    <string name="selected_count">%d محدد</string>
+    <string name="open_system_settings">فتح إعدادات النظام</string>
+
+    <!-- Activities -->
+    <string name="title_activities">مدير الأنشطة</string>
+    <string name="title_activity_detail">تفاصيل النشاط</string>
+    <string name="search_activity_hint">ابحث عن الأنشطة...</string>
+    <string name="launch">تشغيل</string>
+    <string name="back_to_apps">العودة إلى التطبيقات</string>
+    <string name="no_activities_found">لم يتم العثور على أنشطة</string>
+
+    <!-- Common -->
+    <string name="confirm">تأكيد</string>
+    <string name="cancel">إلغاء</string>
+    <string name="operation_success">تمت العملية بنجاح</string>
+    <string name="operation_failed">فشلت العملية: %s</string>
+    <string name="error_no_shizuku">Shizuku غير متوفر أو لم يتم تفويضه</string>
+    <string name="error_system_ops_disabled">عمليات تطبيقات النظام معطلة. قم بتمكين "السماح بعمليات تطبيقات النظام" في الإعدادات.</string>
+    <string name="language_changed_restart">تم تغيير اللغة. أعد تشغيل التطبيق لتطبيق التغييرات.</string>
+    <string name="restart">إعادة التشغيل</string>
+
+    <!-- Language names -->
+    <string name="pref_language_en">English</string>
+    <string name="pref_language_zh">中文 (Simplified)</string>
+    <string name="pref_language_ja">日本語</string>
+    <string name="pref_language_ko">한국어</string>
+    <string name="pref_language_fr">Français</string>
+    <string name="pref_language_de">Deutsch</string>
+    <string name="pref_language_ru">Русский</string>
+    <string name="pref_language_ar">العربية</string>
+    
+    <string name="restart_required">إعادة التشغيل مطلوبة</string>
+    <string name="restart_required_message">تم تغيير صفحة البدء الافتراضية. أعد تشغيل التطبيق لتطبيق التغيير.</string>
+    <string name="restart_now">إعادة التشغيل الآن</string>
+    <string name="later">لاحقاً</string>
+    
+    <!-- Shortcuts -->
+    <string name="shortcut_app_manager_long">فتح مدير تطبيقات Buge</string>
+</resources>

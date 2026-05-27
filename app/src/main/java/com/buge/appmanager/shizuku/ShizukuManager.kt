@@ -1,8 +1,5 @@
 package com.buge.appmanager.shizuku
 
-import android.content.Context
-import android.content.Intent
-import android.provider.Settings
 import android.content.pm.PackageManager
 import android.util.Log
 import kotlinx.coroutines.Dispatchers
@@ -15,16 +12,6 @@ import java.lang.reflect.Method
 object ShizukuManager {
     private const val TAG = "ShizukuManager"
     private const val REQUEST_CODE = 1001
-
-    private val SPECIAL_PERMISSION_OPS = mapOf(
-        "android.permission.SYSTEM_ALERT_WINDOW" to "SYSTEM_ALERT_WINDOW",
-        "android.permission.REQUEST_INSTALL_PACKAGES" to "REQUEST_INSTALL_PACKAGES"
-    )
-
-    private val APPOP_PERMISSIONS = setOf(
-        "android.permission.SYSTEM_ALERT_WINDOW",
-        "android.permission.REQUEST_INSTALL_PACKAGES"
-    )
 
     fun isShizukuAvailable(): Boolean {
         return try {
@@ -66,8 +53,6 @@ object ShizukuManager {
             return@withContext ShizukuResult(false, "", "Shizuku permission not granted")
         }
         try {
-            Log.d(TAG, "Executing command: $command")
-
             val newProcessMethod: Method = Shizuku::class.java.getDeclaredMethod(
                 "newProcess",
                 Array<String>::class.java,
@@ -83,7 +68,7 @@ object ShizukuManager {
             val output = BufferedReader(InputStreamReader(process.inputStream)).use { it.readText() }
             val error = BufferedReader(InputStreamReader(process.errorStream)).use { it.readText() }
             val exitCode = process.waitFor()
-            Log.d(TAG, "Command exit code: $exitCode, output: $output, error: $error")
+            
             if (exitCode == 0) {
                 ShizukuResult(true, output.trim(), "")
             } else {
@@ -95,14 +80,34 @@ object ShizukuManager {
         }
     }
 
-    suspend fun grantPermission(packageName: String, permission: String): ShizukuResult {
-        return when {
-            permission == "android.permission.MANAGE_EXTERNAL_STORAGE" -> {
-                grantManageExternalStorage(packageName)
+    suspend fun getAllWriteSettingsStatus(): Map<String, Boolean> = withContext(Dispatchers.IO) {
+        val result = mutableMapOf<String, Boolean>()
+        val packagesResult = executeCommand("pm list packages | cut -d':' -f2")
+        if (packagesResult.success) {
+            val packages = packagesResult.output.lines().filter { it.isNotEmpty() }
+            for (pkg in packages) {
+                val status = getWriteSettingsStatus(pkg)
+                if (status != null) {
+                    result[pkg] = status
+                }
             }
-            permission in APPOP_PERMISSIONS -> {
-                val op = SPECIAL_PERMISSION_OPS[permission]
-                executeCommand("appops set $packageName $op allow")
+        }
+        result
+    }
+
+    suspend fun grantPermission(packageName: String, permission: String): ShizukuResult {
+        return when (permission) {
+            "android.permission.WRITE_SETTINGS" -> {
+                executeCommand("appops set $packageName WRITE_SETTINGS allow")
+            }
+            "android.permission.SYSTEM_ALERT_WINDOW" -> {
+                executeCommand("appops set $packageName SYSTEM_ALERT_WINDOW allow")
+            }
+            "android.permission.REQUEST_INSTALL_PACKAGES" -> {
+                executeCommand("appops set $packageName REQUEST_INSTALL_PACKAGES allow")
+            }
+            "android.permission.MANAGE_EXTERNAL_STORAGE" -> {
+                grantManageExternalStorage(packageName)
             }
             else -> {
                 executeCommand("pm grant $packageName $permission")
@@ -111,13 +116,18 @@ object ShizukuManager {
     }
 
     suspend fun revokePermission(packageName: String, permission: String): ShizukuResult {
-        return when {
-            permission == "android.permission.MANAGE_EXTERNAL_STORAGE" -> {
-                revokeManageExternalStorage(packageName)
+        return when (permission) {
+            "android.permission.WRITE_SETTINGS" -> {
+                executeCommand("appops set $packageName WRITE_SETTINGS deny")
             }
-            permission in APPOP_PERMISSIONS -> {
-                val op = SPECIAL_PERMISSION_OPS[permission]
-                executeCommand("appops set $packageName $op deny")
+            "android.permission.SYSTEM_ALERT_WINDOW" -> {
+                executeCommand("appops set $packageName SYSTEM_ALERT_WINDOW deny")
+            }
+            "android.permission.REQUEST_INSTALL_PACKAGES" -> {
+                executeCommand("appops set $packageName REQUEST_INSTALL_PACKAGES deny")
+            }
+            "android.permission.MANAGE_EXTERNAL_STORAGE" -> {
+                revokeManageExternalStorage(packageName)
             }
             else -> {
                 executeCommand("pm revoke $packageName $permission")
@@ -155,6 +165,60 @@ object ShizukuManager {
             }
         } catch (e: Exception) {
             Log.e(TAG, "Error checking MANAGE_EXTERNAL_STORAGE: ${e.message}")
+            null
+        }
+    }
+
+    suspend fun getWriteSettingsStatus(packageName: String): Boolean? {
+        return try {
+            val result = executeCommand("appops get $packageName WRITE_SETTINGS")
+            if (result.success) {
+                when {
+                    result.output.contains("allow") -> true
+                    result.output.contains("deny") -> false
+                    else -> null
+                }
+            } else {
+                null
+            }
+        } catch (e: Exception) {
+            Log.e(TAG, "Error checking WRITE_SETTINGS: ${e.message}")
+            null
+        }
+    }
+
+    suspend fun getOverlayStatus(packageName: String): Boolean? {
+        return try {
+            val result = executeCommand("appops get $packageName SYSTEM_ALERT_WINDOW")
+            if (result.success) {
+                when {
+                    result.output.contains("allow") -> true
+                    result.output.contains("deny") -> false
+                    else -> null
+                }
+            } else {
+                null
+            }
+        } catch (e: Exception) {
+            Log.e(TAG, "Error checking SYSTEM_ALERT_WINDOW: ${e.message}")
+            null
+        }
+    }
+
+    suspend fun getInstallUnknownAppsStatus(packageName: String): Boolean? {
+        return try {
+            val result = executeCommand("appops get $packageName REQUEST_INSTALL_PACKAGES")
+            if (result.success) {
+                when {
+                    result.output.contains("allow") -> true
+                    result.output.contains("deny") -> false
+                    else -> null
+                }
+            } else {
+                null
+            }
+        } catch (e: Exception) {
+            Log.e(TAG, "Error checking REQUEST_INSTALL_PACKAGES: ${e.message}")
             null
         }
     }

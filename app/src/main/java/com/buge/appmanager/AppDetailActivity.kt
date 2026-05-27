@@ -17,6 +17,7 @@ import com.buge.appmanager.adapter.PermissionDetailAdapter
 import com.buge.appmanager.databinding.ActivityAppDetailBinding
 import com.buge.appmanager.model.PermissionInfo
 import com.buge.appmanager.shizuku.ShizukuManager
+import com.buge.appmanager.util.LocaleManager
 import com.buge.appmanager.util.LogManager
 import com.buge.appmanager.util.PreferencesManager
 import com.buge.appmanager.util.SystemOpChecker
@@ -59,6 +60,11 @@ class AppDetailActivity : BaseActivity() {
 
         viewModel.loadApp(packageName)
         LogManager.info(this, "Opened app details", "Package: $packageName")
+    }
+
+    override fun onResume() {
+        super.onResume()
+        viewModel.loadApp(packageName)
     }
 
     private fun setupToolbar() {
@@ -152,7 +158,7 @@ class AppDetailActivity : BaseActivity() {
                 downloadDir.mkdirs()
             }
 
-            val timestamp = SimpleDateFormat("yyyyMMdd_HHmmss", Locale.getDefault()).format(Date())
+            val timestamp = SimpleDateFormat("yyyyMMdd_HHmmss", Locale.US).format(Date())
             var destFile = File(downloadDir, "${appName}_${timestamp}.apk")
             var counter = 1
             while (destFile.exists()) {
@@ -381,7 +387,8 @@ class AppDetailActivity : BaseActivity() {
             }
 
             binding.infoContainer.removeAllViews()
-            val dateFormat = SimpleDateFormat("yyyy-MM-dd HH:mm", Locale.getDefault())
+            val currentLocale = getCurrentLocale()
+            val dateFormat = SimpleDateFormat("yyyy-MM-dd HH:mm", currentLocale)
             addInfoRow(getString(R.string.install_date), dateFormat.format(Date(app.installTime)))
             addInfoRow(getString(R.string.update_date), dateFormat.format(Date(app.updateTime)))
             addInfoRow(getString(R.string.target_sdk), "API ${app.targetSdkVersion}")
@@ -416,6 +423,15 @@ class AppDetailActivity : BaseActivity() {
             if (!result.success) {
                 LogManager.error(this, "Operation failed", msg)
             }
+        }
+    }
+
+    private fun getCurrentLocale(): Locale {
+        val savedLanguage = LocaleManager.getLanguage(this)
+        return if (savedLanguage.isEmpty()) {
+            Locale.getDefault()
+        } else {
+            Locale(savedLanguage)
         }
     }
 

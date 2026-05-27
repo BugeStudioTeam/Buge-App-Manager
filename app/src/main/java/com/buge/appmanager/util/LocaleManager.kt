@@ -1,7 +1,6 @@
 package com.buge.appmanager.util
 
 import android.content.Context
-import android.content.SharedPreferences
 import android.content.res.Configuration
 import android.os.Build
 import java.util.Locale
@@ -77,7 +76,17 @@ object LocaleManager {
             "ko" to "한국어",
             "fr" to "Français",
             "de" to "Deutsch",
-            "ru" to "Русский"
+            "ru" to "Русский",
+            "ar" to "العربية"
         )
+    }
+    
+    fun getCurrentLocale(context: Context): Locale {
+        val savedLanguage = getLanguage(context)
+        return if (savedLanguage.isEmpty()) {
+            Locale.getDefault()
+        } else {
+            Locale(savedLanguage)
+        }
     }
 }

@@ -3,18 +3,103 @@
     <string name="app_name">Buge App-Manager</string>
     <string name="developer_name">Buge-Team</string>
 
+    <!-- Navigation -->
     <string name="nav_apps">Apps</string>
     <string name="nav_activities">Aktivitäten</string>
     <string name="nav_permissions">Berechtigungen</string>
     <string name="nav_settings">Einstellungen</string>
 
-    <string name="title_activities">Aktivitätsmanager</string>
-    <string name="title_activity_detail">Aktivitätsdetails</string>
-    <string name="search_activity_hint">Aktivitäten suchen…</string>
-    <string name="launch">Starten</string>
-    <string name="back_to_apps">Zurück zu Apps</string>
-    <string name="no_activities_found">Keine Aktivitäten gefunden</string>
+    <!-- Settings Groups -->
+    <string name="settings_group_authorization">Autorisierung</string>
+    <string name="settings_group_appearance">Erscheinungsbild</string>
+    <string name="settings_group_apps">Apps</string>
+    <string name="settings_group_advanced">Erweitert</string>
+    <string name="settings_group_about">Über</string>
 
+    <!-- Basic Settings -->
+    <string name="title_settings">Einstellungen</string>
+    <string name="pref_theme">Design</string>
+    <string name="pref_theme_light">Hell</string>
+    <string name="pref_theme_dark">Dunkel</string>
+    <string name="pref_theme_auto">Systemstandard</string>
+    <string name="pref_language">Sprache</string>
+    <string name="pref_default_page">Standard-Startseite</string>
+    <string name="pref_default_page_summary">Wählen Sie die Seite, die beim Start angezeigt werden soll</string>
+    <string name="pref_show_system_apps">System-Apps anzeigen</string>
+    <string name="pref_show_disabled_apps">Deaktivierte Apps anzeigen</string>
+    <string name="pref_show_undeclared_activities">Nicht deklarierte Aktivitäten anzeigen</string>
+    <string name="pref_allow_system_ops">System-App-Operationen erlauben</string>
+    <string name="pref_allow_system_ops_summary">Änderungen an System-Apps erlauben (Berechtigungen, Deaktivierung, Deinstallation)</string>
+    <string name="pref_about">Über</string>
+    <string name="setting_saved">Einstellung gespeichert</string>
+
+    <!-- Apps Settings -->
+    <string name="pref_google_services">Google-Dienste</string>
+    <string name="pref_google_services_summary">Google Mobile Services aktivieren oder deaktivieren</string>
+    <string name="pref_google_services_disabled">Google-Dienste auf diesem Gerät nicht verfügbar</string>
+
+    <!-- Log Settings -->
+    <string name="pref_logging">Protokollierung</string>
+    <string name="pref_logging_summary">Benutzeroperationen und Fehler aufzeichnen</string>
+    <string name="log_activity_title">Operationsprotokoll</string>
+    <string name="log_settings_title">Protokolleinstellungen</string>
+    <string name="log_enable">Protokollierung aktivieren</string>
+    <string name="log_enable_summary">Alle Benutzeroperationen und Systemfehler aufzeichnen</string>
+    <string name="log_empty">Noch keine Protokolle aufgezeichnet</string>
+    <string name="log_copy">Kopieren</string>
+    <string name="log_cleared">Protokolle gelöscht</string>
+    <string name="log_copied">Protokolle in die Zwischenablage kopiert</string>
+
+    <!-- Default Page Dialog -->
+    <string name="default_page_title">Standard-Startseite</string>
+    <string name="default_page_apps">Apps</string>
+    <string name="default_page_permissions">Berechtigungen</string>
+    <string name="default_page_activities">Aktivitäten</string>
+    <string name="default_page_settings">Einstellungen</string>
+
+    <!-- About Dialog -->
+    <string name="about_desc">Buge App-Manager ist ein leistungsstarkes App-Verwaltungstool mit Shizuku-Unterstützung für erweiterte Berechtigungs- und App-Kontrolle.</string>
+
+    <!-- About Links -->
+    <string name="website">Website</string>
+    <string name="website_desc">Besuchen Sie unsere offizielle Website</string>
+    <string name="github">GitHub</string>
+    <string name="github_desc">Besuchen Sie unser GitHub-Repository</string>
+    <string name="telegram">Telegram</string>
+    <string name="telegram_desc">Treten Sie unserem Telegram-Kanal bei</string>
+    <string name="check_for_update">Nach Updates suchen</string>
+    <string name="update_desc">Auf GitHub nach neuen Versionen suchen</string>
+    <string name="about_more">Mehr über uns</string>
+    <string name="about_more_summary">Erfahren Sie mehr über das Entwicklungsteam und die Projektvision</string>
+    <string name="about">Über</string>
+    <string name="close">Schließen</string>
+    <string name="open">Öffnen</string>
+
+    <!-- About Us Activity -->
+    <string name="about_us">Über uns</string>
+    <string name="about_us_title">Buge Studio Team</string>
+    <string name="about_us_description">Das Buge Studio Team ist eine leidenschaftliche Gruppe von Entwicklern und Designern, die sich der Entwicklung innovativer und praktischer Dienstprogramme für die Android-Plattform widmet. Wir konzentrieren uns auf Benutzerdatenschutz, Systemkontrolle und Offenheit. Unser Ziel ist es, Benutzern transparente, effiziente und zuverlässige Tools zur Verfügung zu stellen. Der Buge App-Manager ist ein Open-Source-Projekt und unsere erste große Anwendung. Wir begrüßen alle, die sich an seiner Verbesserung und Entwicklung beteiligen möchten.</string>
+
+    <!-- GMS Disable Warning -->
+    <string name="gms_disable_warning_title">Google-Dienste deaktivieren?</string>
+    <string name="gms_disable_warning_message">Das Deaktivieren der Google-Dienste wirkt sich auf Folgendes aus:\n\n• Der Google Play Store wird nicht mehr funktionieren\n• Apps, die auf Google Play-Dienste angewiesen sind, können abstürzen\n• Push-Benachrichtigungen von Google-Apps werden gestoppt\n• Standortdienste können beeinträchtigt werden\n• In-App-Käufe funktionieren nicht\n\nSind Sie sicher, dass Sie die Google-Dienste deaktivieren möchten?</string>
+
+    <!-- System Operation Blocked -->
+    <string name="system_op_blocked_title">Operation blockiert</string>
+    <string name="system_op_blocked_message">System-App-Operationen sind derzeit deaktiviert.\n\nSie können „System-App-Operationen erlauben“ in den Einstellungen aktivieren, um diese Aktion auszuführen.</string>
+
+    <!-- Shizuku -->
+    <string name="shizuku_title">Shizuku-Autorisierung</string>
+    <string name="shizuku_desc">Shizuku ist erforderlich, um App-Berechtigungen zu verwalten und erweiterte Operationen durchzuführen. Bitte autorisieren Sie diese App in Shizuku.</string>
+    <string name="shizuku_status_ok">Autorisiert und läuft</string>
+    <string name="shizuku_status_no_auth">Läuft, aber nicht autorisiert</string>
+    <string name="shizuku_status_not_running">Läuft nicht</string>
+    <string name="shizuku_authorized">Autorisiert</string>
+    <string name="shizuku_not_authorized">Nicht autorisiert</string>
+    <string name="shizuku_not_running">Läuft nicht</string>
+    <string name="shizuku_request_auth">Autorisierung anfordern</string>
+
+    <!-- App List -->
     <string name="title_app_list">Installierte Apps</string>
     <string name="search_hint">Apps durchsuchen…</string>
     <string name="filter_all">Alle Apps</string>
@@ -29,11 +114,12 @@
     <string name="refresh">Aktualisieren</string>
     <string name="no_apps_found">Keine Apps gefunden</string>
 
+    <!-- App Detail -->
     <string name="title_app_detail">App-Details</string>
     <string name="package_name">Paketname</string>
     <string name="version">Version</string>
     <string name="install_date">Installationsdatum</string>
-    <string name="update_date">Zuletzt aktualisiert</string>
+    <string name="update_date">Letzte Aktualisierung</string>
     <string name="app_size">App-Größe</string>
     <string name="data_size">Datengröße</string>
     <string name="cache_size">Cache-Größe</string>
@@ -55,6 +141,7 @@
     <string name="freeze_app">App einfrieren</string>
     <string name="unfreeze_app">App auftauen</string>
 
+    <!-- Permissions List -->
     <string name="title_permissions">Berechtigungsmanager</string>
     <string name="perm_microphone">Mikrofon</string>
     <string name="perm_camera">Kamera</string>
@@ -76,46 +163,39 @@
     <string name="selected_count">%d ausgewählt</string>
     <string name="open_system_settings">Systemeinstellungen öffnen</string>
 
-    <string name="title_settings">Einstellungen</string>
-    <string name="pref_theme">Design</string>
-    <string name="pref_theme_light">Hell</string>
-    <string name="pref_theme_dark">Dunkel</string>
-    <string name="pref_theme_auto">Systemstandard</string>
-    <string name="pref_language">Sprache</string>
-    <string name="pref_language_auto">Systemstandard</string>
+    <!-- Activities -->
+    <string name="title_activities">Aktivitätsmanager</string>
+    <string name="title_activity_detail">Aktivitätsdetails</string>
+    <string name="search_activity_hint">Aktivitäten suchen…</string>
+    <string name="launch">Starten</string>
+    <string name="back_to_apps">Zurück zu Apps</string>
+    <string name="no_activities_found">Keine Aktivitäten gefunden</string>
+
+    <!-- Common -->
+    <string name="confirm">Bestätigen</string>
+    <string name="cancel">Abbrechen</string>
+    <string name="operation_success">Operation erfolgreich</string>
+    <string name="operation_failed">Operation fehlgeschlagen: %s</string>
+    <string name="error_no_shizuku">Shizuku ist nicht verfügbar oder nicht autorisiert</string>
+    <string name="error_system_ops_disabled">System-App-Operationen sind deaktiviert. Aktivieren Sie „System-App-Operationen erlauben“ in den Einstellungen.</string>
+    <string name="language_changed_restart">Sprache geändert. Starten Sie die App neu, um die Änderungen zu übernehmen.</string>
+    <string name="restart">Neu starten</string>
+
+    <!-- Language names -->
     <string name="pref_language_en">English</string>
-    <string name="pref_language_zh">中文（简体）</string>
+    <string name="pref_language_zh">中文 (Simplified)</string>
     <string name="pref_language_ja">日本語</string>
     <string name="pref_language_ko">한국어</string>
     <string name="pref_language_fr">Français</string>
     <string name="pref_language_de">Deutsch</string>
     <string name="pref_language_ru">Русский</string>
-    <string name="pref_show_system_apps">System-Apps anzeigen</string>
-    <string name="pref_show_undeclared_activities">Nicht deklarierte Aktivitäten anzeigen</string>
-    <string name="pref_about">Über</string>
-    <string name="about">Über</string>
-    <string name="about_desc">Buge App-Manager ist ein leistungsstarkes App-Verwaltungstool mit Shizuku-Unterstützung für erweiterte Berechtigungs- und App-Kontrolle.</string>
-    <string name="github">GitHub</string>
-    <string name="github_desc">Besuchen Sie unser GitHub-Repository</string>
-    <string name="open">Öffnen</string>
-    <string name="close">Schließen</string>
-
-    <string name="shizuku_title">Shizuku-Genehmigung</string>
-    <string name="shizuku_desc">Shizuku ist erforderlich, um App-Berechtigungen zu verwalten und erweiterte Operationen durchzuführen. Bitte autorisieren Sie diese App in Shizuku.</string>
-    <string name="shizuku_status_ok">Genehmigt und läuft</string>
-    <string name="shizuku_status_no_auth">Läuft, aber nicht genehmigt</string>
-    <string name="shizuku_status_not_running">Läuft nicht</string>
-    <string name="shizuku_authorized">Genehmigt</string>
-    <string name="shizuku_not_authorized">Nicht genehmigt</string>
-    <string name="shizuku_not_running">Läuft nicht</string>
-    <string name="shizuku_request_auth">Genehmigung anfordern</string>
-
-    <string name="confirm">Bestätigen</string>
-    <string name="cancel">Abbrechen</string>
-    <string name="operation_success">Operation erfolgreich</string>
-    <string name="operation_failed">Operation fehlgeschlagen: %s</string>
-    <string name="error_no_shizuku">Shizuku ist nicht verfügbar oder nicht genehmigt</string>
-    <string name="language_changed_restart">Sprache geändert. Starten Sie die App neu, um die Änderungen zu übernehmen.</string>
-    <string name="restart">Neu starten</string>
-    <string name="setting_saved">Einstellung gespeichert</string>
+    <string name="pref_language_ar">العربية</string>
+    
+    <string name="restart_required">Neustart erforderlich</string>
+    <string name="restart_required_message">Die Standard-Startseite wurde geändert. Starten Sie die App neu, um die Änderung zu übernehmen.</string>
+    <string name="restart_now">Jetzt neu starten</string>
+    <string name="later">Später</string>
+    
+    <!-- Shortcuts -->
+    <string name="shortcut_app_manager_long">Buge App-Manager öffnen</string>
 </resources>

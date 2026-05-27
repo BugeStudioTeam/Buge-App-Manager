@@ -3,18 +3,103 @@
     <string name="app_name">Диспетчер приложений Buge</string>
     <string name="developer_name">Команда Buge</string>
 
+    <!-- Navigation -->
     <string name="nav_apps">Приложения</string>
     <string name="nav_activities">Активности</string>
     <string name="nav_permissions">Разрешения</string>
     <string name="nav_settings">Параметры</string>
 
-    <string name="title_activities">Менеджер активностей</string>
-    <string name="title_activity_detail">Детали активности</string>
-    <string name="search_activity_hint">Поиск активностей…</string>
-    <string name="launch">Запустить</string>
-    <string name="back_to_apps">Назад к приложениям</string>
-    <string name="no_activities_found">Активности не найдены</string>
+    <!-- Settings Groups -->
+    <string name="settings_group_authorization">Авторизация</string>
+    <string name="settings_group_appearance">Внешний вид</string>
+    <string name="settings_group_apps">Приложения</string>
+    <string name="settings_group_advanced">Расширенные</string>
+    <string name="settings_group_about">О программе</string>
 
+    <!-- Basic Settings -->
+    <string name="title_settings">Параметры</string>
+    <string name="pref_theme">Тема</string>
+    <string name="pref_theme_light">Светлая</string>
+    <string name="pref_theme_dark">Тёмная</string>
+    <string name="pref_theme_auto">Системная</string>
+    <string name="pref_language">Язык</string>
+    <string name="pref_default_page">Страница по умолчанию</string>
+    <string name="pref_default_page_summary">Выберите страницу для отображения при запуске</string>
+    <string name="pref_show_system_apps">Показывать системные приложения</string>
+    <string name="pref_show_disabled_apps">Показывать отключенные приложения</string>
+    <string name="pref_show_undeclared_activities">Показывать необъявленные активности</string>
+    <string name="pref_allow_system_ops">Разрешить операции с системными приложениями</string>
+    <string name="pref_allow_system_ops_summary">Разрешить изменение системных приложений (разрешения, отключение, удаление)</string>
+    <string name="pref_about">О программе</string>
+    <string name="setting_saved">Параметр сохранен</string>
+
+    <!-- Apps Settings -->
+    <string name="pref_google_services">Сервисы Google</string>
+    <string name="pref_google_services_summary">Включить или отключить сервисы Google Mobile</string>
+    <string name="pref_google_services_disabled">Сервисы Google недоступны на этом устройстве</string>
+
+    <!-- Log Settings -->
+    <string name="pref_logging">Журналирование</string>
+    <string name="pref_logging_summary">Записывать операции пользователя и ошибки</string>
+    <string name="log_activity_title">Журнал операций</string>
+    <string name="log_settings_title">Настройки журнала</string>
+    <string name="log_enable">Включить журналирование</string>
+    <string name="log_enable_summary">Записывать все операции пользователя и системные ошибки</string>
+    <string name="log_empty">Журнал пока не записан</string>
+    <string name="log_copy">Копировать</string>
+    <string name="log_cleared">Журнал очищен</string>
+    <string name="log_copied">Журнал скопирован в буфер обмена</string>
+
+    <!-- Default Page Dialog -->
+    <string name="default_page_title">Стартовая страница по умолчанию</string>
+    <string name="default_page_apps">Приложения</string>
+    <string name="default_page_permissions">Разрешения</string>
+    <string name="default_page_activities">Активности</string>
+    <string name="default_page_settings">Настройки</string>
+
+    <!-- About Dialog -->
+    <string name="about_desc">Диспетчер приложений Buge — это мощный инструмент управления приложениями с поддержкой Shizuku для расширенного контроля разрешений и приложений.</string>
+
+    <!-- About Links -->
+    <string name="website">Веб-сайт</string>
+    <string name="website_desc">Посетите наш официальный сайт</string>
+    <string name="github">GitHub</string>
+    <string name="github_desc">Посетите наш репозиторий GitHub</string>
+    <string name="telegram">Telegram</string>
+    <string name="telegram_desc">Присоединяйтесь к нашему Telegram-каналу</string>
+    <string name="check_for_update">Проверить обновления</string>
+    <string name="update_desc">Проверить новые версии на GitHub</string>
+    <string name="about_more">Подробнее о нас</string>
+    <string name="about_more_summary">Узнайте больше о команде разработчиков и видении проекта</string>
+    <string name="about">О программе</string>
+    <string name="close">Закрыть</string>
+    <string name="open">Открыть</string>
+
+    <!-- About Us Activity -->
+    <string name="about_us">О нас</string>
+    <string name="about_us_title">Команда Buge Studio</string>
+    <string name="about_us_description">Команда Buge Studio — это увлеченная группа разработчиков и дизайнеров,致力于创建创新和实用的实用程序 для платформы Android. Мы сосредоточены на конфиденциальности пользователей, контроле системы и открытости. Наша цель — предоставить пользователям прозрачные, эффективные и надежные инструменты. Диспетчер приложений Buge — это проект с открытым исходным кодом и наше первое крупное приложение. Мы приветствуем всех желающих участвовать в его улучшении и развитии.</string>
+
+    <!-- GMS Disable Warning -->
+    <string name="gms_disable_warning_title">Отключить сервисы Google?</string>
+    <string name="gms_disable_warning_message">Отключение сервисов Google повлияет на следующее:\n\n• Google Play Store перестанет работать\n• Приложения,依赖 на Google Play Services, могут вылетать\n• Push-уведомления от приложений Google прекратятся\n• Службы определения местоположения могут быть затронуты\n• Внутриигровые покупки не будут работать\n\nВы уверены, что хотите отключить сервисы Google?</string>
+
+    <!-- System Operation Blocked -->
+    <string name="system_op_blocked_title">Операция заблокирована</string>
+    <string name="system_op_blocked_message">Операции с системными приложениями в данный момент отключены.\n\nВы можете включить «Разрешить операции с системными приложениями» в настройках, чтобы выполнить это действие.</string>
+
+    <!-- Shizuku -->
+    <string name="shizuku_title">Авторизация Shizuku</string>
+    <string name="shizuku_desc">Shizuku требуется для управления разрешениями приложений и выполнения расширенных операций. Пожалуйста, авторизуйте это приложение в Shizuku.</string>
+    <string name="shizuku_status_ok">Авторизовано и работает</string>
+    <string name="shizuku_status_no_auth">Работает, но не авторизовано</string>
+    <string name="shizuku_status_not_running">Не работает</string>
+    <string name="shizuku_authorized">Авторизовано</string>
+    <string name="shizuku_not_authorized">Не авторизовано</string>
+    <string name="shizuku_not_running">Не работает</string>
+    <string name="shizuku_request_auth">Запросить авторизацию</string>
+
+    <!-- App List -->
     <string name="title_app_list">Установленные приложения</string>
     <string name="search_hint">Поиск приложений…</string>
     <string name="filter_all">Все приложения</string>
@@ -29,6 +114,7 @@
     <string name="refresh">Обновить</string>
     <string name="no_apps_found">Приложения не найдены</string>
 
+    <!-- App Detail -->
     <string name="title_app_detail">Сведения о приложении</string>
     <string name="package_name">Имя пакета</string>
     <string name="version">Версия</string>
@@ -55,6 +141,7 @@
     <string name="freeze_app">Заморозить приложение</string>
     <string name="unfreeze_app">Разморозить приложение</string>
 
+    <!-- Permissions List -->
     <string name="title_permissions">Диспетчер разрешений</string>
     <string name="perm_microphone">Микрофон</string>
     <string name="perm_camera">Камера</string>
@@ -76,13 +163,25 @@
     <string name="selected_count">%d выбрано</string>
     <string name="open_system_settings">Открыть системные настройки</string>
 
-    <string name="title_settings">Параметры</string>
-    <string name="pref_theme">Тема</string>
-    <string name="pref_theme_light">Светлая</string>
-    <string name="pref_theme_dark">Темная</string>
-    <string name="pref_theme_auto">По умолчанию системы</string>
-    <string name="pref_language">Язык</string>
-    <string name="pref_language_auto">По умолчанию системы</string>
+    <!-- Activities -->
+    <string name="title_activities">Менеджер активностей</string>
+    <string name="title_activity_detail">Детали активности</string>
+    <string name="search_activity_hint">Поиск активностей…</string>
+    <string name="launch">Запустить</string>
+    <string name="back_to_apps">Назад к приложениям</string>
+    <string name="no_activities_found">Активности не найдены</string>
+
+    <!-- Common -->
+    <string name="confirm">Подтвердить</string>
+    <string name="cancel">Отмена</string>
+    <string name="operation_success">Операция успешна</string>
+    <string name="operation_failed">Операция не удалась: %s</string>
+    <string name="error_no_shizuku">Shizuku недоступен или не авторизован</string>
+    <string name="error_system_ops_disabled">Операции с системными приложениями отключены. Включите «Разрешить операции с системными приложениями» в настройках.</string>
+    <string name="language_changed_restart">Язык изменен. Перезагрузите приложение, чтобы применить изменения.</string>
+    <string name="restart">Перезагрузить</string>
+
+    <!-- Language names -->
     <string name="pref_language_en">English</string>
     <string name="pref_language_zh">中文（简体）</string>
     <string name="pref_language_ja">日本語</string>
@@ -90,32 +189,13 @@
     <string name="pref_language_fr">Français</string>
     <string name="pref_language_de">Deutsch</string>
     <string name="pref_language_ru">Русский</string>
-    <string name="pref_show_system_apps">Показать системные приложения</string>
-    <string name="pref_show_undeclared_activities">Показать необъявленные активности</string>
-    <string name="pref_about">О программе</string>
-    <string name="about">О программе</string>
-    <string name="about_desc">Диспетчер приложений Buge — это мощный инструмент управления приложениями с поддержкой Shizuku для расширенного контроля разрешений и приложений.</string>
-    <string name="github">GitHub</string>
-    <string name="github_desc">Посетите наш репозиторий GitHub</string>
-    <string name="open">Открыть</string>
-    <string name="close">Закрыть</string>
-
-    <string name="shizuku_title">Авторизация Shizuku</string>
-    <string name="shizuku_desc">Shizuku требуется для управления разрешениями приложений и выполнения расширенных операций. Пожалуйста, авторизуйте это приложение в Shizuku.</string>
-    <string name="shizuku_status_ok">Авторизовано и работает</string>
-    <string name="shizuku_status_no_auth">Работает, но не авторизовано</string>
-    <string name="shizuku_status_not_running">Не работает</string>
-    <string name="shizuku_authorized">Авторизовано</string>
-    <string name="shizuku_not_authorized">Не авторизовано</string>
-    <string name="shizuku_not_running">Не работает</string>
-    <string name="shizuku_request_auth">Запросить авторизацию</string>
-
-    <string name="confirm">Подтвердить</string>
-    <string name="cancel">Отмена</string>
-    <string name="operation_success">Операция успешна</string>
-    <string name="operation_failed">Операция не удалась: %s</string>
-    <string name="error_no_shizuku">Shizuku недоступен или не авторизован</string>
-    <string name="language_changed_restart">Язык изменен. Перезагрузите приложение, чтобы применить изменения.</string>
-    <string name="restart">Перезагрузить</string>
-    <string name="setting_saved">Параметр сохранен</string>
+    <string name="pref_language_ar">العربية</string>
+    
+    <string name="restart_required">Требуется перезапуск</string>
+    <string name="restart_required_message">Стартовая страница по умолчанию была изменена. Перезапустите приложение, чтобы применить изменение.</string>
+    <string name="restart_now">Перезапустить сейчас</string>
+    <string name="later">Позже</string>
+    
+    <!-- Shortcuts -->
+    <string name="shortcut_app_manager_long">Открыть диспетчер приложений Buge</string>
 </resources>

@@ -3,18 +3,103 @@
     <string name="app_name">Buge应用管理器</string>
     <string name="developer_name">Buge团队</string>
 
+    <!-- Navigation -->
     <string name="nav_apps">应用</string>
     <string name="nav_activities">活动</string>
     <string name="nav_permissions">权限</string>
     <string name="nav_settings">设置</string>
 
-    <string name="title_activities">活动管理器</string>
-    <string name="title_activity_detail">活动详情</string>
-    <string name="search_activity_hint">搜索活动…</string>
-    <string name="launch">启动</string>
-    <string name="back_to_apps">返回应用列表</string>
-    <string name="no_activities_found">未找到活动</string>
+    <!-- Settings Groups -->
+    <string name="settings_group_authorization">授权</string>
+    <string name="settings_group_appearance">外观</string>
+    <string name="settings_group_apps">应用</string>
+    <string name="settings_group_advanced">高级</string>
+    <string name="settings_group_about">关于</string>
 
+    <!-- Basic Settings -->
+    <string name="title_settings">设置</string>
+    <string name="pref_theme">主题</string>
+    <string name="pref_theme_light">浅色</string>
+    <string name="pref_theme_dark">深色</string>
+    <string name="pref_theme_auto">跟随系统</string>
+    <string name="pref_language">语言</string>
+    <string name="pref_default_page">默认页面</string>
+    <string name="pref_default_page_summary">选择应用启动时显示的页面</string>
+    <string name="pref_show_system_apps">显示系统应用</string>
+    <string name="pref_show_disabled_apps">显示已禁用的应用</string>
+    <string name="pref_show_undeclared_activities">显示未导出的活动</string>
+    <string name="pref_allow_system_ops">允许系统应用操作</string>
+    <string name="pref_allow_system_ops_summary">允许修改系统应用（权限、禁用、卸载）</string>
+    <string name="pref_about">关于</string>
+    <string name="setting_saved">设置已保存</string>
+
+    <!-- Apps Settings -->
+    <string name="pref_google_services">Google服务</string>
+    <string name="pref_google_services_summary">启用或禁用Google移动服务</string>
+    <string name="pref_google_services_disabled">此设备上不可用Google服务</string>
+
+    <!-- Log Settings -->
+    <string name="pref_logging">日志记录</string>
+    <string name="pref_logging_summary">记录用户操作和错误</string>
+    <string name="log_activity_title">操作日志</string>
+    <string name="log_settings_title">日志设置</string>
+    <string name="log_enable">启用日志记录</string>
+    <string name="log_enable_summary">记录所有用户操作和系统错误</string>
+    <string name="log_empty">暂无日志记录</string>
+    <string name="log_copy">复制</string>
+    <string name="log_cleared">日志已清除</string>
+    <string name="log_copied">日志已复制到剪贴板</string>
+
+    <!-- Default Page Dialog -->
+    <string name="default_page_title">默认启动页面</string>
+    <string name="default_page_apps">应用</string>
+    <string name="default_page_permissions">权限</string>
+    <string name="default_page_activities">活动</string>
+    <string name="default_page_settings">设置</string>
+
+    <!-- About Dialog -->
+    <string name="about_desc">Buge应用管理器是一款强大的应用管理工具，支持Shizuku以实现高级权限和应用控制。</string>
+
+    <!-- About Links -->
+    <string name="website">官网</string>
+    <string name="website_desc">访问我们的官方网站</string>
+    <string name="github">GitHub</string>
+    <string name="github_desc">访问我们的GitHub仓库</string>
+    <string name="telegram">Telegram</string>
+    <string name="telegram_desc">加入我们的Telegram频道</string>
+    <string name="check_for_update">检查更新</string>
+    <string name="update_desc">在GitHub上检查新版本</string>
+    <string name="about_more">了解更多关于我们</string>
+    <string name="about_more_summary">了解开发团队和项目愿景</string>
+    <string name="about">关于</string>
+    <string name="close">关闭</string>
+    <string name="open">打开</string>
+
+    <!-- About Us Activity -->
+    <string name="about_us">关于我们</string>
+    <string name="about_us_title">Buge Studio团队</string>
+    <string name="about_us_description">Buge Studio团队是一群充满热情的开发者和设计师，致力于为Android平台创建创新实用的工具应用。我们专注于用户隐私、系统控制和开放性。我们的目标是为用户提供透明、高效、可靠的工具。Buge应用管理器是一个开源项目，也是我们的第一个主要应用。欢迎大家共同参与改进和开发。</string>
+
+    <!-- GMS Disable Warning -->
+    <string name="gms_disable_warning_title">禁用Google服务？</string>
+    <string name="gms_disable_warning_message">禁用Google服务将影响以下功能：\n\n• Google Play商店将停止工作\n• 依赖Google Play服务的应用可能崩溃\n• Google应用的通知将停止\n• 位置服务可能受影响\n• 应用内购买将无法使用\n\n确定要禁用Google服务吗？</string>
+
+    <!-- System Operation Blocked -->
+    <string name="system_op_blocked_title">操作被阻止</string>
+    <string name="system_op_blocked_message">系统应用操作当前已禁用。\n\n您可以在设置中启用“允许系统应用操作”来执行此操作。</string>
+
+    <!-- Shizuku -->
+    <string name="shizuku_title">Shizuku授权</string>
+    <string name="shizuku_desc">需要Shizuku来管理应用权限并执行高级操作。请在Shizuku中授权此应用。</string>
+    <string name="shizuku_status_ok">已授权且正在运行</string>
+    <string name="shizuku_status_no_auth">正在运行但未授权</string>
+    <string name="shizuku_status_not_running">未运行</string>
+    <string name="shizuku_authorized">已授权</string>
+    <string name="shizuku_not_authorized">未授权</string>
+    <string name="shizuku_not_running">未运行</string>
+    <string name="shizuku_request_auth">请求授权</string>
+
+    <!-- App List -->
     <string name="title_app_list">已安装应用</string>
     <string name="search_hint">搜索应用…</string>
     <string name="filter_all">所有应用</string>
@@ -24,11 +109,12 @@
     <string name="sort_name">名称</string>
     <string name="sort_size">大小</string>
     <string name="sort_install_date">安装日期</string>
-    <string name="apps_count">%d 个应用</string>
+    <string name="apps_count">%d个应用</string>
     <string name="loading_apps">正在加载应用…</string>
     <string name="refresh">刷新</string>
     <string name="no_apps_found">未找到应用</string>
 
+    <!-- App Detail -->
     <string name="title_app_detail">应用详情</string>
     <string name="package_name">包名</string>
     <string name="version">版本</string>
@@ -55,6 +141,7 @@
     <string name="freeze_app">冻结应用</string>
     <string name="unfreeze_app">解冻应用</string>
 
+    <!-- Permissions List -->
     <string name="title_permissions">权限管理器</string>
     <string name="perm_microphone">麦克风</string>
     <string name="perm_camera">摄像头</string>
@@ -71,18 +158,30 @@
     <string name="perm_install_unknown">安装未知应用</string>
     <string name="batch_revoke">撤销权限</string>
     <string name="batch_grant">授予权限</string>
-    <string name="confirm_revoke">从 %d 个应用撤销权限？</string>
-    <string name="confirm_grant">向 %d 个应用授予权限？</string>
-    <string name="selected_count">已选择 %d 个</string>
+    <string name="confirm_revoke">从%d个应用撤销权限？</string>
+    <string name="confirm_grant">向%d个应用授予权限？</string>
+    <string name="selected_count">已选择%d个</string>
     <string name="open_system_settings">打开系统设置</string>
 
-    <string name="title_settings">设置</string>
-    <string name="pref_theme">主题</string>
-    <string name="pref_theme_light">浅色</string>
-    <string name="pref_theme_dark">深色</string>
-    <string name="pref_theme_auto">系统默认</string>
-    <string name="pref_language">语言</string>
-    <string name="pref_language_auto">系统默认</string>
+    <!-- Activities -->
+    <string name="title_activities">活动管理器</string>
+    <string name="title_activity_detail">活动详情</string>
+    <string name="search_activity_hint">搜索活动…</string>
+    <string name="launch">启动</string>
+    <string name="back_to_apps">返回应用列表</string>
+    <string name="no_activities_found">未找到活动</string>
+
+    <!-- Common -->
+    <string name="confirm">确认</string>
+    <string name="cancel">取消</string>
+    <string name="operation_success">操作成功</string>
+    <string name="operation_failed">操作失败：%s</string>
+    <string name="error_no_shizuku">Shizuku不可用或未授权</string>
+    <string name="error_system_ops_disabled">系统应用操作已禁用。请在设置中启用“允许系统应用操作”。</string>
+    <string name="language_changed_restart">语言已更改。重启应用以应用更改。</string>
+    <string name="restart">重启</string>
+
+    <!-- Language names -->
     <string name="pref_language_en">English</string>
     <string name="pref_language_zh">中文（简体）</string>
     <string name="pref_language_ja">日本語</string>
@@ -90,32 +189,13 @@
     <string name="pref_language_fr">Français</string>
     <string name="pref_language_de">Deutsch</string>
     <string name="pref_language_ru">Русский</string>
-    <string name="pref_show_system_apps">显示系统应用</string>
-    <string name="pref_show_undeclared_activities">显示未导出的活动</string>
-    <string name="pref_about">关于</string>
-    <string name="about">关于</string>
-    <string name="about_desc">Buge应用管理器是一个功能强大的应用管理工具，支持Shizuku以进行高级权限和应用控制。</string>
-    <string name="github">GitHub</string>
-    <string name="github_desc">访问我们的GitHub仓库</string>
-    <string name="open">打开</string>
-    <string name="close">关闭</string>
-
-    <string name="shizuku_title">Shizuku授权</string>
-    <string name="shizuku_desc">需要Shizuku来管理应用权限并执行高级操作。请在Shizuku中授权此应用。</string>
-    <string name="shizuku_status_ok">已授权且正在运行</string>
-    <string name="shizuku_status_no_auth">正在运行但未授权</string>
-    <string name="shizuku_status_not_running">未运行</string>
-    <string name="shizuku_authorized">已授权</string>
-    <string name="shizuku_not_authorized">未授权</string>
-    <string name="shizuku_not_running">未运行</string>
-    <string name="shizuku_request_auth">请求授权</string>
-
-    <string name="confirm">确认</string>
-    <string name="cancel">取消</string>
-    <string name="operation_success">操作成功</string>
-    <string name="operation_failed">操作失败：%s</string>
-    <string name="error_no_shizuku">Shizuku不可用或未授权</string>
-    <string name="language_changed_restart">语言已更改。重启应用以应用更改。</string>
-    <string name="restart">重启</string>
-    <string name="setting_saved">设置已保存</string>
+    <string name="pref_language_ar">العربية</string>
+    
+    <string name="restart_required">需要重启</string>
+    <string name="restart_required_message">默认启动页面已更改。重启应用以使更改生效。</string>
+    <string name="restart_now">立即重启</string>
+    <string name="later">稍后</string>
+    
+    <!-- Shortcuts -->
+    <string name="shortcut_app_manager_long">打开Buge应用管理器</string>
 </resources>

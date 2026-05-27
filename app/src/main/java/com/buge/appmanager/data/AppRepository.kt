@@ -99,16 +99,20 @@ class AppRepository(private val context: Context) {
         val PERMISSION_MANAGE_STORAGE = listOf(
             "android.permission.MANAGE_EXTERNAL_STORAGE"
         )
+        val PERMISSION_WRITE_SETTINGS = listOf(
+            "android.permission.WRITE_SETTINGS"
+        )
         val ALL_DANGEROUS_PERMISSIONS = (
             PERMISSION_MICROPHONE + PERMISSION_CAMERA + PERMISSION_LOCATION +
             PERMISSION_BACKGROUND_LOCATION + PERMISSION_CONTACTS + PERMISSION_STORAGE +
             PERMISSION_PHONE + PERMISSION_SMS + PERMISSION_CALENDAR + PERMISSION_SENSORS +
             PERMISSION_ACTIVITY + PERMISSION_NEARBY + PERMISSION_NOTIFICATIONS +
             PERMISSION_MEDIA_IMAGES + PERMISSION_MEDIA_VIDEO + PERMISSION_MEDIA_AUDIO +
-            PERMISSION_OVERLAY + PERMISSION_INSTALL_UNKNOWN_APPS + PERMISSION_MANAGE_STORAGE
+            PERMISSION_OVERLAY + PERMISSION_INSTALL_UNKNOWN_APPS + PERMISSION_MANAGE_STORAGE +
+            PERMISSION_WRITE_SETTINGS
         ).toSet()
 
-        val SPECIAL_PERMISSIONS = setOf(
+        val APPOP_PERMISSIONS = setOf(
             "android.permission.SYSTEM_ALERT_WINDOW",
             "android.permission.REQUEST_INSTALL_PACKAGES"
         )
@@ -175,13 +179,11 @@ class AppRepository(private val context: Context) {
     ): List<AppInfo> = withContext(Dispatchers.IO) {
         try {
             val packages: List<PackageInfo> = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-                pm.getInstalledPackages(PackageManager.PackageInfoFlags.of(PackageManager.GET_META_DATA.toLong()))
+                pm.getInstalledPackages(PackageManager.PackageInfoFlags.of(0))
             } else {
                 @Suppress("DEPRECATION")
-                pm.getInstalledPackages(PackageManager.GET_META_DATA)
+                pm.getInstalledPackages(0)
             }
-            
-            Log.d(TAG, "Total packages found: ${packages.size}")
             
             var apps = mutableListOf<AppInfo>()
             
@@ -243,9 +245,6 @@ class AppRepository(private val context: Context) {
                 }
             }
 
-            Log.d(TAG, "Apps after initial load: ${apps.size}")
-            
-            // Apply filters
             apps = when (filter) {
                 AppFilter.ALL -> {
                     if (showSystemApps) apps else apps.filter { !it.isSystemApp }.toMutableList()
@@ -255,12 +254,10 @@ class AppRepository(private val context: Context) {
                 AppFilter.FAVORITE -> apps.filter { PreferencesManager.isFavoriteApp(context, it.packageName) }.toMutableList()
             }
 
-            // Filter disabled apps
             if (!showDisabledApps) {
                 apps = apps.filter { it.isEnabled }.toMutableList()
             }
 
-            // Apply search filter
             if (searchQuery.isNotEmpty()) {
                 apps = apps.filter {
                     it.appName.contains(searchQuery, ignoreCase = true) ||
@@ -268,14 +265,12 @@ class AppRepository(private val context: Context) {
                 }.toMutableList()
             }
 
-            // Apply sorting
             apps = when (sortOrder) {
                 AppSortOrder.NAME -> apps.sortedBy { it.appName.lowercase() }.toMutableList()
                 AppSortOrder.SIZE -> apps.sortedByDescending { it.versionCode }.toMutableList()
                 AppSortOrder.INSTALL_DATE -> apps.sortedByDescending { it.installTime }.toMutableList()
             }
             
-            Log.d(TAG, "Apps after filters: ${apps.size}")
             apps
         } catch (e: Exception) {
             Log.e(TAG, "Error getting installed apps: ${e.message}", e)
@@ -306,7 +301,7 @@ class AppRepository(private val context: Context) {
                     permName == "android.permission.MANAGE_EXTERNAL_STORAGE" -> {
                         getManageExternalStorageStatus(packageName) ?: false
                     }
-                    permName in SPECIAL_PERMISSIONS -> {
+                    permName in APPOP_PERMISSIONS -> {
                         getSpecialPermissionStatus(packageName, permName) ?: false
                     }
                     else -> {
@@ -325,7 +320,7 @@ class AppRepository(private val context: Context) {
                     false
                 }
 
-                val isSpecial = permName in SPECIAL_PERMISSIONS
+                val isSpecial = permName in APPOP_PERMISSIONS
                 val isAppOpOnly = permName in APPOP_ONLY_PERMISSIONS
 
                 permissions.add(
@@ -337,11 +332,67 @@ class AppRepository(private val context: Context) {
                     )
                 )
             }
+            
+            // Add WRITE_SETTINGS permission (AppOps permission not in manifest)
+            val writeSettingsStatus = ShizukuManager.getWriteSettingsStatus(packageName)
+            permissions.add(
+                PermissionInfo(
+                    name = "android.permission.WRITE_SETTINGS",
+                    isGranted = writeSettingsStatus ?: false,
+                    isRuntime = true,
+                    isDangerous = true
+                )
+            )
+            
+            // Add SYSTEM_ALERT_WINDOW if not already present
+            if (permissions.none { it.name == "android.permission.SYSTEM_ALERT_WINDOW" }) {
+                val overlayStatus = ShizukuManager.getOverlayStatus(packageName)
+                permissions.add(
+                    PermissionInfo(
+                        name = "android.permission.SYSTEM_ALERT_WINDOW",
+                        isGranted = overlayStatus ?: false,
+                        isRuntime = true,
+                        isDangerous = true
+                    )
+                )
+            }
+            
+            // Add REQUEST_INSTALL_PACKAGES if not already present
+            if (permissions.none { it.name == "android.permission.REQUEST_INSTALL_PACKAGES" }) {
+                val installStatus = ShizukuManager.getInstallUnknownAppsStatus(packageName)
+                permissions.add(
+                    PermissionInfo(
+                        name = "android.permission.REQUEST_INSTALL_PACKAGES",
+                        isGranted = installStatus ?: false,
+                        isRuntime = true,
+                        isDangerous = true
+                    )
+                )
+            }
 
             permissions.sortedWith(compareByDescending<PermissionInfo> { it.isDangerous }.thenBy { it.name })
         } catch (e: Exception) {
             Log.e(TAG, "Error getting permissions for $packageName: ${e.message}")
             emptyList()
+        }
+    }
+
+    suspend fun hasPermissionInManifest(packageName: String, permission: String): Boolean = withContext(Dispatchers.IO) {
+        try {
+            val pkgInfo = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+                pm.getPackageInfo(
+                    packageName,
+                    PackageManager.PackageInfoFlags.of(PackageManager.GET_PERMISSIONS.toLong())
+                )
+            } else {
+                @Suppress("DEPRECATION")
+                pm.getPackageInfo(packageName, PackageManager.GET_PERMISSIONS)
+            }
+            val requestedPermissions = pkgInfo?.requestedPermissions ?: emptyArray()
+            requestedPermissions.contains(permission)
+        } catch (e: Exception) {
+            Log.w(TAG, "Error checking manifest permission for $packageName / $permission: ${e.message}")
+            false
         }
     }
 
@@ -355,6 +406,15 @@ class AppRepository(private val context: Context) {
                         val isGranted = when (permission) {
                             "android.permission.MANAGE_EXTERNAL_STORAGE" -> {
                                 getManageExternalStorageStatus(app.packageName) ?: false
+                            }
+                            "android.permission.WRITE_SETTINGS" -> {
+                                ShizukuManager.getWriteSettingsStatus(app.packageName) ?: false
+                            }
+                            "android.permission.SYSTEM_ALERT_WINDOW" -> {
+                                ShizukuManager.getOverlayStatus(app.packageName) ?: false
+                            }
+                            "android.permission.REQUEST_INSTALL_PACKAGES" -> {
+                                ShizukuManager.getInstallUnknownAppsStatus(app.packageName) ?: false
                             }
                             else -> {
                                 val pkgInfo = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
@@ -396,42 +456,60 @@ class AppRepository(private val context: Context) {
         try {
             val allApps = getInstalledApps(showSystemApps = showSystemApps)
             val result = mutableListOf<Pair<AppInfo, Map<String, Boolean>>>()
+            
             for (app in allApps) {
-                try {
-                    val pkgInfo = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-                        pm.getPackageInfo(
-                            app.packageName,
-                            PackageManager.PackageInfoFlags.of(PackageManager.GET_PERMISSIONS.toLong())
-                        )
-                    } else {
-                        @Suppress("DEPRECATION")
-                        pm.getPackageInfo(app.packageName, PackageManager.GET_PERMISSIONS)
-                    }
-                    val requestedPerms = pkgInfo?.requestedPermissions ?: continue
-                    val permFlags = pkgInfo.requestedPermissionsFlags ?: continue
-                    val appPermMap = mutableMapOf<String, Boolean>()
-                    for (targetPerm in permissions) {
-                        val idx = requestedPerms.indexOf(targetPerm)
-                        if (idx >= 0) {
-                            val isGranted = when (targetPerm) {
-                                "android.permission.MANAGE_EXTERNAL_STORAGE" -> {
-                                    getManageExternalStorageStatus(app.packageName) ?: false
+                val appPermMap = mutableMapOf<String, Boolean>()
+                
+                for (targetPerm in permissions) {
+                    // Check if app has this permission in its manifest
+                    val hasInManifest = hasPermissionInManifest(app.packageName, targetPerm)
+                    
+                    if (hasInManifest) {
+                        val isGranted = when (targetPerm) {
+                            "android.permission.WRITE_SETTINGS" -> {
+                                ShizukuManager.getWriteSettingsStatus(app.packageName) ?: false
+                            }
+                            "android.permission.SYSTEM_ALERT_WINDOW" -> {
+                                ShizukuManager.getOverlayStatus(app.packageName) ?: false
+                            }
+                            "android.permission.REQUEST_INSTALL_PACKAGES" -> {
+                                ShizukuManager.getInstallUnknownAppsStatus(app.packageName) ?: false
+                            }
+                            "android.permission.MANAGE_EXTERNAL_STORAGE" -> {
+                                getManageExternalStorageStatus(app.packageName) ?: false
+                            }
+                            else -> {
+                                val pkgInfo = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+                                    pm.getPackageInfo(
+                                        app.packageName,
+                                        PackageManager.PackageInfoFlags.of(PackageManager.GET_PERMISSIONS.toLong())
+                                    )
+                                } else {
+                                    @Suppress("DEPRECATION")
+                                    pm.getPackageInfo(app.packageName, PackageManager.GET_PERMISSIONS)
                                 }
-                                else -> {
+                                
+                                val requestedPerms = pkgInfo?.requestedPermissions ?: emptyArray()
+                                val permFlags = pkgInfo?.requestedPermissionsFlags ?: IntArray(0)
+                                
+                                val idx = requestedPerms.indexOf(targetPerm)
+                                if (idx >= 0 && idx < permFlags.size) {
                                     getSpecialPermissionStatus(app.packageName, targetPerm)
                                         ?: ((permFlags[idx] and PackageInfo.REQUESTED_PERMISSION_GRANTED) != 0)
+                                } else {
+                                    false
                                 }
                             }
-                            appPermMap[targetPerm] = isGranted
                         }
+                        appPermMap[targetPerm] = isGranted
                     }
-                    if (appPermMap.isNotEmpty()) {
-                        result.add(Pair(app, appPermMap))
-                    }
-                } catch (e: Exception) {
-                    Log.w(TAG, "Error getting permissions for ${app.packageName}: ${e.message}")
+                }
+                
+                if (appPermMap.isNotEmpty()) {
+                    result.add(Pair(app, appPermMap))
                 }
             }
+            
             result.sortedBy { it.first.appName.lowercase() }
         } catch (e: Exception) {
             Log.e(TAG, "Error getting apps with permission category: ${e.message}")

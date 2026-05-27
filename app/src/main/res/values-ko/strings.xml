@@ -3,18 +3,103 @@
     <string name="app_name">Buge앱 관리자</string>
     <string name="developer_name">Buge팀</string>
 
+    <!-- Navigation -->
     <string name="nav_apps">앱</string>
     <string name="nav_activities">활동</string>
     <string name="nav_permissions">권한</string>
     <string name="nav_settings">설정</string>
 
-    <string name="title_activities">활동 관리자</string>
-    <string name="title_activity_detail">활동 세부정보</string>
-    <string name="search_activity_hint">활동 검색…</string>
-    <string name="launch">실행</string>
-    <string name="back_to_apps">앱으로 돌아가기</string>
-    <string name="no_activities_found">활동을 찾을 수 없음</string>
+    <!-- Settings Groups -->
+    <string name="settings_group_authorization">승인</string>
+    <string name="settings_group_appearance">외관</string>
+    <string name="settings_group_apps">앱</string>
+    <string name="settings_group_advanced">고급</string>
+    <string name="settings_group_about">정보</string>
 
+    <!-- Basic Settings -->
+    <string name="title_settings">설정</string>
+    <string name="pref_theme">테마</string>
+    <string name="pref_theme_light">라이트</string>
+    <string name="pref_theme_dark">다크</string>
+    <string name="pref_theme_auto">시스템 기본값</string>
+    <string name="pref_language">언어</string>
+    <string name="pref_default_page">기본 페이지</string>
+    <string name="pref_default_page_summary">앱 시작 시 표시할 페이지 선택</string>
+    <string name="pref_show_system_apps">시스템 앱 표시</string>
+    <string name="pref_show_disabled_apps">비활성화된 앱 표시</string>
+    <string name="pref_show_undeclared_activities">선언되지 않은 활동 표시</string>
+    <string name="pref_allow_system_ops">시스템 앱 작업 허용</string>
+    <string name="pref_allow_system_ops_summary">시스템 앱 수정 허용 (권한, 비활성화, 제거)</string>
+    <string name="pref_about">정보</string>
+    <string name="setting_saved">설정이 저장되었습니다</string>
+
+    <!-- Apps Settings -->
+    <string name="pref_google_services">Google 서비스</string>
+    <string name="pref_google_services_summary">Google 모바일 서비스 활성화/비활성화</string>
+    <string name="pref_google_services_disabled">이 기기에서는 Google 서비스를 사용할 수 없습니다</string>
+
+    <!-- Log Settings -->
+    <string name="pref_logging">로그 기록</string>
+    <string name="pref_logging_summary">사용자 작업 및 오류 기록</string>
+    <string name="log_activity_title">작업 로그</string>
+    <string name="log_settings_title">로그 설정</string>
+    <string name="log_enable">로그 기록 활성화</string>
+    <string name="log_enable_summary">모든 사용자 작업 및 시스템 오류 기록</string>
+    <string name="log_empty">아직 기록된 로그가 없습니다</string>
+    <string name="log_copy">복사</string>
+    <string name="log_cleared">로그가 지워졌습니다</string>
+    <string name="log_copied">로그가 클립보드에 복사되었습니다</string>
+
+    <!-- Default Page Dialog -->
+    <string name="default_page_title">기본 시작 페이지</string>
+    <string name="default_page_apps">앱</string>
+    <string name="default_page_permissions">권한</string>
+    <string name="default_page_activities">활동</string>
+    <string name="default_page_settings">설정</string>
+
+    <!-- About Dialog -->
+    <string name="about_desc">Buge앱 관리자는 Shizuku를 지원하는 강력한 앱 관리 도구로, 고급 권한 및 앱 제어 기능을 제공합니다.</string>
+
+    <!-- About Links -->
+    <string name="website">웹사이트</string>
+    <string name="website_desc">공식 웹사이트 방문</string>
+    <string name="github">GitHub</string>
+    <string name="github_desc">GitHub 저장소 방문</string>
+    <string name="telegram">텔레그램</string>
+    <string name="telegram_desc">텔레그램 채널 참여</string>
+    <string name="check_for_update">업데이트 확인</string>
+    <string name="update_desc">GitHub에서 새 버전 확인</string>
+    <string name="about_more">더 알아보기</string>
+    <string name="about_more_summary">개발팀과 프로젝트 비전 알아보기</string>
+    <string name="about">정보</string>
+    <string name="close">닫기</string>
+    <string name="open">열기</string>
+
+    <!-- About Us Activity -->
+    <string name="about_us">회사 소개</string>
+    <string name="about_us_title">Buge Studio 팀</string>
+    <string name="about_us_description">Buge Studio 팀은 Android 플랫폼을 위한 혁신적이고 실용적인 유틸리티 애플리케이션을 만드는 데 전념하는 열정적인 개발자와 디자이너 그룹입니다. 우리는 사용자 프라이버시, 시스템 제어 및 개방성에 중점을 둡니다. 투명하고 효율적이며 신뢰할 수 있는 도구를 사용자에게 제공하는 것이 목표입니다. Buge앱 관리자는 오픈 소스 프로젝트이며, 우리의 첫 번째 주요 애플리케이션입니다. 모든 분들의 개선 및 개발 참여를 환영합니다.</string>
+
+    <!-- GMS Disable Warning -->
+    <string name="gms_disable_warning_title">Google 서비스를 비활성화하시겠습니까?</string>
+    <string name="gms_disable_warning_message">Google 서비스를 비활성화하면 다음에 영향을 미칩니다:\n\n• Google Play 스토어가 작동을 멈춥니다\n• Google Play 서비스에 의존하는 앱이 충돌할 수 있습니다\n• Google 앱의 푸시 알림이 중지됩니다\n• 위치 서비스에 영향을 미칠 수 있습니다\n• 인앱 구매가 작동하지 않습니다\n\nGoogle 서비스를 비활성화하시겠습니까?</string>
+
+    <!-- System Operation Blocked -->
+    <string name="system_op_blocked_title">작업이 차단되었습니다</string>
+    <string name="system_op_blocked_message">시스템 앱 작업이 현재 비활성화되어 있습니다.\n\n이 작업을 수행하려면 설정에서 "시스템 앱 작업 허용"을 활성화하세요.</string>
+
+    <!-- Shizuku -->
+    <string name="shizuku_title">Shizuku 승인</string>
+    <string name="shizuku_desc">앱 권한을 관리하고 고급 작업을 수행하려면 Shizuku가 필요합니다. Shizuku에서 이 앱을 승인해 주세요.</string>
+    <string name="shizuku_status_ok">승인됨 및 실행 중</string>
+    <string name="shizuku_status_no_auth">실행 중이지만 승인되지 않음</string>
+    <string name="shizuku_status_not_running">실행 중이 아님</string>
+    <string name="shizuku_authorized">승인됨</string>
+    <string name="shizuku_not_authorized">승인되지 않음</string>
+    <string name="shizuku_not_running">실행 중이 아님</string>
+    <string name="shizuku_request_auth">승인 요청</string>
+
+    <!-- App List -->
     <string name="title_app_list">설치된 앱</string>
     <string name="search_hint">앱 검색…</string>
     <string name="filter_all">모든 앱</string>
@@ -29,6 +114,7 @@
     <string name="refresh">새로고침</string>
     <string name="no_apps_found">앱을 찾을 수 없습니다</string>
 
+    <!-- App Detail -->
     <string name="title_app_detail">앱 세부정보</string>
     <string name="package_name">패키지 이름</string>
     <string name="version">버전</string>
@@ -55,6 +141,7 @@
     <string name="freeze_app">앱 동결</string>
     <string name="unfreeze_app">앱 동결 해제</string>
 
+    <!-- Permissions List -->
     <string name="title_permissions">권한 관리자</string>
     <string name="perm_microphone">마이크</string>
     <string name="perm_camera">카메라</string>
@@ -76,13 +163,25 @@
     <string name="selected_count">%d개 선택됨</string>
     <string name="open_system_settings">시스템 설정 열기</string>
 
-    <string name="title_settings">설정</string>
-    <string name="pref_theme">테마</string>
-    <string name="pref_theme_light">밝음</string>
-    <string name="pref_theme_dark">어두움</string>
-    <string name="pref_theme_auto">시스템 기본값</string>
-    <string name="pref_language">언어</string>
-    <string name="pref_language_auto">시스템 기본값</string>
+    <!-- Activities -->
+    <string name="title_activities">활동 관리자</string>
+    <string name="title_activity_detail">활동 세부정보</string>
+    <string name="search_activity_hint">활동 검색…</string>
+    <string name="launch">실행</string>
+    <string name="back_to_apps">앱으로 돌아가기</string>
+    <string name="no_activities_found">활동을 찾을 수 없음</string>
+
+    <!-- Common -->
+    <string name="confirm">확인</string>
+    <string name="cancel">취소</string>
+    <string name="operation_success">작업이 성공했습니다</string>
+    <string name="operation_failed">작업 실패: %s</string>
+    <string name="error_no_shizuku">Shizuku를 사용할 수 없거나 승인되지 않았습니다</string>
+    <string name="error_system_ops_disabled">시스템 앱 작업이 비활성화되었습니다. 설정에서 "시스템 앱 작업 허용"을 활성화하세요.</string>
+    <string name="language_changed_restart">언어가 변경되었습니다. 변경 사항을 적용하려면 앱을 다시 시작하세요.</string>
+    <string name="restart">다시 시작</string>
+
+    <!-- Language names -->
     <string name="pref_language_en">English</string>
     <string name="pref_language_zh">中文（简体）</string>
     <string name="pref_language_ja">日本語</string>
@@ -90,32 +189,13 @@
     <string name="pref_language_fr">Français</string>
     <string name="pref_language_de">Deutsch</string>
     <string name="pref_language_ru">Русский</string>
-    <string name="pref_show_system_apps">시스템 앱 표시</string>
-    <string name="pref_show_undeclared_activities">선언되지 않은 활동 표시</string>
-    <string name="pref_about">정보</string>
-    <string name="about">정보</string>
-    <string name="about_desc">Buge앱 관리자는 Shizuku를 지원하는 강력한 앱 관리 도구로, 고급 권한 및 앱 제어 기능을 제공합니다.</string>
-    <string name="github">GitHub</string>
-    <string name="github_desc">GitHub 저장소 방문</string>
-    <string name="open">열기</string>
-    <string name="close">닫기</string>
-
-    <string name="shizuku_title">Shizuku 승인</string>
-    <string name="shizuku_desc">앱 권한을 관리하고 고급 작업을 수행하려면 Shizuku가 필요합니다. Shizuku에서 이 앱을 승인해 주세요.</string>
-    <string name="shizuku_status_ok">승인됨 및 실행 중</string>
-    <string name="shizuku_status_no_auth">실행 중이지만 승인되지 않음</string>
-    <string name="shizuku_status_not_running">실행 중이 아님</string>
-    <string name="shizuku_authorized">승인됨</string>
-    <string name="shizuku_not_authorized">승인되지 않음</string>
-    <string name="shizuku_not_running">실행 중이 아님</string>
-    <string name="shizuku_request_auth">승인 요청</string>
-
-    <string name="confirm">확인</string>
-    <string name="cancel">취소</string>
-    <string name="operation_success">작업이 성공했습니다</string>
-    <string name="operation_failed">작업 실패: %s</string>
-    <string name="error_no_shizuku">Shizuku를 사용할 수 없거나 승인되지 않았습니다</string>
-    <string name="language_changed_restart">언어가 변경되었습니다. 변경 사항을 적용하려면 앱을 다시 시작하세요.</string>
-    <string name="restart">다시 시작</string>
-    <string name="setting_saved">설정이 저장되었습니다</string>
+    <string name="pref_language_ar">العربية</string>
+    
+    <string name="restart_required">재시작 필요</string>
+    <string name="restart_required_message">기본 시작 페이지가 변경되었습니다. 변경 사항을 적용하려면 앱을 재시작하세요.</string>
+    <string name="restart_now">지금 재시작</string>
+    <string name="later">나중에</string>
+    
+    <!-- Shortcuts -->
+    <string name="shortcut_app_manager_long">Buge앱 관리자 열기</string>
 </resources>

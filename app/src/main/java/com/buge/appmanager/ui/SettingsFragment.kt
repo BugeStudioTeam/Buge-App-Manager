@@ -38,6 +38,7 @@ class SettingsFragment : Fragment() {
     private val binding get() = _binding!!
     private lateinit var adapter: SettingsAdapter
     private var fontApplied = false
+    private var pendingLanguageCode: String? = null
 
     private val shizukuPermissionListener = Shizuku.OnRequestPermissionResultListener { _, grantResult ->
         if (grantResult == PackageManager.PERMISSION_GRANTED) {
@@ -396,20 +397,28 @@ class SettingsFragment : Fragment() {
             .setTitle(R.string.pref_language)
             .setSingleChoiceItems(options, currentIndex) { dialog, which ->
                 val selectedCode = codes[which]
-                LocaleManager.setLanguage(requireContext(), selectedCode)
+                pendingLanguageCode = selectedCode
                 dialog.dismiss()
                 
-                val isEnglish = when (selectedCode) {
-                    "", "en" -> true
-                    else -> {
-                        val locale = if (selectedCode.isEmpty()) Locale.getDefault() else Locale(selectedCode)
-                        locale.language == "en"
+                showRestartDialog(
+                    title = getString(R.string.restart_required),
+                    message = getString(R.string.language_changed_restart)
+                ) {
+                    // Apply language and restart
+                    LocaleManager.setLanguage(requireContext(), selectedCode)
+                    
+                    val isEnglish = when (selectedCode) {
+                        "", "en" -> true
+                        else -> {
+                            val locale = if (selectedCode.isEmpty()) Locale.getDefault() else Locale(selectedCode)
+                            locale.language == "en"
+                        }
                     }
+                    FontOverrideHelper.setEnglishLocaleFlag(isEnglish)
+                    fontApplied = false
+                    
+                    restartApp()
                 }
-                FontOverrideHelper.setEnglishLocaleFlag(isEnglish)
-                fontApplied = false
-                
-                requireActivity().recreate()
             }
             .show()
     }
@@ -444,16 +453,25 @@ class SettingsFragment : Fragment() {
                 dialog.dismiss()
                 
                 if (oldPage != page) {
-                    MaterialAlertDialogBuilder(requireContext())
-                        .setTitle("Restart Required")
-                        .setMessage("The default start page has been changed. Restart the app for the change to take effect.")
-                        .setPositiveButton("Restart Now") { _, _ ->
-                            restartApp()
-                        }
-                        .setNegativeButton("Later", null)
-                        .show()
+                    showRestartDialog(
+                        title = getString(R.string.restart_required),
+                        message = getString(R.string.restart_required_message)
+                    ) {
+                        restartApp()
+                    }
                 }
             }
+            .show()
+    }
+
+    private fun showRestartDialog(title: String, message: String, onConfirm: () -> Unit) {
+        MaterialAlertDialogBuilder(requireContext())
+            .setTitle(title)
+            .setMessage(message)
+            .setPositiveButton(getString(R.string.restart_now)) { _, _ ->
+                onConfirm.invoke()
+            }
+            .setNegativeButton(getString(R.string.later), null)
             .show()
     }
 

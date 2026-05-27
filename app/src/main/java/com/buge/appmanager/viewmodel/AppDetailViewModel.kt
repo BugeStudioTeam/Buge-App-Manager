@@ -35,19 +35,13 @@ class AppDetailViewModel(application: Application) : AndroidViewModel(applicatio
         viewModelScope.launch {
             _isLoading.value = true
             try {
-                // Get all apps including system apps
                 val apps = repository.getInstalledApps(showSystemApps = true)
                 val app = apps.find { it.packageName == packageName }
                 _appInfo.value = app
                 if (app != null) {
+                    // getAppPermissions now includes WRITE_SETTINGS and other AppOps permissions
                     val perms = repository.getAppPermissions(packageName)
-                    // Ensure permissions are loaded even for system apps
-                    _permissions.value = if (perms.isEmpty()) {
-                        // If no permissions found, try to get them again
-                        repository.getAppPermissions(packageName)
-                    } else {
-                        perms
-                    }
+                    _permissions.value = perms
                 }
             } catch (e: Exception) {
                 _appInfo.value = null
@@ -67,10 +61,10 @@ class AppDetailViewModel(application: Application) : AndroidViewModel(applicatio
             }
             _operationResult.value = result
             if (result.success) {
-                val perms = repository.getAppPermissions(currentPackageName)
-                _permissions.value = perms
+                loadApp(currentPackageName)
+            } else {
+                _isLoading.value = false
             }
-            _isLoading.value = false
         }
     }
 

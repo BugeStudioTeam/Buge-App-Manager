@@ -1,11 +1,15 @@
 package com.buge.appmanager
 
+import android.animation.ValueAnimator
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
 import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.appcompat.widget.Toolbar
+import androidx.core.animation.doOnEnd
+import androidx.recyclerview.widget.RecyclerView
+import com.buge.appmanager.ui.SettingsAdapter
 
 class AboutUsActivity : BaseActivity() {
 
@@ -58,14 +62,41 @@ class AboutUsActivity : BaseActivity() {
     }
 
     private fun setupClickListeners() {
-        cardGithub.setOnClickListener {
+        setupCardClickListener(cardGithub) {
             openUrl("https://github.com/BugeStudioTeam")
         }
-        cardTelegram.setOnClickListener {
+        setupCardClickListener(cardTelegram) {
             openUrl("https://t.me/bugestudio")
         }
-        cardWebsite.setOnClickListener {
+        setupCardClickListener(cardWebsite) {
             openUrl("https://bugestudioteam.github.io/appmanager")
+        }
+    }
+
+    private fun setupCardClickListener(card: LinearLayout, onClick: () -> Unit) {
+        card.setOnClickListener { v ->
+            // Animate click like settings items
+            ValueAnimator.ofFloat(1f, 0.96f).apply {
+                duration = 80
+                addUpdateListener { animator ->
+                    val scale = animator.animatedValue as Float
+                    v.scaleX = scale
+                    v.scaleY = scale
+                }
+                doOnEnd {
+                    ValueAnimator.ofFloat(0.96f, 1f).apply {
+                        duration = 80
+                        addUpdateListener { animator ->
+                            val scale = animator.animatedValue as Float
+                            v.scaleX = scale
+                            v.scaleY = scale
+                        }
+                        start()
+                    }
+                }
+                start()
+            }
+            onClick.invoke()
         }
     }
 

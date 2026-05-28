@@ -162,6 +162,7 @@
     <string name="confirm_grant">Accorder la permission à %d application(s) ?</string>
     <string name="selected_count">%d sélectionné(s)</string>
     <string name="open_system_settings">Ouvrir les paramètres système</string>
+    <string name="perm_write_settings">Modifier les paramètres système</string>
 
     <!-- Activities -->
     <string name="title_activities">Gestionnaire d\'activités</string>

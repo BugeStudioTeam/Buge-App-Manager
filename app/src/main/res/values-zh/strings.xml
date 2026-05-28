@@ -162,6 +162,7 @@
     <string name="confirm_grant">向%d个应用授予权限？</string>
     <string name="selected_count">已选择%d个</string>
     <string name="open_system_settings">打开系统设置</string>
+    <string name="perm_write_settings">修改系统设置</string>
 
     <!-- Activities -->
     <string name="title_activities">活动管理器</string>

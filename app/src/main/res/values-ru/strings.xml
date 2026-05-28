@@ -162,6 +162,7 @@
     <string name="confirm_grant">Предоставить разрешение %d приложению(ям)?</string>
     <string name="selected_count">%d выбрано</string>
     <string name="open_system_settings">Открыть системные настройки</string>
+    <string name="perm_write_settings">Изменение системных настроек</string>
 
     <!-- Activities -->
     <string name="title_activities">Менеджер активностей</string>

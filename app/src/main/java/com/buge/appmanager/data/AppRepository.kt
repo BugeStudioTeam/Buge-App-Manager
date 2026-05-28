@@ -294,12 +294,22 @@ class AppRepository(private val context: Context) {
 
             val permissions = mutableListOf<PermissionInfo>()
 
+            // Check which AppOps permissions are declared in manifest
+            val hasWriteSettingsInManifest = requestedPermissions.contains("android.permission.WRITE_SETTINGS")
+            val hasOverlayInManifest = requestedPermissions.contains("android.permission.SYSTEM_ALERT_WINDOW")
+            val hasInstallUnknownInManifest = requestedPermissions.contains("android.permission.REQUEST_INSTALL_PACKAGES")
+            val hasManageStorageInManifest = requestedPermissions.contains("android.permission.MANAGE_EXTERNAL_STORAGE")
+
             for (index in requestedPermissions.indices) {
                 val permName = requestedPermissions[index]
 
                 val isGranted = when {
                     permName == "android.permission.MANAGE_EXTERNAL_STORAGE" -> {
-                        getManageExternalStorageStatus(packageName) ?: false
+                        if (hasManageStorageInManifest) {
+                            getManageExternalStorageStatus(packageName) ?: false
+                        } else {
+                            false
+                        }
                     }
                     permName in APPOP_PERMISSIONS -> {
                         getSpecialPermissionStatus(packageName, permName) ?: false
@@ -333,19 +343,21 @@ class AppRepository(private val context: Context) {
                 )
             }
             
-            // Add WRITE_SETTINGS permission (AppOps permission not in manifest)
-            val writeSettingsStatus = ShizukuManager.getWriteSettingsStatus(packageName)
-            permissions.add(
-                PermissionInfo(
-                    name = "android.permission.WRITE_SETTINGS",
-                    isGranted = writeSettingsStatus ?: false,
-                    isRuntime = true,
-                    isDangerous = true
+            // Add WRITE_SETTINGS only if declared in manifest
+            if (hasWriteSettingsInManifest) {
+                val writeSettingsStatus = ShizukuManager.getWriteSettingsStatus(packageName)
+                permissions.add(
+                    PermissionInfo(
+                        name = "android.permission.WRITE_SETTINGS",
+                        isGranted = writeSettingsStatus ?: false,
+                        isRuntime = true,
+                        isDangerous = true
+                    )
                 )
-            )
+            }
             
-            // Add SYSTEM_ALERT_WINDOW if not already present
-            if (permissions.none { it.name == "android.permission.SYSTEM_ALERT_WINDOW" }) {
+            // Add SYSTEM_ALERT_WINDOW only if declared in manifest
+            if (hasOverlayInManifest) {
                 val overlayStatus = ShizukuManager.getOverlayStatus(packageName)
                 permissions.add(
                     PermissionInfo(
@@ -357,8 +369,8 @@ class AppRepository(private val context: Context) {
                 )
             }
             
-            // Add REQUEST_INSTALL_PACKAGES if not already present
-            if (permissions.none { it.name == "android.permission.REQUEST_INSTALL_PACKAGES" }) {
+            // Add REQUEST_INSTALL_PACKAGES only if declared in manifest
+            if (hasInstallUnknownInManifest) {
                 val installStatus = ShizukuManager.getInstallUnknownAppsStatus(packageName)
                 permissions.add(
                     PermissionInfo(

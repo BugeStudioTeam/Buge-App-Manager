@@ -162,6 +162,7 @@
     <string name="confirm_grant">%d개의 앱에 권한을 허용하시겠습니까?</string>
     <string name="selected_count">%d개 선택됨</string>
     <string name="open_system_settings">시스템 설정 열기</string>
+    <string name="perm_write_settings">시스템 설정 수정</string>
 
     <!-- Activities -->
     <string name="title_activities">활동 관리자</string>

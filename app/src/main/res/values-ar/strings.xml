@@ -162,6 +162,7 @@
     <string name="confirm_grant">منح الإذن لـ %d تطبيق؟</string>
     <string name="selected_count">%d محدد</string>
     <string name="open_system_settings">فتح إعدادات النظام</string>
+    <string name="perm_write_settings">تعديل إعدادات النظام</string>
 
     <!-- Activities -->
     <string name="title_activities">مدير الأنشطة</string>

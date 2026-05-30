@@ -66,6 +66,23 @@ class MainActivity : BaseActivity() {
         }
     }
 
+    private fun setupWindowInsets() {
+        ViewCompat.setOnApplyWindowInsetsListener(binding.root) { view, insets ->
+            val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
+            val navBars = insets.getInsets(WindowInsetsCompat.Type.navigationBars())
+            
+            // Set padding directly without accumulating
+            view.setPadding(
+                systemBars.left,
+                systemBars.top,
+                systemBars.right,
+                navBars.bottom
+            )
+            
+            insets
+        }
+    }
+
     private fun loadDefaultPage() {
         val defaultPage = PreferencesManager.getDefaultPage(this)
         val fragment = when (defaultPage) {
@@ -85,21 +102,6 @@ class MainActivity : BaseActivity() {
         binding.bottomNav.selectedItemId = navId
         loadFragment(fragment)
         LogManager.info(this, "App started, default page: $defaultPage")
-    }
-
-    private fun setupWindowInsets() {
-        ViewCompat.setOnApplyWindowInsetsListener(binding.root) { view, insets ->
-            val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
-            
-            view.setPadding(
-                view.paddingLeft,
-                view.paddingTop + systemBars.top,
-                view.paddingRight,
-                view.paddingBottom + systemBars.bottom
-            )
-            
-            insets
-        }
     }
 
     override fun onResume() {

@@ -78,8 +78,7 @@ object FontOverrideHelper {
     }
 
     private fun applyTypefaceToTextView(textView: TextView) {
-        val currentTypeface = textView.typeface
-        val style = currentTypeface?.style ?: Typeface.NORMAL
+        val style = textView.typeface?.style ?: Typeface.NORMAL
 
         val targetTypeface = when (style) {
             Typeface.BOLD -> boldTypeface ?: mediumTypeface ?: regularTypeface
@@ -87,7 +86,9 @@ object FontOverrideHelper {
         }
 
         targetTypeface?.let {
-            textView.typeface = it
+            if (textView.typeface != it) {
+                textView.typeface = it
+            }
         }
     }
 

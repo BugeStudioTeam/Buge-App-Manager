@@ -1,7 +1,7 @@
 # Buge App Manager
 
 <p align="center">
-  <img src="https://raw.githubusercontent.com/BugeStudioTeam/Buge-App-Manager/refs/heads/main/icon_new.jpg" alt="Buge App Manager Icon" width="120"/>
+  <img src="https://raw.githubusercontent.com/BugeStudioTeam/Buge-App-Manager/refs/heads/main/images/icons/icon_new.jpg" alt="Buge App Manager Icon" width="120"/>
 </p>
 
 <p align="center">

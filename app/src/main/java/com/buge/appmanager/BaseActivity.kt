@@ -26,8 +26,7 @@ abstract class BaseActivity : AppCompatActivity() {
 
     override fun onResume() {
         super.onResume()
-        // Apply font only once
-        if (!fontApplied && FontOverrideHelper.isEnglishLocale()) {
+        if (!fontApplied) {
             FontOverrideHelper.applyToActivity(this)
             fontApplied = true
         }

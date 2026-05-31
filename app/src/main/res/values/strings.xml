@@ -212,6 +212,18 @@
     <string name="restart_now">Restart Now</string>
     <string name="later">Later</string>
     
+    <!-- Update Checker -->
+    <string name="update_available">Update Available</string>
+    <string name="download">Download</string>
+    <string name="no_update_title">No Update Available</string>
+    <string name="no_update_message">You are already using the latest version.</string>
+    <string name="update_check_failed">Update Check Failed</string>
+    <string name="update_check_failed_message">Failed to check for updates. Please check your internet connection.</string>
+    <string name="checking_for_update">Checking for update...</string>
+    <string name="please_wait">Please wait...</string>
+    <string name="ok">OK</string>
+    <string name="ignore">Ignore</string>
+    
     <!-- Shortcuts -->
     <string name="shortcut_app_manager_long">Open Buge App Manager</string>
 </resources>

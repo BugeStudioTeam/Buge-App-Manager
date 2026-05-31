@@ -27,6 +27,7 @@ import com.buge.appmanager.util.LogManager
 import com.buge.appmanager.util.PreferencesManager
 import com.buge.appmanager.util.SnackbarHelper
 import com.buge.appmanager.util.SpringAnimationHelper
+import com.buge.appmanager.util.UpdateChecker
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import kotlinx.coroutines.launch
 import rikka.shizuku.Shizuku
@@ -404,7 +405,6 @@ class SettingsFragment : Fragment() {
                     title = getString(R.string.restart_required),
                     message = getString(R.string.language_changed_restart)
                 ) {
-                    // Apply language and restart
                     LocaleManager.setLanguage(requireContext(), selectedCode)
                     
                     val isEnglish = when (selectedCode) {
@@ -517,10 +517,40 @@ class SettingsFragment : Fragment() {
         }
 
         updateItem.setOnClickListener {
-            val intent = Intent(Intent.ACTION_VIEW).apply {
-                data = Uri.parse("https://github.com/BugeStudioTeam/Buge-App-Manager/releases")
+            dialog.dismiss()
+            checkForUpdate()
+        }
+    }
+
+    private fun checkForUpdate() {
+        val loadingDialog = MaterialAlertDialogBuilder(requireContext())
+            .setTitle(R.string.checking_for_update)
+            .setMessage(R.string.please_wait)
+            .setCancelable(false)
+            .create()
+        loadingDialog.show()
+
+        lifecycleScope.launch {
+            try {
+                val releaseInfo = UpdateChecker.checkForUpdates(requireContext())
+                loadingDialog.dismiss()
+
+                if (releaseInfo != null) {
+                    UpdateChecker.showUpdateDialog(
+                        requireContext(),
+                        releaseInfo,
+                        onDownload = {
+                            val intent = Intent(Intent.ACTION_VIEW, Uri.parse(releaseInfo.apkDownloadUrl))
+                            startActivity(intent)
+                        }
+                    )
+                } else {
+                    UpdateChecker.showNoUpdateDialog(requireContext())
+                }
+            } catch (e: Exception) {
+                loadingDialog.dismiss()
+                UpdateChecker.showErrorDialog(requireContext(), e.message)
             }
-            startActivity(intent)
         }
     }
 

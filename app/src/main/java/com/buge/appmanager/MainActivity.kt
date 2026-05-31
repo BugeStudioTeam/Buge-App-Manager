@@ -3,10 +3,12 @@ package com.buge.appmanager
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import android.view.View
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.lifecycleScope
 import com.buge.appmanager.databinding.ActivityMainBinding
 import com.buge.appmanager.ui.ActivitiesFragment
 import com.buge.appmanager.ui.AppsFragment
@@ -16,6 +18,8 @@ import com.buge.appmanager.util.FontOverrideHelper
 import com.buge.appmanager.util.LocaleManager
 import com.buge.appmanager.util.LogManager
 import com.buge.appmanager.util.PreferencesManager
+import com.buge.appmanager.util.UpdateChecker
+import kotlinx.coroutines.launch
 import rikka.shizuku.Shizuku
 import java.util.Locale
 
@@ -23,6 +27,7 @@ class MainActivity : BaseActivity() {
 
     private lateinit var binding: ActivityMainBinding
     private var currentFragment: Fragment? = null
+    private var hasCheckedUpdate = false
 
     private val requestPermissionResultListener = Shizuku.OnRequestPermissionResultListener { _, _ -> }
 
@@ -63,6 +68,31 @@ class MainActivity : BaseActivity() {
 
         if (savedInstanceState == null) {
             loadDefaultPage()
+        }
+        
+        checkForUpdateOnStart()
+    }
+
+    private fun checkForUpdateOnStart() {
+        if (hasCheckedUpdate) return
+        
+        lifecycleScope.launch {
+            try {
+                val releaseInfo = UpdateChecker.checkForUpdates(this@MainActivity)
+                if (releaseInfo != null) {
+                    hasCheckedUpdate = true
+                    UpdateChecker.showUpdateDialog(
+                        this@MainActivity,
+                        releaseInfo,
+                        onDownload = {
+                            val intent = Intent(Intent.ACTION_VIEW, android.net.Uri.parse(releaseInfo.apkDownloadUrl))
+                            startActivity(intent)
+                        }
+                    )
+                }
+            } catch (e: Exception) {
+                LogManager.warning(this@MainActivity, "Auto update check failed: ${e.message}")
+            }
         }
     }
 

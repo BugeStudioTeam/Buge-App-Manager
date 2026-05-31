@@ -32,6 +32,7 @@
     <string name="pref_allow_system_ops_summary">システムアプリの変更を許可（権限、無効化、アンインストール）</string>
     <string name="pref_about">情報</string>
     <string name="setting_saved">設定を保存しました</string>
+    <string name="pref_auto_update">自動更新</string>
 
     <!-- Apps Settings -->
     <string name="pref_google_services">Googleサービス</string>

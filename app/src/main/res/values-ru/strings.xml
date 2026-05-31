@@ -32,6 +32,7 @@
     <string name="pref_allow_system_ops_summary">Разрешить изменение системных приложений (разрешения, отключение, удаление)</string>
     <string name="pref_about">О программе</string>
     <string name="setting_saved">Параметр сохранен</string>
+    <string name="pref_auto_update">Автообновление</string>
 
     <!-- Apps Settings -->
     <string name="pref_google_services">Сервисы Google</string>

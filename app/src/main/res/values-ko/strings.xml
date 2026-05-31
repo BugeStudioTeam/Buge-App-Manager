@@ -32,6 +32,7 @@
     <string name="pref_allow_system_ops_summary">시스템 앱 수정 허용 (권한, 비활성화, 제거)</string>
     <string name="pref_about">정보</string>
     <string name="setting_saved">설정이 저장되었습니다</string>
+    <string name="pref_auto_update">자동 업데이트</string>
 
     <!-- Apps Settings -->
     <string name="pref_google_services">Google 서비스</string>

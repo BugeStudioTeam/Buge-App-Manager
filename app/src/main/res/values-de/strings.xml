@@ -32,6 +32,7 @@
     <string name="pref_allow_system_ops_summary">Änderungen an System-Apps erlauben (Berechtigungen, Deaktivierung, Deinstallation)</string>
     <string name="pref_about">Über</string>
     <string name="setting_saved">Einstellung gespeichert</string>
+    <string name="pref_auto_update">Auto-Update</string>
 
     <!-- Apps Settings -->
     <string name="pref_google_services">Google-Dienste</string>

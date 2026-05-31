@@ -32,6 +32,7 @@
     <string name="pref_allow_system_ops_summary">السماح بتعديل تطبيقات النظام (الأذونات، التعطيل، الإزالة)</string>
     <string name="pref_about">حول</string>
     <string name="setting_saved">تم حفظ الإعداد</string>
+    <string name="pref_auto_update">تحديث تلقائي</string>
 
     <!-- Apps Settings -->
     <string name="pref_google_services">خدمات Google</string>

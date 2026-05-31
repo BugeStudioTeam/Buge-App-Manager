@@ -239,7 +239,7 @@ class PermissionsFragment : Fragment() {
                 )
             }
             adapter.submitList(items)
-            binding.toolbar.subtitle = getString(R.string.apps_count, items.size)
+            
         }
         viewModel.isLoading.observe(viewLifecycleOwner) { isLoading ->
             binding.progressBar.visibility = if (isLoading) View.VISIBLE else View.GONE

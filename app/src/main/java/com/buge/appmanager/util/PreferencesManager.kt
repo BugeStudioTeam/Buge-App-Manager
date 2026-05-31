@@ -15,6 +15,7 @@ object PreferencesManager {
     private const val ALLOW_SYSTEM_OPS_KEY = "allow_system_ops"
     private const val LOGGING_ENABLED_KEY = "logging_enabled"
     private const val FAVORITE_APPS_KEY = "favorite_apps"
+    private const val AUTO_UPDATE_KEY = "auto_update"
 
     private fun getPreferences(context: Context): SharedPreferences {
         return context.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE)
@@ -111,5 +112,13 @@ object PreferencesManager {
         val gson = com.google.gson.Gson()
         val json = gson.toJson(favorites)
         getPreferences(context).edit().putString(FAVORITE_APPS_KEY, json).apply()
+    }
+
+    fun setAutoUpdate(context: Context, enabled: Boolean) {
+        getPreferences(context).edit().putBoolean(AUTO_UPDATE_KEY, enabled).apply()
+    }
+
+    fun getAutoUpdate(context: Context): Boolean {
+        return getPreferences(context).getBoolean(AUTO_UPDATE_KEY, true)
     }
 }

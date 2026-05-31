@@ -93,9 +93,9 @@ class AppsFragment : Fragment() {
     private fun setupFilters() {
         binding.filterChipGroup.setOnCheckedStateChangeListener { _, checkedIds ->
             val filter = when {
-                checkedIds.contains(com.buge.appmanager.R.id.chip_user) -> AppFilter.USER
-                checkedIds.contains(com.buge.appmanager.R.id.chip_system) -> AppFilter.SYSTEM
-                checkedIds.contains(com.buge.appmanager.R.id.chip_favorite) -> AppFilter.FAVORITE
+                checkedIds.contains(R.id.chip_user) -> AppFilter.USER
+                checkedIds.contains(R.id.chip_system) -> AppFilter.SYSTEM
+                checkedIds.contains(R.id.chip_favorite) -> AppFilter.FAVORITE
                 else -> AppFilter.ALL
             }
             viewModel.setFilter(filter)
@@ -105,7 +105,7 @@ class AppsFragment : Fragment() {
     private fun setupToolbar() {
         binding.toolbar.setOnMenuItemClickListener { item ->
             when (item.itemId) {
-                com.buge.appmanager.R.id.action_sort -> {
+                R.id.action_sort -> {
                     showSortDialog()
                     true
                 }
@@ -116,9 +116,9 @@ class AppsFragment : Fragment() {
 
     private fun showSortDialog() {
         val options = arrayOf(
-            getString(com.buge.appmanager.R.string.sort_name),
-            getString(com.buge.appmanager.R.string.sort_size),
-            getString(com.buge.appmanager.R.string.sort_install_date)
+            getString(R.string.sort_name),
+            getString(R.string.sort_size),
+            getString(R.string.sort_install_date)
         )
         val currentIndex = when (viewModel.currentSort) {
             AppSortOrder.NAME -> 0
@@ -126,7 +126,7 @@ class AppsFragment : Fragment() {
             AppSortOrder.INSTALL_DATE -> 2
         }
         MaterialAlertDialogBuilder(requireContext())
-            .setTitle(com.buge.appmanager.R.string.sort_name)
+            .setTitle(R.string.sort_name)
             .setSingleChoiceItems(options, currentIndex) { dialog, which ->
                 val sort = when (which) {
                     0 -> AppSortOrder.NAME
@@ -145,8 +145,7 @@ class AppsFragment : Fragment() {
             adapter.submitList(apps)
             binding.emptyState.visibility = if (apps.isEmpty()) View.VISIBLE else View.GONE
             binding.recyclerView.visibility = if (apps.isEmpty()) View.GONE else View.VISIBLE
-
-            binding.toolbar.subtitle = getString(com.buge.appmanager.R.string.apps_count, apps.size)
+            // REMOVED: binding.toolbar.subtitle - causing display issues in English
         }
 
         viewModel.isLoading.observe(viewLifecycleOwner) { isLoading ->

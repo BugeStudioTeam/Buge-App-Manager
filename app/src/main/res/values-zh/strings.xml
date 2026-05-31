@@ -32,6 +32,7 @@
     <string name="pref_allow_system_ops_summary">允许修改系统应用（权限、禁用、卸载）</string>
     <string name="pref_about">关于</string>
     <string name="setting_saved">设置已保存</string>
+    <string name="pref_auto_update">自动更新</string>
 
     <!-- Apps Settings -->
     <string name="pref_google_services">Google服务</string>

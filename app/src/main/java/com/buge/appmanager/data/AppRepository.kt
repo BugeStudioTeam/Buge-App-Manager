@@ -343,7 +343,7 @@ class AppRepository(private val context: Context) {
                 )
             }
             
-            // Add WRITE_SETTINGS only if declared in manifest
+            // Add WRITE_SETTINGS only if declared in manifest - DO NOT MODIFY THIS BLOCK
             if (hasWriteSettingsInManifest) {
                 val writeSettingsStatus = ShizukuManager.getWriteSettingsStatus(packageName)
                 permissions.add(
@@ -356,8 +356,8 @@ class AppRepository(private val context: Context) {
                 )
             }
             
-            // Add SYSTEM_ALERT_WINDOW only if declared in manifest
-            if (hasOverlayInManifest) {
+            // Add SYSTEM_ALERT_WINDOW only if declared in manifest AND not already added in loop
+            if (hasOverlayInManifest && !permissions.any { it.name == "android.permission.SYSTEM_ALERT_WINDOW" }) {
                 val overlayStatus = ShizukuManager.getOverlayStatus(packageName)
                 permissions.add(
                     PermissionInfo(
@@ -369,8 +369,8 @@ class AppRepository(private val context: Context) {
                 )
             }
             
-            // Add REQUEST_INSTALL_PACKAGES only if declared in manifest
-            if (hasInstallUnknownInManifest) {
+            // Add REQUEST_INSTALL_PACKAGES only if declared in manifest AND not already added in loop
+            if (hasInstallUnknownInManifest && !permissions.any { it.name == "android.permission.REQUEST_INSTALL_PACKAGES" }) {
                 val installStatus = ShizukuManager.getInstallUnknownAppsStatus(packageName)
                 permissions.add(
                     PermissionInfo(

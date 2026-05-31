@@ -132,6 +132,11 @@ class SettingsFragment : Fragment() {
                     item.title == getString(R.string.pref_google_services) -> {
                         handleGoogleServicesToggle(isChecked)
                     }
+                    item.title == getString(R.string.pref_auto_update) -> {
+                        PreferencesManager.setAutoUpdate(requireContext(), isChecked)
+                        SnackbarHelper.showSnackbar(binding.root, getString(R.string.setting_saved))
+                        LogManager.info(requireContext(), "Auto update changed to $isChecked")
+                    }
                 }
             }
         )
@@ -228,6 +233,7 @@ class SettingsFragment : Fragment() {
         val showUndeclared = PreferencesManager.getShowUndeclaredActivities(requireContext())
         val showDisabledApps = PreferencesManager.getShowDisabledApps(requireContext())
         val allowSystemOps = PreferencesManager.getAllowSystemOps(requireContext())
+        val autoUpdate = PreferencesManager.getAutoUpdate(requireContext())
         val currentTheme = PreferencesManager.getThemeMode(requireContext())
         val themeText = when (currentTheme) {
             AppCompatDelegate.MODE_NIGHT_NO -> getString(R.string.pref_theme_light)
@@ -263,6 +269,11 @@ class SettingsFragment : Fragment() {
                 gmsEnabled,
                 R.drawable.ic_google_services,
                 gmsAvailable
+            ),
+            SettingItem.SwitchItem(
+                getString(R.string.pref_auto_update),
+                autoUpdate,
+                R.drawable.ic_autoupdate
             ),
             SettingItem.SwitchItem(
                 getString(R.string.pref_allow_system_ops),

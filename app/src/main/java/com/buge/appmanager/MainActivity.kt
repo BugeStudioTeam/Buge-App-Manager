@@ -74,6 +74,12 @@ class MainActivity : BaseActivity() {
     }
 
     private fun checkForUpdateOnStart() {
+        // Check if auto update is enabled
+        if (!PreferencesManager.getAutoUpdate(this)) {
+            LogManager.info(this, "Auto update is disabled, skipping check")
+            return
+        }
+        
         if (hasCheckedUpdate) return
         
         lifecycleScope.launch {
@@ -144,18 +150,22 @@ class MainActivity : BaseActivity() {
             when (item.itemId) {
                 R.id.nav_apps -> {
                     loadFragment(AppsFragment())
+                    supportActionBar?.title = getString(R.string.nav_apps)
                     true
                 }
                 R.id.nav_permissions -> {
                     loadFragment(PermissionsFragment())
+                    supportActionBar?.title = getString(R.string.nav_permissions)
                     true
                 }
                 R.id.nav_activities -> {
                     loadFragment(ActivitiesFragment())
+                    supportActionBar?.title = getString(R.string.nav_activities)
                     true
                 }
                 R.id.nav_settings -> {
                     loadFragment(SettingsFragment())
+                    supportActionBar?.title = getString(R.string.nav_settings)
                     true
                 }
                 else -> false

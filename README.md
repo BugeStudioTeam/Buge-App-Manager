@@ -71,8 +71,7 @@ Follow this step-by-step guide to manage the same permission type across multipl
 ### 📹 Video Tutorial
 
 <p align="center">
-  <video src="https://github.com/BugeStudioTeam/Buge-App-Manager/blob/main/videos/Tutorial-MP.mp4?raw=true" width="100%" controls poster="https://github.com/BugeStudioTeam/BugeStudioTeam/blob/main/icon.png">
-    Your browser does not support the video tag.
+  <video src="https://github.com/BugeStudioTeam/Buge-App-Manager/blob/main/videos/Tutorial-MP.mp4?raw=true" width="100%" controls>
   </video>
 </p>
 

@@ -70,10 +70,13 @@ Follow this step-by-step guide to manage the same permission type across multipl
 
 ### 📹 Video Tutorial
 
+### 📹 Video Tutorial
+
 <p align="center">
-  <video src="https://github.com/BugeStudioTeam/Buge-App-Manager/blob/main/videos/Tutorial-MP.mp4?raw=true" width="100%" controls>
+  <video src="https://github.com/user-attachments/assets/1a5a0fae-0c93-4af2-8b0d-579607f58652" width="100%" controls>
   </video>
 </p>
+
 
 ---
 

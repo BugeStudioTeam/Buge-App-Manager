@@ -71,16 +71,22 @@ Follow this step-by-step guide to manage the same permission type across multipl
 ### 📹 Video Tutorial
 
 <p align="center">
-  <a href="https://github.com/BugeStudioTeam/Buge-App-Manager/blob/main/videos/Tutorial-MP.mp4">
-    <img src="https://img.shields.io/badge/▶️_Watch_Tutorial-181717?logo=github&logoColor=white" alt="Watch Tutorial">
-  </a>
+  <video src="https://github.com/user-attachments/assets/1a5a0fae-0c93-4af2-8b0d-579607f58652" width="100%" controls>
+  </video>
 </p>
+
 
 ---
 
 ## Star History
 
-[![Star History Chart](https://api.star-history.com/svg?repos=BugeStudioTeam/Buge-App-Manager&type=Date)](https://star-history.com/#BugeStudioTeam/Buge-App-Manager&Date)
+<a href="https://www.star-history.com/?repos=BugeStudioTeam%2FBuge-App-Manager&type=date&legend=top-left">
+ <picture>
+   <source media="(prefers-color-scheme: dark)" srcset="https://api.star-history.com/chart?repos=BugeStudioTeam/Buge-App-Manager&type=date&theme=dark&legend=top-left" />
+   <source media="(prefers-color-scheme: light)" srcset="https://api.star-history.com/chart?repos=BugeStudioTeam/Buge-App-Manager&type=date&legend=top-left" />
+   <img alt="Star History Chart" src="https://api.star-history.com/chart?repos=BugeStudioTeam/Buge-App-Manager&type=date&legend=top-left" />
+ </picture>
+</a>
 
 ---
 

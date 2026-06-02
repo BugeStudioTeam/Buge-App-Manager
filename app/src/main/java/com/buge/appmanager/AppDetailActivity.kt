@@ -25,8 +25,9 @@ import com.buge.appmanager.viewmodel.AppDetailViewModel
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.snackbar.Snackbar
 import java.io.File
-import java.io.FileInputStream
 import java.io.FileOutputStream
+import java.io.FileInputStream
+import java.io.OutputStreamWriter
 import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
@@ -95,6 +96,10 @@ class AppDetailActivity : BaseActivity() {
                 exportApk()
                 return true
             }
+            R.id.action_export_info -> {
+                exportAppInfo()
+                return true
+            }
             R.id.action_google_play -> {
                 openInGooglePlay()
                 return true
@@ -105,6 +110,183 @@ class AppDetailActivity : BaseActivity() {
             }
         }
         return super.onOptionsItemSelected(item)
+    }
+
+    private fun exportAppInfo() {
+        val app = viewModel.appInfo.value
+        val permissions = viewModel.permissions.value
+        
+        if (app == null) {
+            Snackbar.make(binding.root, "Unable to export app info", Snackbar.LENGTH_SHORT).show()
+            return
+        }
+        
+        MaterialAlertDialogBuilder(this)
+            .setTitle("Export App Info")
+            .setMessage("Export detailed information for ${app.appName} to a text file?")
+            .setPositiveButton(R.string.confirm) { _, _ ->
+                doExportAppInfo(app, permissions ?: emptyList())
+            }
+            .setNegativeButton(R.string.cancel, null)
+            .show()
+    }
+    
+    private fun doExportAppInfo(app: com.buge.appmanager.model.AppInfo, permissions: List<PermissionInfo>) {
+        try {
+            val downloadDir = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS)
+            if (!downloadDir.exists()) {
+                downloadDir.mkdirs()
+            }
+            
+            val timestamp = SimpleDateFormat("yyyyMMdd_HHmmss", Locale.US).format(Date())
+            val safeAppName = app.appName.replace("/", "_").replace("\\", "_").replace(":", "_").replace("?", "_").replace("*", "_")
+            val fileName = "${safeAppName}_${timestamp}_info.txt"
+            val destFile = File(downloadDir, fileName)
+            
+            var counter = 1
+            var finalFile = destFile
+            while (finalFile.exists()) {
+                finalFile = File(downloadDir, "${safeAppName}_${timestamp}_${counter}_info.txt")
+                counter++
+            }
+            
+            val content = buildAppInfoContent(app, permissions)
+            
+            FileOutputStream(finalFile).use { outputStream ->
+                OutputStreamWriter(outputStream, Charsets.UTF_8).use { writer ->
+                    writer.write(content)
+                }
+            }
+            
+            Snackbar.make(binding.root, "App info saved to: ${finalFile.absolutePath}", Snackbar.LENGTH_LONG).show()
+            LogManager.success(this, "App info exported", "Package: ${app.packageName}, Path: ${finalFile.absolutePath}")
+            
+        } catch (e: Exception) {
+            e.printStackTrace()
+            Snackbar.make(binding.root, "Export failed: ${e.message}", Snackbar.LENGTH_LONG).show()
+            LogManager.error(this, "App info export failed", e.message)
+        }
+    }
+    
+    private fun buildAppInfoContent(app: com.buge.appmanager.model.AppInfo, permissions: List<PermissionInfo>): String {
+        val currentLocale = getCurrentLocale()
+        val dateFormat = SimpleDateFormat("yyyy-MM-dd HH:mm:ss", currentLocale)
+        
+        val separator = "=".repeat(60)
+        val line = "-".repeat(60)
+        
+        return buildString {
+            appendLine(separator)
+            appendLine("Buge App Manager - Application Information Report")
+            appendLine(separator)
+            appendLine()
+            appendLine("Generated: ${dateFormat.format(Date())}")
+            appendLine()
+            
+            appendLine(line)
+            appendLine("BASIC INFORMATION")
+            appendLine(line)
+            appendLine("App Name: ${app.appName}")
+            appendLine("Package Name: ${app.packageName}")
+            appendLine("Version Name: ${app.versionName}")
+            appendLine("Version Code: ${app.versionCode}")
+            appendLine("Is System App: ${if (app.isSystemApp) "Yes" else "No"}")
+            appendLine("Is Enabled: ${if (app.isEnabled) "Yes" else "No"}")
+            appendLine()
+            
+            appendLine(line)
+            appendLine("INSTALLATION INFORMATION")
+            appendLine(line)
+            appendLine("Install Date: ${dateFormat.format(Date(app.installTime))}")
+            appendLine("Update Date: ${dateFormat.format(Date(app.updateTime))}")
+            appendLine("APK Path: ${app.apkPath}")
+            appendLine()
+            
+            appendLine(line)
+            appendLine("SDK INFORMATION")
+            appendLine(line)
+            appendLine("Target SDK: API ${app.targetSdkVersion}")
+            appendLine("Min SDK: API ${app.minSdkVersion}")
+            appendLine()
+            
+            appendLine(line)
+            appendLine("PERMISSIONS (${permissions.size})")
+            appendLine(line)
+            
+            val dangerousPerms = permissions.filter { it.isDangerous }
+            val normalPerms = permissions.filter { !it.isDangerous }
+            
+            if (dangerousPerms.isNotEmpty()) {
+                appendLine()
+                appendLine("Dangerous Permissions (${dangerousPerms.size}):")
+                for (perm in dangerousPerms) {
+                    val status = if (perm.isGranted) "GRANTED" else "DENIED"
+                    appendLine("  • ${getFriendlyPermissionName(perm.name)}")
+                    appendLine("    - Name: ${perm.name}")
+                    appendLine("    - Status: $status")
+                }
+            }
+            
+            if (normalPerms.isNotEmpty()) {
+                appendLine()
+                appendLine("Normal Permissions (${normalPerms.size}):")
+                for (perm in normalPerms) {
+                    appendLine("  • ${getFriendlyPermissionName(perm.name)}")
+                    appendLine("    - Name: ${perm.name}")
+                }
+            }
+            
+            if (permissions.isEmpty()) {
+                appendLine("  No permissions requested")
+            }
+            
+            appendLine()
+            appendLine(separator)
+            appendLine("END OF REPORT")
+            appendLine(separator)
+        }
+    }
+    
+    private fun getFriendlyPermissionName(permission: String): String {
+        return when (permission) {
+            "android.permission.RECORD_AUDIO" -> "Microphone"
+            "android.permission.CAMERA" -> "Camera"
+            "android.permission.ACCESS_FINE_LOCATION" -> "Precise Location"
+            "android.permission.ACCESS_COARSE_LOCATION" -> "Approximate Location"
+            "android.permission.ACCESS_BACKGROUND_LOCATION" -> "Background Location"
+            "android.permission.READ_CONTACTS" -> "Read Contacts"
+            "android.permission.WRITE_CONTACTS" -> "Write Contacts"
+            "android.permission.GET_ACCOUNTS" -> "Get Accounts"
+            "android.permission.READ_EXTERNAL_STORAGE" -> "Read Storage"
+            "android.permission.WRITE_EXTERNAL_STORAGE" -> "Write Storage"
+            "android.permission.MANAGE_EXTERNAL_STORAGE" -> "All Files Access"
+            "android.permission.READ_PHONE_STATE" -> "Phone State"
+            "android.permission.CALL_PHONE" -> "Make Calls"
+            "android.permission.READ_CALL_LOG" -> "Read Call Log"
+            "android.permission.WRITE_CALL_LOG" -> "Write Call Log"
+            "android.permission.SEND_SMS" -> "Send SMS"
+            "android.permission.RECEIVE_SMS" -> "Receive SMS"
+            "android.permission.READ_SMS" -> "Read SMS"
+            "android.permission.READ_CALENDAR" -> "Read Calendar"
+            "android.permission.WRITE_CALENDAR" -> "Write Calendar"
+            "android.permission.BODY_SENSORS" -> "Body Sensors"
+            "android.permission.ACTIVITY_RECOGNITION" -> "Activity Recognition"
+            "android.permission.BLUETOOTH_SCAN" -> "Bluetooth Scan"
+            "android.permission.BLUETOOTH_CONNECT" -> "Bluetooth Connect"
+            "android.permission.POST_NOTIFICATIONS" -> "Notifications"
+            "android.permission.READ_MEDIA_IMAGES" -> "Media Images"
+            "android.permission.READ_MEDIA_VIDEO" -> "Media Video"
+            "android.permission.READ_MEDIA_AUDIO" -> "Media Audio"
+            "android.permission.SYSTEM_ALERT_WINDOW" -> "Display Over Other Apps"
+            "android.permission.REQUEST_INSTALL_PACKAGES" -> "Install Unknown Apps"
+            "android.permission.WRITE_SETTINGS" -> "Modify System Settings"
+            else -> {
+                val shortName = permission.substringAfterLast(".")
+                shortName.replace("_", " ").lowercase().split(" ").joinToString(" ") { 
+                    it.replaceFirstChar { if (it.isLowerCase()) it.titlecase(Locale.getDefault()) else it.toString() }
+                }
+            }
+        }
     }
 
     private fun toggleFavorite() {

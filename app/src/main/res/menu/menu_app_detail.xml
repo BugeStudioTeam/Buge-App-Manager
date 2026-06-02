@@ -11,6 +11,10 @@
         android:title="Export APK"
         app:showAsAction="never" />
     <item
+        android:id="@+id/action_export_info"
+        android:title="Export App Info"
+        app:showAsAction="never" />
+    <item
         android:id="@+id/action_google_play"
         android:title="View on Google Play Store"
         app:showAsAction="never" />

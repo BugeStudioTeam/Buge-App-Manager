@@ -1,0 +1,64 @@
+name: Bug report
+description: Report a bug of Buge App Manager
+
+body:
+  - type: checkboxes
+    id: requirements
+    attributes:
+      label: Requirements
+      options:
+        - label: Buge App Manager is downloaded from official channels (GitHub)
+
+  - type: input
+    id: version
+    attributes:
+      label: Latest Buge App Manager version
+    validations:
+      required: true
+
+  - type: input
+    id: app_version
+    attributes:
+      label: Version in use
+    validations:
+      required: true
+
+  - type: dropdown
+    id: mode
+    attributes:
+      label: Mode
+      options:
+        - Shizuku
+        - other
+    validations:
+      required: true
+
+  - type: input
+    id: android_version
+    attributes:
+      label: Android version
+    validations:
+      required: true
+
+  - type: input
+    id: device
+    attributes:
+      label: Device
+    validations:
+      required: true
+
+  - type: textarea
+    id: reproducer
+    attributes:
+      label: What did you do
+
+  - type: textarea
+    id: logs
+    attributes:
+      label: What happened
+      description: You can upload log and screenshot
+
+  - type: textarea
+    id: expected-behaviour
+    attributes:
+      label: What do you expect

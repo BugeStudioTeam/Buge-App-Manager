@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <!-- Base Blue Theme -->
     <style name="Theme.BugeAppManager" parent="Theme.Material3.Light.NoActionBar">
-        <!-- basic color -->
         <item name="colorPrimary">@color/md_theme_primary</item>
         <item name="colorOnPrimary">@color/md_theme_onPrimary</item>
         <item name="colorPrimaryContainer">@color/md_theme_primaryContainer</item>
@@ -29,8 +29,6 @@
         <item name="colorSurfaceInverse">@color/md_theme_inverseSurface</item>
         <item name="colorOnSurfaceInverse">@color/md_theme_inverseOnSurface</item>
         <item name="colorPrimaryInverse">@color/md_theme_inversePrimary</item>
-
-        <!-- color lay -->
         <item name="colorSurfaceDim">@color/md_theme_surfaceDim</item>
         <item name="colorSurfaceBright">@color/md_theme_surfaceBright</item>
         <item name="colorSurfaceContainerLowest">@color/md_theme_surfaceContainerLowest</item>
@@ -38,8 +36,6 @@
         <item name="colorSurfaceContainer">@color/md_theme_surfaceContainer</item>
         <item name="colorSurfaceContainerHigh">@color/md_theme_surfaceContainerHigh</item>
         <item name="colorSurfaceContainerHighest">@color/md_theme_surfaceContainerHighest</item>
-
-        <!-- color pin-->
         <item name="colorPrimaryFixed">@color/md_theme_primaryFixed</item>
         <item name="colorOnPrimaryFixed">@color/md_theme_onPrimaryFixed</item>
         <item name="colorPrimaryFixedDim">@color/md_theme_primaryFixedDim</item>
@@ -52,10 +48,163 @@
         <item name="colorOnTertiaryFixed">@color/md_theme_onTertiaryFixed</item>
         <item name="colorTertiaryFixedDim">@color/md_theme_tertiaryFixedDim</item>
         <item name="colorOnTertiaryFixedVariant">@color/md_theme_onTertiaryFixedVariant</item>
-
         <item name="android:statusBarColor">?attr/colorSurface</item>
         <item name="android:navigationBarColor">?attr/colorSurface</item>
-        
-        
+    </style>
+
+    <!-- Red Theme -->
+    <style name="Theme.BugeAppManager.Red" parent="Theme.BugeAppManager">
+        <item name="colorPrimary">@color/theme_red_primary</item>
+        <item name="colorOnPrimary">@color/theme_red_onPrimary</item>
+        <item name="colorPrimaryContainer">@color/theme_red_primaryContainer</item>
+        <item name="colorOnPrimaryContainer">@color/theme_red_onPrimaryContainer</item>
+        <item name="colorSecondary">@color/theme_red_secondary</item>
+        <item name="colorOnSecondary">@color/theme_red_onSecondary</item>
+        <item name="colorSecondaryContainer">@color/theme_red_secondaryContainer</item>
+        <item name="colorOnSecondaryContainer">@color/theme_red_onSecondaryContainer</item>
+        <item name="colorTertiary">@color/theme_red_tertiary</item>
+        <item name="colorOnTertiary">@color/theme_red_onTertiary</item>
+        <item name="colorTertiaryContainer">@color/theme_red_tertiaryContainer</item>
+        <item name="colorOnTertiaryContainer">@color/theme_red_onTertiaryContainer</item>
+        <item name="colorError">@color/theme_red_error</item>
+        <item name="colorOnError">@color/theme_red_onError</item>
+        <item name="colorErrorContainer">@color/theme_red_errorContainer</item>
+        <item name="colorOnErrorContainer">@color/theme_red_onErrorContainer</item>
+        <item name="android:colorBackground">@color/theme_red_background</item>
+        <item name="colorOnBackground">@color/theme_red_onBackground</item>
+        <item name="colorSurface">@color/theme_red_surface</item>
+        <item name="colorOnSurface">@color/theme_red_onSurface</item>
+        <item name="colorSurfaceVariant">@color/theme_red_surfaceVariant</item>
+        <item name="colorOnSurfaceVariant">@color/theme_red_onSurfaceVariant</item>
+        <item name="colorOutline">@color/theme_red_outline</item>
+        <item name="colorOutlineVariant">@color/theme_red_outlineVariant</item>
+        <item name="colorSurfaceInverse">@color/theme_red_inverseSurface</item>
+        <item name="colorOnSurfaceInverse">@color/theme_red_inverseOnSurface</item>
+        <item name="colorPrimaryInverse">@color/theme_red_inversePrimary</item>
+        <item name="colorSurfaceDim">@color/theme_red_surfaceDim</item>
+        <item name="colorSurfaceBright">@color/theme_red_surfaceBright</item>
+        <item name="colorSurfaceContainerLowest">@color/theme_red_surfaceContainerLowest</item>
+        <item name="colorSurfaceContainerLow">@color/theme_red_surfaceContainerLow</item>
+        <item name="colorSurfaceContainer">@color/theme_red_surfaceContainer</item>
+        <item name="colorSurfaceContainerHigh">@color/theme_red_surfaceContainerHigh</item>
+        <item name="colorSurfaceContainerHighest">@color/theme_red_surfaceContainerHighest</item>
+        <item name="colorPrimaryFixed">@color/theme_red_primaryFixed</item>
+        <item name="colorOnPrimaryFixed">@color/theme_red_onPrimaryFixed</item>
+        <item name="colorPrimaryFixedDim">@color/theme_red_primaryFixedDim</item>
+        <item name="colorOnPrimaryFixedVariant">@color/theme_red_onPrimaryFixedVariant</item>
+        <item name="colorSecondaryFixed">@color/theme_red_secondaryFixed</item>
+        <item name="colorOnSecondaryFixed">@color/theme_red_onSecondaryFixed</item>
+        <item name="colorSecondaryFixedDim">@color/theme_red_secondaryFixedDim</item>
+        <item name="colorOnSecondaryFixedVariant">@color/theme_red_onSecondaryFixedVariant</item>
+        <item name="colorTertiaryFixed">@color/theme_red_tertiaryFixed</item>
+        <item name="colorOnTertiaryFixed">@color/theme_red_onTertiaryFixed</item>
+        <item name="colorTertiaryFixedDim">@color/theme_red_tertiaryFixedDim</item>
+        <item name="colorOnTertiaryFixedVariant">@color/theme_red_onTertiaryFixedVariant</item>
+        <item name="android:statusBarColor">?attr/colorSurface</item>
+        <item name="android:navigationBarColor">?attr/colorSurface</item>
+    </style>
+
+    <!-- Green Theme -->
+    <style name="Theme.BugeAppManager.Green" parent="Theme.BugeAppManager">
+        <item name="colorPrimary">@color/theme_green_primary</item>
+        <item name="colorOnPrimary">@color/theme_green_onPrimary</item>
+        <item name="colorPrimaryContainer">@color/theme_green_primaryContainer</item>
+        <item name="colorOnPrimaryContainer">@color/theme_green_onPrimaryContainer</item>
+        <item name="colorSecondary">@color/theme_green_secondary</item>
+        <item name="colorOnSecondary">@color/theme_green_onSecondary</item>
+        <item name="colorSecondaryContainer">@color/theme_green_secondaryContainer</item>
+        <item name="colorOnSecondaryContainer">@color/theme_green_onSecondaryContainer</item>
+        <item name="colorTertiary">@color/theme_green_tertiary</item>
+        <item name="colorOnTertiary">@color/theme_green_onTertiary</item>
+        <item name="colorTertiaryContainer">@color/theme_green_tertiaryContainer</item>
+        <item name="colorOnTertiaryContainer">@color/theme_green_onTertiaryContainer</item>
+        <item name="colorError">@color/theme_green_error</item>
+        <item name="colorOnError">@color/theme_green_onError</item>
+        <item name="colorErrorContainer">@color/theme_green_errorContainer</item>
+        <item name="colorOnErrorContainer">@color/theme_green_onErrorContainer</item>
+        <item name="android:colorBackground">@color/theme_green_background</item>
+        <item name="colorOnBackground">@color/theme_green_onBackground</item>
+        <item name="colorSurface">@color/theme_green_surface</item>
+        <item name="colorOnSurface">@color/theme_green_onSurface</item>
+        <item name="colorSurfaceVariant">@color/theme_green_surfaceVariant</item>
+        <item name="colorOnSurfaceVariant">@color/theme_green_onSurfaceVariant</item>
+        <item name="colorOutline">@color/theme_green_outline</item>
+        <item name="colorOutlineVariant">@color/theme_green_outlineVariant</item>
+        <item name="colorSurfaceInverse">@color/theme_green_inverseSurface</item>
+        <item name="colorOnSurfaceInverse">@color/theme_green_inverseOnSurface</item>
+        <item name="colorPrimaryInverse">@color/theme_green_inversePrimary</item>
+        <item name="colorSurfaceDim">@color/theme_green_surfaceDim</item>
+        <item name="colorSurfaceBright">@color/theme_green_surfaceBright</item>
+        <item name="colorSurfaceContainerLowest">@color/theme_green_surfaceContainerLowest</item>
+        <item name="colorSurfaceContainerLow">@color/theme_green_surfaceContainerLow</item>
+        <item name="colorSurfaceContainer">@color/theme_green_surfaceContainer</item>
+        <item name="colorSurfaceContainerHigh">@color/theme_green_surfaceContainerHigh</item>
+        <item name="colorSurfaceContainerHighest">@color/theme_green_surfaceContainerHighest</item>
+        <item name="colorPrimaryFixed">@color/theme_green_primaryFixed</item>
+        <item name="colorOnPrimaryFixed">@color/theme_green_onPrimaryFixed</item>
+        <item name="colorPrimaryFixedDim">@color/theme_green_primaryFixedDim</item>
+        <item name="colorOnPrimaryFixedVariant">@color/theme_green_onPrimaryFixedVariant</item>
+        <item name="colorSecondaryFixed">@color/theme_green_secondaryFixed</item>
+        <item name="colorOnSecondaryFixed">@color/theme_green_onSecondaryFixed</item>
+        <item name="colorSecondaryFixedDim">@color/theme_green_secondaryFixedDim</item>
+        <item name="colorOnSecondaryFixedVariant">@color/theme_green_onSecondaryFixedVariant</item>
+        <item name="colorTertiaryFixed">@color/theme_green_tertiaryFixed</item>
+        <item name="colorOnTertiaryFixed">@color/theme_green_onTertiaryFixed</item>
+        <item name="colorTertiaryFixedDim">@color/theme_green_tertiaryFixedDim</item>
+        <item name="colorOnTertiaryFixedVariant">@color/theme_green_onTertiaryFixedVariant</item>
+        <item name="android:statusBarColor">?attr/colorSurface</item>
+        <item name="android:navigationBarColor">?attr/colorSurface</item>
+    </style>
+
+    <!-- Yellow Theme -->
+    <style name="Theme.BugeAppManager.Yellow" parent="Theme.BugeAppManager">
+        <item name="colorPrimary">@color/theme_yellow_primary</item>
+        <item name="colorOnPrimary">@color/theme_yellow_onPrimary</item>
+        <item name="colorPrimaryContainer">@color/theme_yellow_primaryContainer</item>
+        <item name="colorOnPrimaryContainer">@color/theme_yellow_onPrimaryContainer</item>
+        <item name="colorSecondary">@color/theme_yellow_secondary</item>
+        <item name="colorOnSecondary">@color/theme_yellow_onSecondary</item>
+        <item name="colorSecondaryContainer">@color/theme_yellow_secondaryContainer</item>
+        <item name="colorOnSecondaryContainer">@color/theme_yellow_onSecondaryContainer</item>
+        <item name="colorTertiary">@color/theme_yellow_tertiary</item>
+        <item name="colorOnTertiary">@color/theme_yellow_onTertiary</item>
+        <item name="colorTertiaryContainer">@color/theme_yellow_tertiaryContainer</item>
+        <item name="colorOnTertiaryContainer">@color/theme_yellow_onTertiaryContainer</item>
+        <item name="colorError">@color/theme_yellow_error</item>
+        <item name="colorOnError">@color/theme_yellow_onError</item>
+        <item name="colorErrorContainer">@color/theme_yellow_errorContainer</item>
+        <item name="colorOnErrorContainer">@color/theme_yellow_onErrorContainer</item>
+        <item name="android:colorBackground">@color/theme_yellow_background</item>
+        <item name="colorOnBackground">@color/theme_yellow_onBackground</item>
+        <item name="colorSurface">@color/theme_yellow_surface</item>
+        <item name="colorOnSurface">@color/theme_yellow_onSurface</item>
+        <item name="colorSurfaceVariant">@color/theme_yellow_surfaceVariant</item>
+        <item name="colorOnSurfaceVariant">@color/theme_yellow_onSurfaceVariant</item>
+        <item name="colorOutline">@color/theme_yellow_outline</item>
+        <item name="colorOutlineVariant">@color/theme_yellow_outlineVariant</item>
+        <item name="colorSurfaceInverse">@color/theme_yellow_inverseSurface</item>
+        <item name="colorOnSurfaceInverse">@color/theme_yellow_inverseOnSurface</item>
+        <item name="colorPrimaryInverse">@color/theme_yellow_inversePrimary</item>
+        <item name="colorSurfaceDim">@color/theme_yellow_surfaceDim</item>
+        <item name="colorSurfaceBright">@color/theme_yellow_surfaceBright</item>
+        <item name="colorSurfaceContainerLowest">@color/theme_yellow_surfaceContainerLowest</item>
+        <item name="colorSurfaceContainerLow">@color/theme_yellow_surfaceContainerLow</item>
+        <item name="colorSurfaceContainer">@color/theme_yellow_surfaceContainer</item>
+        <item name="colorSurfaceContainerHigh">@color/theme_yellow_surfaceContainerHigh</item>
+        <item name="colorSurfaceContainerHighest">@color/theme_yellow_surfaceContainerHighest</item>
+        <item name="colorPrimaryFixed">@color/theme_yellow_primaryFixed</item>
+        <item name="colorOnPrimaryFixed">@color/theme_yellow_onPrimaryFixed</item>
+        <item name="colorPrimaryFixedDim">@color/theme_yellow_primaryFixedDim</item>
+        <item name="colorOnPrimaryFixedVariant">@color/theme_yellow_onPrimaryFixedVariant</item>
+        <item name="colorSecondaryFixed">@color/theme_yellow_secondaryFixed</item>
+        <item name="colorOnSecondaryFixed">@color/theme_yellow_onSecondaryFixed</item>
+        <item name="colorSecondaryFixedDim">@color/theme_yellow_secondaryFixedDim</item>
+        <item name="colorOnSecondaryFixedVariant">@color/theme_yellow_onSecondaryFixedVariant</item>
+        <item name="colorTertiaryFixed">@color/theme_yellow_tertiaryFixed</item>
+        <item name="colorOnTertiaryFixed">@color/theme_yellow_onTertiaryFixed</item>
+        <item name="colorTertiaryFixedDim">@color/theme_yellow_tertiaryFixedDim</item>
+        <item name="colorOnTertiaryFixedVariant">@color/theme_yellow_onTertiaryFixedVariant</item>
+        <item name="android:statusBarColor">?attr/colorSurface</item>
+        <item name="android:navigationBarColor">?attr/colorSurface</item>
     </style>
 </resources>

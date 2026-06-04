@@ -18,6 +18,7 @@ import com.buge.appmanager.util.FontOverrideHelper
 import com.buge.appmanager.util.LocaleManager
 import com.buge.appmanager.util.LogManager
 import com.buge.appmanager.util.PreferencesManager
+import com.buge.appmanager.util.ThemeManager
 import com.buge.appmanager.util.UpdateChecker
 import kotlinx.coroutines.launch
 import rikka.shizuku.Shizuku
@@ -50,6 +51,9 @@ class MainActivity : BaseActivity() {
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        // Apply color theme before super.onCreate
+        ThemeManager.applyColorTheme(this)
+        
         val savedTheme = PreferencesManager.getThemeMode(this)
         AppCompatDelegate.setDefaultNightMode(savedTheme)
         
@@ -74,7 +78,6 @@ class MainActivity : BaseActivity() {
     }
 
     private fun checkForUpdateOnStart() {
-        // Check if auto update is enabled
         if (!PreferencesManager.getAutoUpdate(this)) {
             LogManager.info(this, "Auto update is disabled, skipping check")
             return

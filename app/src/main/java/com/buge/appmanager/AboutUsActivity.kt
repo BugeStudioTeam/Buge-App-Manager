@@ -8,8 +8,6 @@ import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.appcompat.widget.Toolbar
 import androidx.core.animation.doOnEnd
-import androidx.recyclerview.widget.RecyclerView
-import com.buge.appmanager.ui.SettingsAdapter
 
 class AboutUsActivity : BaseActivity() {
 
@@ -20,14 +18,6 @@ class AboutUsActivity : BaseActivity() {
     private lateinit var cardWebsite: LinearLayout
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        val savedTheme = com.buge.appmanager.util.PreferencesManager.getThemeMode(this)
-        setTheme(
-            when (savedTheme) {
-                androidx.appcompat.app.AppCompatDelegate.MODE_NIGHT_YES -> R.style.Theme_BugeAppManager
-                androidx.appcompat.app.AppCompatDelegate.MODE_NIGHT_NO -> R.style.Theme_BugeAppManager
-                else -> R.style.Theme_BugeAppManager
-            }
-        )
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_about_us)
 
@@ -75,7 +65,6 @@ class AboutUsActivity : BaseActivity() {
 
     private fun setupCardClickListener(card: LinearLayout, onClick: () -> Unit) {
         card.setOnClickListener { v ->
-            // Animate click like settings items
             ValueAnimator.ofFloat(1f, 0.96f).apply {
                 duration = 80
                 addUpdateListener { animator ->

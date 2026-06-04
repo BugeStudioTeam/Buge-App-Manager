@@ -25,12 +25,12 @@ import com.buge.appmanager.viewmodel.AppDetailViewModel
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.snackbar.Snackbar
 import java.io.File
-import java.io.FileOutputStream
 import java.io.FileInputStream
-import java.io.OutputStreamWriter
+import java.io.FileOutputStream
 import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
+import java.io.OutputStreamWriter
 
 class AppDetailActivity : BaseActivity() {
 

@@ -12,9 +12,9 @@ import com.buge.appmanager.adapter.ActivityDetailAdapter
 import com.buge.appmanager.databinding.ActivityActivityDetailBinding
 import com.buge.appmanager.model.ActivityDetail
 import com.buge.appmanager.util.LogManager
+import com.buge.appmanager.util.SnackbarHelper
 import com.buge.appmanager.util.SpringAnimationHelper
 import com.buge.appmanager.viewmodel.ActivityDetailViewModel
-import com.google.android.material.snackbar.Snackbar
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
@@ -33,6 +33,7 @@ class ActivityDetailActivity : BaseActivity() {
     private var searchJob: Job? = null
     private var allActivities: List<ActivityDetail> = emptyList()
     private var packageName: String = ""
+    private var fontApplied = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -53,6 +54,13 @@ class ActivityDetailActivity : BaseActivity() {
         viewModel.loadActivities(packageName)
 
         LogManager.info(this, "Activity details opened", "Package: $packageName")
+    }
+
+    override fun onResume() {
+        super.onResume()
+        if (!fontApplied) {
+            fontApplied = true
+        }
     }
 
     private fun setupBackPressedCallback() {
@@ -145,14 +153,14 @@ class ActivityDetailActivity : BaseActivity() {
                     addFlags(Intent.FLAG_ACTIVITY_MULTIPLE_TASK)
                 }
                 startActivity(intent)
-                Snackbar.make(binding.root, "Launching ${activity.name}", Snackbar.LENGTH_SHORT).show()
+                SnackbarHelper.showSnackbar(binding.root, "Launching ${activity.name}")
                 LogManager.info(this, "Activity launched", "Package: $packageName, Activity: ${activity.className}")
             } catch (e: Exception) {
-                Snackbar.make(binding.root, "Failed to launch: ${e.message}", Snackbar.LENGTH_LONG).show()
+                SnackbarHelper.showSnackbar(binding.root, "Failed to launch: ${e.message}")
                 LogManager.error(this, "Failed to launch activity", "Package: $packageName, Activity: ${activity.className}, Error: ${e.message}")
             }
         } else {
-            Snackbar.make(binding.root, "This activity is not exported and cannot be launched", Snackbar.LENGTH_SHORT).show()
+            SnackbarHelper.showSnackbar(binding.root, "This activity is not exported and cannot be launched")
             LogManager.warning(this, "Cannot launch unexported activity", "Package: $packageName, Activity: ${activity.className}")
         }
     }

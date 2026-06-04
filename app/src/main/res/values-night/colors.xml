@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <!-- Dark theme colors - Blue -->
     <color name="md_theme_primary">#AAC7FF</color>
     <color name="md_theme_onPrimary">#0A305F</color>
     <color name="md_theme_primaryContainer">#284777</color>
@@ -48,7 +49,7 @@
     <color name="md_theme_surfaceContainerHigh">#282A2F</color>
     <color name="md_theme_surfaceContainerHighest">#33353A</color>
 
-    <!-- Medium Contrast Colors (Dark) -->
+    <!-- Dark theme - Medium Contrast -->
     <color name="md_theme_primary_mediumContrast">#CDDDFF</color>
     <color name="md_theme_onPrimary_mediumContrast">#002551</color>
     <color name="md_theme_primaryContainer_mediumContrast">#7491C7</color>
@@ -97,7 +98,7 @@
     <color name="md_theme_surfaceContainerHigh_mediumContrast">#313238</color>
     <color name="md_theme_surfaceContainerHighest_mediumContrast">#3C3E43</color>
 
-    <!-- High Contrast Colors (Dark) -->
+    <!-- Dark theme - High Contrast -->
     <color name="md_theme_primary_highContrast">#EBF0FF</color>
     <color name="md_theme_onPrimary_highContrast">#000000</color>
     <color name="md_theme_primaryContainer_highContrast">#A6C3FC</color>
@@ -155,4 +156,156 @@
     <color name="color_system_app">#DDBCE0</color>
     <color name="ic_launcher_background">#284777</color>
     <color name="bottom_nav_background">#111318</color>
+
+    <!-- Red Theme Dark Colors -->
+    <color name="theme_red_primary_dark">#FFB5A0</color>
+    <color name="theme_red_onPrimary_dark">#561F0F</color>
+    <color name="theme_red_primaryContainer_dark">#723523</color>
+    <color name="theme_red_onPrimaryContainer_dark">#FFDBD1</color>
+    <color name="theme_red_secondary_dark">#E7BDB2</color>
+    <color name="theme_red_onSecondary_dark">#442A22</color>
+    <color name="theme_red_secondaryContainer_dark">#5D4037</color>
+    <color name="theme_red_onSecondaryContainer_dark">#FFDBD1</color>
+    <color name="theme_red_tertiary_dark">#D8C58D</color>
+    <color name="theme_red_onTertiary_dark">#3B2F05</color>
+    <color name="theme_red_tertiaryContainer_dark">#534619</color>
+    <color name="theme_red_onTertiaryContainer_dark">#F5E1A7</color>
+    <color name="theme_red_error_dark">#FFB4AB</color>
+    <color name="theme_red_onError_dark">#690005</color>
+    <color name="theme_red_errorContainer_dark">#93000A</color>
+    <color name="theme_red_onErrorContainer_dark">#FFDAD6</color>
+    <color name="theme_red_background_dark">#1A110F</color>
+    <color name="theme_red_onBackground_dark">#F1DFDA</color>
+    <color name="theme_red_surface_dark">#1A110F</color>
+    <color name="theme_red_onSurface_dark">#F1DFDA</color>
+    <color name="theme_red_surfaceVariant_dark">#53433F</color>
+    <color name="theme_red_onSurfaceVariant_dark">#D8C2BC</color>
+    <color name="theme_red_outline_dark">#A08C87</color>
+    <color name="theme_red_outlineVariant_dark">#53433F</color>
+    <color name="theme_red_scrim_dark">#000000</color>
+    <color name="theme_red_inverseSurface_dark">#F1DFDA</color>
+    <color name="theme_red_inverseOnSurface_dark">#392E2B</color>
+    <color name="theme_red_inversePrimary_dark">#8F4C38</color>
+    <color name="theme_red_primaryFixed_dark">#FFDBD1</color>
+    <color name="theme_red_onPrimaryFixed_dark">#3A0B01</color>
+    <color name="theme_red_primaryFixedDim_dark">#FFB5A0</color>
+    <color name="theme_red_onPrimaryFixedVariant_dark">#723523</color>
+    <color name="theme_red_secondaryFixed_dark">#FFDBD1</color>
+    <color name="theme_red_onSecondaryFixed_dark">#2C150F</color>
+    <color name="theme_red_secondaryFixedDim_dark">#E7BDB2</color>
+    <color name="theme_red_onSecondaryFixedVariant_dark">#5D4037</color>
+    <color name="theme_red_tertiaryFixed_dark">#F5E1A7</color>
+    <color name="theme_red_onTertiaryFixed_dark">#231B00</color>
+    <color name="theme_red_tertiaryFixedDim_dark">#D8C58D</color>
+    <color name="theme_red_onTertiaryFixedVariant_dark">#534619</color>
+    <color name="theme_red_surfaceDim_dark">#1A110F</color>
+    <color name="theme_red_surfaceBright_dark">#423734</color>
+    <color name="theme_red_surfaceContainerLowest_dark">#140C0A</color>
+    <color name="theme_red_surfaceContainerLow_dark">#231917</color>
+    <color name="theme_red_surfaceContainer_dark">#271D1B</color>
+    <color name="theme_red_surfaceContainerHigh_dark">#322825</color>
+    <color name="theme_red_surfaceContainerHighest_dark">#3D322F</color>
+
+    <!-- Green Theme Dark Colors -->
+    <color name="theme_green_primary_dark">#B1D18A</color>
+    <color name="theme_green_onPrimary_dark">#1F3701</color>
+    <color name="theme_green_primaryContainer_dark">#354E16</color>
+    <color name="theme_green_onPrimaryContainer_dark">#CDEDA3</color>
+    <color name="theme_green_secondary_dark">#BFCBAD</color>
+    <color name="theme_green_onSecondary_dark">#2A331E</color>
+    <color name="theme_green_secondaryContainer_dark">#404A33</color>
+    <color name="theme_green_onSecondaryContainer_dark">#DCE7C8</color>
+    <color name="theme_green_tertiary_dark">#A0D0CB</color>
+    <color name="theme_green_onTertiary_dark">#003735</color>
+    <color name="theme_green_tertiaryContainer_dark">#1F4E4B</color>
+    <color name="theme_green_onTertiaryContainer_dark">#BCECE7</color>
+    <color name="theme_green_error_dark">#FFB4AB</color>
+    <color name="theme_green_onError_dark">#690005</color>
+    <color name="theme_green_errorContainer_dark">#93000A</color>
+    <color name="theme_green_onErrorContainer_dark">#FFDAD6</color>
+    <color name="theme_green_background_dark">#12140E</color>
+    <color name="theme_green_onBackground_dark">#E2E3D8</color>
+    <color name="theme_green_surface_dark">#12140E</color>
+    <color name="theme_green_onSurface_dark">#E2E3D8</color>
+    <color name="theme_green_surfaceVariant_dark">#44483D</color>
+    <color name="theme_green_onSurfaceVariant_dark">#C5C8BA</color>
+    <color name="theme_green_outline_dark">#8F9285</color>
+    <color name="theme_green_outlineVariant_dark">#44483D</color>
+    <color name="theme_green_scrim_dark">#000000</color>
+    <color name="theme_green_inverseSurface_dark">#E2E3D8</color>
+    <color name="theme_green_inverseOnSurface_dark">#2F312A</color>
+    <color name="theme_green_inversePrimary_dark">#4C662B</color>
+    <color name="theme_green_primaryFixed_dark">#CDEDA3</color>
+    <color name="theme_green_onPrimaryFixed_dark">#102000</color>
+    <color name="theme_green_primaryFixedDim_dark">#B1D18A</color>
+    <color name="theme_green_onPrimaryFixedVariant_dark">#354E16</color>
+    <color name="theme_green_secondaryFixed_dark">#DCE7C8</color>
+    <color name="theme_green_onSecondaryFixed_dark">#151E0B</color>
+    <color name="theme_green_secondaryFixedDim_dark">#BFCBAD</color>
+    <color name="theme_green_onSecondaryFixedVariant_dark">#404A33</color>
+    <color name="theme_green_tertiaryFixed_dark">#BCECE7</color>
+    <color name="theme_green_onTertiaryFixed_dark">#00201E</color>
+    <color name="theme_green_tertiaryFixedDim_dark">#A0D0CB</color>
+    <color name="theme_green_onTertiaryFixedVariant_dark">#1F4E4B</color>
+    <color name="theme_green_surfaceDim_dark">#12140E</color>
+    <color name="theme_green_surfaceBright_dark">#383A32</color>
+    <color name="theme_green_surfaceContainerLowest_dark">#0C0F09</color>
+    <color name="theme_green_surfaceContainerLow_dark">#1A1C16</color>
+    <color name="theme_green_surfaceContainer_dark">#1E201A</color>
+    <color name="theme_green_surfaceContainerHigh_dark">#282B24</color>
+    <color name="theme_green_surfaceContainerHighest_dark">#33362E</color>
+
+    <!-- Yellow Theme Dark Colors -->
+    <color name="theme_yellow_primary_dark">#DBC66E</color>
+    <color name="theme_yellow_onPrimary_dark">#3A3000</color>
+    <color name="theme_yellow_primaryContainer_dark">#534600</color>
+    <color name="theme_yellow_onPrimaryContainer_dark">#F8E287</color>
+    <color name="theme_yellow_secondary_dark">#D1C6A1</color>
+    <color name="theme_yellow_onSecondary_dark">#363016</color>
+    <color name="theme_yellow_secondaryContainer_dark">#4E472A</color>
+    <color name="theme_yellow_onSecondaryContainer_dark">#EEE2BC</color>
+    <color name="theme_yellow_tertiary_dark">#A9D0B3</color>
+    <color name="theme_yellow_onTertiary_dark">#143723</color>
+    <color name="theme_yellow_tertiaryContainer_dark">#2C4E38</color>
+    <color name="theme_yellow_onTertiaryContainer_dark">#C5ECCE</color>
+    <color name="theme_yellow_error_dark">#FFB4AB</color>
+    <color name="theme_yellow_onError_dark">#690005</color>
+    <color name="theme_yellow_errorContainer_dark">#93000A</color>
+    <color name="theme_yellow_onErrorContainer_dark">#FFDAD6</color>
+    <color name="theme_yellow_background_dark">#15130B</color>
+    <color name="theme_yellow_onBackground_dark">#E8E2D4</color>
+    <color name="theme_yellow_surface_dark">#15130B</color>
+    <color name="theme_yellow_onSurface_dark">#E8E2D4</color>
+    <color name="theme_yellow_surfaceVariant_dark">#4B4739</color>
+    <color name="theme_yellow_onSurfaceVariant_dark">#CDC6B4</color>
+    <color name="theme_yellow_outline_dark">#969080</color>
+    <color name="theme_yellow_outlineVariant_dark">#4B4739</color>
+    <color name="theme_yellow_scrim_dark">#000000</color>
+    <color name="theme_yellow_inverseSurface_dark">#E8E2D4</color>
+    <color name="theme_yellow_inverseOnSurface_dark">#333027</color>
+    <color name="theme_yellow_inversePrimary_dark">#6D5E0F</color>
+    <color name="theme_yellow_primaryFixed_dark">#F8E287</color>
+    <color name="theme_yellow_onPrimaryFixed_dark">#221B00</color>
+    <color name="theme_yellow_primaryFixedDim_dark">#DBC66E</color>
+    <color name="theme_yellow_onPrimaryFixedVariant_dark">#534600</color>
+    <color name="theme_yellow_secondaryFixed_dark">#EEE2BC</color>
+    <color name="theme_yellow_onSecondaryFixed_dark">#211B04</color>
+    <color name="theme_yellow_secondaryFixedDim_dark">#D1C6A1</color>
+    <color name="theme_yellow_onSecondaryFixedVariant_dark">#4E472A</color>
+    <color name="theme_yellow_tertiaryFixed_dark">#C5ECCE</color>
+    <color name="theme_yellow_onTertiaryFixed_dark">#00210F</color>
+    <color name="theme_yellow_tertiaryFixedDim_dark">#A9D0B3</color>
+    <color name="theme_yellow_onTertiaryFixedVariant_dark">#2C4E38</color>
+    <color name="theme_yellow_surfaceDim_dark">#15130B</color>
+    <color name="theme_yellow_surfaceBright_dark">#3C3930</color>
+    <color name="theme_yellow_surfaceContainerLowest_dark">#100E07</color>
+    <color name="theme_yellow_surfaceContainerLow_dark">#1E1B13</color>
+    <color name="theme_yellow_surfaceContainer_dark">#222017</color>
+    <color name="theme_yellow_surfaceContainerHigh_dark">#2D2A21</color>
+    <color name="theme_yellow_surfaceContainerHighest_dark">#38352B</color>
+    
+    <!-- Theme primary colors for circle drawables (dark mode) -->
+    <color name="md_theme_primary_red">#FFB5A0</color>
+    <color name="md_theme_primary_green">#B1D18A</color>
+    <color name="md_theme_primary_yellow">#DBC66E</color>
 </resources>

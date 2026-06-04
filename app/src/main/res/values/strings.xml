@@ -227,4 +227,17 @@
     
     <!-- Shortcuts -->
     <string name="shortcut_app_manager_long">Open Buge App Manager</string>
+    
+    <string name="appearance_settings">Appearance Settings</string>
+    <string name="theme_mode">Theme Mode</string>
+    <string name="color_theme">Color Theme</string>
+    <string name="color_default">Default (Blue)</string>
+    <string name="color_red">Red</string>
+    <string name="color_green">Green</string>
+    <string name="color_yellow">Yellow</string>
+    <string name="more_options">More Options</string>
+    <string name="more_options_summary">Customize theme and colors</string>
+    <string name="theme_change_restart_message">Theme has been changed. Restart the app to apply changes.</string>
+    <string name="theme_group">Theme</string>
+    
 </resources>

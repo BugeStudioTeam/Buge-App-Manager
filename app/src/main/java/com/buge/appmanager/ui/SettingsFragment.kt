@@ -15,6 +15,7 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.buge.appmanager.AboutUsActivity
+import com.buge.appmanager.AppearanceActivity
 import com.buge.appmanager.BaseActivity
 import com.buge.appmanager.LogViewerActivity
 import com.buge.appmanager.MainActivity
@@ -94,6 +95,9 @@ class SettingsFragment : Fragment() {
                             item.title == getString(R.string.pref_logging) -> {
                                 startActivity(Intent(requireContext(), LogViewerActivity::class.java))
                                 LogManager.info(requireContext(), "Opened log viewer")
+                            }
+                            item.title == getString(R.string.more_options) -> {
+                                startActivity(Intent(requireContext(), AppearanceActivity::class.java))
                             }
                         }
                     }
@@ -263,6 +267,7 @@ class SettingsFragment : Fragment() {
             SettingItem.Normal(getString(R.string.pref_theme), themeText, R.drawable.ic_theme),
             SettingItem.Normal(getString(R.string.pref_language), languageText, R.drawable.ic_language),
             SettingItem.Normal(getString(R.string.pref_default_page), defaultPageText, R.drawable.ic_home_page),
+            SettingItem.Normal(getString(R.string.more_options), getString(R.string.more_options_summary), R.drawable.ic_palette),
             SettingItem.Header(getString(R.string.settings_group_apps)),
             SettingItem.SwitchItem(
                 getString(R.string.pref_google_services),

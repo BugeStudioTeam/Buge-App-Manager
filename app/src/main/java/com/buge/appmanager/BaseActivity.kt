@@ -5,6 +5,7 @@ import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import com.buge.appmanager.util.FontOverrideHelper
 import com.buge.appmanager.util.LocaleManager
+import com.buge.appmanager.util.ThemeManager
 
 abstract class BaseActivity : AppCompatActivity() {
 
@@ -21,6 +22,7 @@ abstract class BaseActivity : AppCompatActivity() {
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        ThemeManager.applyColorTheme(this)
         super.onCreate(savedInstanceState)
     }
 

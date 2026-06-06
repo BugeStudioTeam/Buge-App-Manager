@@ -2,6 +2,7 @@
 <resources>
     <!-- Base Blue Theme -->
     <style name="Theme.BugeAppManager" parent="Theme.Material3.Light.NoActionBar">
+        <!-- basic color -->
         <item name="colorPrimary">@color/md_theme_primary</item>
         <item name="colorOnPrimary">@color/md_theme_onPrimary</item>
         <item name="colorPrimaryContainer">@color/md_theme_primaryContainer</item>

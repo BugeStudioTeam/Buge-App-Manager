@@ -52,7 +52,7 @@
         <item name="android:navigationBarColor">?attr/colorSurface</item>
     </style>
 
-    <!-- Red Theme (Dark) - colors to be added to colors-night.xml -->
+    <!-- Red Theme (Dark) -->
     <style name="Theme.BugeAppManager.Red" parent="Theme.BugeAppManager">
         <item name="colorPrimary">@color/theme_red_primary_dark</item>
         <item name="colorOnPrimary">@color/theme_red_onPrimary_dark</item>
@@ -100,6 +100,8 @@
         <item name="colorOnTertiaryFixed">@color/theme_red_onTertiaryFixed_dark</item>
         <item name="colorTertiaryFixedDim">@color/theme_red_tertiaryFixedDim_dark</item>
         <item name="colorOnTertiaryFixedVariant">@color/theme_red_onTertiaryFixedVariant_dark</item>
+        <item name="android:statusBarColor">?attr/colorSurface</item>
+        <item name="android:navigationBarColor">?attr/colorSurface</item>
     </style>
 
     <!-- Green Theme (Dark) -->
@@ -150,6 +152,8 @@
         <item name="colorOnTertiaryFixed">@color/theme_green_onTertiaryFixed_dark</item>
         <item name="colorTertiaryFixedDim">@color/theme_green_tertiaryFixedDim_dark</item>
         <item name="colorOnTertiaryFixedVariant">@color/theme_green_onTertiaryFixedVariant_dark</item>
+        <item name="android:statusBarColor">?attr/colorSurface</item>
+        <item name="android:navigationBarColor">?attr/colorSurface</item>
     </style>
 
     <!-- Yellow Theme (Dark) -->
@@ -200,5 +204,7 @@
         <item name="colorOnTertiaryFixed">@color/theme_yellow_onTertiaryFixed_dark</item>
         <item name="colorTertiaryFixedDim">@color/theme_yellow_tertiaryFixedDim_dark</item>
         <item name="colorOnTertiaryFixedVariant">@color/theme_yellow_onTertiaryFixedVariant_dark</item>
+        <item name="android:statusBarColor">?attr/colorSurface</item>
+        <item name="android:navigationBarColor">?attr/colorSurface</item>
     </style>
 </resources>

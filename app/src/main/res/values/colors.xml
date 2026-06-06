@@ -307,4 +307,7 @@
     <color name="md_theme_primary_red">#8F4C38</color>
     <color name="md_theme_primary_green">#4C662B</color>
     <color name="md_theme_primary_yellow">#6D5E0F</color>
+    
+    <!-- Navigation bar background color -->
+    <color name="navigation_bar_background">@color/md_theme_surface</color>
 </resources>

@@ -6,13 +6,11 @@ import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatDelegate
-import androidx.recyclerview.widget.LinearLayoutManager
 import com.buge.appmanager.databinding.ActivityAppearanceBinding
 import com.buge.appmanager.util.LocaleManager
 import com.buge.appmanager.util.PreferencesManager
 import com.buge.appmanager.util.ThemeManager
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
-import com.google.android.material.materialswitch.MaterialSwitch
 
 class AppearanceActivity : BaseActivity() {
 
@@ -198,7 +196,8 @@ class AppearanceActivity : BaseActivity() {
                 AppCompatDelegate.setDefaultNightMode(mode)
                 binding.themeValue.text = options[which]
                 dialog.dismiss()
-                showRestartDialog()
+                // Apply theme without restart - same as settings page
+                recreate()
             }
             .show()
     }

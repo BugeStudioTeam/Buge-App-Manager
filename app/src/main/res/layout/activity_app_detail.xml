@@ -97,6 +97,7 @@
                     android:orientation="vertical"
                     android:padding="16dp">
 
+                    <!-- Row 1: Open (Theme color background) + App Info (Surface color background) -->
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -106,26 +107,33 @@
 
                         <com.google.android.material.button.MaterialButton
                             android:id="@+id/btn_open"
-                            style="@style/Widget.Material3.Button.TonalButton"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
                             android:layout_marginEnd="4dp"
                             android:text="@string/open_app"
-                            app:icon="@drawable/ic_open" />
+                            app:icon="@drawable/ic_open"
+                            app:iconTint="?attr/colorOnPrimary"
+                            android:textColor="?attr/colorOnPrimary"
+                            app:backgroundTint="?attr/colorPrimary"
+                            android:background="@drawable/bg_setting_item_top_left_large" />
 
                         <com.google.android.material.button.MaterialButton
                             android:id="@+id/btn_app_info"
-                            style="@style/Widget.Material3.Button.OutlinedButton"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
                             android:layout_marginStart="4dp"
                             android:text="@string/app_info"
-                            app:icon="@drawable/ic_info" />
+                            app:icon="@drawable/ic_info"
+                            app:iconTint="?attr/colorOnSurface"
+                            android:textColor="?attr/colorOnSurface"
+                            app:backgroundTint="?attr/colorSurface"
+                            android:background="@drawable/bg_setting_item_top_right_large" />
 
                     </LinearLayout>
 
+                    <!-- Row 2: Force Stop (Error container background) + Uninstall (Error container background) -->
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -135,32 +143,33 @@
 
                         <com.google.android.material.button.MaterialButton
                             android:id="@+id/btn_force_stop"
-                            style="@style/Widget.Material3.Button.OutlinedButton"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
                             android:layout_marginEnd="4dp"
                             android:text="@string/force_stop"
                             app:icon="@drawable/ic_stop"
-                            app:iconTint="?attr/colorError"
-                            android:textColor="?attr/colorError"
-                            app:strokeColor="?attr/colorError" />
+                            app:iconTint="?attr/colorOnErrorContainer"
+                            android:textColor="?attr/colorOnErrorContainer"
+                            app:backgroundTint="?attr/colorErrorContainer"
+                            android:background="@drawable/bg_setting_item_all_small" />
 
                         <com.google.android.material.button.MaterialButton
                             android:id="@+id/btn_uninstall"
-                            style="@style/Widget.Material3.Button.OutlinedButton"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
                             android:layout_marginStart="4dp"
                             android:text="@string/uninstall"
                             app:icon="@drawable/ic_delete"
-                            app:iconTint="?attr/colorError"
-                            android:textColor="?attr/colorError"
-                            app:strokeColor="?attr/colorError" />
+                            app:iconTint="?attr/colorOnErrorContainer"
+                            android:textColor="?attr/colorOnErrorContainer"
+                            app:backgroundTint="?attr/colorErrorContainer"
+                            android:background="@drawable/bg_setting_item_all_small" />
 
                     </LinearLayout>
 
+                    <!-- Row 3: Clear Data (Surface color background) + Disable/Enable (Primary container background) -->
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -169,21 +178,27 @@
 
                         <com.google.android.material.button.MaterialButton
                             android:id="@+id/btn_clear_data"
-                            style="@style/Widget.Material3.Button.OutlinedButton"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
                             android:layout_marginEnd="4dp"
-                            android:text="@string/clear_data" />
+                            android:text="@string/clear_data"
+                            app:iconTint="?attr/colorOnSurface"
+                            android:textColor="?attr/colorOnSurface"
+                            app:backgroundTint="?attr/colorSurface"
+                            android:background="@drawable/bg_setting_item_bottom_left_large" />
 
                         <com.google.android.material.button.MaterialButton
                             android:id="@+id/btn_disable_enable"
-                            style="@style/Widget.Material3.Button.TonalButton"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
                             android:layout_marginStart="4dp"
-                            android:text="@string/disable_app" />
+                            android:text="@string/disable_app"
+                            app:iconTint="?attr/colorOnPrimaryContainer"
+                            android:textColor="?attr/colorOnPrimaryContainer"
+                            app:backgroundTint="?attr/colorPrimaryContainer"
+                            android:background="@drawable/bg_setting_item_bottom_right_large" />
 
                     </LinearLayout>
 

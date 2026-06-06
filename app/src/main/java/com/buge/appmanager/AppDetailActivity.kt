@@ -1,6 +1,7 @@
 package com.buge.appmanager
 
 import android.content.Intent
+import android.animation.ValueAnimator
 import android.net.Uri
 import android.os.Bundle
 import android.os.Environment
@@ -11,6 +12,7 @@ import android.view.MenuItem
 import android.view.View
 import android.widget.TextView
 import androidx.activity.viewModels
+import androidx.core.animation.doOnEnd
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.buge.appmanager.adapter.PermissionDetailAdapter
@@ -22,15 +24,16 @@ import com.buge.appmanager.util.LogManager
 import com.buge.appmanager.util.PreferencesManager
 import com.buge.appmanager.util.SystemOpChecker
 import com.buge.appmanager.viewmodel.AppDetailViewModel
+import com.google.android.material.button.MaterialButton
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.snackbar.Snackbar
 import java.io.File
 import java.io.FileInputStream
 import java.io.FileOutputStream
+import java.io.OutputStreamWriter
 import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
-import java.io.OutputStreamWriter
 
 class AppDetailActivity : BaseActivity() {
 
@@ -110,6 +113,33 @@ class AppDetailActivity : BaseActivity() {
             }
         }
         return super.onOptionsItemSelected(item)
+    }
+
+    private fun setupButtonAnimation(button: MaterialButton, onClick: () -> Unit) {
+        button.setOnClickListener { view ->
+            // Animate click like settings items
+            ValueAnimator.ofFloat(1f, 0.96f).apply {
+                duration = 80
+                addUpdateListener { animator ->
+                    val scale = animator.animatedValue as Float
+                    view.scaleX = scale
+                    view.scaleY = scale
+                }
+                doOnEnd {
+                    ValueAnimator.ofFloat(0.96f, 1f).apply {
+                        duration = 80
+                        addUpdateListener { animator ->
+                            val scale = animator.animatedValue as Float
+                            view.scaleX = scale
+                            view.scaleY = scale
+                        }
+                        start()
+                    }
+                }
+                start()
+            }
+            onClick.invoke()
+        }
     }
 
     private fun exportAppInfo() {
@@ -412,7 +442,8 @@ class AppDetailActivity : BaseActivity() {
     }
 
     private fun setupActions() {
-        binding.btnOpen.setOnClickListener {
+        // Open button
+        setupButtonAnimation(binding.btnOpen) {
             val launchIntent = packageManager.getLaunchIntentForPackage(packageName)
             if (launchIntent != null) {
                 startActivity(launchIntent)
@@ -423,7 +454,8 @@ class AppDetailActivity : BaseActivity() {
             }
         }
 
-        binding.btnAppInfo.setOnClickListener {
+        // App Info button
+        setupButtonAnimation(binding.btnAppInfo) {
             val intent = Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS).apply {
                 data = Uri.parse("package:$packageName")
             }
@@ -431,12 +463,13 @@ class AppDetailActivity : BaseActivity() {
             LogManager.info(this, "Opened system app info", "Package: $packageName")
         }
 
-        binding.btnForceStop.setOnClickListener {
-            if (!checkShizuku()) return@setOnClickListener
-            val app = viewModel.appInfo.value ?: return@setOnClickListener
+        // Force Stop button
+        setupButtonAnimation(binding.btnForceStop) {
+            if (!checkShizuku()) return@setupButtonAnimation
+            val app = viewModel.appInfo.value ?: return@setupButtonAnimation
             if (!SystemOpChecker.canOperate(this, app.isSystemApp)) {
                 showSystemOpBlockedDialog()
-                return@setOnClickListener
+                return@setupButtonAnimation
             }
             MaterialAlertDialogBuilder(this)
                 .setTitle(R.string.force_stop)
@@ -449,12 +482,13 @@ class AppDetailActivity : BaseActivity() {
                 .show()
         }
 
-        binding.btnUninstall.setOnClickListener {
-            if (!checkShizuku()) return@setOnClickListener
-            val app = viewModel.appInfo.value ?: return@setOnClickListener
+        // Uninstall button
+        setupButtonAnimation(binding.btnUninstall) {
+            if (!checkShizuku()) return@setupButtonAnimation
+            val app = viewModel.appInfo.value ?: return@setupButtonAnimation
             if (!SystemOpChecker.canOperate(this, app.isSystemApp)) {
                 showSystemOpBlockedDialog()
-                return@setOnClickListener
+                return@setupButtonAnimation
             }
             MaterialAlertDialogBuilder(this)
                 .setTitle(R.string.uninstall)
@@ -468,12 +502,13 @@ class AppDetailActivity : BaseActivity() {
                 .show()
         }
 
-        binding.btnClearData.setOnClickListener {
-            if (!checkShizuku()) return@setOnClickListener
-            val app = viewModel.appInfo.value ?: return@setOnClickListener
+        // Clear Data button
+        setupButtonAnimation(binding.btnClearData) {
+            if (!checkShizuku()) return@setupButtonAnimation
+            val app = viewModel.appInfo.value ?: return@setupButtonAnimation
             if (!SystemOpChecker.canOperate(this, app.isSystemApp)) {
                 showSystemOpBlockedDialog()
-                return@setOnClickListener
+                return@setupButtonAnimation
             }
             MaterialAlertDialogBuilder(this)
                 .setTitle(R.string.clear_data)
@@ -486,12 +521,13 @@ class AppDetailActivity : BaseActivity() {
                 .show()
         }
 
-        binding.btnDisableEnable.setOnClickListener {
-            if (!checkShizuku()) return@setOnClickListener
-            val app = viewModel.appInfo.value ?: return@setOnClickListener
+        // Disable/Enable button
+        setupButtonAnimation(binding.btnDisableEnable) {
+            if (!checkShizuku()) return@setupButtonAnimation
+            val app = viewModel.appInfo.value ?: return@setupButtonAnimation
             if (!SystemOpChecker.canOperate(this, app.isSystemApp)) {
                 showSystemOpBlockedDialog()
-                return@setOnClickListener
+                return@setupButtonAnimation
             }
             if (app.isEnabled) {
                 viewModel.disableApp()

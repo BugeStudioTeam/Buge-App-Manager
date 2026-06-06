@@ -17,15 +17,9 @@
 
 ## 📱 Screenshots
 
-<p>
-  <img src="https://github.com/BugeStudioTeam/Buge-App-Manager/blob/main/images/Screenshot_Apps.png" alt="App Screenshot - apps" width="150"/>
-
-  <img src="https://github.com/BugeStudioTeam/Buge-App-Manager/blob/main/images/Screenshot_Permissions.png" alt="App Screenshot - permissions" width="150"/>
-
-  <img src="https://github.com/BugeStudioTeam/Buge-App-Manager/blob/main/images/Screenshot_Activities.png" alt="App Screenshot - activities" width="150"/>
-
-  <img src="https://github.com/BugeStudioTeam/Buge-App-Manager/blob/main/images/Screenshot_Settings.png" alt="App Screenshot - settings" width="150"/>
-</p>
+| Apps | Permissions | Activities | Settings | Details |
+|------|-------------|------------|----------|---------|
+| <img src="https://raw.githubusercontent.com/BugeStudioTeam/Buge-App-Manager/main/images/Screenshot_Apps.png" width="220"/> | <img src="https://raw.githubusercontent.com/BugeStudioTeam/Buge-App-Manager/main/images/Screenshot_Permissions.png" width="220"/> | <img src="https://raw.githubusercontent.com/BugeStudioTeam/Buge-App-Manager/main/images/Screenshot_Activities.png" width="220"/> | <img src="https://raw.githubusercontent.com/BugeStudioTeam/Buge-App-Manager/main/images/Screenshot_Settings.png" width="220"/> | <img src="https://raw.githubusercontent.com/BugeStudioTeam/Buge-App-Manager/main/images/Screenshot_Details.png" width="220"/> |
 
 ---
 

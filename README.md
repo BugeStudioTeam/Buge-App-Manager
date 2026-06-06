@@ -19,11 +19,11 @@
 
 <div style="overflow-x: auto; white-space: nowrap; padding: 10px 0;">
 
-  <img src="https://raw.githubusercontent.com/BugeStudioTeam/Buge-App-Manager/main/images/Screenshot_Apps.png" width="260" style="margin-right: 12px;"/>
-  <img src="https://raw.githubusercontent.com/BugeStudioTeam/Buge-App-Manager/main/images/Screenshot_Permissions.png" width="260" style="margin-right: 12px;"/>
-  <img src="https://raw.githubusercontent.com/BugeStudioTeam/Buge-App-Manager/main/images/Screenshot_Activities.png" width="260" style="margin-right: 12px;"/>
-  <img src="https://raw.githubusercontent.com/BugeStudioTeam/Buge-App-Manager/main/images/Screenshot_Settings.png" width="260" style="margin-right: 12px;"/>
-  <img src="https://raw.githubusercontent.com/BugeStudioTeam/Buge-App-Manager/main/images/Screenshot_Details.png" width="260" style="margin-right: 12px;"/>
+  <img src="https://raw.githubusercontent.com/BugeStudioTeam/Buge-App-Manager/main/images/Screenshot_Apps.png" width="260" style="display: inline-block; margin-right: 12px;" />
+  <img src="https://raw.githubusercontent.com/BugeStudioTeam/Buge-App-Manager/main/images/Screenshot_Permissions.png" width="260" style="display: inline-block; margin-right: 12px;" />
+  <img src="https://raw.githubusercontent.com/BugeStudioTeam/Buge-App-Manager/main/images/Screenshot_Activities.png" width="260" style="display: inline-block; margin-right: 12px;" />
+  <img src="https://raw.githubusercontent.com/BugeStudioTeam/Buge-App-Manager/main/images/Screenshot_Settings.png" width="260" style="display: inline-block; margin-right: 12px;" />
+  <img src="https://raw.githubusercontent.com/BugeStudioTeam/Buge-App-Manager/main/images/Screenshot_Details.png" width="260" style="display: inline-block; margin-right: 12px;" />
 
 </div>
 

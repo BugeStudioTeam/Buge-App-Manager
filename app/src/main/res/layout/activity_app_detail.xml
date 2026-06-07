@@ -97,7 +97,7 @@
                     android:orientation="vertical"
                     android:padding="16dp">
 
-                    <!-- Row 1: Open (Theme color background) + App Info (Surface color background) -->
+                    <!-- Row 1: Open + App Info -->
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -112,8 +112,8 @@
                             android:layout_weight="1"
                             android:layout_marginEnd="4dp"
                             android:text="@string/open_app"
-                            app:icon="@drawable/ic_open"
-                            app:iconTint="?attr/colorOnPrimary"
+                            android:gravity="center"
+                            android:textAlignment="center"
                             android:textColor="?attr/colorOnPrimary"
                             app:backgroundTint="?attr/colorPrimary"
                             android:background="@drawable/bg_setting_item_top_left_large" />
@@ -125,15 +125,15 @@
                             android:layout_weight="1"
                             android:layout_marginStart="4dp"
                             android:text="@string/app_info"
-                            app:icon="@drawable/ic_info"
-                            app:iconTint="?attr/colorOnSurface"
+                            android:gravity="center"
+                            android:textAlignment="center"
                             android:textColor="?attr/colorOnSurface"
                             app:backgroundTint="?attr/colorSurface"
                             android:background="@drawable/bg_setting_item_top_right_large" />
 
                     </LinearLayout>
 
-                    <!-- Row 2: Force Stop (Error container background) + Uninstall (Error container background) -->
+                    <!-- Row 2: Force Stop + Uninstall -->
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -148,8 +148,8 @@
                             android:layout_weight="1"
                             android:layout_marginEnd="4dp"
                             android:text="@string/force_stop"
-                            app:icon="@drawable/ic_stop"
-                            app:iconTint="?attr/colorOnErrorContainer"
+                            android:gravity="center"
+                            android:textAlignment="center"
                             android:textColor="?attr/colorOnErrorContainer"
                             app:backgroundTint="?attr/colorErrorContainer"
                             android:background="@drawable/bg_setting_item_all_small" />
@@ -161,15 +161,15 @@
                             android:layout_weight="1"
                             android:layout_marginStart="4dp"
                             android:text="@string/uninstall"
-                            app:icon="@drawable/ic_delete"
-                            app:iconTint="?attr/colorOnErrorContainer"
+                            android:gravity="center"
+                            android:textAlignment="center"
                             android:textColor="?attr/colorOnErrorContainer"
                             app:backgroundTint="?attr/colorErrorContainer"
                             android:background="@drawable/bg_setting_item_all_small" />
 
                     </LinearLayout>
 
-                    <!-- Row 3: Clear Data (Surface color background) + Disable/Enable (Primary container background) -->
+                    <!-- Row 3: Clear Data + Disable/Enable -->
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -183,7 +183,8 @@
                             android:layout_weight="1"
                             android:layout_marginEnd="4dp"
                             android:text="@string/clear_data"
-                            app:iconTint="?attr/colorOnSurface"
+                            android:gravity="center"
+                            android:textAlignment="center"
                             android:textColor="?attr/colorOnSurface"
                             app:backgroundTint="?attr/colorSurface"
                             android:background="@drawable/bg_setting_item_bottom_left_large" />
@@ -195,7 +196,8 @@
                             android:layout_weight="1"
                             android:layout_marginStart="4dp"
                             android:text="@string/disable_app"
-                            app:iconTint="?attr/colorOnPrimaryContainer"
+                            android:gravity="center"
+                            android:textAlignment="center"
                             android:textColor="?attr/colorOnPrimaryContainer"
                             app:backgroundTint="?attr/colorPrimaryContainer"
                             android:background="@drawable/bg_setting_item_bottom_right_large" />

@@ -197,6 +197,14 @@
     <string name="restart_required_message">La page de démarrage par défaut a été modifiée. Redémarrez l\'application pour appliquer la modification.</string>
     <string name="restart_now">Redémarrer maintenant</string>
     <string name="later">Plus tard</string>
+    <string name="more_options">Plus d\'options</string>
+    <string name="more_options_summary">Personnaliser le thème et les couleurs</string>
+    <string name="theme_group">Thème</string>
+    <string name="color_theme">Couleur du thème</string>
+    <string name="color_default">Défaut (Bleu)</string>
+    <string name="color_red">Rouge</string>
+    <string name="color_green">Vert</string>
+    <string name="color_yellow">Jaune</string>
     
     <!-- Shortcuts -->
     <string name="shortcut_app_manager_long">Ouvrir le gestionnaire d\'applications Buge</string>

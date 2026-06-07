@@ -71,13 +71,13 @@ object LocaleManager {
         return mapOf(
             "" to "System Default",
             "en" to "English",
-            "zh" to "中文 (Simplified)",
-            "ja" to "日本語",
-            "ko" to "한국어",
             "fr" to "Français",
             "de" to "Deutsch",
             "ru" to "Русский",
-            "ar" to "العربية"
+            "zh" to "中文 (Simplified)",
+            "ar" to "العربية",
+            "ja" to "日本語",
+            "ko" to "한국어"
         )
     }
     

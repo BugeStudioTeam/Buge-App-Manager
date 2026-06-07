@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_height="wrap_content"
+    android:layout_width="match_parent"
+    android:background="?attr/colorSurface"
+    android:orientation="vertical"
+    android:paddingBottom="16dp"
+    android:paddingTop="20dp">
+
+    <ImageView
+        android:layout_height="48dp"
+        android:layout_width="24dp"
+        android:layout_marginBottom="12dp"
+        android:src="@drawable/ic_shield_badge_x"
+        app:tint="?attr/colorPrimary"
+        android:id="@+id/shizuku_icon"
+        android:layout_gravity="center_horizontal" />
+
+    <TextView
+        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:layout_marginBottom="20dp"
+        android:gravity="center"
+        android:textAlignment="center"
+        android:layout_marginHorizontal="20dp"
+        android:textSize="25sp"
+        android:textColor="?attr/colorOnSurface"
+        android:lineSpacingExtra="4dp"
+        android:id="@+id/tv_description"
+        android:text="This app requires advanced permissions via Shizuku's ADB shell" />
+
+    <FrameLayout
+        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:layout_marginBottom="2dp"
+        android:background="@drawable/bg_setting_item_top"
+        android:clickable="true"
+        android:layout_marginHorizontal="16dp"
+        android:focusable="true"
+        android:id="@+id/btn_open_shizuku"
+        android:backgroundTint="?attr/colorPrimaryContainer">
+
+        <LinearLayout
+            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:gravity="center_vertical"
+            android:background="@android:color/transparent"
+            android:padding="16dp"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_height="wrap_content"
+                android:layout_width="0dp"
+                android:gravity="center"
+                android:textAlignment="center"
+                android:textSize="15sp"
+                android:textColor="?attr/colorOnPrimaryContainer"
+                android:layout_weight="1"
+                android:text="Open" />
+
+        </LinearLayout>
+
+    </FrameLayout>
+
+    <FrameLayout
+        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:layout_marginBottom="2dp"
+        android:background="@drawable/bg_setting_item_middle"
+        android:clickable="true"
+        android:layout_marginHorizontal="16dp"
+        android:focusable="true"
+        android:id="@+id/btn_download_shizuku"
+        android:backgroundTint="?attr/colorPrimaryContainer">
+
+        <LinearLayout
+            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:gravity="center_vertical"
+            android:background="@android:color/transparent"
+            android:padding="16dp"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_height="wrap_content"
+                android:layout_width="0dp"
+                android:gravity="center"
+                android:textAlignment="center"
+                android:textSize="15sp"
+                android:textColor="?attr/colorOnPrimaryContainer"
+                android:layout_weight="1"
+                android:text="Download" />
+
+        </LinearLayout>
+
+    </FrameLayout>
+
+    <FrameLayout
+        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:background="@drawable/bg_setting_item_bottom"
+        android:clickable="true"
+        android:layout_marginHorizontal="16dp"
+        android:focusable="true"
+        android:id="@+id/btn_cancel"
+        android:backgroundTint="?attr/colorPrimaryContainer">
+
+        <LinearLayout
+            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:gravity="center_vertical"
+            android:background="@android:color/transparent"
+            android:padding="16dp"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_height="wrap_content"
+                android:layout_width="0dp"
+                android:gravity="center"
+                android:textAlignment="center"
+                android:textSize="15sp"
+                android:textColor="?attr/colorOnPrimaryContainer"
+                android:layout_weight="1"
+                android:text="Cancel" />
+
+        </LinearLayout>
+
+    </FrameLayout>
+
+</LinearLayout>

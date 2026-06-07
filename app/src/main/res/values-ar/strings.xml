@@ -197,6 +197,14 @@
     <string name="restart_required_message">تم تغيير صفحة البدء الافتراضية. أعد تشغيل التطبيق لتطبيق التغيير.</string>
     <string name="restart_now">إعادة التشغيل الآن</string>
     <string name="later">لاحقاً</string>
+    <string name="more_options">خيارات إضافية</string>
+    <string name="more_options_summary">تخصيص السمة والألوان</string>
+    <string name="theme_group">السمة</string>
+    <string name="color_theme">لون السمة</string>
+    <string name="color_default">افتراضي (أزرق)</string>
+    <string name="color_red">أحمر</string>
+    <string name="color_green">أخضر</string>
+    <string name="color_yellow">أصفر</string>
     
     <!-- Shortcuts -->
     <string name="shortcut_app_manager_long">فتح مدير تطبيقات Buge</string>

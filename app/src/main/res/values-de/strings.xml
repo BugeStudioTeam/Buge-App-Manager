@@ -197,7 +197,14 @@
     <string name="restart_required_message">Die Standard-Startseite wurde geändert. Starten Sie die App neu, um die Änderung zu übernehmen.</string>
     <string name="restart_now">Jetzt neu starten</string>
     <string name="later">Später</string>
-    
+    <string name="more_options">Weitere Optionen</string>
+    <string name="more_options_summary">Thema und Farben anpassen</string>
+    <string name="theme_group">Thema</string>
+    <string name="color_theme">Themafarbe</string>
+    <string name="color_default">Standard (Blau)</string>
+    <string name="color_red">Rot</string>
+    <string name="color_green">Grün</string>
+    <string name="color_yellow">Gelb</string>    
     <!-- Shortcuts -->
     <string name="shortcut_app_manager_long">Buge App-Manager öffnen</string>
 </resources>

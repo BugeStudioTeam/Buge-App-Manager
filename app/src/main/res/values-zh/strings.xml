@@ -197,6 +197,14 @@
     <string name="restart_required_message">默认启动页面已更改。重启应用以使更改生效。</string>
     <string name="restart_now">立即重启</string>
     <string name="later">稍后</string>
+    <string name="more_options">更多选项</string>
+    <string name="more_options_summary">自定义主题和颜色</string>
+    <string name="theme_group">主题</string>
+    <string name="color_theme">主题色</string>
+    <string name="color_default">默认（蓝色）</string>
+    <string name="color_red">红色</string>
+    <string name="color_green">绿色</string>
+    <string name="color_yellow">黄色</string>
     
     <!-- Shortcuts -->
     <string name="shortcut_app_manager_long">打开Buge应用管理器</string>

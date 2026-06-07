@@ -197,6 +197,14 @@
     <string name="restart_required_message">Стартовая страница по умолчанию была изменена. Перезапустите приложение, чтобы применить изменение.</string>
     <string name="restart_now">Перезапустить сейчас</string>
     <string name="later">Позже</string>
+    <string name="more_options">Дополнительные опции</string>
+    <string name="more_options_summary">Настроить тему и цвета</string>
+    <string name="theme_group">Тема</string>
+    <string name="color_theme">Цвет темы</string>
+    <string name="color_default">По умолчанию (Синий)</string>
+    <string name="color_red">Красный</string>
+    <string name="color_green">Зеленый</string>
+    <string name="color_yellow">Желтый</string>
     
     <!-- Shortcuts -->
     <string name="shortcut_app_manager_long">Открыть диспетчер приложений Buge</string>

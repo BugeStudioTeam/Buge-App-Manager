@@ -197,6 +197,14 @@
     <string name="restart_required_message">デフォルトの開始ページが変更されました。変更を適用するにはアプリを再起動してください。</string>
     <string name="restart_now">今すぐ再起動</string>
     <string name="later">後で</string>
+    <string name="more_options">その他のオプション</string>
+    <string name="more_options_summary">テーマと色をカスタマイズ</string>
+    <string name="theme_group">テーマ</string>
+    <string name="color_theme">テーマカラー</string>
+    <string name="color_default">デフォルト（青）</string>
+    <string name="color_red">赤</string>
+    <string name="color_green">緑</string>
+    <string name="color_yellow">黄</string>
     
     <!-- Shortcuts -->
     <string name="shortcut_app_manager_long">Bugeアプリマネージャーを開く</string>

@@ -197,6 +197,14 @@
     <string name="restart_required_message">기본 시작 페이지가 변경되었습니다. 변경 사항을 적용하려면 앱을 재시작하세요.</string>
     <string name="restart_now">지금 재시작</string>
     <string name="later">나중에</string>
+    <string name="more_options">추가 옵션</string>
+    <string name="more_options_summary">테마 및 색상 사용자 지정</string>
+    <string name="theme_group">테마</string>
+    <string name="color_theme">테마 색상</string>
+    <string name="color_default">기본 (파란색)</string>
+    <string name="color_red">빨간색</string>
+    <string name="color_green">초록색</string>
+    <string name="color_yellow">노란색</string>
     
     <!-- Shortcuts -->
     <string name="shortcut_app_manager_long">Buge앱 관리자 열기</string>

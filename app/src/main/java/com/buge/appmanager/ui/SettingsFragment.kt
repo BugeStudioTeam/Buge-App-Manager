@@ -29,6 +29,7 @@ import com.buge.appmanager.util.PreferencesManager
 import com.buge.appmanager.util.SnackbarHelper
 import com.buge.appmanager.util.SpringAnimationHelper
 import com.buge.appmanager.util.UpdateChecker
+import com.google.android.material.button.MaterialButton
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import kotlinx.coroutines.launch
 import rikka.shizuku.Shizuku
@@ -357,7 +358,7 @@ class SettingsFragment : Fragment() {
                     val itemView = holder.itemView
                     val shizukuIcon = itemView.findViewById<ImageView>(R.id.shizuku_icon)
                     val shizukuStatusText = itemView.findViewById<TextView>(R.id.shizuku_status_text)
-                    val requestButton = itemView.findViewById<com.google.android.material.button.MaterialButton>(R.id.btn_request_shizuku)
+                    val requestButton = itemView.findViewById<MaterialButton>(R.id.btn_request_shizuku)
 
                     shizukuIcon?.setImageResource(iconRes)
                     shizukuIcon?.setColorFilter(null)
@@ -366,9 +367,11 @@ class SettingsFragment : Fragment() {
                     requestButton?.isEnabled = buttonEnabled
                     requestButton?.text = buttonText
                     requestButton?.setOnClickListener {
+                        // Only show guide dialog when Shizuku is NOT running
                         if (!ShizukuManager.isShizukuAvailable()) {
-                            SnackbarHelper.showSnackbar(binding.root, getString(R.string.shizuku_status_not_running))
+                            showShizukuGuideDialog()
                         } else {
+                            // Shizuku is running but not authorized - request permission normally
                             ShizukuManager.requestShizukuPermission()
                         }
                     }
@@ -378,6 +381,62 @@ class SettingsFragment : Fragment() {
         } catch (e: Exception) {
             // Ignore update errors to avoid crash
         }
+    }
+
+    private fun showShizukuGuideDialog() {
+        if (!isAdded || view == null) return
+
+        val dialogView = LayoutInflater.from(requireContext()).inflate(R.layout.dialog_shizuku_guide, null)
+
+        val dialog = MaterialAlertDialogBuilder(requireContext())
+            .setView(dialogView)
+            .setCancelable(true)
+            .create()
+
+        val btnOpenShizuku = dialogView.findViewById<View>(R.id.btn_open_shizuku)
+        val btnDownloadShizuku = dialogView.findViewById<View>(R.id.btn_download_shizuku)
+        val btnCancel = dialogView.findViewById<View>(R.id.btn_cancel)
+
+        if (btnOpenShizuku == null || btnDownloadShizuku == null || btnCancel == null) {
+            dialog.dismiss()
+            return
+        }
+
+        btnOpenShizuku.setOnClickListener {
+            try {
+                val intent = requireContext().packageManager.getLaunchIntentForPackage("moe.shizuku.privileged.api")
+                if (intent != null) {
+                    startActivity(intent)
+                } else {
+                    val webIntent = Intent(Intent.ACTION_VIEW, Uri.parse("https://shizuku.rikka.app/"))
+                    startActivity(webIntent)
+                }
+            } catch (e: Exception) {
+                try {
+                    val webIntent = Intent(Intent.ACTION_VIEW, Uri.parse("https://shizuku.rikka.app/"))
+                    startActivity(webIntent)
+                } catch (e2: Exception) {
+                    SnackbarHelper.showSnackbar(binding.root, "Cannot open Shizuku")
+                }
+            }
+            dialog.dismiss()
+        }
+
+        btnDownloadShizuku.setOnClickListener {
+            try {
+                val intent = Intent(Intent.ACTION_VIEW, Uri.parse("https://shizuku.rikka.app/"))
+                startActivity(intent)
+            } catch (e: Exception) {
+                SnackbarHelper.showSnackbar(binding.root, "Cannot open browser")
+            }
+            dialog.dismiss()
+        }
+
+        btnCancel.setOnClickListener {
+            dialog.dismiss()
+        }
+
+        dialog.show()
     }
 
     private fun showThemeDialog() {

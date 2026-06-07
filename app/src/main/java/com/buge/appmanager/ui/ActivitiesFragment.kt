@@ -64,6 +64,12 @@ class ActivitiesFragment : Fragment() {
         refresh()
     }
 
+    override fun onDestroyView() {
+        super.onDestroyView()
+        searchJob?.cancel()
+        _binding = null
+    }
+
     fun refresh() {
         viewModel.refresh()
     }
@@ -84,15 +90,19 @@ class ActivitiesFragment : Fragment() {
     }
 
     private fun runSpringEnterAnimation() {
+        if (!isAdded || view == null) return
         binding.recyclerView.alpha = 0f
         binding.recyclerView.translationY = 30f
         binding.recyclerView.post {
-            SpringAnimationHelper.animateAlpha(binding.recyclerView, 1f)
-            SpringAnimationHelper.animateTranslationY(binding.recyclerView, 0f)
+            if (isAdded && view != null) {
+                SpringAnimationHelper.animateAlpha(binding.recyclerView, 1f)
+                SpringAnimationHelper.animateTranslationY(binding.recyclerView, 0f)
+            }
         }
     }
 
     private fun setupRecyclerView() {
+        if (!isAdded || view == null) return
         appsAdapter = ActivitiesAppAdapter { app ->
             SpringAnimationHelper.animateClick(binding.recyclerView)
             val intent = Intent(requireContext(), ActivityDetailActivity::class.java).apply {
@@ -107,6 +117,7 @@ class ActivitiesFragment : Fragment() {
     }
 
     private fun setupSearch() {
+        if (!isAdded || view == null) return
         val searchEditText = binding.searchEditText
         searchEditText?.addTextChangedListener { text ->
             searchJob?.cancel()
@@ -119,12 +130,14 @@ class ActivitiesFragment : Fragment() {
     }
 
     private fun setupSwipeRefresh() {
+        if (!isAdded || view == null) return
         binding.swipeRefresh.setOnRefreshListener {
             viewModel.refresh()
         }
     }
 
     private fun filterApps(query: String) {
+        if (!isAdded || view == null) return
         if (query.isEmpty()) {
             appsAdapter.submitList(allApps)
         } else {
@@ -138,6 +151,7 @@ class ActivitiesFragment : Fragment() {
 
     private fun observeViewModel() {
         viewModel.apps.observe(viewLifecycleOwner) { apps ->
+            if (!isAdded || view == null) return@observe
             allApps = apps
             appsAdapter.submitList(apps)
             val isEmpty = apps.isEmpty()
@@ -147,6 +161,7 @@ class ActivitiesFragment : Fragment() {
         }
 
         viewModel.isLoading.observe(viewLifecycleOwner) { isLoading ->
+            if (!isAdded || view == null) return@observe
             if (isLoading && allApps.isEmpty()) {
                 binding.progressBar.visibility = View.VISIBLE
             } else {
@@ -156,10 +171,5 @@ class ActivitiesFragment : Fragment() {
                 binding.swipeRefresh.isRefreshing = false
             }
         }
-    }
-
-    override fun onDestroyView() {
-        super.onDestroyView()
-        _binding = null
     }
 }

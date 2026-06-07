@@ -63,6 +63,11 @@ class AppsFragment : Fragment() {
         }
     }
 
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
+    }
+
     private fun setupBackPressedCallback() {
         val callback = object : OnBackPressedCallback(true) {
             override fun handleOnBackPressed() {
@@ -79,18 +84,21 @@ class AppsFragment : Fragment() {
     }
 
     private fun setupRecyclerView() {
+        if (!isAdded || view == null) return
         adapter = AppsAdapter { app -> openAppDetail(app) }
         binding.recyclerView.layoutManager = LinearLayoutManager(requireContext())
         binding.recyclerView.adapter = adapter
     }
 
     private fun setupSearch() {
+        if (!isAdded || view == null) return
         binding.searchEditText.addTextChangedListener { text ->
             viewModel.setSearch(text?.toString() ?: "")
         }
     }
 
     private fun setupFilters() {
+        if (!isAdded || view == null) return
         binding.filterChipGroup.setOnCheckedStateChangeListener { _, checkedIds ->
             val filter = when {
                 checkedIds.contains(R.id.chip_user) -> AppFilter.USER
@@ -103,6 +111,7 @@ class AppsFragment : Fragment() {
     }
 
     private fun setupToolbar() {
+        if (!isAdded || view == null) return
         binding.toolbar.setOnMenuItemClickListener { item ->
             when (item.itemId) {
                 R.id.action_sort -> {
@@ -115,6 +124,7 @@ class AppsFragment : Fragment() {
     }
 
     private fun showSortDialog() {
+        if (!isAdded || view == null) return
         val options = arrayOf(
             getString(R.string.sort_name),
             getString(R.string.sort_size),
@@ -142,13 +152,14 @@ class AppsFragment : Fragment() {
 
     private fun observeViewModel() {
         viewModel.apps.observe(viewLifecycleOwner) { apps ->
+            if (!isAdded || view == null) return@observe
             adapter.submitList(apps)
             binding.emptyState.visibility = if (apps.isEmpty()) View.VISIBLE else View.GONE
             binding.recyclerView.visibility = if (apps.isEmpty()) View.GONE else View.VISIBLE
-            // REMOVED: binding.toolbar.subtitle - causing display issues in English
         }
 
         viewModel.isLoading.observe(viewLifecycleOwner) { isLoading ->
+            if (!isAdded || view == null) return@observe
             binding.progressBar.visibility = if (isLoading) View.VISIBLE else View.GONE
             if (!isLoading) binding.swipeRefresh.isRefreshing = false
         }
@@ -159,10 +170,5 @@ class AppsFragment : Fragment() {
             putExtra(AppDetailActivity.EXTRA_PACKAGE_NAME, app.packageName)
         }
         startActivity(intent)
-    }
-
-    override fun onDestroyView() {
-        super.onDestroyView()
-        _binding = null
     }
 }

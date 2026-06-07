@@ -81,7 +81,14 @@ class SettingsFragment : Fragment() {
         setupRecyclerView()
     }
 
+    override fun onDestroyView() {
+        super.onDestroyView()
+        Shizuku.removeRequestPermissionResultListener(shizukuPermissionListener)
+        _binding = null
+    }
+
     private fun setupRecyclerView() {
+        if (!isAdded || view == null) return
         val items = buildSettingItems()
         adapter = SettingsAdapter(
             items = items,
@@ -148,7 +155,9 @@ class SettingsFragment : Fragment() {
         binding.recyclerView.adapter = adapter
 
         binding.recyclerView.post {
-            updateShizukuStatus()
+            if (isAdded && view != null) {
+                updateShizukuStatus()
+            }
         }
     }
 
@@ -306,6 +315,7 @@ class SettingsFragment : Fragment() {
     }
 
     private fun updateShizukuStatus() {
+        if (!isAdded || view == null) return
         try {
             val isAvailable = ShizukuManager.isShizukuAvailable()
             val hasPermission = ShizukuManager.hasShizukuPermission()
@@ -371,6 +381,7 @@ class SettingsFragment : Fragment() {
     }
 
     private fun showThemeDialog() {
+        if (!isAdded || view == null) return
         val options = arrayOf(
             getString(R.string.pref_theme_light),
             getString(R.string.pref_theme_dark),
@@ -404,6 +415,7 @@ class SettingsFragment : Fragment() {
     }
 
     private fun showLanguageDialog() {
+        if (!isAdded || view == null) return
         val languages = LocaleManager.getSupportedLanguages()
         val options = languages.values.toTypedArray()
         val codes = languages.keys.toList()
@@ -440,6 +452,7 @@ class SettingsFragment : Fragment() {
     }
 
     private fun showDefaultPageDialog() {
+        if (!isAdded || view == null) return
         val options = arrayOf(
             getString(R.string.default_page_apps),
             getString(R.string.default_page_permissions),
@@ -481,6 +494,7 @@ class SettingsFragment : Fragment() {
     }
 
     private fun showRestartDialog(title: String, message: String, onConfirm: () -> Unit) {
+        if (!isAdded || view == null) return
         MaterialAlertDialogBuilder(requireContext())
             .setTitle(title)
             .setMessage(message)
@@ -499,6 +513,7 @@ class SettingsFragment : Fragment() {
     }
 
     private fun showAboutDialog() {
+        if (!isAdded || view == null) return
         val view = LayoutInflater.from(requireContext()).inflate(R.layout.dialog_about, null)
         val websiteItem = view.findViewById<View>(R.id.website_item)
         val githubItem = view.findViewById<View>(R.id.github_item)
@@ -539,6 +554,7 @@ class SettingsFragment : Fragment() {
     }
 
     private fun checkForUpdate() {
+        if (!isAdded || view == null) return
         val loadingDialog = MaterialAlertDialogBuilder(requireContext())
             .setTitle(R.string.checking_for_update)
             .setMessage(R.string.please_wait)
@@ -571,17 +587,14 @@ class SettingsFragment : Fragment() {
     }
 
     private fun runSpringEnterAnimation() {
+        if (!isAdded || view == null) return
         binding.recyclerView.alpha = 0f
         binding.recyclerView.translationY = 30f
         binding.recyclerView.post {
-            SpringAnimationHelper.animateAlpha(binding.recyclerView, 1f)
-            SpringAnimationHelper.animateTranslationY(binding.recyclerView, 0f)
+            if (isAdded && view != null) {
+                SpringAnimationHelper.animateAlpha(binding.recyclerView, 1f)
+                SpringAnimationHelper.animateTranslationY(binding.recyclerView, 0f)
+            }
         }
-    }
-
-    override fun onDestroyView() {
-        super.onDestroyView()
-        Shizuku.removeRequestPermissionResultListener(shizukuPermissionListener)
-        _binding = null
     }
 }

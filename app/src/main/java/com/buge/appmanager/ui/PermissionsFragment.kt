@@ -61,6 +61,11 @@ class PermissionsFragment : Fragment() {
         viewModel.loadAppsForPermissions(currentPermissions)
     }
 
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
+    }
+
     private fun setupBackPressedCallback() {
         val callback = object : OnBackPressedCallback(true) {
             override fun handleOnBackPressed() {
@@ -78,6 +83,7 @@ class PermissionsFragment : Fragment() {
     }
 
     private fun setupRecyclerView() {
+        if (!isAdded || view == null) return
         adapter = AppPermissionAdapter(
             onPermissionToggle = { app, permission, isGranted ->
                 handlePermissionToggle(app, permission, isGranted)
@@ -91,6 +97,7 @@ class PermissionsFragment : Fragment() {
     }
 
     private fun setupPermissionChips() {
+        if (!isAdded || view == null) return
         binding.permissionChipGroup.setOnCheckedStateChangeListener { _, checkedIds ->
             val (permissions, label) = when {
                 checkedIds.contains(R.id.chip_mic) -> Pair(AppRepository.PERMISSION_MICROPHONE, getString(R.string.perm_microphone))
@@ -119,6 +126,7 @@ class PermissionsFragment : Fragment() {
     }
 
     private fun setupBatchActions() {
+        if (!isAdded || view == null) return
         binding.btnBatchRevoke.setOnClickListener {
             val selected = adapter.getSelectedItems()
             if (selected.isEmpty()) return@setOnClickListener
@@ -158,6 +166,7 @@ class PermissionsFragment : Fragment() {
     }
 
     private fun showBatchActionBar() {
+        if (!isAdded || view == null) return
         if (binding.batchActionBar.visibility != View.VISIBLE) {
             binding.batchActionBar.visibility = View.VISIBLE
             binding.batchActionBar.alpha = 0f
@@ -174,6 +183,7 @@ class PermissionsFragment : Fragment() {
     }
 
     private fun hideBatchActionBar() {
+        if (!isAdded || view == null) return
         if (binding.batchActionBar.visibility == View.VISIBLE) {
             binding.batchActionBar.animate()
                 .alpha(0f)
@@ -181,13 +191,16 @@ class PermissionsFragment : Fragment() {
                 .scaleY(0.8f)
                 .setDuration(200)
                 .withEndAction {
-                    binding.batchActionBar.visibility = View.GONE
+                    if (isAdded && view != null) {
+                        binding.batchActionBar.visibility = View.GONE
+                    }
                 }
                 .start()
         }
     }
 
     private fun handlePermissionToggle(app: AppInfo, permission: String, isGranted: Boolean) {
+        if (!isAdded || view == null) return
         if (app.isSystemApp && !PreferencesManager.getAllowSystemOps(requireContext())) {
             showSystemOpBlockedDialog()
             return
@@ -209,6 +222,7 @@ class PermissionsFragment : Fragment() {
     }
 
     private fun showSystemOpBlockedDialog() {
+        if (!isAdded || view == null) return
         MaterialAlertDialogBuilder(requireContext())
             .setTitle(R.string.system_op_blocked_title)
             .setMessage(R.string.system_op_blocked_message)
@@ -218,6 +232,7 @@ class PermissionsFragment : Fragment() {
     }
 
     private fun updateSelectionUI(count: Int) {
+        if (!isAdded || view == null) return
         if (count > 0) {
             binding.selectedCountText.text = getString(R.string.selected_count, count)
             adapter.setSelectionMode(true)
@@ -230,6 +245,7 @@ class PermissionsFragment : Fragment() {
 
     private fun observeViewModel() {
         viewModel.appsWithPermission.observe(viewLifecycleOwner) { apps ->
+            if (!isAdded || view == null) return@observe
             val primaryPerm = currentPermissions.firstOrNull() ?: return@observe
             val items = apps.map { (app, permMap) ->
                 AppPermissionItem(
@@ -239,12 +255,14 @@ class PermissionsFragment : Fragment() {
                 )
             }
             adapter.submitList(items)
-            
+            binding.toolbar.subtitle = getString(R.string.apps_count, items.size)
         }
         viewModel.isLoading.observe(viewLifecycleOwner) { isLoading ->
+            if (!isAdded || view == null) return@observe
             binding.progressBar.visibility = if (isLoading) View.VISIBLE else View.GONE
         }
         viewModel.operationResult.observe(viewLifecycleOwner) { result ->
+            if (!isAdded || view == null) return@observe
             result ?: return@observe
             val msg = if (result.success) {
                 getString(R.string.operation_success)
@@ -256,15 +274,11 @@ class PermissionsFragment : Fragment() {
             viewModel.clearOperationResult()
         }
         viewModel.systemOpBlocked.observe(viewLifecycleOwner) { blocked ->
+            if (!isAdded || view == null) return@observe
             if (blocked) {
                 showSystemOpBlockedDialog()
                 viewModel.clearSystemOpBlocked()
             }
         }
-    }
-
-    override fun onDestroyView() {
-        super.onDestroyView()
-        _binding = null
     }
 }

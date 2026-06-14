@@ -11,7 +11,7 @@
   <a href="LICENSE"><img src="https://img.shields.io/badge/License-GPL%203.0-blue.svg" alt="License"></a>
 </p>
 
-**Buge App Manager** is a powerful Android utility application designed for advanced app and permission management. Built with **Material Design 3**, it offers a modern and intuitive interface for granular control over your device.
+**Buge App Manager** is a powerful Android utility application designed for advanced app and permission management. Built with **Material Design 3 Expressive**, it offers a modern and intuitive interface for granular control over your device.
 
 ---
 
@@ -35,7 +35,7 @@
 |---------|-------------|
 | **Shizuku Integration** | Operates with Shizuku authorization for elevated control without requiring root |
 | **App Management** | Browse and manage both user-installed and system applications with ease |
-| **Material Design 3 UI** | Clean, system-themed interface that follows the latest Android design guidelines |
+| **Material Design 3 Expressive UI** | Clean, system-themed interface that follows the latest Android design guidelines |
 
 ### 🔐 Permission Manager
 

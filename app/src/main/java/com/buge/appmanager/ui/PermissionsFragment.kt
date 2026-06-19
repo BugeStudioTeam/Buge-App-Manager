@@ -58,7 +58,6 @@ class PermissionsFragment : Fragment() {
             FontOverrideHelper.applyToActivity(activity as BaseActivity)
             fontApplied = true
         }
-        viewModel.loadAppsForPermissions(currentPermissions)
     }
 
     override fun onDestroyView() {

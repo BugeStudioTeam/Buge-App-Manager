@@ -35,47 +35,8 @@ class PermissionsViewModel(application: Application) : AndroidViewModel(applicat
             _isLoading.value = true
             try {
                 val showSystemApps = PreferencesManager.getShowSystemApps(getApplication())
-                val allApps = repository.getInstalledApps(showSystemApps = showSystemApps)
-                val result = mutableListOf<Pair<AppInfo, Map<String, Boolean>>>()
-                
-                for (app in allApps) {
-                    val appPermMap = mutableMapOf<String, Boolean>()
-                    var hasAnyPermission = false
-                    
-                    for (targetPerm in permissions) {
-                        // Check if app has this permission in its manifest
-                        val hasPermissionInManifest = repository.hasPermissionInManifest(app.packageName, targetPerm)
-                        
-                        if (hasPermissionInManifest) {
-                            val isGranted = when (targetPerm) {
-                                "android.permission.WRITE_SETTINGS" -> {
-                                    ShizukuManager.getWriteSettingsStatus(app.packageName) ?: false
-                                }
-                                "android.permission.SYSTEM_ALERT_WINDOW" -> {
-                                    ShizukuManager.getOverlayStatus(app.packageName) ?: false
-                                }
-                                "android.permission.REQUEST_INSTALL_PACKAGES" -> {
-                                    ShizukuManager.getInstallUnknownAppsStatus(app.packageName) ?: false
-                                }
-                                "android.permission.MANAGE_EXTERNAL_STORAGE" -> {
-                                    ShizukuManager.getManageExternalStorageStatus(app.packageName) ?: false
-                                }
-                                else -> {
-                                    val allPerms = repository.getAppPermissions(app.packageName)
-                                    allPerms.find { it.name == targetPerm }?.isGranted ?: false
-                                }
-                            }
-                            appPermMap[targetPerm] = isGranted
-                            hasAnyPermission = true
-                        }
-                    }
-                    
-                    if (hasAnyPermission) {
-                        result.add(Pair(app, appPermMap))
-                    }
-                }
-                
-                _appsWithPermission.value = result.sortedBy { it.first.appName.lowercase() }
+                val result = repository.getAppsWithPermissionCategory(permissions, showSystemApps)
+                _appsWithPermission.value = result
                 LogManager.info(getApplication(), "Loaded apps for permissions", "Permissions: $permissions, Count: ${result.size}")
             } catch (e: Exception) {
                 _appsWithPermission.value = emptyList()

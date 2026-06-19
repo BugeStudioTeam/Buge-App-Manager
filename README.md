@@ -76,7 +76,7 @@ Follow this step-by-step guide to manage the same permission type across multipl
 
 ---
 
-## Star History
+## ⭐ Star History
 
 <a href="https://www.star-history.com/?repos=BugeStudioTeam%2FBuge-App-Manager&type=date&legend=top-left">
  <picture>

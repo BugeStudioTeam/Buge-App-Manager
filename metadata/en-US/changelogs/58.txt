@@ -1,0 +1,11 @@
+**6.33.63**
+
+**Added** ✨
+- Added loading animation
+
+**Fixes** 🐛
+- Fixed DPI issues in multi-select interface
+- Fixed system status bar contrast color display
+
+**Contributors of this version:**
+None

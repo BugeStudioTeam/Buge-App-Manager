@@ -156,11 +156,18 @@ class AppsFragment : Fragment() {
             adapter.submitList(apps)
             binding.emptyState.visibility = if (apps.isEmpty()) View.VISIBLE else View.GONE
             binding.recyclerView.visibility = if (apps.isEmpty()) View.GONE else View.VISIBLE
+            binding.loadingOverlay.visibility = View.GONE
         }
 
         viewModel.isLoading.observe(viewLifecycleOwner) { isLoading ->
             if (!isAdded || view == null) return@observe
-            binding.progressBar.visibility = if (isLoading) View.VISIBLE else View.GONE
+            if (isLoading) {
+                binding.loadingOverlay.visibility = View.VISIBLE
+                binding.recyclerView.visibility = View.GONE
+                binding.emptyState.visibility = View.GONE
+            } else {
+                binding.loadingOverlay.visibility = View.GONE
+            }
             if (!isLoading) binding.swipeRefresh.isRefreshing = false
         }
     }

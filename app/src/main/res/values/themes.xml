@@ -51,6 +51,7 @@
         <item name="colorOnTertiaryFixedVariant">@color/md_theme_onTertiaryFixedVariant</item>
         <item name="android:statusBarColor">?attr/colorSurface</item>
         <item name="android:navigationBarColor">?attr/colorSurface</item>
+        <item name="android:windowLightStatusBar">true</item>
     </style>
 
     <!-- Red Theme -->
@@ -103,6 +104,7 @@
         <item name="colorOnTertiaryFixedVariant">@color/theme_red_onTertiaryFixedVariant</item>
         <item name="android:statusBarColor">?attr/colorSurface</item>
         <item name="android:navigationBarColor">?attr/colorSurface</item>
+        <item name="android:windowLightStatusBar">true</item>
     </style>
 
     <!-- Green Theme -->
@@ -155,6 +157,7 @@
         <item name="colorOnTertiaryFixedVariant">@color/theme_green_onTertiaryFixedVariant</item>
         <item name="android:statusBarColor">?attr/colorSurface</item>
         <item name="android:navigationBarColor">?attr/colorSurface</item>
+        <item name="android:windowLightStatusBar">true</item>
     </style>
 
     <!-- Yellow Theme -->
@@ -207,5 +210,6 @@
         <item name="colorOnTertiaryFixedVariant">@color/theme_yellow_onTertiaryFixedVariant</item>
         <item name="android:statusBarColor">?attr/colorSurface</item>
         <item name="android:navigationBarColor">?attr/colorSurface</item>
+        <item name="android:windowLightStatusBar">true</item>
     </style>
 </resources>

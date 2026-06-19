@@ -255,11 +255,20 @@ class PermissionsFragment : Fragment() {
             }
             adapter.submitList(items)
             binding.toolbar.subtitle = getString(R.string.apps_count, items.size)
+            binding.loadingOverlay.visibility = View.GONE
+            binding.recyclerView.visibility = View.VISIBLE
         }
+        
         viewModel.isLoading.observe(viewLifecycleOwner) { isLoading ->
             if (!isAdded || view == null) return@observe
-            binding.progressBar.visibility = if (isLoading) View.VISIBLE else View.GONE
+            if (isLoading) {
+                binding.loadingOverlay.visibility = View.VISIBLE
+                binding.recyclerView.visibility = View.GONE
+            } else {
+                binding.loadingOverlay.visibility = View.GONE
+            }
         }
+        
         viewModel.operationResult.observe(viewLifecycleOwner) { result ->
             if (!isAdded || view == null) return@observe
             result ?: return@observe
@@ -272,6 +281,7 @@ class PermissionsFragment : Fragment() {
             SnackbarHelper.showSnackbar(binding.root, msg)
             viewModel.clearOperationResult()
         }
+        
         viewModel.systemOpBlocked.observe(viewLifecycleOwner) { blocked ->
             if (!isAdded || view == null) return@observe
             if (blocked) {

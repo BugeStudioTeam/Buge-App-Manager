@@ -7,6 +7,10 @@
         android:title="Favorite"
         app:showAsAction="ifRoom" />
     <item
+        android:id="@+id/action_share_apk"
+        android:title="Share"
+        app:showAsAction="never" />
+    <item
         android:id="@+id/action_export_apk"
         android:title="Export APK"
         app:showAsAction="never" />

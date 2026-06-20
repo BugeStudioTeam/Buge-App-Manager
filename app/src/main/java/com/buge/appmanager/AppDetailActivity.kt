@@ -14,6 +14,7 @@ import android.widget.TextView
 import androidx.activity.viewModels
 import androidx.core.animation.doOnEnd
 import androidx.core.content.ContextCompat
+import androidx.core.content.FileProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.buge.appmanager.adapter.PermissionDetailAdapter
 import com.buge.appmanager.databinding.ActivityAppDetailBinding
@@ -39,6 +40,7 @@ class AppDetailActivity : BaseActivity() {
 
     companion object {
         const val EXTRA_PACKAGE_NAME = "extra_package_name"
+        private const val FILE_PROVIDER_AUTHORITY = "com.buge.appmanager.fileprovider"
     }
 
     private lateinit var binding: ActivityAppDetailBinding
@@ -99,6 +101,10 @@ class AppDetailActivity : BaseActivity() {
                 exportApk()
                 return true
             }
+            R.id.action_share_apk -> {
+                shareApk()
+                return true
+            }
             R.id.action_export_info -> {
                 exportAppInfo()
                 return true
@@ -117,7 +123,6 @@ class AppDetailActivity : BaseActivity() {
 
     private fun setupButtonAnimation(button: MaterialButton, onClick: () -> Unit) {
         button.setOnClickListener { view ->
-            // Animate click like settings items
             ValueAnimator.ofFloat(1f, 0.96f).apply {
                 duration = 80
                 addUpdateListener { animator ->
@@ -169,7 +174,7 @@ class AppDetailActivity : BaseActivity() {
             }
             
             val timestamp = SimpleDateFormat("yyyyMMdd_HHmmss", Locale.US).format(Date())
-            val safeAppName = app.appName.replace("/", "_").replace("\\", "_").replace(":", "_").replace("?", "_").replace("*", "_")
+            val safeAppName = app.appName.replace("/", "_").replace("\\", "_").replace(":", "_").replace("?", "_").replace("*", "_").replace(" ", "_")
             val fileName = "${safeAppName}_${timestamp}_info.txt"
             val destFile = File(downloadDir, fileName)
             
@@ -371,10 +376,11 @@ class AppDetailActivity : BaseActivity() {
             }
 
             val timestamp = SimpleDateFormat("yyyyMMdd_HHmmss", Locale.US).format(Date())
-            var destFile = File(downloadDir, "${appName}_${timestamp}.apk")
+            val safeAppName = appName.replace("/", "_").replace("\\", "_").replace(":", "_").replace("?", "_").replace("*", "_").replace(" ", "_")
+            var destFile = File(downloadDir, "${safeAppName}_${timestamp}.apk")
             var counter = 1
             while (destFile.exists()) {
-                destFile = File(downloadDir, "${appName}_${timestamp}_$counter.apk")
+                destFile = File(downloadDir, "${safeAppName}_${timestamp}_$counter.apk")
                 counter++
             }
 
@@ -391,6 +397,129 @@ class AppDetailActivity : BaseActivity() {
             e.printStackTrace()
             Snackbar.make(binding.root, "Export failed: ${e.message}", Snackbar.LENGTH_LONG).show()
             LogManager.error(this, "APK export failed", e.message)
+        }
+    }
+
+    private fun shareApk() {
+        try {
+            val applicationInfo = packageManager.getApplicationInfo(packageName, 0)
+            val sourcePath = applicationInfo.sourceDir
+
+            if (sourcePath.isNullOrEmpty()) {
+                Snackbar.make(binding.root, "APK path not found", Snackbar.LENGTH_SHORT).show()
+                LogManager.error(this, "APK share failed", "APK path not found for $packageName")
+                return
+            }
+
+            val sourceFile = File(sourcePath)
+            if (!sourceFile.exists()) {
+                Snackbar.make(binding.root, "APK file does not exist", Snackbar.LENGTH_SHORT).show()
+                LogManager.error(this, "APK share failed", "APK file does not exist for $packageName")
+                return
+            }
+
+            val appName = try {
+                packageManager.getApplicationLabel(applicationInfo).toString()
+            } catch (e: Exception) {
+                packageName
+            }
+
+            // Use external cache directory
+            val cacheDir = externalCacheDir
+            if (cacheDir == null) {
+                Snackbar.make(binding.root, "Cannot access cache directory", Snackbar.LENGTH_SHORT).show()
+                return
+            }
+
+            // Clean up old temp APK files
+            cleanupTempApkFiles(cacheDir)
+
+            // Safe file name without spaces or special characters
+            val safeAppName = appName
+                .replace("/", "_")
+                .replace("\\", "_")
+                .replace(":", "_")
+                .replace("?", "_")
+                .replace("*", "_")
+                .replace(" ", "_")
+                .replace("'", "_")
+                .replace("\"", "_")
+            
+            val tempFile = File(cacheDir, "${safeAppName}.apk")
+            if (tempFile.exists()) {
+                tempFile.delete()
+            }
+
+            FileInputStream(sourceFile).use { input ->
+                FileOutputStream(tempFile).use { output ->
+                    input.copyTo(output)
+                }
+            }
+
+            // Use FIXED authority from AndroidManifest
+            val apkUri = FileProvider.getUriForFile(
+                this,
+                FILE_PROVIDER_AUTHORITY,
+                tempFile
+            )
+
+            LogManager.debug(this, "Share URI", apkUri.toString())
+
+            val shareIntent = Intent(Intent.ACTION_SEND).apply {
+                type = "application/vnd.android.package-archive"
+                putExtra(Intent.EXTRA_STREAM, apkUri)
+                addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
+                addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+            }
+
+            val chooserIntent = Intent.createChooser(
+                shareIntent,
+                "Share APK: ${appName}"
+            )
+            chooserIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+
+            startActivity(chooserIntent)
+
+            LogManager.success(this, "APK shared", "Package: $packageName, Temp file: ${tempFile.absolutePath}")
+
+        } catch (e: Exception) {
+            e.printStackTrace()
+            Snackbar.make(binding.root, "Share failed: ${e.message}", Snackbar.LENGTH_LONG).show()
+            LogManager.error(this, "APK share failed", e.message)
+        }
+    }
+
+    private fun cleanupTempApkFiles(cacheDir: File) {
+        try {
+            val files = cacheDir.listFiles { file ->
+                file.name.endsWith(".apk") && file.lastModified() < System.currentTimeMillis() - (30 * 60 * 1000)
+            }
+            files?.forEach { file ->
+                if (file.exists()) {
+                    file.delete()
+                    LogManager.debug(this, "Cleaned up temp APK file", file.name)
+                }
+            }
+        } catch (e: Exception) {
+            LogManager.warning(this, "Failed to cleanup temp APK files", e.message)
+        }
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        // Cleanup temp APK files when activity is destroyed
+        try {
+            val cacheDir = externalCacheDir
+            cacheDir?.let {
+                val files = it.listFiles { file -> file.name.endsWith(".apk") }
+                files?.forEach { file ->
+                    if (file.exists()) {
+                        file.delete()
+                    }
+                }
+            }
+        } catch (e: Exception) {
+            // Ignore cleanup errors
         }
     }
 

@@ -1,0 +1,7 @@
+**6.34.63**
+
+**Added** ✨
+- Added stable sharing feature
+
+**Contributors of this version:**
+None

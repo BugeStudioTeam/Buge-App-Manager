@@ -1,1 +1,1 @@
-Buge App Manager is a powerful Android tool for app and permission management, requiring Shizuku.
+A modern, lightweight and privacy-friendly Android app manager

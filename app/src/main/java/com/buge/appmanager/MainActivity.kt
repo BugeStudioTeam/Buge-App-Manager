@@ -20,6 +20,7 @@ import com.buge.appmanager.util.LogManager
 import com.buge.appmanager.util.PreferencesManager
 import com.buge.appmanager.util.ThemeManager
 import com.buge.appmanager.util.UpdateChecker
+import com.google.android.material.bottomnavigation.BottomNavigationView
 import kotlinx.coroutines.launch
 import rikka.shizuku.Shizuku
 import java.util.Locale
@@ -69,12 +70,36 @@ class MainActivity : BaseActivity() {
         Shizuku.addRequestPermissionResultListener(requestPermissionResultListener)
 
         setupBottomNavigation()
+        applyHideNavLabels()
 
         if (savedInstanceState == null) {
             loadDefaultPage()
         }
         
         checkForUpdateOnStart()
+    }
+
+    override fun onResume() {
+        super.onResume()
+        if (currentFragment is ActivitiesFragment) {
+            (currentFragment as? ActivitiesFragment)?.refresh()
+        }
+        // Re-apply hide nav labels when returning to activity
+        applyHideNavLabels()
+    }
+
+    private fun applyHideNavLabels() {
+        val hideLabels = PreferencesManager.getHideNavLabels(this)
+        val navView = binding.bottomNav
+        val menu = navView.menu
+        
+        if (hideLabels) {
+            // Set label visibility mode to selected only
+            navView.labelVisibilityMode = BottomNavigationView.LABEL_VISIBILITY_SELECTED
+        } else {
+            // Show all labels
+            navView.labelVisibilityMode = BottomNavigationView.LABEL_VISIBILITY_LABELED
+        }
     }
 
     private fun checkForUpdateOnStart() {
@@ -138,13 +163,6 @@ class MainActivity : BaseActivity() {
             )
             
             insets
-        }
-    }
-
-    override fun onResume() {
-        super.onResume()
-        if (currentFragment is ActivitiesFragment) {
-            (currentFragment as? ActivitiesFragment)?.refresh()
         }
     }
 

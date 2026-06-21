@@ -1,0 +1,12 @@
+**6.37.65**
+
+**Added** ✨
+- Added feature to grant all permissions or revoke all permissions for an app at once
+- Added UI optimization to hide navigation bar titles, keeping only icons
+
+**Optimizations** ⚡
+- Improved permission page grant buttons
+- Improved authorization loading
+
+**Contributors of this version:**
+None

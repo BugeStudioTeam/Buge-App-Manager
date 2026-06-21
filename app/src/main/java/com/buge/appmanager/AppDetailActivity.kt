@@ -16,6 +16,7 @@ import androidx.core.animation.doOnEnd
 import androidx.core.content.ContextCompat
 import androidx.core.content.FileProvider
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.lifecycle.lifecycleScope
 import com.buge.appmanager.adapter.PermissionDetailAdapter
 import com.buge.appmanager.databinding.ActivityAppDetailBinding
 import com.buge.appmanager.model.PermissionInfo
@@ -28,6 +29,7 @@ import com.buge.appmanager.viewmodel.AppDetailViewModel
 import com.google.android.material.button.MaterialButton
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.snackbar.Snackbar
+import kotlinx.coroutines.launch
 import java.io.File
 import java.io.FileInputStream
 import java.io.FileOutputStream
@@ -117,8 +119,106 @@ class AppDetailActivity : BaseActivity() {
                 openInFDroid()
                 return true
             }
+            R.id.action_grant_all_permissions -> {
+                grantAllPermissions()
+                return true
+            }
+            R.id.action_revoke_all_permissions -> {
+                revokeAllPermissions()
+                return true
+            }
         }
         return super.onOptionsItemSelected(item)
+    }
+
+    private fun grantAllPermissions() {
+        val permissions = viewModel.permissions.value ?: emptyList()
+        val dangerousPermissions = permissions.filter { it.isDangerous && !it.isGranted }
+        
+        if (dangerousPermissions.isEmpty()) {
+            Snackbar.make(binding.root, "All dangerous permissions are already granted", Snackbar.LENGTH_SHORT).show()
+            return
+        }
+
+        val app = viewModel.appInfo.value
+        if (app != null && !SystemOpChecker.canOperate(this, app.isSystemApp)) {
+            showSystemOpBlockedDialog()
+            return
+        }
+
+        MaterialAlertDialogBuilder(this)
+            .setTitle("Grant All Permissions")
+            .setMessage("Grant ${dangerousPermissions.size} dangerous permission(s) to ${app?.appName ?: packageName}?")
+            .setPositiveButton(R.string.confirm) { _, _ ->
+                lifecycleScope.launch {
+                    var successCount = 0
+                    var failCount = 0
+                    for (perm in dangerousPermissions) {
+                        val result = ShizukuManager.grantPermission(packageName, perm.name)
+                        if (result.success) {
+                            successCount++
+                            LogManager.permission(this@AppDetailActivity, "Permission granted", "Package: $packageName, Permission: ${perm.name}")
+                        } else {
+                            failCount++
+                            LogManager.error(this@AppDetailActivity, "Failed to grant permission", "Package: $packageName, Permission: ${perm.name}, Error: ${result.error}")
+                        }
+                    }
+                    val msg = if (failCount == 0) {
+                        "All ${successCount} permissions granted"
+                    } else {
+                        "Granted: $successCount, Failed: $failCount"
+                    }
+                    Snackbar.make(binding.root, msg, Snackbar.LENGTH_LONG).show()
+                    viewModel.loadApp(packageName)
+                }
+            }
+            .setNegativeButton(R.string.cancel, null)
+            .show()
+    }
+
+    private fun revokeAllPermissions() {
+        val permissions = viewModel.permissions.value ?: emptyList()
+        val dangerousPermissions = permissions.filter { it.isDangerous && it.isGranted }
+        
+        if (dangerousPermissions.isEmpty()) {
+            Snackbar.make(binding.root, "No granted dangerous permissions to revoke", Snackbar.LENGTH_SHORT).show()
+            return
+        }
+
+        val app = viewModel.appInfo.value
+        if (app != null && !SystemOpChecker.canOperate(this, app.isSystemApp)) {
+            showSystemOpBlockedDialog()
+            return
+        }
+
+        MaterialAlertDialogBuilder(this)
+            .setTitle("Revoke All Permissions")
+            .setMessage("Revoke ${dangerousPermissions.size} dangerous permission(s) from ${app?.appName ?: packageName}?")
+            .setPositiveButton(R.string.confirm) { _, _ ->
+                lifecycleScope.launch {
+                    var successCount = 0
+                    var failCount = 0
+                    for (perm in dangerousPermissions) {
+                        val result = ShizukuManager.revokePermission(packageName, perm.name)
+                        if (result.success) {
+                            successCount++
+                            LogManager.permission(this@AppDetailActivity, "Permission revoked", "Package: $packageName, Permission: ${perm.name}")
+                        } else {
+                            failCount++
+                            LogManager.error(this@AppDetailActivity, "Failed to revoke permission", "Package: $packageName, Permission: ${perm.name}, Error: ${result.error}")
+                        }
+                    }
+                    val msg = if (failCount == 0) {
+                        "All ${successCount} permissions revoked"
+                    } else {
+                        "Revoked: $successCount, Failed: $failCount"
+                    }
+                    Snackbar.make(binding.root, msg, Snackbar.LENGTH_LONG).show()
+                    viewModel.loadApp(packageName)
+                }
+            }
+            .setNegativeButton(R.string.cancel, null)
+            .show()
     }
 
     private fun setupButtonAnimation(button: MaterialButton, onClick: () -> Unit) {
@@ -424,17 +524,14 @@ class AppDetailActivity : BaseActivity() {
                 packageName
             }
 
-            // Use external cache directory
             val cacheDir = externalCacheDir
             if (cacheDir == null) {
                 Snackbar.make(binding.root, "Cannot access cache directory", Snackbar.LENGTH_SHORT).show()
                 return
             }
 
-            // Clean up old temp APK files
             cleanupTempApkFiles(cacheDir)
 
-            // Safe file name without spaces or special characters
             val safeAppName = appName
                 .replace("/", "_")
                 .replace("\\", "_")
@@ -456,7 +553,6 @@ class AppDetailActivity : BaseActivity() {
                 }
             }
 
-            // Use FIXED authority from AndroidManifest
             val apkUri = FileProvider.getUriForFile(
                 this,
                 FILE_PROVIDER_AUTHORITY,
@@ -507,7 +603,6 @@ class AppDetailActivity : BaseActivity() {
 
     override fun onDestroy() {
         super.onDestroy()
-        // Cleanup temp APK files when activity is destroyed
         try {
             val cacheDir = externalCacheDir
             cacheDir?.let {

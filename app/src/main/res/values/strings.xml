@@ -239,5 +239,7 @@
     <string name="more_options_summary">Customize theme and colors</string>
     <string name="theme_change_restart_message">Theme has been changed. Restart the app to apply changes.</string>
     <string name="theme_group">Theme</string>
+    <string name="hide_nav_labels">Hide navigation labels</string>
+    <string name="hide_nav_labels_summary">Hide titles of unselected navigation items, show only selected one</string>
     
 </resources>

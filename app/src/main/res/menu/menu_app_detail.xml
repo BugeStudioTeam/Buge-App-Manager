@@ -8,7 +8,7 @@
         app:showAsAction="ifRoom" />
     <item
         android:id="@+id/action_share_apk"
-        android:title="Share"
+        android:title="Share APK"
         app:showAsAction="never" />
     <item
         android:id="@+id/action_export_apk"
@@ -25,5 +25,13 @@
     <item
         android:id="@+id/action_f_droid"
         android:title="View on F-Droid"
+        app:showAsAction="never" />
+    <item
+        android:id="@+id/action_grant_all_permissions"
+        android:title="Grant All Permissions"
+        app:showAsAction="never" />
+    <item
+        android:id="@+id/action_revoke_all_permissions"
+        android:title="Revoke All Permissions"
         app:showAsAction="never" />
 </menu>

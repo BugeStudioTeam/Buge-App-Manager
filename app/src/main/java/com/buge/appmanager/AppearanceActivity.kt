@@ -26,6 +26,7 @@ class AppearanceActivity : BaseActivity() {
         setupAppearanceGroup()
         setupThemeGroup()
         setupColorThemeGroup()
+        setupHideNavLabelsSwitch()
     }
 
     private fun setupToolbar() {
@@ -98,6 +99,15 @@ class AppearanceActivity : BaseActivity() {
         }
         binding.colorYellow.setOnClickListener {
             selectColorTheme(ThemeManager.ColorTheme.YELLOW)
+        }
+    }
+
+    private fun setupHideNavLabelsSwitch() {
+        val isEnabled = PreferencesManager.getHideNavLabels(this)
+        binding.hideNavLabelsSwitch.isChecked = isEnabled
+        binding.hideNavLabelsSwitch.setOnCheckedChangeListener { _, isChecked ->
+            PreferencesManager.setHideNavLabels(this, isChecked)
+            showRestartDialog()
         }
     }
 
@@ -196,7 +206,6 @@ class AppearanceActivity : BaseActivity() {
                 AppCompatDelegate.setDefaultNightMode(mode)
                 binding.themeValue.text = options[which]
                 dialog.dismiss()
-                // Apply theme without restart - same as settings page
                 recreate()
             }
             .show()

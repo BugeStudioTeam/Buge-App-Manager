@@ -197,11 +197,17 @@ class AppPermissionAdapter(
                 permStatusChip.text = itemView.context.getString(R.string.granted)
                 permStatusChip.setChipBackgroundColorResource(R.color.color_granted_container)
                 permStatusChip.setTextColor(itemView.context.getColor(R.color.color_granted))
+                // Remove stroke/border
+                permStatusChip.chipStrokeWidth = 0f
             } else {
                 permStatusChip.text = itemView.context.getString(R.string.denied)
                 permStatusChip.setChipBackgroundColorResource(R.color.color_denied_container)
                 permStatusChip.setTextColor(itemView.context.getColor(R.color.color_denied))
+                // Remove stroke/border
+                permStatusChip.chipStrokeWidth = 0f
             }
+            // Ensure chip has capsule shape
+            permStatusChip.chipCornerRadius = 32f
         }
 
         fun updateSelectionMode(mode: Boolean, isSelected: Boolean) {

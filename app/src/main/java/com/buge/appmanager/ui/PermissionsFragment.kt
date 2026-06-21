@@ -255,17 +255,26 @@ class PermissionsFragment : Fragment() {
             }
             adapter.submitList(items)
             binding.toolbar.subtitle = getString(R.string.apps_count, items.size)
+            // Hide loading overlay when data is loaded
             binding.loadingOverlay.visibility = View.GONE
             binding.recyclerView.visibility = View.VISIBLE
         }
         
+        // Only show loading overlay for initial data load, not for permission operations
         viewModel.isLoading.observe(viewLifecycleOwner) { isLoading ->
             if (!isAdded || view == null) return@observe
-            if (isLoading) {
+            // Only show loading overlay when no data is present (initial load)
+            // and not during permission operations
+            val hasData = viewModel.appsWithPermission.value?.isNotEmpty() == true
+            if (isLoading && !hasData) {
                 binding.loadingOverlay.visibility = View.VISIBLE
                 binding.recyclerView.visibility = View.GONE
             } else {
                 binding.loadingOverlay.visibility = View.GONE
+                // If there is data, keep recycler view visible
+                if (hasData) {
+                    binding.recyclerView.visibility = View.VISIBLE
+                }
             }
         }
         

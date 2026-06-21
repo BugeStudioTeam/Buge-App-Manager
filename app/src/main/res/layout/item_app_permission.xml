@@ -97,7 +97,10 @@
             android:layout_height="wrap_content"
             android:clickable="true"
             android:focusable="true"
-            android:transitionName="statusChip" />
+            android:transitionName="statusChip"
+            app:chipStrokeWidth="0dp"
+            app:chipMinTouchTargetSize="0dp"
+            app:chipCornerRadius="32dp" />
 
     </LinearLayout>
 

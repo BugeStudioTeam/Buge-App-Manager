@@ -1,7 +1,10 @@
 package com.buge.appmanager
 
+import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
+import android.content.IntentFilter
+import android.os.Build
 import android.os.Bundle
 import android.view.View
 import androidx.appcompat.app.AppCompatDelegate
@@ -32,6 +35,14 @@ class MainActivity : BaseActivity() {
     private var hasCheckedUpdate = false
 
     private val requestPermissionResultListener = Shizuku.OnRequestPermissionResultListener { _, _ -> }
+
+    private val navLabelsReceiver = object : BroadcastReceiver() {
+        override fun onReceive(context: Context, intent: Intent) {
+            if (intent.action == "com.buge.appmanager.ACTION_NAV_LABELS_CHANGED") {
+                applyHideNavLabels()
+            }
+        }
+    }
 
     override fun attachBaseContext(newBase: Context?) {
         if (newBase != null) {
@@ -72,6 +83,15 @@ class MainActivity : BaseActivity() {
         setupBottomNavigation()
         applyHideNavLabels()
 
+        // Register receiver for navigation labels changes
+        // Android 14+ requires explicit export flag
+        val filter = IntentFilter("com.buge.appmanager.ACTION_NAV_LABELS_CHANGED")
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            registerReceiver(navLabelsReceiver, filter, Context.RECEIVER_NOT_EXPORTED)
+        } else {
+            registerReceiver(navLabelsReceiver, filter)
+        }
+
         if (savedInstanceState == null) {
             loadDefaultPage()
         }
@@ -88,16 +108,23 @@ class MainActivity : BaseActivity() {
         applyHideNavLabels()
     }
 
+    override fun onDestroy() {
+        super.onDestroy()
+        try {
+            unregisterReceiver(navLabelsReceiver)
+        } catch (e: Exception) {
+            // Ignore
+        }
+        Shizuku.removeRequestPermissionResultListener(requestPermissionResultListener)
+    }
+
     private fun applyHideNavLabels() {
         val hideLabels = PreferencesManager.getHideNavLabels(this)
         val navView = binding.bottomNav
-        val menu = navView.menu
         
         if (hideLabels) {
-            // Set label visibility mode to selected only
             navView.labelVisibilityMode = BottomNavigationView.LABEL_VISIBILITY_SELECTED
         } else {
-            // Show all labels
             navView.labelVisibilityMode = BottomNavigationView.LABEL_VISIBILITY_LABELED
         }
     }
@@ -199,10 +226,5 @@ class MainActivity : BaseActivity() {
         supportFragmentManager.beginTransaction()
             .replace(R.id.fragment_container, fragment)
             .commit()
-    }
-
-    override fun onDestroy() {
-        super.onDestroy()
-        Shizuku.removeRequestPermissionResultListener(requestPermissionResultListener)
     }
 }

@@ -100,7 +100,9 @@
             android:transitionName="statusChip"
             app:chipStrokeWidth="0dp"
             app:chipMinTouchTargetSize="0dp"
-            app:chipCornerRadius="32dp" />
+            app:chipCornerRadius="32dp"
+            app:chipIconSize="40dp"
+            app:chipIconTint="?attr/colorOnSurface" />
 
     </LinearLayout>
 

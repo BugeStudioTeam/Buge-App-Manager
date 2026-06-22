@@ -107,8 +107,15 @@ class AppearanceActivity : BaseActivity() {
         binding.hideNavLabelsSwitch.isChecked = isEnabled
         binding.hideNavLabelsSwitch.setOnCheckedChangeListener { _, isChecked ->
             PreferencesManager.setHideNavLabels(this, isChecked)
-            showRestartDialog()
+            // Apply changes immediately without restart
+            applyHideNavLabelsToMainActivity()
         }
+    }
+
+    private fun applyHideNavLabelsToMainActivity() {
+        // Send broadcast to MainActivity to update nav labels
+        val intent = Intent("com.buge.appmanager.ACTION_NAV_LABELS_CHANGED")
+        sendBroadcast(intent)
     }
 
     private fun selectColorTheme(theme: ThemeManager.ColorTheme) {

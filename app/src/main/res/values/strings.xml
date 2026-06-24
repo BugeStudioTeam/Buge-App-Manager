@@ -90,6 +90,16 @@
     <string name="system_op_blocked_title">Operation Blocked</string>
     <string name="system_op_blocked_message">System app operations are currently disabled.\n\nYou can enable "Allow System App Operations" in Settings to perform this action.</string>
 
+    <!-- Restore -->
+    <string name="pref_restore_apps">Restore Uninstalled Apps</string>
+    <string name="pref_restore_apps_summary">View and restore previously uninstalled system apps</string>
+    <string name="title_restore_apps">Restore Apps</string>
+    <string name="restore">Restore</string>
+    <string name="no_uninstalled_apps">No uninstalled apps found</string>
+    <string name="restore_confirm">Restore %s?</string>
+    <string name="restore_success">App restored successfully</string>
+    <string name="restore_failed">Failed to restore app</string>
+
     <!-- Shizuku -->
     <string name="shizuku_title">Shizuku Authorization</string>
     <string name="shizuku_desc">Shizuku is required to manage app permissions and perform advanced operations. Please authorize this app in Shizuku.</string>
@@ -115,6 +125,7 @@
     <string name="loading_apps">Loading apps…</string>
     <string name="refresh">Refresh</string>
     <string name="no_apps_found">No apps found</string>
+    <string name="share_apks">Share APKs</string>
 
     <!-- App Detail -->
     <string name="title_app_detail">App Details</string>

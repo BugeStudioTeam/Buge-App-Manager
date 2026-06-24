@@ -6,8 +6,6 @@
     android:layout_height="wrap_content"
     android:layout_marginHorizontal="16dp"
     android:layout_marginBottom="2dp"
-    android:clickable="true"
-    android:focusable="true"
     android:background="?attr/selectableItemBackground">
 
     <LinearLayout
@@ -18,31 +16,19 @@
         android:gravity="center_vertical"
         android:minHeight="72dp">
 
-        <com.google.android.material.checkbox.MaterialCheckBox
-            android:id="@+id/checkbox"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginEnd="8dp"
-            android:clickable="true"
-            android:focusable="true"
-            android:visibility="gone"
-            android:alpha="0.0"
-            android:scaleX="0.5"
-            android:scaleY="0.5" />
-
         <ImageView
             android:id="@+id/app_icon"
             android:layout_width="48dp"
             android:layout_height="48dp"
-            android:scaleType="centerCrop" />
+            android:scaleType="centerCrop"
+            android:src="@android:drawable/sym_def_app_icon" />
 
         <LinearLayout
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:orientation="vertical"
-            android:layout_marginStart="12dp"
-            android:transitionGroup="true">
+            android:layout_marginStart="12dp">
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -66,7 +52,7 @@
                     android:layout_width="20dp"
                     android:layout_height="20dp"
                     android:layout_marginStart="8dp"
-                    android:visibility="gone">
+                    android:visibility="visible">
 
                     <ImageView
                         android:layout_width="20dp"
@@ -88,23 +74,19 @@
                 android:singleLine="true"
                 style="@style/TextAppearance.Material3.BodySmall" />
 
-            <TextView
-                android:id="@+id/app_version"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:alpha="0.6"
-                android:layout_marginTop="2dp"
-                android:singleLine="true"
-                style="@style/TextAppearance.Material3.LabelSmall" />
-
         </LinearLayout>
 
-        <ImageView
-            android:layout_width="20dp"
-            android:layout_height="20dp"
-            android:src="@drawable/ic_arrow_back"
-            android:rotation="180"
-            android:alpha="0.4" />
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btn_restore"
+            style="@style/Widget.Material3.Button.TonalButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/restore"
+            android:paddingHorizontal="16dp"
+            android:minWidth="0dp"
+            android:singleLine="true"
+            android:maxLines="1"
+            android:textSize="13sp" />
 
     </LinearLayout>
 

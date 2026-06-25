@@ -23,6 +23,7 @@
     <string name="pref_theme_dark">深色</string>
     <string name="pref_theme_auto">跟随系统</string>
     <string name="pref_language">语言</string>
+    <string name="pref_language_auto">系统默认</string>
     <string name="pref_default_page">默认页面</string>
     <string name="pref_default_page_summary">选择应用启动时显示的页面</string>
     <string name="pref_show_system_apps">显示系统应用</string>
@@ -87,7 +88,17 @@
 
     <!-- System Operation Blocked -->
     <string name="system_op_blocked_title">操作被阻止</string>
-    <string name="system_op_blocked_message">系统应用操作当前已禁用。\n\n您可以在设置中启用“允许系统应用操作”来执行此操作。</string>
+    <string name="system_op_blocked_message">系统应用操作当前已禁用。\n\n您可以在设置中启用"允许系统应用操作"来执行此操作。</string>
+
+    <!-- Restore -->
+    <string name="pref_restore_apps">恢复已卸载应用</string>
+    <string name="pref_restore_apps_summary">查看并恢复之前卸载的系统应用</string>
+    <string name="title_restore_apps">恢复应用</string>
+    <string name="restore">恢复</string>
+    <string name="no_uninstalled_apps">未找到已卸载的应用</string>
+    <string name="restore_confirm">恢复 %s？</string>
+    <string name="restore_success">应用恢复成功</string>
+    <string name="restore_failed">恢复应用失败</string>
 
     <!-- Shizuku -->
     <string name="shizuku_title">Shizuku授权</string>
@@ -114,6 +125,7 @@
     <string name="loading_apps">正在加载应用…</string>
     <string name="refresh">刷新</string>
     <string name="no_apps_found">未找到应用</string>
+    <string name="share_apks">分享APK</string>
 
     <!-- App Detail -->
     <string name="title_app_detail">应用详情</string>
@@ -141,6 +153,20 @@
     <string name="enable_app">启用应用</string>
     <string name="freeze_app">冻结应用</string>
     <string name="unfreeze_app">解冻应用</string>
+
+    <!-- App Detail Activity Strings -->
+    <string name="removed_from_favorites">已从收藏中移除</string>
+    <string name="added_to_favorites">已添加到收藏</string>
+    <string name="apk_path_not_found">未找到APK路径</string>
+    <string name="apk_file_not_exist">APK文件不存在</string>
+    <string name="apk_saved_to">APK已保存到：%s</string>
+    <string name="export_failed">导出失败：%s</string>
+    <string name="cannot_open_google_play">无法打开Google Play</string>
+    <string name="cannot_open_fdroid">无法打开F-Droid</string>
+    <string name="cannot_launch_app">无法启动此应用</string>
+    <string name="force_stop_confirm">强制停止 %s？</string>
+    <string name="uninstall_confirm">卸载 %s？</string>
+    <string name="clear_data_confirm">清除 %s 的所有数据？此操作不可撤销。</string>
 
     <!-- Permissions List -->
     <string name="title_permissions">权限管理器</string>
@@ -179,7 +205,7 @@
     <string name="operation_success">操作成功</string>
     <string name="operation_failed">操作失败：%s</string>
     <string name="error_no_shizuku">Shizuku不可用或未授权</string>
-    <string name="error_system_ops_disabled">系统应用操作已禁用。请在设置中启用“允许系统应用操作”。</string>
+    <string name="error_system_ops_disabled">系统应用操作已禁用。请在设置中启用"允许系统应用操作"。</string>
     <string name="language_changed_restart">语言已更改。重启应用以应用更改。</string>
     <string name="restart">重启</string>
 
@@ -197,15 +223,34 @@
     <string name="restart_required_message">默认启动页面已更改。重启应用以使更改生效。</string>
     <string name="restart_now">立即重启</string>
     <string name="later">稍后</string>
-    <string name="more_options">更多选项</string>
-    <string name="more_options_summary">自定义主题和颜色</string>
-    <string name="theme_group">主题</string>
+    
+    <!-- Update Checker -->
+    <string name="update_available">发现更新</string>
+    <string name="download">下载</string>
+    <string name="no_update_title">已是最新版本</string>
+    <string name="no_update_message">您已在使用最新版本。</string>
+    <string name="update_check_failed">检查更新失败</string>
+    <string name="update_check_failed_message">检查更新失败。请检查网络连接。</string>
+    <string name="checking_for_update">正在检查更新…</string>
+    <string name="please_wait">请稍候…</string>
+    <string name="ok">确定</string>
+    <string name="ignore">忽略</string>
+    
+    <!-- Shortcuts -->
+    <string name="shortcut_app_manager_long">打开Buge应用管理器</string>
+    
+    <string name="appearance_settings">外观设置</string>
+    <string name="theme_mode">主题模式</string>
     <string name="color_theme">主题色</string>
     <string name="color_default">默认（蓝色）</string>
     <string name="color_red">红色</string>
     <string name="color_green">绿色</string>
     <string name="color_yellow">黄色</string>
+    <string name="more_options">更多选项</string>
+    <string name="more_options_summary">自定义主题和颜色</string>
+    <string name="theme_change_restart_message">主题已更改。重启应用以应用更改。</string>
+    <string name="theme_group">主题</string>
+    <string name="hide_nav_labels">隐藏导航栏标签</string>
+    <string name="hide_nav_labels_summary">未选中的导航项隐藏标题，仅显示选中的</string>
     
-    <!-- Shortcuts -->
-    <string name="shortcut_app_manager_long">打开Buge应用管理器</string>
 </resources>

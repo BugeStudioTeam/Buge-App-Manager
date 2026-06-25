@@ -23,6 +23,7 @@
     <string name="pref_theme_dark">다크</string>
     <string name="pref_theme_auto">시스템 기본값</string>
     <string name="pref_language">언어</string>
+    <string name="pref_language_auto">시스템 기본값</string>
     <string name="pref_default_page">기본 페이지</string>
     <string name="pref_default_page_summary">앱 시작 시 표시할 페이지 선택</string>
     <string name="pref_show_system_apps">시스템 앱 표시</string>
@@ -89,6 +90,16 @@
     <string name="system_op_blocked_title">작업이 차단되었습니다</string>
     <string name="system_op_blocked_message">시스템 앱 작업이 현재 비활성화되어 있습니다.\n\n이 작업을 수행하려면 설정에서 "시스템 앱 작업 허용"을 활성화하세요.</string>
 
+    <!-- Restore -->
+    <string name="pref_restore_apps">제거된 앱 복원</string>
+    <string name="pref_restore_apps_summary">이전에 제거된 시스템 앱을 확인하고 복원</string>
+    <string name="title_restore_apps">앱 복원</string>
+    <string name="restore">복원</string>
+    <string name="no_uninstalled_apps">제거된 앱을 찾을 수 없습니다</string>
+    <string name="restore_confirm">%s을(를) 복원하시겠습니까?</string>
+    <string name="restore_success">앱 복원 성공</string>
+    <string name="restore_failed">앱 복원 실패</string>
+
     <!-- Shizuku -->
     <string name="shizuku_title">Shizuku 승인</string>
     <string name="shizuku_desc">앱 권한을 관리하고 고급 작업을 수행하려면 Shizuku가 필요합니다. Shizuku에서 이 앱을 승인해 주세요.</string>
@@ -114,6 +125,7 @@
     <string name="loading_apps">앱 로드 중…</string>
     <string name="refresh">새로고침</string>
     <string name="no_apps_found">앱을 찾을 수 없습니다</string>
+    <string name="share_apks">APK 공유</string>
 
     <!-- App Detail -->
     <string name="title_app_detail">앱 세부정보</string>
@@ -141,6 +153,20 @@
     <string name="enable_app">앱 활성화</string>
     <string name="freeze_app">앱 동결</string>
     <string name="unfreeze_app">앱 동결 해제</string>
+
+    <!-- App Detail Activity Strings -->
+    <string name="removed_from_favorites">즐겨찾기에서 제거됨</string>
+    <string name="added_to_favorites">즐겨찾기에 추가됨</string>
+    <string name="apk_path_not_found">APK 경로를 찾을 수 없음</string>
+    <string name="apk_file_not_exist">APK 파일이 존재하지 않음</string>
+    <string name="apk_saved_to">APK 저장됨: %s</string>
+    <string name="export_failed">내보내기 실패: %s</string>
+    <string name="cannot_open_google_play">Google Play를 열 수 없음</string>
+    <string name="cannot_open_fdroid">F-Droid를 열 수 없음</string>
+    <string name="cannot_launch_app">이 앱을 실행할 수 없음</string>
+    <string name="force_stop_confirm">%s을(를) 강제 종료하시겠습니까?</string>
+    <string name="uninstall_confirm">%s을(를) 제거하시겠습니까?</string>
+    <string name="clear_data_confirm">%s의 모든 데이터를 삭제하시겠습니까? 이 작업은 되돌릴 수 없습니다.</string>
 
     <!-- Permissions List -->
     <string name="title_permissions">권한 관리자</string>
@@ -197,15 +223,34 @@
     <string name="restart_required_message">기본 시작 페이지가 변경되었습니다. 변경 사항을 적용하려면 앱을 재시작하세요.</string>
     <string name="restart_now">지금 재시작</string>
     <string name="later">나중에</string>
-    <string name="more_options">추가 옵션</string>
-    <string name="more_options_summary">테마 및 색상 사용자 지정</string>
-    <string name="theme_group">테마</string>
+    
+    <!-- Update Checker -->
+    <string name="update_available">업데이트 사용 가능</string>
+    <string name="download">다운로드</string>
+    <string name="no_update_title">업데이트 없음</string>
+    <string name="no_update_message">최신 버전을 사용 중입니다.</string>
+    <string name="update_check_failed">업데이트 확인 실패</string>
+    <string name="update_check_failed_message">업데이트 확인에 실패했습니다. 인터넷 연결을 확인하세요.</string>
+    <string name="checking_for_update">업데이트 확인 중…</string>
+    <string name="please_wait">잠시만 기다려주세요…</string>
+    <string name="ok">확인</string>
+    <string name="ignore">무시</string>
+    
+    <!-- Shortcuts -->
+    <string name="shortcut_app_manager_long">Buge앱 관리자 열기</string>
+    
+    <string name="appearance_settings">외관 설정</string>
+    <string name="theme_mode">테마 모드</string>
     <string name="color_theme">테마 색상</string>
     <string name="color_default">기본 (파란색)</string>
     <string name="color_red">빨간색</string>
     <string name="color_green">초록색</string>
     <string name="color_yellow">노란색</string>
+    <string name="more_options">추가 옵션</string>
+    <string name="more_options_summary">테마 및 색상 사용자 지정</string>
+    <string name="theme_change_restart_message">테마가 변경되었습니다. 변경 사항을 적용하려면 앱을 재시작하세요.</string>
+    <string name="theme_group">테마</string>
+    <string name="hide_nav_labels">탐색 레이블 숨기기</string>
+    <string name="hide_nav_labels_summary">선택되지 않은 탐색 항목의 제목을 숨기고 선택된 항목만 표시</string>
     
-    <!-- Shortcuts -->
-    <string name="shortcut_app_manager_long">Buge앱 관리자 열기</string>
 </resources>

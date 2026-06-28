@@ -9,4 +9,7 @@
     <cache-path
         name="cache"
         path="." />
+    <external-cache-path
+        name="external_cache"
+        path="." />
 </paths>

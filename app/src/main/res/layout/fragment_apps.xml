@@ -91,27 +91,144 @@
 
     </com.google.android.material.appbar.AppBarLayout>
 
-    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
-        android:id="@+id/swipe_refresh"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:orientation="vertical"
         app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/recycler_view"
+        <!-- Batch Action Bar - Horizontal scrollable -->
+        <HorizontalScrollView
+            android:id="@+id/batch_action_scroll"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:clipToPadding="false"
-            android:paddingBottom="80dp" />
+            android:layout_height="wrap_content"
+            android:visibility="gone"
+            android:scrollbars="none"
+            android:paddingHorizontal="4dp"
+            android:background="?attr/colorSurface">
 
-    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+            <LinearLayout
+                android:id="@+id/batch_action_bar"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:paddingHorizontal="12dp"
+                android:paddingVertical="8dp"
+                android:gravity="center_vertical">
 
-    <com.google.android.material.progressindicator.LinearProgressIndicator
-        android:id="@+id/progress_bar"
+                <TextView
+                    android:id="@+id/selected_count_text"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="12dp"
+                    android:textSize="14sp"
+                    android:minWidth="60dp"
+                    style="@style/TextAppearance.Material3.LabelLarge" />
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/btn_batch_uninstall"
+                    style="@style/Widget.Material3.Button.TonalButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/uninstall"
+                    android:layout_marginEnd="8dp"
+                    android:paddingHorizontal="12dp"
+                    android:minWidth="0dp"
+                    android:singleLine="true"
+                    android:maxLines="1"
+                    android:ellipsize="end"
+                    android:textSize="13sp"
+                    android:textColor="?attr/colorOnErrorContainer"
+                    app:backgroundTint="?attr/colorErrorContainer" />
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/btn_batch_disable"
+                    style="@style/Widget.Material3.Button.TonalButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/disable_app"
+                    android:layout_marginEnd="8dp"
+                    android:paddingHorizontal="12dp"
+                    android:minWidth="0dp"
+                    android:singleLine="true"
+                    android:maxLines="1"
+                    android:ellipsize="end"
+                    android:textSize="13sp" />
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/btn_batch_enable"
+                    style="@style/Widget.Material3.Button.TonalButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/enable_app"
+                    android:layout_marginEnd="8dp"
+                    android:paddingHorizontal="12dp"
+                    android:minWidth="0dp"
+                    android:singleLine="true"
+                    android:maxLines="1"
+                    android:ellipsize="end"
+                    android:textSize="13sp" />
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/btn_batch_share"
+                    style="@style/Widget.Material3.Button.TonalButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/share_apks"
+                    android:paddingHorizontal="12dp"
+                    android:minWidth="0dp"
+                    android:singleLine="true"
+                    android:maxLines="1"
+                    android:ellipsize="end"
+                    android:textSize="13sp"
+                    android:textColor="?attr/colorOnPrimary"
+                    app:backgroundTint="?attr/colorPrimary"
+                    app:icon="@drawable/ic_share"
+                    app:iconGravity="textStart"
+                    app:iconTint="?attr/colorOnPrimary" />
+
+            </LinearLayout>
+
+        </HorizontalScrollView>
+
+        <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+            android:id="@+id/swipe_refresh"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1">
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/recycler_view"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:clipToPadding="false"
+                android:paddingBottom="80dp" />
+
+        </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+
+    </LinearLayout>
+
+    <!-- Loading Overlay -->
+    <FrameLayout
+        android:id="@+id/loading_overlay"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:visibility="gone"
-        app:layout_behavior="@string/appbar_scrolling_view_behavior" />
+        android:background="?attr/colorSurface"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
+        <com.google.android.material.progressindicator.CircularProgressIndicator
+            android:id="@+id/progress_bar"
+            android:layout_width="56dp"
+            android:layout_height="56dp"
+            android:layout_gravity="center"
+            android:indeterminate="true"
+            app:indicatorColor="?attr/colorPrimary"
+            app:trackThickness="4dp"
+            app:indicatorSize="48dp"
+            app:indicatorDirectionCircular="clockwise" />
+
+    </FrameLayout>
 
     <LinearLayout
         android:id="@+id/empty_state"

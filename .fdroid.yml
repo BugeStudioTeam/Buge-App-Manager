@@ -1,0 +1,15 @@
+repo: https://github.com/BugeStudioTeam/Buge-App-Manager.git
+branch: main
+
+builds:
+  - versionName: 6.31.60
+    versionCode: 54
+    commit: main
+    subdir: app
+    gradle:
+      - yes
+    prebuild:
+      - sed -i '/signingConfigs {/,/^    }/d' build.gradle.kts
+      - sed -i '/signingConfig = signingConfigs.getByName("release")/d' build.gradle.kts
+    scandelete:
+      - keystore.jks

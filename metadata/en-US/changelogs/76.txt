@@ -1,0 +1,10 @@
+**6.41.73**
+
+**Added** ✨
+- Added Portuguese language (reported by @odorizzioficial in issue #3)
+
+**Optimizations** ⚡
+- Optimized code comments
+
+**Contributors of this version:**
+- @odorizzioficial for proposing the addition of Portuguese language

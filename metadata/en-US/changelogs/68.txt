@@ -1,0 +1,14 @@
+**6.37.69**
+
+**Added** ✨
+- Added permission icons
+
+**Removed** 🗑️
+- Removed restart requirement for navigation bar personalization
+
+**Fixes** 🐛
+- Fixed app crash caused by missing `Context.RECEIVER_EXPORTED` or `Context.RECEIVER_NOT_EXPORTED` flags when dynamically registering broadcast receivers via `registerReceiver` on Android 14+
+
+**Contributors of this version:**
+- @Alaataheri for reporting crash bug and capturing logs
+- Telegram @tdewq for reporting crash bug

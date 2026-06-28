@@ -1,0 +1,13 @@
+**6.40.69**
+
+**Added** ✨
+- Added multi-select menu on app interface
+- Added share multiple apps at once
+- Added restore uninstalled system apps
+
+**Fixes** 🐛
+- Fixed Material Design 3 Expressive corner radius rules on app page
+
+**Contributors of this version:**
+- @Alaataheri for suggesting share multiple apps at once
+- Jublu (unknown user) for suggesting restore uninstalled system apps

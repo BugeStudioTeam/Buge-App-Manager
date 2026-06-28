@@ -1,0 +1,14 @@
+**6.40.73**
+
+**Added** ✨
+- Added colors logo
+
+**Fixes** 🐛
+- Fixed log function on activity page
+- Fixed language files
+
+**Optimizations** ⚡
+- Improved loading speed
+
+**Contributors of this version:**
+None

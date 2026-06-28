@@ -29,7 +29,7 @@
         android:textColor="?attr/colorOnSurface"
         android:lineSpacingExtra="4dp"
         android:id="@+id/tv_description"
-        android:text="This app requires advanced permissions via Shizuku's ADB shell" />
+        android:text="This application requires Shizuku permissions" />
 
     <FrameLayout
         android:layout_height="wrap_content"

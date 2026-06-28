@@ -74,10 +74,11 @@ object LocaleManager {
             "fr" to "Français",
             "de" to "Deutsch",
             "ru" to "Русский",
+            "pt" to "Português",
             "zh" to "中文 (Simplified)",
             "ar" to "العربية",
             "ja" to "日本語",
-            "ko" to "한국어"
+            "ko" to "한국어",
         )
     }
     

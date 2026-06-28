@@ -16,6 +16,7 @@ object PreferencesManager {
     private const val LOGGING_ENABLED_KEY = "logging_enabled"
     private const val FAVORITE_APPS_KEY = "favorite_apps"
     private const val AUTO_UPDATE_KEY = "auto_update"
+    private const val HIDE_NAV_LABELS_KEY = "hide_nav_labels"
 
     private fun getPreferences(context: Context): SharedPreferences {
         return context.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE)
@@ -120,5 +121,13 @@ object PreferencesManager {
 
     fun getAutoUpdate(context: Context): Boolean {
         return getPreferences(context).getBoolean(AUTO_UPDATE_KEY, true)
+    }
+
+    fun setHideNavLabels(context: Context, enabled: Boolean) {
+        getPreferences(context).edit().putBoolean(HIDE_NAV_LABELS_KEY, enabled).apply()
+    }
+
+    fun getHideNavLabels(context: Context): Boolean {
+        return getPreferences(context).getBoolean(HIDE_NAV_LABELS_KEY, false)
     }
 }

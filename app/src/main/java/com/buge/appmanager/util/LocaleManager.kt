@@ -21,23 +21,30 @@ object LocaleManager {
     }
 
     fun applyLanguage(context: Context, languageCode: String) {
-        val locale = if (languageCode.isEmpty()) {
-            Locale.getDefault()
-        } else {
-            Locale(languageCode)
-        }
-        
+        val locale = createLocaleFromCode(languageCode)
         setLocale(context, locale)
     }
 
     fun createContextWithLocale(context: Context, languageCode: String): Context {
-        val locale = if (languageCode.isEmpty()) {
-            Locale.getDefault()
-        } else {
-            Locale(languageCode)
-        }
-        
+        val locale = createLocaleFromCode(languageCode)
         return wrapContextWithLocale(context, locale)
+    }
+
+    private fun createLocaleFromCode(code: String): Locale {
+        if (code.isEmpty()) {
+            return Locale.getDefault()
+        }
+        // Handle Brazilian Portuguese
+        if (code.equals("pt-rBR", ignoreCase = true)) {
+            return Locale("pt", "BR")
+        }
+        // Handle language-country format (e.g., "en-US", "zh-CN")
+        val parts = code.split("-", "_")
+        return if (parts.size == 2) {
+            Locale(parts[0], parts[1])
+        } else {
+            Locale(code)
+        }
     }
 
     private fun setLocale(context: Context, locale: Locale) {
@@ -75,7 +82,8 @@ object LocaleManager {
             "de" to "Deutsch",
             "ru" to "Русский",
             "pt" to "Português",
-            "zh" to "中文 (Simplified)",
+            "pt-rBR" to "Português (Brasil)",
+            "zh" to "中文 (简体)",
             "ar" to "العربية",
             "ja" to "日本語",
             "ko" to "한국어",
@@ -84,10 +92,6 @@ object LocaleManager {
     
     fun getCurrentLocale(context: Context): Locale {
         val savedLanguage = getLanguage(context)
-        return if (savedLanguage.isEmpty()) {
-            Locale.getDefault()
-        } else {
-            Locale(savedLanguage)
-        }
+        return createLocaleFromCode(savedLanguage)
     }
 }

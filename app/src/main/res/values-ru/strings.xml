@@ -218,6 +218,7 @@
     <string name="pref_language_de">Deutsch</string>
     <string name="pref_language_ru">Русский</string>
     <string name="pref_language_ar">العربية</string>
+    <string name="pref_language_pt">Português</string>
     
     <string name="restart_required">Требуется перезапуск</string>
     <string name="restart_required_message">Стартовая страница по умолчанию была изменена. Перезапустите приложение, чтобы применить изменение.</string>

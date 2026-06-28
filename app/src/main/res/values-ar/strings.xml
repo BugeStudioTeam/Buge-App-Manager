@@ -218,6 +218,7 @@
     <string name="pref_language_de">Deutsch</string>
     <string name="pref_language_ru">Русский</string>
     <string name="pref_language_ar">العربية</string>
+    <string name="pref_language_pt">Português</string>
     
     <string name="restart_required">إعادة التشغيل مطلوبة</string>
     <string name="restart_required_message">تم تغيير صفحة البدء الافتراضية. أعد تشغيل التطبيق لتطبيق التغيير.</string>

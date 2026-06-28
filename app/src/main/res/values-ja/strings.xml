@@ -218,6 +218,7 @@
     <string name="pref_language_de">Deutsch</string>
     <string name="pref_language_ru">Русский</string>
     <string name="pref_language_ar">العربية</string>
+    <string name="pref_language_pt">Português</string>
     
     <string name="restart_required">再起動が必要</string>
     <string name="restart_required_message">デフォルトの開始ページが変更されました。変更を適用するにはアプリを再起動してください。</string>

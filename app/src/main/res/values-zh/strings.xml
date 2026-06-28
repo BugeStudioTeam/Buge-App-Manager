@@ -218,6 +218,7 @@
     <string name="pref_language_de">Deutsch</string>
     <string name="pref_language_ru">Русский</string>
     <string name="pref_language_ar">العربية</string>
+    <string name="pref_language_pt">Português</string>
     
     <string name="restart_required">需要重启</string>
     <string name="restart_required_message">默认启动页面已更改。重启应用以使更改生效。</string>

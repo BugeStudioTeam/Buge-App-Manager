@@ -218,6 +218,7 @@
     <string name="pref_language_de">Deutsch</string>
     <string name="pref_language_ru">Русский</string>
     <string name="pref_language_ar">العربية</string>
+    <string name="pref_language_pt">Português</string>
     
     <string name="restart_required">Restart Required</string>
     <string name="restart_required_message">The default start page has been changed. Restart the app for the change to take effect.</string>

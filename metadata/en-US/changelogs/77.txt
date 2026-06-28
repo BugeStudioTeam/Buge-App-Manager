@@ -1,0 +1,7 @@
+**6.42.73**
+
+**Added** ✨
+- Added Portuguese (Brazil) language
+
+**Contributors of this version:**
+None

@@ -23,6 +23,7 @@
     <string name="pref_theme_dark">Dunkel</string>
     <string name="pref_theme_auto">Systemstandard</string>
     <string name="pref_language">Sprache</string>
+    <string name="pref_language_auto">Systemstandard</string>
     <string name="pref_default_page">Standard-Startseite</string>
     <string name="pref_default_page_summary">Wählen Sie die Seite, die beim Start angezeigt werden soll</string>
     <string name="pref_show_system_apps">System-Apps anzeigen</string>
@@ -89,6 +90,16 @@
     <string name="system_op_blocked_title">Operation blockiert</string>
     <string name="system_op_blocked_message">System-App-Operationen sind derzeit deaktiviert.\n\nSie können „System-App-Operationen erlauben“ in den Einstellungen aktivieren, um diese Aktion auszuführen.</string>
 
+    <!-- Restore -->
+    <string name="pref_restore_apps">Deinstallierte Apps wiederherstellen</string>
+    <string name="pref_restore_apps_summary">Zuvor deinstallierte System-Apps anzeigen und wiederherstellen</string>
+    <string name="title_restore_apps">Apps wiederherstellen</string>
+    <string name="restore">Wiederherstellen</string>
+    <string name="no_uninstalled_apps">Keine deinstallierten Apps gefunden</string>
+    <string name="restore_confirm">%s wiederherstellen?</string>
+    <string name="restore_success">App erfolgreich wiederhergestellt</string>
+    <string name="restore_failed">Wiederherstellung der App fehlgeschlagen</string>
+
     <!-- Shizuku -->
     <string name="shizuku_title">Shizuku-Autorisierung</string>
     <string name="shizuku_desc">Shizuku ist erforderlich, um App-Berechtigungen zu verwalten und erweiterte Operationen durchzuführen. Bitte autorisieren Sie diese App in Shizuku.</string>
@@ -114,6 +125,7 @@
     <string name="loading_apps">Apps werden geladen…</string>
     <string name="refresh">Aktualisieren</string>
     <string name="no_apps_found">Keine Apps gefunden</string>
+    <string name="share_apks">APKs teilen</string>
 
     <!-- App Detail -->
     <string name="title_app_detail">App-Details</string>
@@ -141,6 +153,20 @@
     <string name="enable_app">App aktivieren</string>
     <string name="freeze_app">App einfrieren</string>
     <string name="unfreeze_app">App auftauen</string>
+
+    <!-- App Detail Activity Strings -->
+    <string name="removed_from_favorites">Aus Favoriten entfernt</string>
+    <string name="added_to_favorites">Zu Favoriten hinzugefügt</string>
+    <string name="apk_path_not_found">APK-Pfad nicht gefunden</string>
+    <string name="apk_file_not_exist">APK-Datei existiert nicht</string>
+    <string name="apk_saved_to">APK gespeichert unter: %s</string>
+    <string name="export_failed">Export fehlgeschlagen: %s</string>
+    <string name="cannot_open_google_play">Google Play kann nicht geöffnet werden</string>
+    <string name="cannot_open_fdroid">F-Droid kann nicht geöffnet werden</string>
+    <string name="cannot_launch_app">Diese App kann nicht gestartet werden</string>
+    <string name="force_stop_confirm">%s erzwungen stoppen?</string>
+    <string name="uninstall_confirm">%s deinstallieren?</string>
+    <string name="clear_data_confirm">Alle Daten von %s löschen? Dieser Vorgang kann nicht rückgängig gemacht werden.</string>
 
     <!-- Permissions List -->
     <string name="title_permissions">Berechtigungsmanager</string>
@@ -185,26 +211,47 @@
 
     <!-- Language names -->
     <string name="pref_language_en">English</string>
-    <string name="pref_language_zh">中文 (Simplified)</string>
+    <string name="pref_language_zh">中文（简体）</string>
     <string name="pref_language_ja">日本語</string>
     <string name="pref_language_ko">한국어</string>
     <string name="pref_language_fr">Français</string>
     <string name="pref_language_de">Deutsch</string>
     <string name="pref_language_ru">Русский</string>
     <string name="pref_language_ar">العربية</string>
+    <string name="pref_language_pt">Português</string>
     
     <string name="restart_required">Neustart erforderlich</string>
     <string name="restart_required_message">Die Standard-Startseite wurde geändert. Starten Sie die App neu, um die Änderung zu übernehmen.</string>
     <string name="restart_now">Jetzt neu starten</string>
     <string name="later">Später</string>
-    <string name="more_options">Weitere Optionen</string>
-    <string name="more_options_summary">Thema und Farben anpassen</string>
-    <string name="theme_group">Thema</string>
-    <string name="color_theme">Themafarbe</string>
+    
+    <!-- Update Checker -->
+    <string name="update_available">Update verfügbar</string>
+    <string name="download">Herunterladen</string>
+    <string name="no_update_title">Kein Update verfügbar</string>
+    <string name="no_update_message">Sie verwenden bereits die neueste Version.</string>
+    <string name="update_check_failed">Update-Prüfung fehlgeschlagen</string>
+    <string name="update_check_failed_message">Update-Prüfung fehlgeschlagen. Bitte überprüfen Sie Ihre Internetverbindung.</string>
+    <string name="checking_for_update">Suche nach Updates…</string>
+    <string name="please_wait">Bitte warten…</string>
+    <string name="ok">OK</string>
+    <string name="ignore">Ignorieren</string>
+    
+    <!-- Shortcuts -->
+    <string name="shortcut_app_manager_long">Buge App-Manager öffnen</string>
+    
+    <string name="appearance_settings">Erscheinungsbild-Einstellungen</string>
+    <string name="theme_mode">Design-Modus</string>
+    <string name="color_theme">Designfarbe</string>
     <string name="color_default">Standard (Blau)</string>
     <string name="color_red">Rot</string>
     <string name="color_green">Grün</string>
-    <string name="color_yellow">Gelb</string>    
-    <!-- Shortcuts -->
-    <string name="shortcut_app_manager_long">Buge App-Manager öffnen</string>
+    <string name="color_yellow">Gelb</string>
+    <string name="more_options">Weitere Optionen</string>
+    <string name="more_options_summary">Design und Farben anpassen</string>
+    <string name="theme_change_restart_message">Das Design wurde geändert. Starten Sie die App neu, um die Änderungen zu übernehmen.</string>
+    <string name="theme_group">Design</string>
+    <string name="hide_nav_labels">Navigationsbeschriftungen ausblenden</string>
+    <string name="hide_nav_labels_summary">Titel nicht ausgewählter Navigationselemente ausblenden, nur ausgewählte anzeigen</string>
+    
 </resources>

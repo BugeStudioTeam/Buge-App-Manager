@@ -7,6 +7,7 @@ import android.content.pm.PackageManager
 import android.util.Log
 import com.buge.appmanager.model.ActivityDetail
 import com.buge.appmanager.model.AppInfo
+import com.buge.appmanager.util.LogManager
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 
@@ -19,6 +20,8 @@ class ActivityRepository(private val context: Context) {
 
     suspend fun getInstalledAppsWithActivities(showSystemApps: Boolean): List<AppInfo> = withContext(Dispatchers.IO) {
         try {
+            LogManager.info(context, "ActivityRepository: Getting apps with activities", "ShowSystemApps: $showSystemApps")
+            
             val allApps = mutableListOf<AppInfo>()
             
             val packages = if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.TIRAMISU) {
@@ -27,6 +30,8 @@ class ActivityRepository(private val context: Context) {
                 @Suppress("DEPRECATION")
                 pm.getInstalledPackages(0)
             }
+            
+            LogManager.debug(context, "ActivityRepository: Total packages", "${packages.size}")
             
             for (pkgInfo in packages) {
                 try {
@@ -80,19 +85,23 @@ class ActivityRepository(private val context: Context) {
                         )
                     )
                 } catch (e: Exception) {
-                    Log.w(TAG, "Error getting app info for ${pkgInfo.packageName}: ${e.message}")
+                    LogManager.warning(context, "ActivityRepository: Error getting app info", "${pkgInfo.packageName}: ${e.message}")
                 }
             }
             
-            allApps.sortedBy { it.appName.lowercase() }
+            val sorted = allApps.sortedBy { it.appName.lowercase() }
+            LogManager.info(context, "ActivityRepository: Apps with activities loaded", "Count: ${sorted.size}")
+            sorted
         } catch (e: Exception) {
-            Log.e(TAG, "Error getting apps with activities: ${e.message}")
+            LogManager.error(context, "ActivityRepository: Error getting apps with activities", e.message)
             emptyList()
         }
     }
 
     suspend fun getAppActivities(packageName: String, showUndeclared: Boolean): List<ActivityDetail> = withContext(Dispatchers.IO) {
         try {
+            LogManager.info(context, "ActivityRepository: Getting activities for app", "Package: $packageName, ShowUndeclared: $showUndeclared")
+            
             val packageInfo = if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.TIRAMISU) {
                 pm.getPackageInfo(packageName, PackageManager.PackageInfoFlags.of(PackageManager.GET_ACTIVITIES.toLong()))
             } else {
@@ -100,6 +109,8 @@ class ActivityRepository(private val context: Context) {
                 pm.getPackageInfo(packageName, PackageManager.GET_ACTIVITIES)
             }
             val activities = packageInfo?.activities ?: return@withContext emptyList()
+            
+            LogManager.debug(context, "ActivityRepository: Total activities in manifest", "${activities.size}")
             
             val result = mutableListOf<ActivityDetail>()
             
@@ -131,6 +142,9 @@ class ActivityRepository(private val context: Context) {
                 intentFilterCounts[className] = intentFilterCount
             }
             
+            var exportedCount = 0
+            var undeclaredCount = 0
+            
             for (activityInfo in activities) {
                 val className = activityInfo.name
                 val intentFilterCount = intentFilterCounts[className] ?: 0
@@ -152,16 +166,20 @@ class ActivityRepository(private val context: Context) {
                 
                 if (showUndeclared) {
                     result.add(activity)
+                    undeclaredCount++
                 } else {
                     if (activity.isExported) {
                         result.add(activity)
+                        exportedCount++
                     }
                 }
             }
             
-            result.sortedBy { it.name.lowercase() }
+            val sorted = result.sortedBy { it.name.lowercase() }
+            LogManager.info(context, "ActivityRepository: Activities loaded", "Package: $packageName, Exported: $exportedCount, Undeclared: $undeclaredCount, Total: ${sorted.size}")
+            sorted
         } catch (e: Exception) {
-            Log.e(TAG, "Error getting activities for $packageName: ${e.message}")
+            LogManager.error(context, "ActivityRepository: Error getting activities", "Package: $packageName, Error: ${e.message}")
             emptyList()
         }
     }
@@ -184,9 +202,10 @@ class ActivityRepository(private val context: Context) {
                 addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
             }
             context.startActivity(intent)
+            LogManager.info(context, "Activity launched", "Package: $packageName, Class: $className")
             true
         } catch (e: Exception) {
-            Log.e(TAG, "Error launching activity: ${e.message}")
+            LogManager.error(context, "Error launching activity", "Package: $packageName, Class: $className, Error: ${e.message}")
             false
         }
     }

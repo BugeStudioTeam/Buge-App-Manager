@@ -12,6 +12,7 @@ import android.view.animation.OvershootInterpolator
 import android.widget.FrameLayout
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
@@ -197,11 +198,23 @@ class AppPermissionAdapter(
                 permStatusChip.text = itemView.context.getString(R.string.granted)
                 permStatusChip.setChipBackgroundColorResource(R.color.color_granted_container)
                 permStatusChip.setTextColor(itemView.context.getColor(R.color.color_granted))
+                // Set check icon - size matches text
+                permStatusChip.chipIcon = ContextCompat.getDrawable(itemView.context, R.drawable.ic_check_small)
+                permStatusChip.chipIconTint = ContextCompat.getColorStateList(itemView.context, R.color.color_granted)
+                permStatusChip.chipIconSize = 40f
+                permStatusChip.chipStrokeWidth = 0f
             } else {
                 permStatusChip.text = itemView.context.getString(R.string.denied)
                 permStatusChip.setChipBackgroundColorResource(R.color.color_denied_container)
                 permStatusChip.setTextColor(itemView.context.getColor(R.color.color_denied))
+                // Set cross icon - size matches text
+                permStatusChip.chipIcon = ContextCompat.getDrawable(itemView.context, R.drawable.ic_close_small)
+                permStatusChip.chipIconTint = ContextCompat.getColorStateList(itemView.context, R.color.color_denied)
+                permStatusChip.chipIconSize = 40f
+                permStatusChip.chipStrokeWidth = 0f
             }
+            // Ensure chip has capsule shape
+            permStatusChip.chipCornerRadius = 32f
         }
 
         fun updateSelectionMode(mode: Boolean, isSelected: Boolean) {

@@ -23,6 +23,7 @@
     <string name="pref_theme_dark">داكن</string>
     <string name="pref_theme_auto">افتراضي النظام</string>
     <string name="pref_language">اللغة</string>
+    <string name="pref_language_auto">افتراضي النظام</string>
     <string name="pref_default_page">الصفحة الافتراضية</string>
     <string name="pref_default_page_summary">اختر الصفحة التي تظهر عند بدء التشغيل</string>
     <string name="pref_show_system_apps">إظهار تطبيقات النظام</string>
@@ -89,6 +90,16 @@
     <string name="system_op_blocked_title">العملية محظورة</string>
     <string name="system_op_blocked_message">عمليات تطبيقات النظام معطلة حالياً.\n\nيمكنك تمكين "السماح بعمليات تطبيقات النظام" في الإعدادات لتنفيذ هذا الإجراء.</string>
 
+    <!-- Restore -->
+    <string name="pref_restore_apps">استعادة التطبيقات المحذوفة</string>
+    <string name="pref_restore_apps_summary">عرض واستعادة تطبيقات النظام المحذوفة سابقًا</string>
+    <string name="title_restore_apps">استعادة التطبيقات</string>
+    <string name="restore">استعادة</string>
+    <string name="no_uninstalled_apps">لم يتم العثور على تطبيقات محذوفة</string>
+    <string name="restore_confirm">هل تريد استعادة %s؟</string>
+    <string name="restore_success">تم استعادة التطبيق بنجاح</string>
+    <string name="restore_failed">فشل استعادة التطبيق</string>
+
     <!-- Shizuku -->
     <string name="shizuku_title">تفويض Shizuku</string>
     <string name="shizuku_desc">Shizuku مطلوب لإدارة أذونات التطبيقات وتنفيذ العمليات المتقدمة. يرجى تفويض هذا التطبيق في Shizuku.</string>
@@ -114,6 +125,7 @@
     <string name="loading_apps">جاري تحميل التطبيقات...</string>
     <string name="refresh">تحديث</string>
     <string name="no_apps_found">لم يتم العثور على تطبيقات</string>
+    <string name="share_apks">مشاركة ملفات APK</string>
 
     <!-- App Detail -->
     <string name="title_app_detail">تفاصيل التطبيق</string>
@@ -141,6 +153,20 @@
     <string name="enable_app">تمكين التطبيق</string>
     <string name="freeze_app">تجميد التطبيق</string>
     <string name="unfreeze_app">إلغاء تجميد التطبيق</string>
+
+    <!-- App Detail Activity Strings -->
+    <string name="removed_from_favorites">تمت الإزالة من المفضلة</string>
+    <string name="added_to_favorites">تمت الإضافة إلى المفضلة</string>
+    <string name="apk_path_not_found">لم يتم العثور على مسار APK</string>
+    <string name="apk_file_not_exist">ملف APK غير موجود</string>
+    <string name="apk_saved_to">تم حفظ APK في: %s</string>
+    <string name="export_failed">فشل التصدير: %s</string>
+    <string name="cannot_open_google_play">لا يمكن فتح Google Play</string>
+    <string name="cannot_open_fdroid">لا يمكن فتح F-Droid</string>
+    <string name="cannot_launch_app">لا يمكن تشغيل هذا التطبيق</string>
+    <string name="force_stop_confirm">هل تريد إيقاف %s إجباريًا؟</string>
+    <string name="uninstall_confirm">هل تريد إزالة تثبيت %s؟</string>
+    <string name="clear_data_confirm">هل تريد مسح جميع بيانات %s؟ لا يمكن التراجع عن هذا الإجراء.</string>
 
     <!-- Permissions List -->
     <string name="title_permissions">مدير الأذونات</string>
@@ -185,27 +211,47 @@
 
     <!-- Language names -->
     <string name="pref_language_en">English</string>
-    <string name="pref_language_zh">中文 (Simplified)</string>
+    <string name="pref_language_zh">中文（简体）</string>
     <string name="pref_language_ja">日本語</string>
     <string name="pref_language_ko">한국어</string>
     <string name="pref_language_fr">Français</string>
     <string name="pref_language_de">Deutsch</string>
     <string name="pref_language_ru">Русский</string>
     <string name="pref_language_ar">العربية</string>
+    <string name="pref_language_pt">Português</string>
     
     <string name="restart_required">إعادة التشغيل مطلوبة</string>
     <string name="restart_required_message">تم تغيير صفحة البدء الافتراضية. أعد تشغيل التطبيق لتطبيق التغيير.</string>
     <string name="restart_now">إعادة التشغيل الآن</string>
     <string name="later">لاحقاً</string>
-    <string name="more_options">خيارات إضافية</string>
-    <string name="more_options_summary">تخصيص السمة والألوان</string>
-    <string name="theme_group">السمة</string>
-    <string name="color_theme">لون السمة</string>
+    
+    <!-- Update Checker -->
+    <string name="update_available">يتوفر تحديث</string>
+    <string name="download">تحميل</string>
+    <string name="no_update_title">لا يوجد تحديث</string>
+    <string name="no_update_message">أنت تستخدم بالفعل أحدث إصدار.</string>
+    <string name="update_check_failed">فشل التحقق من التحديث</string>
+    <string name="update_check_failed_message">فشل التحقق من التحديث. يرجى التحقق من اتصال الإنترنت.</string>
+    <string name="checking_for_update">جاري التحقق من التحديث...</string>
+    <string name="please_wait">يرجى الانتظار...</string>
+    <string name="ok">موافق</string>
+    <string name="ignore">تجاهل</string>
+    
+    <!-- Shortcuts -->
+    <string name="shortcut_app_manager_long">فتح مدير تطبيقات Buge</string>
+    
+    <string name="appearance_settings">إعدادات المظهر</string>
+    <string name="theme_mode">وضع المظهر</string>
+    <string name="color_theme">لون المظهر</string>
     <string name="color_default">افتراضي (أزرق)</string>
     <string name="color_red">أحمر</string>
     <string name="color_green">أخضر</string>
     <string name="color_yellow">أصفر</string>
+    <string name="more_options">خيارات إضافية</string>
+    <string name="more_options_summary">تخصيص السمة والألوان</string>
+    <string name="theme_change_restart_message">تم تغيير السمة. أعد تشغيل التطبيق لتطبيق التغييرات.</string>
+    <string name="theme_group">السمة</string>
+    <string name="hide_nav_labels">إخفاء تسميات التنقل</string>
+    <string name="hide_nav_labels_summary">إخفاء عناوين عناصر التنقل غير المحددة، وإظهار العنصر المحدد فقط</string>
     
-    <!-- Shortcuts -->
-    <string name="shortcut_app_manager_long">فتح مدير تطبيقات Buge</string>
 </resources>

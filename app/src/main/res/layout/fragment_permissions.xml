@@ -147,13 +147,14 @@
         android:orientation="vertical"
         app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
+        <!-- Batch Action Bar -->
         <LinearLayout
             android:id="@+id/batch_action_bar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:visibility="gone"
             android:orientation="horizontal"
-            android:paddingHorizontal="16dp"
+            android:paddingHorizontal="12dp"
             android:paddingVertical="8dp"
             android:gravity="center_vertical">
 
@@ -162,6 +163,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
+                android:textSize="14sp"
                 style="@style/TextAppearance.Material3.LabelLarge" />
 
             <com.google.android.material.button.MaterialButton
@@ -170,16 +172,50 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/batch_revoke"
-                android:layout_marginEnd="8dp" />
+                android:layout_marginEnd="8dp"
+                android:paddingHorizontal="12dp"
+                android:minWidth="0dp"
+                android:singleLine="true"
+                android:maxLines="1"
+                android:ellipsize="end"
+                android:textSize="13sp" />
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/btn_batch_grant"
                 style="@style/Widget.Material3.Button.TonalButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/batch_grant" />
+                android:text="@string/batch_grant"
+                android:paddingHorizontal="12dp"
+                android:minWidth="0dp"
+                android:singleLine="true"
+                android:maxLines="1"
+                android:ellipsize="end"
+                android:textSize="13sp" />
 
         </LinearLayout>
+
+        <!-- Loading Overlay -->
+        <FrameLayout
+            android:id="@+id/loading_overlay"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:visibility="gone"
+            android:background="?attr/colorSurface">
+
+            <com.google.android.material.progressindicator.CircularProgressIndicator
+                android:id="@+id/progress_bar"
+                android:layout_width="56dp"
+                android:layout_height="56dp"
+                android:layout_gravity="center"
+                android:indeterminate="true"
+                app:indicatorColor="?attr/colorPrimary"
+                app:trackThickness="4dp"
+                app:indicatorSize="48dp"
+                app:indicatorDirectionCircular="clockwise" />
+
+        </FrameLayout>
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recycler_view"
@@ -187,15 +223,9 @@
             android:layout_height="0dp"
             android:layout_weight="1"
             android:clipToPadding="false"
-            android:paddingBottom="80dp" />
+            android:paddingBottom="80dp"
+            android:visibility="gone" />
 
     </LinearLayout>
-
-    <com.google.android.material.progressindicator.LinearProgressIndicator
-        android:id="@+id/progress_bar"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:visibility="gone"
-        app:layout_behavior="@string/appbar_scrolling_view_behavior" />
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

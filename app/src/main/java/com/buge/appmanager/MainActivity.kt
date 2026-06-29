@@ -1,7 +1,10 @@
 package com.buge.appmanager
 
+import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
+import android.content.IntentFilter
+import android.os.Build
 import android.os.Bundle
 import android.view.View
 import androidx.appcompat.app.AppCompatDelegate
@@ -20,6 +23,7 @@ import com.buge.appmanager.util.LogManager
 import com.buge.appmanager.util.PreferencesManager
 import com.buge.appmanager.util.ThemeManager
 import com.buge.appmanager.util.UpdateChecker
+import com.google.android.material.bottomnavigation.BottomNavigationView
 import kotlinx.coroutines.launch
 import rikka.shizuku.Shizuku
 import java.util.Locale
@@ -31,6 +35,14 @@ class MainActivity : BaseActivity() {
     private var hasCheckedUpdate = false
 
     private val requestPermissionResultListener = Shizuku.OnRequestPermissionResultListener { _, _ -> }
+
+    private val navLabelsReceiver = object : BroadcastReceiver() {
+        override fun onReceive(context: Context, intent: Intent) {
+            if (intent.action == "com.buge.appmanager.ACTION_NAV_LABELS_CHANGED") {
+                applyHideNavLabels()
+            }
+        }
+    }
 
     override fun attachBaseContext(newBase: Context?) {
         if (newBase != null) {
@@ -69,12 +81,52 @@ class MainActivity : BaseActivity() {
         Shizuku.addRequestPermissionResultListener(requestPermissionResultListener)
 
         setupBottomNavigation()
+        applyHideNavLabels()
+
+        // Register receiver for navigation labels changes
+        // Android 14+ requires explicit export flag
+        val filter = IntentFilter("com.buge.appmanager.ACTION_NAV_LABELS_CHANGED")
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            registerReceiver(navLabelsReceiver, filter, Context.RECEIVER_NOT_EXPORTED)
+        } else {
+            registerReceiver(navLabelsReceiver, filter)
+        }
 
         if (savedInstanceState == null) {
             loadDefaultPage()
         }
         
         checkForUpdateOnStart()
+    }
+
+    override fun onResume() {
+        super.onResume()
+        if (currentFragment is ActivitiesFragment) {
+            (currentFragment as? ActivitiesFragment)?.refresh()
+        }
+        // Re-apply hide nav labels when returning to activity
+        applyHideNavLabels()
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        try {
+            unregisterReceiver(navLabelsReceiver)
+        } catch (e: Exception) {
+            // Ignore
+        }
+        Shizuku.removeRequestPermissionResultListener(requestPermissionResultListener)
+    }
+
+    private fun applyHideNavLabels() {
+        val hideLabels = PreferencesManager.getHideNavLabels(this)
+        val navView = binding.bottomNav
+        
+        if (hideLabels) {
+            navView.labelVisibilityMode = BottomNavigationView.LABEL_VISIBILITY_SELECTED
+        } else {
+            navView.labelVisibilityMode = BottomNavigationView.LABEL_VISIBILITY_LABELED
+        }
     }
 
     private fun checkForUpdateOnStart() {
@@ -141,13 +193,6 @@ class MainActivity : BaseActivity() {
         }
     }
 
-    override fun onResume() {
-        super.onResume()
-        if (currentFragment is ActivitiesFragment) {
-            (currentFragment as? ActivitiesFragment)?.refresh()
-        }
-    }
-
     private fun setupBottomNavigation() {
         binding.bottomNav.setOnItemSelectedListener { item ->
             when (item.itemId) {
@@ -181,10 +226,5 @@ class MainActivity : BaseActivity() {
         supportFragmentManager.beginTransaction()
             .replace(R.id.fragment_container, fragment)
             .commit()
-    }
-
-    override fun onDestroy() {
-        super.onDestroy()
-        Shizuku.removeRequestPermissionResultListener(requestPermissionResultListener)
     }
 }

@@ -77,9 +77,27 @@
             android:parentActivityName=".MainActivity"
             android:launchMode="singleTop" />
 
+        <activity
+            android:name=".RestoreAppsActivity"
+            android:exported="false"
+            android:parentActivityName=".MainActivity"
+            android:launchMode="singleTop" />
+
+        <activity
+            android:name=".CustomLabelsActivity"
+            android:exported="false"
+            android:parentActivityName=".MainActivity"
+            android:launchMode="singleTop" />
+
+        <activity
+            android:name=".LabelDetailActivity"
+            android:exported="false"
+            android:parentActivityName=".MainActivity"
+            android:launchMode="singleTop" />
+
         <provider
             android:name="androidx.core.content.FileProvider"
-            android:authorities="${applicationId}.fileprovider"
+            android:authorities="com.buge.appmanager.fileprovider"
             android:exported="false"
             android:grantUriPermissions="true">
             <meta-data

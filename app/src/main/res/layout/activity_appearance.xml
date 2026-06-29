@@ -223,6 +223,62 @@
 
             </FrameLayout>
 
+            <!-- Hide Navigation Labels Switch -->
+            <FrameLayout
+                android:id="@+id/hide_nav_labels_container"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="16dp"
+                android:layout_marginBottom="2dp"
+                android:background="@drawable/bg_setting_item_middle"
+                android:clickable="false"
+                android:focusable="false">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:gravity="center_vertical"
+                    android:paddingHorizontal="16dp"
+                    android:paddingVertical="16dp">
+
+                    <ImageView
+                        android:layout_width="24dp"
+                        android:layout_height="24dp"
+                        android:src="@drawable/ic_hidebar"
+                        android:layout_marginEnd="16dp" />
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/hide_nav_labels"
+                            android:textAppearance="?attr/textAppearanceBodyLarge" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/hide_nav_labels_summary"
+                            android:alpha="0.6"
+                            android:textAppearance="?attr/textAppearanceBodySmall" />
+
+                    </LinearLayout>
+
+                    <com.google.android.material.materialswitch.MaterialSwitch
+                        android:id="@+id/hide_nav_labels_switch"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        app:thumbIcon="@drawable/switch_thumb_icons" />
+
+                </LinearLayout>
+
+            </FrameLayout>
+
             <!-- Color Theme Item -->
             <FrameLayout
                 android:id="@+id/color_theme_container"
@@ -238,13 +294,27 @@
                     android:orientation="vertical"
                     android:padding="12dp">
 
-                    <TextView
-                        android:layout_width="wrap_content"
+                    <LinearLayout
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:gravity="center_vertical"
                         android:layout_marginStart="4dp"
-                        android:layout_marginBottom="12dp"
-                        android:text="@string/color_theme"
-                        android:textAppearance="?attr/textAppearanceBodyLarge" />
+                        android:layout_marginBottom="12dp">
+
+                        <ImageView
+                            android:layout_width="24dp"
+                            android:layout_height="24dp"
+                            android:src="@drawable/ic_color"
+                            android:layout_marginEnd="12dp" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/color_theme"
+                            android:textAppearance="?attr/textAppearanceBodyLarge" />
+
+                    </LinearLayout>
 
                     <LinearLayout
                         android:layout_width="match_parent"

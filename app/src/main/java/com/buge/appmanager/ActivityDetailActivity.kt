@@ -45,6 +45,8 @@ class ActivityDetailActivity : BaseActivity() {
             return
         }
 
+        LogManager.info(this, "ActivityDetailActivity created", "Package: $packageName")
+
         setupBackPressedCallback()
         setupToolbar()
         setupAppInfo()
@@ -61,6 +63,18 @@ class ActivityDetailActivity : BaseActivity() {
         if (!fontApplied) {
             fontApplied = true
         }
+        LogManager.debug(this, "ActivityDetailActivity resumed", "Package: $packageName")
+    }
+
+    override fun onPause() {
+        super.onPause()
+        LogManager.debug(this, "ActivityDetailActivity paused", "Package: $packageName")
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        searchJob?.cancel()
+        LogManager.info(this, "ActivityDetailActivity destroyed", "Package: $packageName")
     }
 
     private fun setupBackPressedCallback() {
@@ -69,6 +83,7 @@ class ActivityDetailActivity : BaseActivity() {
                 val searchText = binding.searchEditText.text.toString()
                 if (searchText.isNotEmpty()) {
                     binding.searchEditText.setText("")
+                    LogManager.debug(this@ActivityDetailActivity, "Search cleared via back", "Package: $packageName")
                 } else {
                     isEnabled = false
                     onBackPressedDispatcher.onBackPressed()
@@ -76,6 +91,7 @@ class ActivityDetailActivity : BaseActivity() {
             }
         }
         onBackPressedDispatcher.addCallback(this, callback)
+        LogManager.debug(this, "Back pressed callback setup", "ActivityDetailActivity")
     }
 
     private fun setupToolbar() {
@@ -83,6 +99,7 @@ class ActivityDetailActivity : BaseActivity() {
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         supportActionBar?.setDisplayShowHomeEnabled(true)
         supportActionBar?.title = getString(R.string.title_activity_detail)
+        LogManager.debug(this, "Toolbar setup complete", "ActivityDetailActivity")
     }
 
     override fun onOptionsItemSelected(item: android.view.MenuItem): Boolean {
@@ -105,11 +122,14 @@ class ActivityDetailActivity : BaseActivity() {
             binding.appIcon.setImageDrawable(icon)
         } catch (e: Exception) {
             binding.appIcon.setImageResource(android.R.drawable.sym_def_app_icon)
+            LogManager.warning(this, "Failed to load app icon", "Package: $packageName, Error: ${e.message}")
         }
 
         binding.appName.text = appName
         binding.packageName.text = packageName
         binding.systemBadge.visibility = if (isSystem) android.view.View.VISIBLE else android.view.View.GONE
+
+        LogManager.debug(this, "App info setup complete", "Package: $packageName, App: $appName, System: $isSystem")
     }
 
     private fun setupRecyclerView() {
@@ -118,6 +138,7 @@ class ActivityDetailActivity : BaseActivity() {
         }
         binding.recyclerView.layoutManager = LinearLayoutManager(this)
         binding.recyclerView.adapter = activitiesAdapter
+        LogManager.debug(this, "RecyclerView setup complete", "Package: $packageName")
     }
 
     private fun setupSearch() {
@@ -127,9 +148,13 @@ class ActivityDetailActivity : BaseActivity() {
             searchJob = lifecycleScope.launch {
                 delay(300)
                 val query = text?.toString()?.trim() ?: ""
+                if (query.isNotEmpty()) {
+                    LogManager.info(this@ActivityDetailActivity, "Searching activities", "Package: $packageName, Query: $query")
+                }
                 filterActivities(query)
             }
         }
+        LogManager.debug(this, "Search setup complete", "Package: $packageName")
     }
 
     private fun filterActivities(query: String) {
@@ -141,6 +166,7 @@ class ActivityDetailActivity : BaseActivity() {
                 it.className.contains(query, ignoreCase = true)
             }
             activitiesAdapter.submitList(filtered)
+            LogManager.debug(this, "Filter applied", "Package: $packageName, Query: $query, Results: ${filtered.size}")
         }
     }
 
@@ -172,10 +198,22 @@ class ActivityDetailActivity : BaseActivity() {
             val isEmpty = activities.isEmpty()
             binding.emptyState.visibility = if (isEmpty) android.view.View.VISIBLE else android.view.View.GONE
             binding.recyclerView.visibility = if (isEmpty) android.view.View.GONE else android.view.View.VISIBLE
+
+            LogManager.info(this, "Activities loaded for app", "Package: $packageName, Count: ${activities.size}, Empty: $isEmpty")
         }
 
         viewModel.isLoading.observe(this) { isLoading ->
             binding.progressBar.visibility = if (isLoading) android.view.View.VISIBLE else android.view.View.GONE
+            if (isLoading) {
+                LogManager.debug(this, "Loading activities", "Package: $packageName")
+            }
+        }
+
+        viewModel.error.observe(this) { error ->
+            if (error != null) {
+                LogManager.error(this, "Activity loading error", "Package: $packageName, Error: $error")
+                SnackbarHelper.showSnackbar(binding.root, "Failed to load activities: $error")
+            }
         }
     }
 }

@@ -53,6 +53,28 @@
 
     </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
+    <!-- Loading Overlay -->
+    <FrameLayout
+        android:id="@+id/loading_overlay"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="gone"
+        android:background="?attr/colorSurface"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
+        <com.google.android.material.progressindicator.CircularProgressIndicator
+            android:id="@+id/progress_bar"
+            android:layout_width="56dp"
+            android:layout_height="56dp"
+            android:layout_gravity="center"
+            android:indeterminate="true"
+            app:indicatorColor="?attr/colorPrimary"
+            app:trackThickness="4dp"
+            app:indicatorSize="48dp"
+            app:indicatorDirectionCircular="clockwise" />
+
+    </FrameLayout>
+
     <LinearLayout
         android:id="@+id/empty_state"
         android:layout_width="match_parent"
@@ -77,12 +99,5 @@
             style="@style/TextAppearance.Material3.BodyLarge" />
 
     </LinearLayout>
-
-    <com.google.android.material.progressindicator.LinearProgressIndicator
-        android:id="@+id/progress_bar"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:visibility="gone"
-        app:layout_behavior="@string/appbar_scrolling_view_behavior" />
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

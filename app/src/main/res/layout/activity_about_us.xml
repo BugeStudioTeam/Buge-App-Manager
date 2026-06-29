@@ -75,8 +75,7 @@
                 </LinearLayout>
 
             </FrameLayout>
-
-            <!-- 详细介绍卡片 - 使用设置界面容器风格 -->
+            
             <FrameLayout
                 android:id="@+id/description_container"
                 android:layout_width="match_parent"
@@ -112,7 +111,6 @@
 
             </FrameLayout>
 
-            <!-- 链接卡片：GitHub -->
             <FrameLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -170,7 +168,6 @@
 
             </FrameLayout>
 
-            <!-- 链接卡片：Telegram -->
             <FrameLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -227,7 +224,6 @@
 
             </FrameLayout>
 
-            <!-- 链接卡片：Website -->
             <FrameLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

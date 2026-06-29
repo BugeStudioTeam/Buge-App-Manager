@@ -23,6 +23,7 @@
     <string name="pref_theme_dark">Тёмная</string>
     <string name="pref_theme_auto">Системная</string>
     <string name="pref_language">Язык</string>
+    <string name="pref_language_auto">Системный</string>
     <string name="pref_default_page">Страница по умолчанию</string>
     <string name="pref_default_page_summary">Выберите страницу для отображения при запуске</string>
     <string name="pref_show_system_apps">Показывать системные приложения</string>
@@ -89,6 +90,16 @@
     <string name="system_op_blocked_title">Операция заблокирована</string>
     <string name="system_op_blocked_message">Операции с системными приложениями в данный момент отключены.\n\nВы можете включить «Разрешить операции с системными приложениями» в настройках, чтобы выполнить это действие.</string>
 
+    <!-- Restore -->
+    <string name="pref_restore_apps">Восстановить удаленные приложения</string>
+    <string name="pref_restore_apps_summary">Просмотр и восстановление ранее удаленных системных приложений</string>
+    <string name="title_restore_apps">Восстановление приложений</string>
+    <string name="restore">Восстановить</string>
+    <string name="no_uninstalled_apps">Удаленных приложений не найдено</string>
+    <string name="restore_confirm">Восстановить %s?</string>
+    <string name="restore_success">Приложение успешно восстановлено</string>
+    <string name="restore_failed">Не удалось восстановить приложение</string>
+
     <!-- Shizuku -->
     <string name="shizuku_title">Авторизация Shizuku</string>
     <string name="shizuku_desc">Shizuku требуется для управления разрешениями приложений и выполнения расширенных операций. Пожалуйста, авторизуйте это приложение в Shizuku.</string>
@@ -114,6 +125,7 @@
     <string name="loading_apps">Загрузка приложений…</string>
     <string name="refresh">Обновить</string>
     <string name="no_apps_found">Приложения не найдены</string>
+    <string name="share_apks">Поделиться APK</string>
 
     <!-- App Detail -->
     <string name="title_app_detail">Сведения о приложении</string>
@@ -141,6 +153,20 @@
     <string name="enable_app">Включить приложение</string>
     <string name="freeze_app">Заморозить приложение</string>
     <string name="unfreeze_app">Разморозить приложение</string>
+
+    <!-- App Detail Activity Strings -->
+    <string name="removed_from_favorites">Удалено из избранного</string>
+    <string name="added_to_favorites">Добавлено в избранное</string>
+    <string name="apk_path_not_found">Путь к APK не найден</string>
+    <string name="apk_file_not_exist">Файл APK не существует</string>
+    <string name="apk_saved_to">APK сохранен в: %s</string>
+    <string name="export_failed">Экспорт не удался: %s</string>
+    <string name="cannot_open_google_play">Не удается открыть Google Play</string>
+    <string name="cannot_open_fdroid">Не удается открыть F-Droid</string>
+    <string name="cannot_launch_app">Не удается запустить это приложение</string>
+    <string name="force_stop_confirm">Принудительно остановить %s?</string>
+    <string name="uninstall_confirm">Удалить %s?</string>
+    <string name="clear_data_confirm">Очистить все данные %s? Это действие необратимо.</string>
 
     <!-- Permissions List -->
     <string name="title_permissions">Диспетчер разрешений</string>
@@ -192,20 +218,40 @@
     <string name="pref_language_de">Deutsch</string>
     <string name="pref_language_ru">Русский</string>
     <string name="pref_language_ar">العربية</string>
+    <string name="pref_language_pt">Português</string>
     
     <string name="restart_required">Требуется перезапуск</string>
     <string name="restart_required_message">Стартовая страница по умолчанию была изменена. Перезапустите приложение, чтобы применить изменение.</string>
     <string name="restart_now">Перезапустить сейчас</string>
     <string name="later">Позже</string>
-    <string name="more_options">Дополнительные опции</string>
-    <string name="more_options_summary">Настроить тему и цвета</string>
-    <string name="theme_group">Тема</string>
+    
+    <!-- Update Checker -->
+    <string name="update_available">Доступно обновление</string>
+    <string name="download">Скачать</string>
+    <string name="no_update_title">Обновлений нет</string>
+    <string name="no_update_message">Вы уже используете последнюю версию.</string>
+    <string name="update_check_failed">Ошибка проверки обновлений</string>
+    <string name="update_check_failed_message">Не удалось проверить обновления. Проверьте подключение к интернету.</string>
+    <string name="checking_for_update">Проверка обновлений…</string>
+    <string name="please_wait">Пожалуйста, подождите…</string>
+    <string name="ok">ОК</string>
+    <string name="ignore">Игнорировать</string>
+    
+    <!-- Shortcuts -->
+    <string name="shortcut_app_manager_long">Открыть диспетчер приложений Buge</string>
+    
+    <string name="appearance_settings">Настройки внешнего вида</string>
+    <string name="theme_mode">Режим темы</string>
     <string name="color_theme">Цвет темы</string>
     <string name="color_default">По умолчанию (Синий)</string>
     <string name="color_red">Красный</string>
     <string name="color_green">Зеленый</string>
     <string name="color_yellow">Желтый</string>
+    <string name="more_options">Дополнительные опции</string>
+    <string name="more_options_summary">Настроить тему и цвета</string>
+    <string name="theme_change_restart_message">Тема была изменена. Перезапустите приложение, чтобы применить изменения.</string>
+    <string name="theme_group">Тема</string>
+    <string name="hide_nav_labels">Скрыть метки навигации</string>
+    <string name="hide_nav_labels_summary">Скрыть заголовки невыбранных элементов навигации, показывать только выбранный</string>
     
-    <!-- Shortcuts -->
-    <string name="shortcut_app_manager_long">Открыть диспетчер приложений Buge</string>
 </resources>

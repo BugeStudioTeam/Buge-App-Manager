@@ -17,9 +17,11 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.buge.appmanager.AboutUsActivity
 import com.buge.appmanager.AppearanceActivity
 import com.buge.appmanager.BaseActivity
+import com.buge.appmanager.CustomLabelsActivity
 import com.buge.appmanager.LogViewerActivity
 import com.buge.appmanager.MainActivity
 import com.buge.appmanager.R
+import com.buge.appmanager.RestoreAppsActivity
 import com.buge.appmanager.databinding.FragmentSettingsBinding
 import com.buge.appmanager.shizuku.ShizukuManager
 import com.buge.appmanager.util.FontOverrideHelper
@@ -107,6 +109,12 @@ class SettingsFragment : Fragment() {
                             item.title == getString(R.string.more_options) -> {
                                 startActivity(Intent(requireContext(), AppearanceActivity::class.java))
                             }
+                            item.title == getString(R.string.pref_restore_apps) -> {
+                                startActivity(Intent(requireContext(), RestoreAppsActivity::class.java))
+                            }
+                            item.title == getString(R.string.pref_custom_labels) -> {
+                                startActivity(Intent(requireContext(), CustomLabelsActivity::class.java))
+                            }
                         }
                     }
                     is SettingItem.About -> {
@@ -118,33 +126,33 @@ class SettingsFragment : Fragment() {
                     else -> {}
                 }
             },
-            onSwitchChange = { item, isChecked ->
+            onSwitchChange = { switchItem, isChecked ->
                 when {
-                    item.title == getString(R.string.pref_show_disabled_apps) -> {
+                    switchItem.title == getString(R.string.pref_show_disabled_apps) -> {
                         PreferencesManager.setShowDisabledApps(requireContext(), isChecked)
                         SnackbarHelper.showSnackbar(binding.root, getString(R.string.setting_saved))
                         LogManager.info(requireContext(), "Show disabled apps changed to $isChecked")
                     }
-                    item.title == getString(R.string.pref_show_system_apps) -> {
+                    switchItem.title == getString(R.string.pref_show_system_apps) -> {
                         PreferencesManager.setShowSystemApps(requireContext(), isChecked)
                         SnackbarHelper.showSnackbar(binding.root, getString(R.string.setting_saved))
                         updateShizukuStatus()
                         LogManager.info(requireContext(), "Show system apps changed to $isChecked")
                     }
-                    item.title == getString(R.string.pref_show_undeclared_activities) -> {
+                    switchItem.title == getString(R.string.pref_show_undeclared_activities) -> {
                         PreferencesManager.setShowUndeclaredActivities(requireContext(), isChecked)
                         SnackbarHelper.showSnackbar(binding.root, getString(R.string.setting_saved))
                         LogManager.info(requireContext(), "Show undeclared activities changed to $isChecked")
                     }
-                    item.title == getString(R.string.pref_allow_system_ops) -> {
+                    switchItem.title == getString(R.string.pref_allow_system_ops) -> {
                         PreferencesManager.setAllowSystemOps(requireContext(), isChecked)
                         SnackbarHelper.showSnackbar(binding.root, getString(R.string.setting_saved))
                         LogManager.info(requireContext(), "Allow system app operations changed to $isChecked")
                     }
-                    item.title == getString(R.string.pref_google_services) -> {
+                    switchItem.title == getString(R.string.pref_google_services) -> {
                         handleGoogleServicesToggle(isChecked)
                     }
-                    item.title == getString(R.string.pref_auto_update) -> {
+                    switchItem.title == getString(R.string.pref_auto_update) -> {
                         PreferencesManager.setAutoUpdate(requireContext(), isChecked)
                         SnackbarHelper.showSnackbar(binding.root, getString(R.string.setting_saved))
                         LogManager.info(requireContext(), "Auto update changed to $isChecked")
@@ -295,6 +303,16 @@ class SettingsFragment : Fragment() {
                 allowSystemOps,
                 R.drawable.ic_allow_system
             ),
+            SettingItem.Normal(
+                getString(R.string.pref_restore_apps),
+                getString(R.string.pref_restore_apps_summary),
+                R.drawable.ic_restore
+            ),
+            SettingItem.Normal(
+                getString(R.string.pref_custom_labels),
+                getString(R.string.pref_custom_labels_summary),
+                R.drawable.ic_tag
+            ),
             SettingItem.Header(getString(R.string.settings_group_advanced)),
             SettingItem.SwitchItem(getString(R.string.pref_show_disabled_apps), showDisabledApps, R.drawable.ic_disabled_apps),
             SettingItem.SwitchItem(getString(R.string.pref_show_system_apps), showSystemApps, R.drawable.ic_system_apps),
@@ -367,11 +385,9 @@ class SettingsFragment : Fragment() {
                     requestButton?.isEnabled = buttonEnabled
                     requestButton?.text = buttonText
                     requestButton?.setOnClickListener {
-                        // Only show guide dialog when Shizuku is NOT running
                         if (!ShizukuManager.isShizukuAvailable()) {
                             showShizukuGuideDialog()
                         } else {
-                            // Shizuku is running but not authorized - request permission normally
                             ShizukuManager.requestShizukuPermission()
                         }
                     }

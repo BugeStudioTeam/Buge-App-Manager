@@ -50,6 +50,16 @@ object FontOverrideHelper {
 
     fun isEnglishLocale(): Boolean = isEnglishLocale
 
+    fun getTypefaceByStyle(style: Int): Typeface? {
+        if (!isEnglishLocale) return null
+
+        return when (style) {
+            Typeface.BOLD -> boldTypeface
+            Typeface.NORMAL -> regularTypeface
+            else -> mediumTypeface
+        }
+    }
+
     fun applyGoogleSansToView(view: View) {
         if (!isEnglishLocale) return
 
@@ -95,15 +105,5 @@ object FontOverrideHelper {
         if (!isEnglishLocale) return
         val decorView = activity.window.decorView
         applyGoogleSansToView(decorView)
-    }
-
-    fun getTypefaceByStyle(style: Int): Typeface? {
-        if (!isEnglishLocale) return null
-
-        return when (style) {
-            Typeface.BOLD -> boldTypeface
-            Typeface.NORMAL -> regularTypeface
-            else -> mediumTypeface
-        }
     }
 }

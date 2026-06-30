@@ -1,0 +1,1 @@
+An application management tool that obtains adb shell privileges via the Shizuku API.

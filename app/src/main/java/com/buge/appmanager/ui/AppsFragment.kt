@@ -131,12 +131,10 @@ class AppsFragment : Fragment() {
                     adapter.setSelectionMode(false)
                     hideBatchActionBar()
                 } else if (selectedLabelId != null) {
-                    // Clear label filter
                     selectedLabelId = null
                     isUpdatingChips = true
                     binding.labelChipGroup.clearCheck()
                     isUpdatingChips = false
-                    // Restore all filter
                     applyFilter(currentFilter)
                 } else {
                     val searchText = binding.searchEditText.text.toString()
@@ -166,10 +164,16 @@ class AppsFragment : Fragment() {
                 chip.text = label.name
                 chip.id = View.generateViewId()
                 chip.isChecked = selectedLabelId == label.id
+
+                // Apply Google Sans font
+                val typeface = FontOverrideHelper.getTypefaceByStyle(android.graphics.Typeface.NORMAL)
+                if (typeface != null) {
+                    chip.typeface = typeface
+                }
+
                 chip.setOnCheckedChangeListener { _, isChecked ->
                     if (isUpdatingChips) return@setOnCheckedChangeListener
                     if (isChecked) {
-                        // Clear main filter selection when label is selected
                         isUpdatingChips = true
                         binding.filterChipGroup.clearCheck()
                         isUpdatingChips = false
@@ -177,7 +181,6 @@ class AppsFragment : Fragment() {
                         applyLabelFilter(label.id)
                     } else {
                         selectedLabelId = null
-                        // Restore main filter
                         val checkedId = binding.filterChipGroup.checkedChipId
                         val filter = when (checkedId) {
                             R.id.chip_user -> AppFilter.USER
@@ -248,7 +251,6 @@ class AppsFragment : Fragment() {
         if (!isAdded || view == null) return
         binding.filterChipGroup.setOnCheckedStateChangeListener { _, checkedIds ->
             if (isUpdatingChips) return@setOnCheckedStateChangeListener
-            // Clear label selection when main filter changes
             if (selectedLabelId != null) {
                 isUpdatingChips = true
                 binding.labelChipGroup.clearCheck()
@@ -703,7 +705,6 @@ class AppsFragment : Fragment() {
         viewModel.apps.observe(viewLifecycleOwner) { apps ->
             if (!isAdded || view == null) return@observe
             allApps = apps
-            // Restore current filter state
             if (selectedLabelId != null) {
                 applyLabelFilter(selectedLabelId!!)
             } else {

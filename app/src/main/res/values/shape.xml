@@ -10,6 +10,11 @@
         <item name="cornerSize">12dp</item>
     </style>
 
+    <style name="ShapeAppearance.M3.Bigger" parent="ShapeAppearance.MaterialComponents">
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSize">16dp</item>
+    </style>
+
     <style name="ShapeAppearance.M3.Large" parent="ShapeAppearance.MaterialComponents">
         <item name="cornerFamily">rounded</item>
         <item name="cornerSize">28dp</item>

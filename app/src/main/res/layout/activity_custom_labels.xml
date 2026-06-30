@@ -72,8 +72,12 @@
         android:layout_gravity="bottom|end"
         android:layout_margin="16dp"
         android:src="@drawable/ic_add"
-        app:shapeAppearanceOverlay="@style/ShapeAppearance.M3.Medium"
+        app:shapeAppearanceOverlay="@style/ShapeAppearance.M3.Bigger"
         app:tint="?attr/colorOnPrimaryContainer"
-        app:backgroundTint="?attr/colorPrimaryContainer" />
+        app:backgroundTint="?attr/colorPrimaryContainer"
+        app:useCompatPadding="true"
+        android:elevation="6dp"
+        android:translationZ="0dp"
+        app:rippleColor="@android:color/transparent" />
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

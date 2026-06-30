@@ -25,9 +25,13 @@ class LabelDetailViewModel(application: Application) : AndroidViewModel(applicat
     private val _label = MutableLiveData<CustomLabel?>()
     val label: LiveData<CustomLabel?> = _label
 
-    private var searchQuery: String = ""
+    private val _searchQuery = MutableLiveData<String>("")
+    val searchQuery: LiveData<String> = _searchQuery
+
+    private val _allApps = MutableLiveData<List<AppInfo>>(emptyList())
+    val allApps: LiveData<List<AppInfo>> = _allApps
+
     private var labelId: String = ""
-    private var allApps: List<AppInfo> = emptyList()
 
     fun init(labelId: String) {
         this.labelId = labelId
@@ -42,10 +46,11 @@ class LabelDetailViewModel(application: Application) : AndroidViewModel(applicat
                 _label.value = label
 
                 val apps = repository.getInstalledApps(showSystemApps = true)
-                allApps = apps.sortedBy { it.appName.lowercase() }
+                val sorted = apps.sortedBy { it.appName.lowercase() }
+                _allApps.value = sorted
                 applyFilter()
 
-                LogManager.info(getApplication(), "LabelDetailViewModel loaded", "Label: ${label?.name}, Apps: ${allApps.size}")
+                LogManager.info(getApplication(), "LabelDetailViewModel loaded", "Label: ${label?.name}, Apps: ${sorted.size}")
             } catch (e: Exception) {
                 LogManager.error(getApplication(), "LabelDetailViewModel load error", e.message)
             } finally {
@@ -55,11 +60,14 @@ class LabelDetailViewModel(application: Application) : AndroidViewModel(applicat
     }
 
     fun setSearch(query: String) {
-        searchQuery = query
+        _searchQuery.value = query
         applyFilter()
     }
 
     private fun applyFilter() {
+        val searchQuery = _searchQuery.value ?: ""
+        val allApps = _allApps.value ?: emptyList()
+
         val filtered = if (searchQuery.isEmpty()) {
             allApps
         } else {
@@ -69,7 +77,6 @@ class LabelDetailViewModel(application: Application) : AndroidViewModel(applicat
             }
         }
         _apps.value = filtered
-        LogManager.debug(getApplication(), "applyFilter", "Query: $searchQuery, Results: ${filtered.size}")
     }
 
     fun refresh() {

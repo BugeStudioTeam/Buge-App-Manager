@@ -59,7 +59,7 @@ class AboutUsActivity : BaseActivity() {
             openUrl("https://t.me/bugestudio")
         }
         setupCardClickListener(cardWebsite) {
-            openUrl("https://bugestudioteam.github.io/appmanager")
+            openUrl("https://bugestudio.website/")
         }
     }
 

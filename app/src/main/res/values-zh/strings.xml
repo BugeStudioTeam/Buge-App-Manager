@@ -253,5 +253,23 @@
     <string name="theme_group">主题</string>
     <string name="hide_nav_labels">隐藏导航栏标签</string>
     <string name="hide_nav_labels_summary">未选中的导航项隐藏标题，仅显示选中的</string>
-    
+
+    <!-- Custom Labels -->
+    <string name="pref_custom_labels">自定义标签</string>
+    <string name="pref_custom_labels_summary">创建和管理自定义应用标签</string>
+    <string name="title_custom_labels">自定义标签</string>
+    <string name="create_label">创建标签</string>
+    <string name="label_name">标签名称</string>
+    <string name="label_name_hint">输入标签名称</string>
+    <string name="create_new_label">创建新标签</string>
+    <string name="no_labels_created">尚未创建标签</string>
+    <string name="tap_to_create">点击 + 创建你的第一个标签</string>
+    <string name="delete_label_confirm">删除 "%s"？</string>
+    <string name="delete_label">删除标签</string>
+    <string name="select_apps_for_label">为 "%s" 选择应用</string>
+    <string name="label_created">标签已创建</string>
+    <string name="label_updated">标签已更新</string>
+    <string name="label_deleted">标签已删除</string>
+    <string name="filter_label">标签：%s</string>
+
 </resources>

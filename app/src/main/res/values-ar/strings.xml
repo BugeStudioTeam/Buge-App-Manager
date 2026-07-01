@@ -253,5 +253,23 @@
     <string name="theme_group">السمة</string>
     <string name="hide_nav_labels">إخفاء تسميات التنقل</string>
     <string name="hide_nav_labels_summary">إخفاء عناوين عناصر التنقل غير المحددة، وإظهار العنصر المحدد فقط</string>
+
+    <!-- Custom Labels -->
+    <string name="pref_custom_labels">التصنيفات المخصصة</string>
+    <string name="pref_custom_labels_summary">إنشاء وإدارة تصنيفات التطبيقات المخصصة</string>
+    <string name="title_custom_labels">التصنيفات المخصصة</string>
+    <string name="create_label">إنشاء تصنيف</string>
+    <string name="label_name">اسم التصنيف</string>
+    <string name="label_name_hint">أدخل اسم التصنيف</string>
+    <string name="create_new_label">إنشاء تصنيف جديد</string>
+    <string name="no_labels_created">لم يتم إنشاء أي تصنيفات بعد</string>
+    <string name="tap_to_create">انقر على + لإنشاء أول تصنيف لك</string>
+    <string name="delete_label_confirm">حذف "%s"؟</string>
+    <string name="delete_label">حذف التصنيف</string>
+    <string name="select_apps_for_label">اختر التطبيقات لـ "%s"</string>
+    <string name="label_created">تم إنشاء التصنيف</string>
+    <string name="label_updated">تم تحديث التصنيف</string>
+    <string name="label_deleted">تم حذف التصنيف</string>
+    <string name="filter_label">التصنيف：%s</string>
     
 </resources>

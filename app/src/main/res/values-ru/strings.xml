@@ -253,5 +253,23 @@
     <string name="theme_group">Тема</string>
     <string name="hide_nav_labels">Скрыть метки навигации</string>
     <string name="hide_nav_labels_summary">Скрыть заголовки невыбранных элементов навигации, показывать только выбранный</string>
+
+    <!-- Custom Labels -->
+    <string name="pref_custom_labels">Пользовательские метки</string>
+    <string name="pref_custom_labels_summary">Создание и управление пользовательскими метками приложений</string>
+    <string name="title_custom_labels">Пользовательские метки</string>
+    <string name="create_label">Создать метку</string>
+    <string name="label_name">Название метки</string>
+    <string name="label_name_hint">Введите название метки</string>
+    <string name="create_new_label">Создать новую метку</string>
+    <string name="no_labels_created">Метки пока не созданы</string>
+    <string name="tap_to_create">Нажмите +, чтобы создать первую метку</string>
+    <string name="delete_label_confirm">Удалить "%s"?</string>
+    <string name="delete_label">Удалить метку</string>
+    <string name="select_apps_for_label">Выберите приложения для "%s"</string>
+    <string name="label_created">Метка создана</string>
+    <string name="label_updated">Метка обновлена</string>
+    <string name="label_deleted">Метка удалена</string>
+    <string name="filter_label">Метка：%s</string>
     
 </resources>

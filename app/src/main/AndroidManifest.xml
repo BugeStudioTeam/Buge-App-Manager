@@ -61,19 +61,19 @@
 
         <activity
             android:name=".LogViewerActivity"
-            android:exported="false"
+            android:exported="true"
             android:parentActivityName=".MainActivity"
             android:launchMode="singleTop" />
 
         <activity
             android:name=".AboutUsActivity"
-            android:exported="false"
+            android:exported="true"
             android:parentActivityName=".MainActivity"
             android:launchMode="singleTop" />
 
         <activity
             android:name=".AppearanceActivity"
-            android:exported="false"
+            android:exported="true"
             android:parentActivityName=".MainActivity"
             android:launchMode="singleTop" />
 
@@ -85,7 +85,7 @@
 
         <activity
             android:name=".CustomLabelsActivity"
-            android:exported="false"
+            android:exported="true"
             android:parentActivityName=".MainActivity"
             android:launchMode="singleTop" />
 

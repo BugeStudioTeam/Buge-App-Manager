@@ -253,5 +253,23 @@
     <string name="theme_group">테마</string>
     <string name="hide_nav_labels">탐색 레이블 숨기기</string>
     <string name="hide_nav_labels_summary">선택되지 않은 탐색 항목의 제목을 숨기고 선택된 항목만 표시</string>
+
+    <!-- Custom Labels -->
+    <string name="pref_custom_labels">사용자 정의 레이블</string>
+    <string name="pref_custom_labels_summary">사용자 정의 앱 레이블 생성 및 관리</string>
+    <string name="title_custom_labels">사용자 정의 레이블</string>
+    <string name="create_label">레이블 만들기</string>
+    <string name="label_name">레이블 이름</string>
+    <string name="label_name_hint">레이블 이름 입력</string>
+    <string name="create_new_label">새 레이블 만들기</string>
+    <string name="no_labels_created">아직 생성된 레이블이 없습니다</string>
+    <string name="tap_to_create">+를 탭하여 첫 번째 레이블 만들기</string>
+    <string name="delete_label_confirm">"%s"을(를) 삭제하시겠습니까？</string>
+    <string name="delete_label">레이블 삭제</string>
+    <string name="select_apps_for_label">"%s"에 대한 앱 선택</string>
+    <string name="label_created">레이블이 생성되었습니다</string>
+    <string name="label_updated">레이블이 업데이트되었습니다</string>
+    <string name="label_deleted">레이블이 삭제되었습니다</string>
+    <string name="filter_label">레이블：%s</string>
     
 </resources>

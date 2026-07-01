@@ -253,5 +253,23 @@
     <string name="theme_group">Design</string>
     <string name="hide_nav_labels">Navigationsbeschriftungen ausblenden</string>
     <string name="hide_nav_labels_summary">Titel nicht ausgewählter Navigationselemente ausblenden, nur ausgewählte anzeigen</string>
+
+    <!-- Custom Labels -->
+    <string name="pref_custom_labels">Benutzerdefinierte Labels</string>
+    <string name="pref_custom_labels_summary">Erstellen und verwalten Sie benutzerdefinierte App-Labels</string>
+    <string name="title_custom_labels">Benutzerdefinierte Labels</string>
+    <string name="create_label">Label erstellen</string>
+    <string name="label_name">Label-Name</string>
+    <string name="label_name_hint">Label-Name eingeben</string>
+    <string name="create_new_label">Neues Label erstellen</string>
+    <string name="no_labels_created">Noch keine Labels erstellt</string>
+    <string name="tap_to_create">Tippen Sie auf +, um Ihr erstes Label zu erstellen</string>
+    <string name="delete_label_confirm">"%s" löschen?</string>
+    <string name="delete_label">Label löschen</string>
+    <string name="select_apps_for_label">Apps für "%s" auswählen</string>
+    <string name="label_created">Label erstellt</string>
+    <string name="label_updated">Label aktualisiert</string>
+    <string name="label_deleted">Label gelöscht</string>
+    <string name="filter_label">Label：%s</string>
     
 </resources>

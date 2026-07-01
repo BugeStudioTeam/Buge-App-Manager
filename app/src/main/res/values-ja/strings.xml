@@ -253,5 +253,23 @@
     <string name="theme_group">テーマ</string>
     <string name="hide_nav_labels">ナビゲーションラベルを非表示</string>
     <string name="hide_nav_labels_summary">未選択のナビゲーション項目のタイトルを非表示にし、選択したものだけを表示</string>
+
+    <!-- Custom Labels -->
+    <string name="pref_custom_labels">カスタムラベル</string>
+    <string name="pref_custom_labels_summary">カスタムアプリラベルを作成・管理</string>
+    <string name="title_custom_labels">カスタムラベル</string>
+    <string name="create_label">ラベルを作成</string>
+    <string name="label_name">ラベル名</string>
+    <string name="label_name_hint">ラベル名を入力</string>
+    <string name="create_new_label">新規ラベル作成</string>
+    <string name="no_labels_created">ラベルはまだ作成されていません</string>
+    <string name="tap_to_create">+ をタップして最初のラベルを作成</string>
+    <string name="delete_label_confirm">"%s" を削除しますか？</string>
+    <string name="delete_label">ラベルを削除</string>
+    <string name="select_apps_for_label">"%s" のアプリを選択</string>
+    <string name="label_created">ラベルを作成しました</string>
+    <string name="label_updated">ラベルを更新しました</string>
+    <string name="label_deleted">ラベルを削除しました</string>
+    <string name="filter_label">ラベル：%s</string>
     
 </resources>

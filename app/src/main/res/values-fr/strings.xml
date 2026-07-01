@@ -231,5 +231,23 @@
     <string name="theme_group">Thème</string>
     <string name="hide_nav_labels">Masquer les étiquettes</string>
     <string name="hide_nav_labels_summary">Masquer les titres non sélectionnés</string>
+
+    <!-- Custom Labels -->
+    <string name="pref_custom_labels">Étiquettes personnalisées</string>
+    <string name="pref_custom_labels_summary">Créer et gérer des étiquettes d\'applications personnalisées</string>
+    <string name="title_custom_labels">Étiquettes personnalisées</string>
+    <string name="create_label">Créer une étiquette</string>
+    <string name="label_name">Nom de l\'étiquette</string>
+    <string name="label_name_hint">Saisir le nom de l\'étiquette</string>
+    <string name="create_new_label">Créer une nouvelle étiquette</string>
+    <string name="no_labels_created">Aucune étiquette créée</string>
+    <string name="tap_to_create">Appuyez sur + pour créer votre première étiquette</string>
+    <string name="delete_label_confirm">Supprimer "%s" ?</string>
+    <string name="delete_label">Supprimer l\'étiquette</string>
+    <string name="select_apps_for_label">Sélectionner les applications pour "%s"</string>
+    <string name="label_created">Étiquette créée</string>
+    <string name="label_updated">Étiquette mise à jour</string>
+    <string name="label_deleted">Étiquette supprimée</string>
+    <string name="filter_label">Étiquette：%s</string>
     
 </resources>

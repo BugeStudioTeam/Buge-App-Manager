@@ -253,5 +253,23 @@
     <string name="theme_group">Tema</string>
     <string name="hide_nav_labels">Ocultar etiquetas de navegação</string>
     <string name="hide_nav_labels_summary">Ocultar títulos dos itens de navegação não selecionados, mostrar apenas o selecionado</string>
+
+    <!-- Custom Labels -->
+    <string name="pref_custom_labels">Etiquetas personalizadas</string>
+    <string name="pref_custom_labels_summary">Criar e gerenciar etiquetas de aplicativos personalizadas</string>
+    <string name="title_custom_labels">Etiquetas personalizadas</string>
+    <string name="create_label">Criar etiqueta</string>
+    <string name="label_name">Nome da etiqueta</string>
+    <string name="label_name_hint">Digite o nome da etiqueta</string>
+    <string name="create_new_label">Criar nova etiqueta</string>
+    <string name="no_labels_created">Nenhuma etiqueta criada ainda</string>
+    <string name="tap_to_create">Toque em + para criar sua primeira etiqueta</string>
+    <string name="delete_label_confirm">Excluir "%s"?</string>
+    <string name="delete_label">Excluir etiqueta</string>
+    <string name="select_apps_for_label">Selecionar aplicativos para "%s"</string>
+    <string name="label_created">Etiqueta criada</string>
+    <string name="label_updated">Etiqueta atualizada</string>
+    <string name="label_deleted">Etiqueta excluída</string>
+    <string name="filter_label">Etiqueta：%s</string>
     
 </resources>

@@ -69,7 +69,7 @@ Follow this step-by-step guide to manage the same permission type across multipl
 ### 📹 Video Tutorial
 
 <p align="center">
-  <video src="https://github.com/user-attachments/assets/1a5a0fae-0c93-4af2-8b0d-579607f58652" width="100%" controls>
+  <video src="https://github.com/user-attachments/assets/10c03a7b-d235-4006-9a60-7fe228d3db83" width="100%" controls>
   </video>
 </p>
 

@@ -21,6 +21,7 @@ import com.buge.appmanager.BaseActivity
 import com.buge.appmanager.CustomLabelsActivity
 import com.buge.appmanager.LogViewerActivity
 import com.buge.appmanager.MainActivity
+import com.buge.appmanager.OptionalPermissionsActivity
 import com.buge.appmanager.R
 import com.buge.appmanager.RestoreAppsActivity
 import com.buge.appmanager.UpdateOptionsActivity
@@ -146,11 +147,14 @@ class SettingsFragment : Fragment() {
                             item.title == getString(R.string.pref_restore_apps) -> {
                                 startActivity(Intent(requireContext(), RestoreAppsActivity::class.java))
                             }
+                            item.title == getString(R.string.pref_update_options) -> {
+                                startActivity(Intent(requireContext(), UpdateOptionsActivity::class.java))
+                            }
                             item.title == getString(R.string.pref_custom_labels) -> {
                                 startActivity(Intent(requireContext(), CustomLabelsActivity::class.java))
                             }
-                            item.title == getString(R.string.pref_update_options) -> {
-                                startActivity(Intent(requireContext(), UpdateOptionsActivity::class.java))
+                            item.title == getString(R.string.pref_optional_permissions) -> {
+                                startActivity(Intent(requireContext(), OptionalPermissionsActivity::class.java))
                             }
                         }
                     }
@@ -195,6 +199,9 @@ class SettingsFragment : Fragment() {
                         LogManager.info(requireContext(), "Auto update changed to $isChecked")
                     }
                 }
+            },
+            onStorageGrantClick = {
+                grantStoragePermission()
             }
         )
         binding.recyclerView.layoutManager = LinearLayoutManager(requireContext())
@@ -207,6 +214,42 @@ class SettingsFragment : Fragment() {
                 restoreScrollPosition()
             }
         }
+    }
+
+    private fun grantStoragePermission() {
+        if (!checkShizuku()) return
+
+        lifecycleScope.launch {
+            try {
+                val resultRead = ShizukuManager.executeCommand("pm grant com.buge.appmanager android.permission.READ_EXTERNAL_STORAGE")
+                val resultWrite = ShizukuManager.executeCommand("pm grant com.buge.appmanager android.permission.WRITE_EXTERNAL_STORAGE")
+
+                if (resultRead.success && resultWrite.success) {
+                    SnackbarHelper.showSnackbar(binding.root, "Storage permissions granted")
+                    LogManager.info(requireContext(), "Storage permissions granted")
+                } else {
+                    val error = if (!resultRead.success) resultRead.error else resultWrite.error
+                    SnackbarHelper.showSnackbar(binding.root, "Failed to grant: $error")
+                    LogManager.error(requireContext(), "Failed to grant storage permissions", error)
+                }
+            } catch (e: Exception) {
+                SnackbarHelper.showSnackbar(binding.root, "Error: ${e.message}")
+                LogManager.error(requireContext(), "Error granting storage permissions", e.message)
+            }
+        }
+    }
+
+    private fun checkShizuku(): Boolean {
+        if (!ShizukuManager.isShizukuAvailable() || !ShizukuManager.hasShizukuPermission()) {
+            SnackbarHelper.showSnackbar(
+                binding.root,
+                getString(R.string.error_no_shizuku),
+                getString(R.string.shizuku_request_auth),
+                { ShizukuManager.requestShizukuPermission() }
+            )
+            return false
+        }
+        return true
     }
 
     private fun handleGoogleServicesToggle(enable: Boolean) {
@@ -320,6 +363,11 @@ class SettingsFragment : Fragment() {
         return listOf(
             SettingItem.Header(getString(R.string.settings_group_authorization)),
             SettingItem.Shizuku,
+            SettingItem.Normal(
+                getString(R.string.pref_optional_permissions),
+                getString(R.string.pref_optional_permissions_summary),
+                R.drawable.ic_security
+            ),
             SettingItem.Header(getString(R.string.settings_group_appearance)),
             SettingItem.Normal(getString(R.string.pref_theme), themeText, R.drawable.ic_theme),
             SettingItem.Normal(getString(R.string.pref_language), languageText, R.drawable.ic_language),

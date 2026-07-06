@@ -7,7 +7,10 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.animation.OvershootInterpolator
+import android.widget.ProgressBar
+import android.widget.TextView
 import androidx.activity.OnBackPressedCallback
+import androidx.appcompat.app.AlertDialog
 import androidx.core.content.FileProvider
 import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.Fragment
@@ -34,6 +37,8 @@ import com.buge.appmanager.viewmodel.AppsViewModel
 import com.google.android.material.chip.Chip
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import java.io.BufferedInputStream
@@ -61,6 +66,9 @@ class AppsFragment : Fragment() {
     private var isUpdatingChips = false
 
     private var tempZipFile: File? = null
+    private var shareJob: Job? = null
+    private var progressDialog: AlertDialog? = null
+    private var isShareCancelled = false
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -98,7 +106,9 @@ class AppsFragment : Fragment() {
 
     override fun onDestroyView() {
         super.onDestroyView()
+        shareJob?.cancel()
         cleanupTempFiles()
+        dismissProgressDialog()
         _binding = null
     }
 
@@ -121,6 +131,15 @@ class AppsFragment : Fragment() {
         } catch (e: Exception) {
             // Ignore cleanup errors
         }
+    }
+
+    private fun dismissProgressDialog() {
+        try {
+            progressDialog?.dismiss()
+        } catch (e: Exception) {
+            // Ignore
+        }
+        progressDialog = null
     }
 
     private fun setupBackPressedCallback() {
@@ -165,7 +184,6 @@ class AppsFragment : Fragment() {
                 chip.id = View.generateViewId()
                 chip.isChecked = selectedLabelId == label.id
 
-                // Apply Google Sans font
                 val typeface = FontOverrideHelper.getTypefaceByStyle(android.graphics.Typeface.NORMAL)
                 if (typeface != null) {
                     chip.typeface = typeface
@@ -385,28 +403,73 @@ class AppsFragment : Fragment() {
     private fun batchShareApks(apps: List<AppInfo>) {
         if (!checkShizuku()) return
 
-        binding.loadingOverlay.visibility = View.VISIBLE
-        binding.batchActionScroll.visibility = View.GONE
+        // Exit selection mode immediately
+        adapter.clearSelection()
+        adapter.setSelectionMode(false)
+        hideBatchActionBar()
 
-        lifecycleScope.launch {
+        isShareCancelled = false
+        shareJob?.cancel()
+
+        // Create progress dialog
+        val dialogView = LayoutInflater.from(requireContext()).inflate(R.layout.dialog_share_progress, null)
+        val progressBar = dialogView.findViewById<ProgressBar>(R.id.share_progress_bar)
+        val progressText = dialogView.findViewById<TextView>(R.id.share_progress_text)
+        val fileNameText = dialogView.findViewById<TextView>(R.id.share_file_name_text)
+
+        progressDialog = MaterialAlertDialogBuilder(requireContext())
+            .setTitle("Packaging APKs...")
+            .setView(dialogView)
+            .setCancelable(false)
+            .setNegativeButton("Cancel") { _, _ ->
+                isShareCancelled = true
+                shareJob?.cancel()
+                dismissProgressDialog()
+                cleanupTempFiles()
+                SnackbarHelper.showSnackbar(binding.root, "Share cancelled")
+                LogManager.info(requireContext(), "APK share cancelled by user")
+            }
+            .show()
+
+        // Disable UI
+        binding.batchActionScroll.visibility = View.GONE
+        binding.loadingOverlay.visibility = View.VISIBLE
+
+        shareJob = lifecycleScope.launch {
             try {
-                val zipFile = createApkZip(apps)
-                if (zipFile != null) {
-                    tempZipFile = zipFile
-                    shareZipFile(zipFile, apps.size)
+                val result = createApkZipWithProgress(apps, progressBar, progressText, fileNameText)
+                if (result != null && !isShareCancelled) {
+                    tempZipFile = result
+                    dismissProgressDialog()
+                    shareZipFile(result, apps.size)
+                } else if (isShareCancelled) {
+                    dismissProgressDialog()
+                    cleanupTempFiles()
                 } else {
+                    dismissProgressDialog()
                     SnackbarHelper.showSnackbar(binding.root, "Failed to create zip file")
                 }
             } catch (e: Exception) {
+                dismissProgressDialog()
+                cleanupTempFiles()
                 SnackbarHelper.showSnackbar(binding.root, "Share failed: ${e.message}")
                 LogManager.error(requireContext(), "Batch share failed", e.message)
             } finally {
                 binding.loadingOverlay.visibility = View.GONE
+                // Ensure batch action bar is hidden if not cancelled
+                if (!isShareCancelled) {
+                    hideBatchActionBar()
+                }
             }
         }
     }
 
-    private suspend fun createApkZip(apps: List<AppInfo>): File? = withContext(Dispatchers.IO) {
+    private suspend fun createApkZipWithProgress(
+        apps: List<AppInfo>,
+        progressBar: ProgressBar,
+        progressText: TextView,
+        fileNameText: TextView
+    ): File? = withContext(Dispatchers.IO) {
         try {
             val cacheDir = requireContext().externalCacheDir ?: requireContext().cacheDir
             val timestamp = SimpleDateFormat("yyyyMMdd_HHmmss", Locale.US).format(Date())
@@ -415,11 +478,19 @@ class AppsFragment : Fragment() {
             val oldZips = cacheDir.listFiles { file -> file.name.endsWith(".zip") }
             oldZips?.forEach { if (it.exists()) it.delete() }
 
-            ZipOutputStream(BufferedOutputStream(FileOutputStream(zipFile))).use { zos ->
-                var successCount = 0
-                var failCount = 0
+            var successCount = 0
+            var failCount = 0
+            val totalApps = apps.size
 
-                for (app in apps) {
+            ZipOutputStream(BufferedOutputStream(FileOutputStream(zipFile))).use { zos ->
+                for ((index, app) in apps.withIndex()) {
+                    // Check if cancelled
+                    if (isShareCancelled) {
+                        zos.close()
+                        zipFile.delete()
+                        return@withContext null
+                    }
+
                     try {
                         val applicationInfo = requireContext().packageManager.getApplicationInfo(app.packageName, 0)
                         val sourcePath = applicationInfo.sourceDir
@@ -435,7 +506,13 @@ class AppsFragment : Fragment() {
                             continue
                         }
 
-                        val fileName = "${app.appName}.apk".replace("/", "_").replace("\\", "_").replace(":", "_").replace("?", "_").replace("*", "_").replace(" ", "_")
+                        val fileName = "${app.appName}.apk"
+                            .replace("/", "_")
+                            .replace("\\", "_")
+                            .replace(":", "_")
+                            .replace("?", "_")
+                            .replace("*", "_")
+                            .replace(" ", "_")
                         val entry = ZipEntry(fileName)
                         zos.putNextEntry(entry)
 
@@ -448,6 +525,15 @@ class AppsFragment : Fragment() {
                         }
                         zos.closeEntry()
                         successCount++
+
+                        // Update progress
+                        val progress = ((index + 1) * 100 / totalApps)
+                        withContext(Dispatchers.Main) {
+                            progressBar.progress = progress
+                            progressText.text = "$progress% ($successCount/$totalApps)"
+                            fileNameText.text = "Adding: ${app.appName}"
+                        }
+
                     } catch (e: Exception) {
                         failCount++
                         LogManager.warning(requireContext(), "Failed to add APK to zip", "Package: ${app.packageName}, Error: ${e.message}")
@@ -457,7 +543,7 @@ class AppsFragment : Fragment() {
                 LogManager.info(requireContext(), "Zip created", "Success: $successCount, Failed: $failCount")
             }
 
-            if (zipFile.exists() && zipFile.length() > 0) {
+            if (zipFile.exists() && zipFile.length() > 0 && !isShareCancelled) {
                 return@withContext zipFile
             } else {
                 zipFile.delete()
@@ -495,13 +581,21 @@ class AppsFragment : Fragment() {
 
             LogManager.success(requireContext(), "APK zip shared", "App count: $appCount, Size: ${formatFileSize(zipFile.length())}")
 
+            // Ensure selection is cleared
             adapter.clearSelection()
             adapter.setSelectionMode(false)
             hideBatchActionBar()
 
+            // Schedule cleanup after share completes
+            lifecycleScope.launch {
+                delay(5000)
+                cleanupTempFiles()
+            }
+
         } catch (e: Exception) {
             SnackbarHelper.showSnackbar(binding.root, "Share failed: ${e.message}")
             LogManager.error(requireContext(), "Share zip failed", e.message)
+            cleanupTempFiles()
         }
     }
 

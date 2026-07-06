@@ -1,0 +1,16 @@
+**6.48.94**
+
+**Added** ✨
+- Added management page for `READ_EXTERNAL_STORAGE` and `WRITE_EXTERNAL_STORAGE` permissions
+- Added update source (currently only supports GitHub source)
+- Added some missing icons
+
+**Optimizations** ⚡
+- Improved Log interface
+- Improved Update Options page
+
+**Fixes** 🐛
+- Fixed Arabic layout issues on app details page
+
+**Contributors of this version:**
+None

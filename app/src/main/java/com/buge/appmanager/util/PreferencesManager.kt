@@ -19,6 +19,7 @@ object PreferencesManager {
     private const val HIDE_NAV_LABELS_KEY = "hide_nav_labels"
     private const val INSTALLER_NAME_KEY = "installer_name"
     private const val UPDATE_METHOD_KEY = "update_method"
+    private const val UPDATE_SOURCE_KEY = "update_source"
 
     private fun getPreferences(context: Context): SharedPreferences {
         return context.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE)
@@ -147,5 +148,13 @@ object PreferencesManager {
 
     fun getUpdateMethod(context: Context): String {
         return getPreferences(context).getString(UPDATE_METHOD_KEY, "browser") ?: "browser"
+    }
+
+    fun setUpdateSource(context: Context, source: String) {
+        getPreferences(context).edit().putString(UPDATE_SOURCE_KEY, source).apply()
+    }
+
+    fun getUpdateSource(context: Context): String {
+        return getPreferences(context).getString(UPDATE_SOURCE_KEY, "GitHub") ?: "GitHub"
     }
 }

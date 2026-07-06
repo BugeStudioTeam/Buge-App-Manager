@@ -85,7 +85,13 @@
 
         <activity
             android:name=".UpdateOptionsActivity"
-            android:exported="false"
+            android:exported="true"
+            android:parentActivityName=".MainActivity"
+            android:launchMode="singleTop" />
+
+        <activity
+            android:name=".OptionalPermissionsActivity"
+            android:exported="true"
             android:parentActivityName=".MainActivity"
             android:launchMode="singleTop" />
 

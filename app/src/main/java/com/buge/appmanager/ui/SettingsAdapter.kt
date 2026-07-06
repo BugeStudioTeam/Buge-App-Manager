@@ -10,6 +10,8 @@ import android.widget.TextView
 import androidx.core.animation.doOnEnd
 import androidx.recyclerview.widget.RecyclerView
 import com.buge.appmanager.R
+import com.buge.appmanager.shizuku.ShizukuManager
+import com.google.android.material.button.MaterialButton
 import com.google.android.material.materialswitch.MaterialSwitch
 
 sealed class SettingItem {
@@ -19,12 +21,14 @@ sealed class SettingItem {
     data class About(val version: String) : SettingItem()
     data class AboutMore(val title: String, val subtitle: String) : SettingItem()
     object Shizuku : SettingItem()
+    object StoragePermission : SettingItem()
 }
 
 class SettingsAdapter(
     private val items: List<SettingItem>,
     private val onItemClick: (SettingItem) -> Unit,
-    private val onSwitchChange: (SettingItem.SwitchItem, Boolean) -> Unit
+    private val onSwitchChange: (SettingItem.SwitchItem, Boolean) -> Unit,
+    private val onStorageGrantClick: () -> Unit
 ) : RecyclerView.Adapter<SettingsAdapter.ViewHolder>() {
 
     companion object {
@@ -34,6 +38,7 @@ class SettingsAdapter(
         private const val TYPE_ABOUT = 4
         private const val TYPE_SHIZUKU = 5
         private const val TYPE_ABOUT_MORE = 6
+        private const val TYPE_STORAGE_PERMISSION = 7
     }
 
     override fun getItemViewType(position: Int): Int {
@@ -44,6 +49,7 @@ class SettingsAdapter(
             is SettingItem.About -> TYPE_ABOUT
             is SettingItem.AboutMore -> TYPE_ABOUT_MORE
             is SettingItem.Shizuku -> TYPE_SHIZUKU
+            is SettingItem.StoragePermission -> TYPE_STORAGE_PERMISSION
         }
     }
 
@@ -73,6 +79,10 @@ class SettingsAdapter(
                 val view = LayoutInflater.from(parent.context).inflate(R.layout.item_setting_shizuku, parent, false)
                 ShizukuViewHolder(view)
             }
+            TYPE_STORAGE_PERMISSION -> {
+                val view = LayoutInflater.from(parent.context).inflate(R.layout.item_setting_storage_permission, parent, false)
+                StoragePermissionViewHolder(view)
+            }
             else -> throw IllegalArgumentException("Unknown view type")
         }
     }
@@ -97,6 +107,9 @@ class SettingsAdapter(
                 holder.bind(item as SettingItem.AboutMore)
             }
             is ShizukuViewHolder -> {
+                holder.bind()
+            }
+            is StoragePermissionViewHolder -> {
                 holder.bind()
             }
         }
@@ -286,6 +299,36 @@ class SettingsAdapter(
 
     class ShizukuViewHolder(itemView: View) : ViewHolder(itemView) {
         fun bind() {
+        }
+    }
+
+    class StoragePermissionViewHolder(itemView: View) : ViewHolder(itemView) {
+        private val btnGrant: MaterialButton = itemView.findViewById(R.id.btn_grant_storage)
+        private val statusText: TextView = itemView.findViewById(R.id.storage_status_text)
+
+        fun bind() {
+            val isShizukuAvailable = ShizukuManager.isShizukuAvailable() && ShizukuManager.hasShizukuPermission()
+
+            if (isShizukuAvailable) {
+                btnGrant.isEnabled = true
+                btnGrant.alpha = 1f
+                btnGrant.text = itemView.context.getString(R.string.storage_permission_grant)
+                statusText.text = itemView.context.getString(R.string.pref_storage_permission_summary)
+            } else {
+                btnGrant.isEnabled = false
+                btnGrant.alpha = 0.4f
+                btnGrant.text = itemView.context.getString(R.string.shizuku_not_authorized)
+                statusText.text = itemView.context.getString(R.string.error_no_shizuku)
+            }
+
+            btnGrant.setOnClickListener {
+                (itemView.parent as? RecyclerView)?.let { rv ->
+                    val position = rv.getChildAdapterPosition(itemView)
+                    (rv.adapter as? SettingsAdapter)?.let { adapter ->
+                        adapter.onStorageGrantClick()
+                    }
+                }
+            }
         }
     }
 }

@@ -34,6 +34,7 @@ class UpdateOptionsActivity : BaseActivity() {
 
     private lateinit var binding: ActivityUpdateOptionsBinding
     private var updateMethod: UpdateMethod = UpdateMethod.BROWSER
+    private var updateSource: String = "GitHub"
     private var downloadId: Long = -1
     private var tempApkFile: File? = null
     private var isDownloading = false
@@ -65,6 +66,7 @@ class UpdateOptionsActivity : BaseActivity() {
 
         setupToolbar()
         setupUpdateMethodSelector()
+        setupUpdateSourceSelector()
         setupInstallerName()
         setupButtons()
         registerDownloadReceiver()
@@ -142,6 +144,36 @@ class UpdateOptionsActivity : BaseActivity() {
             .show()
     }
 
+    private fun setupUpdateSourceSelector() {
+        val savedSource = PreferencesManager.getUpdateSource(this)
+        updateSource = if (savedSource.isNotEmpty()) savedSource else "GitHub"
+        updateSourceDisplay()
+
+        binding.containerUpdateSource.setOnClickListener {
+            showUpdateSourceDialog()
+        }
+    }
+
+    private fun updateSourceDisplay() {
+        binding.updateSourceValue.text = updateSource
+    }
+
+    private fun showUpdateSourceDialog() {
+        val options = arrayOf("GitHub")
+        val currentIndex = 0
+
+        MaterialAlertDialogBuilder(this)
+            .setTitle("Installation Source")
+            .setSingleChoiceItems(options, currentIndex) { dialog, which ->
+                updateSource = options[which]
+                PreferencesManager.setUpdateSource(this, updateSource)
+                updateSourceDisplay()
+                dialog.dismiss()
+            }
+            .setNegativeButton(R.string.cancel, null)
+            .show()
+    }
+
     private fun setupInstallerName() {
         val savedName = PreferencesManager.getInstallerName(this)
         if (savedName.isNotEmpty()) {
@@ -169,13 +201,13 @@ class UpdateOptionsActivity : BaseActivity() {
         val installerName = binding.installerNameInput.text?.toString()?.trim() ?: ""
         PreferencesManager.setInstallerName(this, installerName)
         PreferencesManager.setUpdateMethod(this, if (updateMethod == UpdateMethod.SILENT) "silent" else "browser")
+        PreferencesManager.setUpdateSource(this, updateSource)
         SnackbarHelper.showSnackbar(binding.root, "Settings saved")
-        LogManager.info(this, "Update settings saved", "Method: $updateMethod, Installer: $installerName")
+        LogManager.info(this, "Update settings saved", "Method: $updateMethod, Source: $updateSource, Installer: $installerName")
     }
 
     private fun registerDownloadReceiver() {
         val filter = IntentFilter(DownloadManager.ACTION_DOWNLOAD_COMPLETE)
-        // Android 14+ requires explicit export flag
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
             registerReceiver(downloadReceiver, filter, Context.RECEIVER_NOT_EXPORTED)
         } else {
@@ -410,7 +442,6 @@ class UpdateOptionsActivity : BaseActivity() {
                 val path = apkFile.absolutePath
                 val tempPath = "/data/local/tmp/update_temp.apk"
 
-                // Step 1: Copy APK to /data/local/tmp/
                 val copyCmd = "cat \"$path\" > $tempPath && chmod 644 $tempPath"
                 LogManager.debug(this@UpdateOptionsActivity, "Copying APK to temp", copyCmd)
                 val copyResult = ShizukuManager.executeCommand(copyCmd)
@@ -426,11 +457,9 @@ class UpdateOptionsActivity : BaseActivity() {
                     return@withContext
                 }
 
-                // Step 2: Verify file exists
                 val verifyResult = ShizukuManager.executeCommand("ls -la $tempPath")
                 LogManager.debug(this@UpdateOptionsActivity, "Temp file verified", "Output: ${verifyResult.output}")
 
-                // Step 3: Install
                 val installCmd = if (installerName.isNotEmpty()) {
                     "pm install -r -d -t --user 0 -i \"$installerName\" $tempPath 2>&1"
                 } else {
@@ -444,7 +473,6 @@ class UpdateOptionsActivity : BaseActivity() {
                 val fullOutput = if (installResult.output.isNotEmpty()) installResult.output else installResult.error
                 LogManager.debug(this@UpdateOptionsActivity, "Install output", "Success: ${installResult.success}, Output: $fullOutput")
 
-                // Step 4: Clean up temp file
                 ShizukuManager.executeCommand("rm -f $tempPath")
 
                 withContext(Dispatchers.Main) {

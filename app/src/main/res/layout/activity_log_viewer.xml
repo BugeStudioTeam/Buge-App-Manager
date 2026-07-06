@@ -15,7 +15,7 @@
             android:layout_height="?attr/actionBarSize"
             app:title="@string/log_activity_title"
             app:navigationIcon="@drawable/ic_arrow_back"
-            app:titleTextColor="@android:color/black" />
+            app:titleTextColor="?attr/colorOnSurface" />
 
     </com.google.android.material.appbar.AppBarLayout>
 
@@ -53,7 +53,7 @@
                         android:layout_height="wrap_content"
                         android:text="@string/log_enable"
                         android:textAppearance="?attr/textAppearanceBodyLarge"
-                        android:textColor="@android:color/black" />
+                        android:textColor="?attr/colorOnSurface" />
 
                 </LinearLayout>
 

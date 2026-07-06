@@ -24,4 +24,22 @@
         <item name="cornerFamily">rounded</item>
         <item name="cornerSize">40dp</item>
     </style>
+
+    <!-- Left button: left large (capsule), right small (4dp) -->
+    <style name="ShapeAppearance.M3.Button.LeftCapsule" parent="ShapeAppearance.MaterialComponents">
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSizeTopLeft">20dp</item>
+        <item name="cornerSizeTopRight">4dp</item>
+        <item name="cornerSizeBottomRight">4dp</item>
+        <item name="cornerSizeBottomLeft">20dp</item>
+    </style>
+
+    <!-- Right button: left small (4dp), right large (capsule) -->
+    <style name="ShapeAppearance.M3.Button.RightCapsule" parent="ShapeAppearance.MaterialComponents">
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSizeTopLeft">4dp</item>
+        <item name="cornerSizeTopRight">20dp</item>
+        <item name="cornerSizeBottomRight">20dp</item>
+        <item name="cornerSizeBottomLeft">4dp</item>
+    </style>
 </resources>

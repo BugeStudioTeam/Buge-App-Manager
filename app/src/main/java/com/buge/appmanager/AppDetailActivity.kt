@@ -3,6 +3,7 @@ package com.buge.appmanager
 import android.content.Intent
 import android.animation.ValueAnimator
 import android.net.Uri
+import android.os.Build
 import android.os.Bundle
 import android.os.Environment
 import android.provider.Settings
@@ -11,12 +12,13 @@ import android.view.Menu
 import android.view.MenuItem
 import android.view.View
 import android.widget.TextView
+import android.content.pm.PackageManager
 import androidx.activity.viewModels
 import androidx.core.animation.doOnEnd
 import androidx.core.content.ContextCompat
 import androidx.core.content.FileProvider
-import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.lifecycle.lifecycleScope
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.buge.appmanager.adapter.PermissionDetailAdapter
 import com.buge.appmanager.databinding.ActivityAppDetailBinding
 import com.buge.appmanager.model.PermissionInfo
@@ -37,6 +39,8 @@ import java.io.OutputStreamWriter
 import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
+import java.util.zip.ZipEntry
+import java.util.zip.ZipOutputStream
 
 class AppDetailActivity : BaseActivity() {
 
@@ -131,10 +135,571 @@ class AppDetailActivity : BaseActivity() {
         return super.onOptionsItemSelected(item)
     }
 
+    private fun setupButtonAnimation(button: MaterialButton, onClick: () -> Unit) {
+        button.setOnClickListener { view ->
+            ValueAnimator.ofFloat(1f, 0.96f).apply {
+                duration = 80
+                addUpdateListener { animator ->
+                    val scale = animator.animatedValue as Float
+                    view.scaleX = scale
+                    view.scaleY = scale
+                }
+                doOnEnd {
+                    ValueAnimator.ofFloat(0.96f, 1f).apply {
+                        duration = 80
+                        addUpdateListener { animator ->
+                            val scale = animator.animatedValue as Float
+                            view.scaleX = scale
+                            view.scaleY = scale
+                        }
+                        start()
+                    }
+                }
+                start()
+            }
+            onClick.invoke()
+        }
+    }
+
+    // ===================== Export App Info =====================
+
+    private fun exportAppInfo() {
+        val app = viewModel.appInfo.value
+        val permissions = viewModel.permissions.value
+
+        if (app == null) {
+            Snackbar.make(binding.root, "Unable to export app info", Snackbar.LENGTH_SHORT).show()
+            return
+        }
+
+        MaterialAlertDialogBuilder(this)
+            .setTitle("Export App Info")
+            .setMessage("Export detailed information for ${app.appName} to a text file?")
+            .setPositiveButton(R.string.confirm) { _, _ ->
+                doExportAppInfo(app, permissions ?: emptyList())
+            }
+            .setNegativeButton(R.string.cancel, null)
+            .show()
+    }
+
+    private fun doExportAppInfo(app: com.buge.appmanager.model.AppInfo, permissions: List<PermissionInfo>) {
+        try {
+            val downloadDir = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS)
+            if (!downloadDir.exists()) {
+                downloadDir.mkdirs()
+            }
+
+            val timestamp = SimpleDateFormat("yyyyMMdd_HHmmss", Locale.US).format(Date())
+            val safeAppName = app.appName.replace("/", "_").replace("\\", "_").replace(":", "_").replace("?", "_").replace("*", "_").replace(" ", "_")
+            val fileName = "${safeAppName}_${timestamp}_info.txt"
+            val destFile = File(downloadDir, fileName)
+
+            var counter = 1
+            var finalFile = destFile
+            while (finalFile.exists()) {
+                finalFile = File(downloadDir, "${safeAppName}_${timestamp}_${counter}_info.txt")
+                counter++
+            }
+
+            val content = buildAppInfoContent(app, permissions)
+
+            FileOutputStream(finalFile).use { outputStream ->
+                OutputStreamWriter(outputStream, Charsets.UTF_8).use { writer ->
+                    writer.write(content)
+                }
+            }
+
+            Snackbar.make(binding.root, "App info saved to: ${finalFile.absolutePath}", Snackbar.LENGTH_LONG).show()
+            LogManager.success(this, "App info exported", "Package: ${app.packageName}, Path: ${finalFile.absolutePath}")
+
+        } catch (e: Exception) {
+            e.printStackTrace()
+            Snackbar.make(binding.root, "Export failed: ${e.message}", Snackbar.LENGTH_LONG).show()
+            LogManager.error(this, "App info export failed", e.message)
+        }
+    }
+
+    private fun buildAppInfoContent(app: com.buge.appmanager.model.AppInfo, permissions: List<PermissionInfo>): String {
+        val currentLocale = getCurrentLocale()
+        val dateFormat = SimpleDateFormat("yyyy-MM-dd HH:mm:ss", currentLocale)
+
+        val separator = "=".repeat(60)
+        val line = "-".repeat(60)
+
+        return buildString {
+            appendLine(separator)
+            appendLine("Buge App Manager - Application Information Report")
+            appendLine(separator)
+            appendLine()
+            appendLine("Generated: ${dateFormat.format(Date())}")
+            appendLine()
+
+            appendLine(line)
+            appendLine("BASIC INFORMATION")
+            appendLine(line)
+            appendLine("App Name: ${app.appName}")
+            appendLine("Package Name: ${app.packageName}")
+            appendLine("Version Name: ${app.versionName}")
+            appendLine("Version Code: ${app.versionCode}")
+            appendLine("Is System App: ${if (app.isSystemApp) "Yes" else "No"}")
+            appendLine("Is Enabled: ${if (app.isEnabled) "Yes" else "No"}")
+            appendLine()
+
+            appendLine(line)
+            appendLine("INSTALLATION INFORMATION")
+            appendLine(line)
+            appendLine("Install Date: ${dateFormat.format(Date(app.installTime))}")
+            appendLine("Update Date: ${dateFormat.format(Date(app.updateTime))}")
+            appendLine("APK Path: ${app.apkPath}")
+            appendLine()
+
+            appendLine(line)
+            appendLine("SDK INFORMATION")
+            appendLine(line)
+            appendLine("Target SDK: API ${app.targetSdkVersion}")
+            appendLine("Min SDK: API ${app.minSdkVersion}")
+            appendLine()
+
+            appendLine(line)
+            appendLine("PERMISSIONS (${permissions.size})")
+            appendLine(line)
+
+            val dangerousPerms = permissions.filter { it.isDangerous }
+            val normalPerms = permissions.filter { !it.isDangerous }
+
+            if (dangerousPerms.isNotEmpty()) {
+                appendLine()
+                appendLine("Dangerous Permissions (${dangerousPerms.size}):")
+                for (perm in dangerousPerms) {
+                    val status = if (perm.isGranted) "GRANTED" else "DENIED"
+                    appendLine("  • ${getFriendlyPermissionName(perm.name)}")
+                    appendLine("    - Name: ${perm.name}")
+                    appendLine("    - Status: $status")
+                }
+            }
+
+            if (normalPerms.isNotEmpty()) {
+                appendLine()
+                appendLine("Normal Permissions (${normalPerms.size}):")
+                for (perm in normalPerms) {
+                    appendLine("  • ${getFriendlyPermissionName(perm.name)}")
+                    appendLine("    - Name: ${perm.name}")
+                }
+            }
+
+            if (permissions.isEmpty()) {
+                appendLine("  No permissions requested")
+            }
+
+            appendLine()
+            appendLine(separator)
+            appendLine("END OF REPORT")
+            appendLine(separator)
+        }
+    }
+
+    private fun getFriendlyPermissionName(permission: String): String {
+        return when (permission) {
+            "android.permission.RECORD_AUDIO" -> "Microphone"
+            "android.permission.CAMERA" -> "Camera"
+            "android.permission.ACCESS_FINE_LOCATION" -> "Precise Location"
+            "android.permission.ACCESS_COARSE_LOCATION" -> "Approximate Location"
+            "android.permission.ACCESS_BACKGROUND_LOCATION" -> "Background Location"
+            "android.permission.READ_CONTACTS" -> "Read Contacts"
+            "android.permission.WRITE_CONTACTS" -> "Write Contacts"
+            "android.permission.GET_ACCOUNTS" -> "Get Accounts"
+            "android.permission.READ_EXTERNAL_STORAGE" -> "Read Storage"
+            "android.permission.WRITE_EXTERNAL_STORAGE" -> "Write Storage"
+            "android.permission.MANAGE_EXTERNAL_STORAGE" -> "All Files Access"
+            "android.permission.READ_PHONE_STATE" -> "Phone State"
+            "android.permission.CALL_PHONE" -> "Make Calls"
+            "android.permission.READ_CALL_LOG" -> "Read Call Log"
+            "android.permission.WRITE_CALL_LOG" -> "Write Call Log"
+            "android.permission.SEND_SMS" -> "Send SMS"
+            "android.permission.RECEIVE_SMS" -> "Receive SMS"
+            "android.permission.READ_SMS" -> "Read SMS"
+            "android.permission.READ_CALENDAR" -> "Read Calendar"
+            "android.permission.WRITE_CALENDAR" -> "Write Calendar"
+            "android.permission.BODY_SENSORS" -> "Body Sensors"
+            "android.permission.ACTIVITY_RECOGNITION" -> "Activity Recognition"
+            "android.permission.BLUETOOTH_SCAN" -> "Bluetooth Scan"
+            "android.permission.BLUETOOTH_CONNECT" -> "Bluetooth Connect"
+            "android.permission.POST_NOTIFICATIONS" -> "Notifications"
+            "android.permission.READ_MEDIA_IMAGES" -> "Media Images"
+            "android.permission.READ_MEDIA_VIDEO" -> "Media Video"
+            "android.permission.READ_MEDIA_AUDIO" -> "Media Audio"
+            "android.permission.SYSTEM_ALERT_WINDOW" -> "Display Over Other Apps"
+            "android.permission.REQUEST_INSTALL_PACKAGES" -> "Install Unknown Apps"
+            "android.permission.WRITE_SETTINGS" -> "Modify System Settings"
+            else -> {
+                val shortName = permission.substringAfterLast(".")
+                shortName.replace("_", " ").lowercase().split(" ").joinToString(" ") {
+                    it.replaceFirstChar { if (it.isLowerCase()) it.titlecase(Locale.getDefault()) else it.toString() }
+                }
+            }
+        }
+    }
+
+    // ===================== Favorite =====================
+
+    private fun toggleFavorite() {
+        if (PreferencesManager.isFavoriteApp(this, packageName)) {
+            PreferencesManager.removeFavoriteApp(this, packageName)
+            LogManager.info(this, "Removed from favorites", "Package: $packageName")
+            Snackbar.make(binding.root, "Removed from favorites", Snackbar.LENGTH_SHORT).show()
+        } else {
+            PreferencesManager.addFavoriteApp(this, packageName)
+            LogManager.info(this, "Added to favorites", "Package: $packageName")
+            Snackbar.make(binding.root, "Added to favorites", Snackbar.LENGTH_SHORT).show()
+        }
+        updateFavoriteIcon()
+    }
+
+    private fun updateFavoriteIcon() {
+        val isFavorite = PreferencesManager.isFavoriteApp(this, packageName)
+        if (isFavorite) {
+            favoriteMenuItem?.icon = ContextCompat.getDrawable(this, R.drawable.ic_favorite_filled)
+        } else {
+            favoriteMenuItem?.icon = ContextCompat.getDrawable(this, R.drawable.ic_favorite)
+        }
+    }
+
+    // ===================== Export APK (Split APK -> .apks) =====================
+
+    private fun exportApk() {
+        try {
+            val applicationInfo = packageManager.getApplicationInfo(packageName, 0)
+            val sourcePath = applicationInfo.sourceDir
+
+            if (sourcePath.isNullOrEmpty()) {
+                Snackbar.make(binding.root, "APK path not found", Snackbar.LENGTH_SHORT).show()
+                LogManager.error(this, "APK export failed", "APK path not found for $packageName")
+                return
+            }
+
+            val isSplit = isSplitApk(packageName)
+
+            val appName = try {
+                packageManager.getApplicationLabel(applicationInfo).toString()
+            } catch (e: Exception) {
+                packageName
+            }
+
+            val downloadDir = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS)
+            if (!downloadDir.exists()) {
+                downloadDir.mkdirs()
+            }
+
+            val timestamp = SimpleDateFormat("yyyyMMdd_HHmmss", Locale.US).format(Date())
+            val safeAppName = appName.replace("/", "_").replace("\\", "_").replace(":", "_").replace("?", "_").replace("*", "_").replace(" ", "_")
+
+            if (isSplit) {
+                exportAsApks(packageName, safeAppName, timestamp, downloadDir)
+            } else {
+                // Single APK - export as .apk
+                val sourceFile = File(sourcePath)
+                if (!sourceFile.exists()) {
+                    Snackbar.make(binding.root, "APK file does not exist", Snackbar.LENGTH_SHORT).show()
+                    LogManager.error(this, "APK export failed", "APK file does not exist for $packageName")
+                    return
+                }
+
+                var destFile = File(downloadDir, "${safeAppName}_${timestamp}.apk")
+                var counter = 1
+                while (destFile.exists()) {
+                    destFile = File(downloadDir, "${safeAppName}_${timestamp}_$counter.apk")
+                    counter++
+                }
+
+                FileInputStream(sourceFile).use { input ->
+                    FileOutputStream(destFile).use { output ->
+                        input.copyTo(output)
+                    }
+                }
+
+                Snackbar.make(binding.root, "APK saved to: ${destFile.absolutePath}", Snackbar.LENGTH_LONG).show()
+                LogManager.success(this, "APK exported", "Package: $packageName, Path: ${destFile.absolutePath}")
+            }
+
+        } catch (e: Exception) {
+            e.printStackTrace()
+            Snackbar.make(binding.root, "Export failed: ${e.message}", Snackbar.LENGTH_LONG).show()
+            LogManager.error(this, "APK export failed", e.message)
+        }
+    }
+
+    // ===================== Split APK Detection =====================
+
+    private fun isSplitApk(packageName: String): Boolean {
+        return try {
+            val appInfo = packageManager.getApplicationInfo(packageName, 0)
+            // Android 8.0+ has splitNames directly
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                val splitNames = appInfo.splitNames
+                splitNames != null && splitNames.isNotEmpty()
+            } else {
+                // Fallback using reflection for older Android versions
+                val splitNamesField = appInfo.javaClass.getDeclaredField("splitNames")
+                splitNamesField.isAccessible = true
+                val splitNames = splitNamesField.get(appInfo) as? Array<String>
+                splitNames != null && splitNames.isNotEmpty()
+            }
+        } catch (e: Exception) {
+            LogManager.warning(this, "Failed to detect split APK", e.message)
+            false
+        }
+    }
+
+    /**
+     * Export split APKs as a single .apks archive (ZIP containing all splits with original names)
+     */
+    private fun exportAsApks(packageName: String, safeAppName: String, timestamp: String, downloadDir: File) {
+        lifecycleScope.launch {
+            try {
+                // Get all APK paths using pm path
+                val result = ShizukuManager.executeCommand("pm path $packageName")
+                if (!result.success) {
+                    Snackbar.make(binding.root, "Failed to get APK paths: ${result.error}", Snackbar.LENGTH_LONG).show()
+                    LogManager.error(this@AppDetailActivity, "Split APK export failed", result.error)
+                    return@launch
+                }
+
+                val apkPaths = result.output.lines()
+                    .filter { it.startsWith("package:") }
+                    .map { it.removePrefix("package:").trim() }
+                    .filter { it.isNotEmpty() }
+
+                if (apkPaths.isEmpty()) {
+                    Snackbar.make(binding.root, "No APK files found", Snackbar.LENGTH_SHORT).show()
+                    return@launch
+                }
+
+                // Create .apks file (ZIP archive)
+                var apksFile = File(downloadDir, "${safeAppName}_${timestamp}.apks")
+                var counter = 1
+                while (apksFile.exists()) {
+                    apksFile = File(downloadDir, "${safeAppName}_${timestamp}_${counter}.apks")
+                    counter++
+                }
+
+                ZipOutputStream(FileOutputStream(apksFile)).use { zos ->
+                    // Add each split APK with its original filename
+                    for (path in apkPaths) {
+                        val sourceFile = File(path)
+                        if (!sourceFile.exists()) {
+                            LogManager.warning(this@AppDetailActivity, "Split APK file does not exist", sourceFile.absolutePath)
+                            continue
+                        }
+
+                        // Use original filename from path (e.g., base.apk, split_config.armeabi_v7a.apk)
+                        val originalFileName = sourceFile.name
+                        val entry = ZipEntry(originalFileName)
+                        zos.putNextEntry(entry)
+
+                        FileInputStream(sourceFile).use { input ->
+                            val buffer = ByteArray(8192)
+                            var length: Int
+                            while (input.read(buffer).also { length = it } != -1) {
+                                zos.write(buffer, 0, length)
+                            }
+                        }
+                        zos.closeEntry()
+                        LogManager.debug(this@AppDetailActivity, "Added to .apks", originalFileName)
+                    }
+                }
+
+                val message = "Split APK exported as .apks: ${apksFile.absolutePath}"
+                Snackbar.make(binding.root, message, Snackbar.LENGTH_LONG).show()
+                LogManager.success(this@AppDetailActivity, "Split APK exported as .apks", "Path: ${apksFile.absolutePath}, Splits: ${apkPaths.size}")
+
+            } catch (e: Exception) {
+                LogManager.error(this@AppDetailActivity, "Split APK export failed", e.message)
+                Snackbar.make(binding.root, "Export failed: ${e.message}", Snackbar.LENGTH_LONG).show()
+            }
+        }
+    }
+
+    private fun buildManifestJson(apkPaths: List<String>): String {
+        val splits = apkPaths.mapIndexed { index, _ ->
+            if (index == 0) "base" else "split_$index"
+        }
+        return """
+            {
+              "package": "$packageName",
+              "versionCode": 1,
+              "splits": ${splits.joinToString(separator = ", ", prefix = "[", postfix = "]") { "\"$it\"" }}
+            }
+        """.trimIndent()
+    }
+
+    // ===================== Share APK =====================
+
+    private fun shareApk() {
+        try {
+            val applicationInfo = packageManager.getApplicationInfo(packageName, 0)
+            val sourcePath = applicationInfo.sourceDir
+
+            if (sourcePath.isNullOrEmpty()) {
+                Snackbar.make(binding.root, "APK path not found", Snackbar.LENGTH_SHORT).show()
+                LogManager.error(this, "APK share failed", "APK path not found for $packageName")
+                return
+            }
+
+            val appName = try {
+                packageManager.getApplicationLabel(applicationInfo).toString()
+            } catch (e: Exception) {
+                packageName
+            }
+
+            val cacheDir = externalCacheDir
+            if (cacheDir == null) {
+                Snackbar.make(binding.root, "Cannot access cache directory", Snackbar.LENGTH_SHORT).show()
+                return
+            }
+
+            cleanupTempApkFiles(cacheDir)
+
+            val safeAppName = appName
+                .replace("/", "_")
+                .replace("\\", "_")
+                .replace(":", "_")
+                .replace("?", "_")
+                .replace("*", "_")
+                .replace(" ", "_")
+                .replace("'", "_")
+                .replace("\"", "_")
+
+            val isSplit = isSplitApk(packageName)
+
+            val tempFile = File(cacheDir, "${safeAppName}.apk")
+            if (tempFile.exists()) {
+                tempFile.delete()
+            }
+
+            val sourceFile = File(sourcePath)
+            if (!sourceFile.exists()) {
+                Snackbar.make(binding.root, "APK file does not exist", Snackbar.LENGTH_SHORT).show()
+                return
+            }
+
+            FileInputStream(sourceFile).use { input ->
+                FileOutputStream(tempFile).use { output ->
+                    input.copyTo(output)
+                }
+            }
+
+            val apkUri = FileProvider.getUriForFile(
+                this,
+                FILE_PROVIDER_AUTHORITY,
+                tempFile
+            )
+
+            val shareIntent = Intent(Intent.ACTION_SEND).apply {
+                type = "application/vnd.android.package-archive"
+                putExtra(Intent.EXTRA_STREAM, apkUri)
+                addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
+                addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+            }
+
+            val chooserIntent = Intent.createChooser(
+                shareIntent,
+                "Share APK: ${appName}"
+            )
+            chooserIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+
+            startActivity(chooserIntent)
+            LogManager.success(this, "APK shared", "Package: $packageName")
+
+            // If split APK, notify user
+            if (isSplit) {
+                Snackbar.make(binding.root, "Note: This app uses split APK. Only base APK shared.", Snackbar.LENGTH_LONG).show()
+            }
+
+        } catch (e: Exception) {
+            e.printStackTrace()
+            Snackbar.make(binding.root, "Share failed: ${e.message}", Snackbar.LENGTH_LONG).show()
+            LogManager.error(this, "APK share failed", e.message)
+        }
+    }
+
+    private fun cleanupTempApkFiles(cacheDir: File) {
+        try {
+            val files = cacheDir.listFiles { file ->
+                file.name.endsWith(".apk") && file.lastModified() < System.currentTimeMillis() - (30 * 60 * 1000)
+            }
+            files?.forEach { file ->
+                if (file.exists()) {
+                    file.delete()
+                    LogManager.debug(this, "Cleaned up temp APK file", file.name)
+                }
+            }
+        } catch (e: Exception) {
+            LogManager.warning(this, "Failed to cleanup temp APK files", e.message)
+        }
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        try {
+            val cacheDir = externalCacheDir
+            cacheDir?.let {
+                val files = it.listFiles { file -> file.name.endsWith(".apk") }
+                files?.forEach { file ->
+                    if (file.exists()) {
+                        file.delete()
+                    }
+                }
+            }
+        } catch (e: Exception) {
+            // Ignore cleanup errors
+        }
+    }
+
+    // ===================== Open in Stores =====================
+
+    private fun openInGooglePlay() {
+        try {
+            val intent = Intent(Intent.ACTION_VIEW).apply {
+                data = Uri.parse("market://details?id=$packageName")
+                addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+            }
+            startActivity(intent)
+            LogManager.info(this, "Opened Google Play", "Package: $packageName")
+        } catch (e: Exception) {
+            try {
+                val intent = Intent(Intent.ACTION_VIEW).apply {
+                    data = Uri.parse("https://play.google.com/store/apps/details?id=$packageName")
+                    addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                }
+                startActivity(intent)
+                LogManager.info(this, "Opened Google Play (web)", "Package: $packageName")
+            } catch (e2: Exception) {
+                Snackbar.make(binding.root, "Cannot open Google Play", Snackbar.LENGTH_SHORT).show()
+                LogManager.error(this, "Failed to open Google Play", e2.message)
+            }
+        }
+    }
+
+    private fun openInFDroid() {
+        try {
+            val intent = Intent(Intent.ACTION_VIEW).apply {
+                data = Uri.parse("https://f-droid.org/packages/$packageName/")
+                addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+            }
+            startActivity(intent)
+            LogManager.info(this, "Opened F-Droid", "Package: $packageName")
+        } catch (e: Exception) {
+            Snackbar.make(binding.root, "Cannot open F-Droid", Snackbar.LENGTH_SHORT).show()
+            LogManager.error(this, "Failed to open F-Droid", e.message)
+        }
+    }
+
+    // ===================== Batch Permissions =====================
+
     private fun grantAllPermissions() {
         val permissions = viewModel.permissions.value ?: emptyList()
         val dangerousPermissions = permissions.filter { it.isDangerous && !it.isGranted }
-        
+
         if (dangerousPermissions.isEmpty()) {
             Snackbar.make(binding.root, "All dangerous permissions are already granted", Snackbar.LENGTH_SHORT).show()
             return
@@ -179,7 +744,7 @@ class AppDetailActivity : BaseActivity() {
     private fun revokeAllPermissions() {
         val permissions = viewModel.permissions.value ?: emptyList()
         val dangerousPermissions = permissions.filter { it.isDangerous && it.isGranted }
-        
+
         if (dangerousPermissions.isEmpty()) {
             Snackbar.make(binding.root, "No granted dangerous permissions to revoke", Snackbar.LENGTH_SHORT).show()
             return
@@ -221,452 +786,9 @@ class AppDetailActivity : BaseActivity() {
             .show()
     }
 
-    private fun setupButtonAnimation(button: MaterialButton, onClick: () -> Unit) {
-        button.setOnClickListener { view ->
-            ValueAnimator.ofFloat(1f, 0.96f).apply {
-                duration = 80
-                addUpdateListener { animator ->
-                    val scale = animator.animatedValue as Float
-                    view.scaleX = scale
-                    view.scaleY = scale
-                }
-                doOnEnd {
-                    ValueAnimator.ofFloat(0.96f, 1f).apply {
-                        duration = 80
-                        addUpdateListener { animator ->
-                            val scale = animator.animatedValue as Float
-                            view.scaleX = scale
-                            view.scaleY = scale
-                        }
-                        start()
-                    }
-                }
-                start()
-            }
-            onClick.invoke()
-        }
-    }
-
-    private fun exportAppInfo() {
-        val app = viewModel.appInfo.value
-        val permissions = viewModel.permissions.value
-        
-        if (app == null) {
-            Snackbar.make(binding.root, "Unable to export app info", Snackbar.LENGTH_SHORT).show()
-            return
-        }
-        
-        MaterialAlertDialogBuilder(this)
-            .setTitle("Export App Info")
-            .setMessage("Export detailed information for ${app.appName} to a text file?")
-            .setPositiveButton(R.string.confirm) { _, _ ->
-                doExportAppInfo(app, permissions ?: emptyList())
-            }
-            .setNegativeButton(R.string.cancel, null)
-            .show()
-    }
-    
-    private fun doExportAppInfo(app: com.buge.appmanager.model.AppInfo, permissions: List<PermissionInfo>) {
-        try {
-            val downloadDir = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS)
-            if (!downloadDir.exists()) {
-                downloadDir.mkdirs()
-            }
-            
-            val timestamp = SimpleDateFormat("yyyyMMdd_HHmmss", Locale.US).format(Date())
-            val safeAppName = app.appName.replace("/", "_").replace("\\", "_").replace(":", "_").replace("?", "_").replace("*", "_").replace(" ", "_")
-            val fileName = "${safeAppName}_${timestamp}_info.txt"
-            val destFile = File(downloadDir, fileName)
-            
-            var counter = 1
-            var finalFile = destFile
-            while (finalFile.exists()) {
-                finalFile = File(downloadDir, "${safeAppName}_${timestamp}_${counter}_info.txt")
-                counter++
-            }
-            
-            val content = buildAppInfoContent(app, permissions)
-            
-            FileOutputStream(finalFile).use { outputStream ->
-                OutputStreamWriter(outputStream, Charsets.UTF_8).use { writer ->
-                    writer.write(content)
-                }
-            }
-            
-            Snackbar.make(binding.root, "App info saved to: ${finalFile.absolutePath}", Snackbar.LENGTH_LONG).show()
-            LogManager.success(this, "App info exported", "Package: ${app.packageName}, Path: ${finalFile.absolutePath}")
-            
-        } catch (e: Exception) {
-            e.printStackTrace()
-            Snackbar.make(binding.root, "Export failed: ${e.message}", Snackbar.LENGTH_LONG).show()
-            LogManager.error(this, "App info export failed", e.message)
-        }
-    }
-    
-    private fun buildAppInfoContent(app: com.buge.appmanager.model.AppInfo, permissions: List<PermissionInfo>): String {
-        val currentLocale = getCurrentLocale()
-        val dateFormat = SimpleDateFormat("yyyy-MM-dd HH:mm:ss", currentLocale)
-        
-        val separator = "=".repeat(60)
-        val line = "-".repeat(60)
-        
-        return buildString {
-            appendLine(separator)
-            appendLine("Buge App Manager - Application Information Report")
-            appendLine(separator)
-            appendLine()
-            appendLine("Generated: ${dateFormat.format(Date())}")
-            appendLine()
-            
-            appendLine(line)
-            appendLine("BASIC INFORMATION")
-            appendLine(line)
-            appendLine("App Name: ${app.appName}")
-            appendLine("Package Name: ${app.packageName}")
-            appendLine("Version Name: ${app.versionName}")
-            appendLine("Version Code: ${app.versionCode}")
-            appendLine("Is System App: ${if (app.isSystemApp) "Yes" else "No"}")
-            appendLine("Is Enabled: ${if (app.isEnabled) "Yes" else "No"}")
-            appendLine()
-            
-            appendLine(line)
-            appendLine("INSTALLATION INFORMATION")
-            appendLine(line)
-            appendLine("Install Date: ${dateFormat.format(Date(app.installTime))}")
-            appendLine("Update Date: ${dateFormat.format(Date(app.updateTime))}")
-            appendLine("APK Path: ${app.apkPath}")
-            appendLine()
-            
-            appendLine(line)
-            appendLine("SDK INFORMATION")
-            appendLine(line)
-            appendLine("Target SDK: API ${app.targetSdkVersion}")
-            appendLine("Min SDK: API ${app.minSdkVersion}")
-            appendLine()
-            
-            appendLine(line)
-            appendLine("PERMISSIONS (${permissions.size})")
-            appendLine(line)
-            
-            val dangerousPerms = permissions.filter { it.isDangerous }
-            val normalPerms = permissions.filter { !it.isDangerous }
-            
-            if (dangerousPerms.isNotEmpty()) {
-                appendLine()
-                appendLine("Dangerous Permissions (${dangerousPerms.size}):")
-                for (perm in dangerousPerms) {
-                    val status = if (perm.isGranted) "GRANTED" else "DENIED"
-                    appendLine("  • ${getFriendlyPermissionName(perm.name)}")
-                    appendLine("    - Name: ${perm.name}")
-                    appendLine("    - Status: $status")
-                }
-            }
-            
-            if (normalPerms.isNotEmpty()) {
-                appendLine()
-                appendLine("Normal Permissions (${normalPerms.size}):")
-                for (perm in normalPerms) {
-                    appendLine("  • ${getFriendlyPermissionName(perm.name)}")
-                    appendLine("    - Name: ${perm.name}")
-                }
-            }
-            
-            if (permissions.isEmpty()) {
-                appendLine("  No permissions requested")
-            }
-            
-            appendLine()
-            appendLine(separator)
-            appendLine("END OF REPORT")
-            appendLine(separator)
-        }
-    }
-    
-    private fun getFriendlyPermissionName(permission: String): String {
-        return when (permission) {
-            "android.permission.RECORD_AUDIO" -> "Microphone"
-            "android.permission.CAMERA" -> "Camera"
-            "android.permission.ACCESS_FINE_LOCATION" -> "Precise Location"
-            "android.permission.ACCESS_COARSE_LOCATION" -> "Approximate Location"
-            "android.permission.ACCESS_BACKGROUND_LOCATION" -> "Background Location"
-            "android.permission.READ_CONTACTS" -> "Read Contacts"
-            "android.permission.WRITE_CONTACTS" -> "Write Contacts"
-            "android.permission.GET_ACCOUNTS" -> "Get Accounts"
-            "android.permission.READ_EXTERNAL_STORAGE" -> "Read Storage"
-            "android.permission.WRITE_EXTERNAL_STORAGE" -> "Write Storage"
-            "android.permission.MANAGE_EXTERNAL_STORAGE" -> "All Files Access"
-            "android.permission.READ_PHONE_STATE" -> "Phone State"
-            "android.permission.CALL_PHONE" -> "Make Calls"
-            "android.permission.READ_CALL_LOG" -> "Read Call Log"
-            "android.permission.WRITE_CALL_LOG" -> "Write Call Log"
-            "android.permission.SEND_SMS" -> "Send SMS"
-            "android.permission.RECEIVE_SMS" -> "Receive SMS"
-            "android.permission.READ_SMS" -> "Read SMS"
-            "android.permission.READ_CALENDAR" -> "Read Calendar"
-            "android.permission.WRITE_CALENDAR" -> "Write Calendar"
-            "android.permission.BODY_SENSORS" -> "Body Sensors"
-            "android.permission.ACTIVITY_RECOGNITION" -> "Activity Recognition"
-            "android.permission.BLUETOOTH_SCAN" -> "Bluetooth Scan"
-            "android.permission.BLUETOOTH_CONNECT" -> "Bluetooth Connect"
-            "android.permission.POST_NOTIFICATIONS" -> "Notifications"
-            "android.permission.READ_MEDIA_IMAGES" -> "Media Images"
-            "android.permission.READ_MEDIA_VIDEO" -> "Media Video"
-            "android.permission.READ_MEDIA_AUDIO" -> "Media Audio"
-            "android.permission.SYSTEM_ALERT_WINDOW" -> "Display Over Other Apps"
-            "android.permission.REQUEST_INSTALL_PACKAGES" -> "Install Unknown Apps"
-            "android.permission.WRITE_SETTINGS" -> "Modify System Settings"
-            else -> {
-                val shortName = permission.substringAfterLast(".")
-                shortName.replace("_", " ").lowercase().split(" ").joinToString(" ") { 
-                    it.replaceFirstChar { if (it.isLowerCase()) it.titlecase(Locale.getDefault()) else it.toString() }
-                }
-            }
-        }
-    }
-
-    private fun toggleFavorite() {
-        if (PreferencesManager.isFavoriteApp(this, packageName)) {
-            PreferencesManager.removeFavoriteApp(this, packageName)
-            LogManager.info(this, "Removed from favorites", "Package: $packageName")
-            Snackbar.make(binding.root, "Removed from favorites", Snackbar.LENGTH_SHORT).show()
-        } else {
-            PreferencesManager.addFavoriteApp(this, packageName)
-            LogManager.info(this, "Added to favorites", "Package: $packageName")
-            Snackbar.make(binding.root, "Added to favorites", Snackbar.LENGTH_SHORT).show()
-        }
-        updateFavoriteIcon()
-    }
-
-    private fun updateFavoriteIcon() {
-        val isFavorite = PreferencesManager.isFavoriteApp(this, packageName)
-        if (isFavorite) {
-            favoriteMenuItem?.icon = ContextCompat.getDrawable(this, R.drawable.ic_favorite_filled)
-        } else {
-            favoriteMenuItem?.icon = ContextCompat.getDrawable(this, R.drawable.ic_favorite)
-        }
-    }
-
-    private fun exportApk() {
-        try {
-            val applicationInfo = packageManager.getApplicationInfo(packageName, 0)
-            val sourcePath = applicationInfo.sourceDir
-
-            if (sourcePath.isNullOrEmpty()) {
-                Snackbar.make(binding.root, "APK path not found", Snackbar.LENGTH_SHORT).show()
-                LogManager.error(this, "APK export failed", "APK path not found for $packageName")
-                return
-            }
-
-            val sourceFile = File(sourcePath)
-            if (!sourceFile.exists()) {
-                Snackbar.make(binding.root, "APK file does not exist", Snackbar.LENGTH_SHORT).show()
-                LogManager.error(this, "APK export failed", "APK file does not exist for $packageName")
-                return
-            }
-
-            val appName = try {
-                packageManager.getApplicationLabel(applicationInfo).toString()
-            } catch (e: Exception) {
-                packageName
-            }
-
-            val downloadDir = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS)
-            if (!downloadDir.exists()) {
-                downloadDir.mkdirs()
-            }
-
-            val timestamp = SimpleDateFormat("yyyyMMdd_HHmmss", Locale.US).format(Date())
-            val safeAppName = appName.replace("/", "_").replace("\\", "_").replace(":", "_").replace("?", "_").replace("*", "_").replace(" ", "_")
-            var destFile = File(downloadDir, "${safeAppName}_${timestamp}.apk")
-            var counter = 1
-            while (destFile.exists()) {
-                destFile = File(downloadDir, "${safeAppName}_${timestamp}_$counter.apk")
-                counter++
-            }
-
-            FileInputStream(sourceFile).use { input ->
-                FileOutputStream(destFile).use { output ->
-                    input.copyTo(output)
-                }
-            }
-
-            Snackbar.make(binding.root, "APK saved to: ${destFile.absolutePath}", Snackbar.LENGTH_LONG).show()
-            LogManager.success(this, "APK exported", "Package: $packageName, Path: ${destFile.absolutePath}")
-
-        } catch (e: Exception) {
-            e.printStackTrace()
-            Snackbar.make(binding.root, "Export failed: ${e.message}", Snackbar.LENGTH_LONG).show()
-            LogManager.error(this, "APK export failed", e.message)
-        }
-    }
-
-    private fun shareApk() {
-        try {
-            val applicationInfo = packageManager.getApplicationInfo(packageName, 0)
-            val sourcePath = applicationInfo.sourceDir
-
-            if (sourcePath.isNullOrEmpty()) {
-                Snackbar.make(binding.root, "APK path not found", Snackbar.LENGTH_SHORT).show()
-                LogManager.error(this, "APK share failed", "APK path not found for $packageName")
-                return
-            }
-
-            val sourceFile = File(sourcePath)
-            if (!sourceFile.exists()) {
-                Snackbar.make(binding.root, "APK file does not exist", Snackbar.LENGTH_SHORT).show()
-                LogManager.error(this, "APK share failed", "APK file does not exist for $packageName")
-                return
-            }
-
-            val appName = try {
-                packageManager.getApplicationLabel(applicationInfo).toString()
-            } catch (e: Exception) {
-                packageName
-            }
-
-            val cacheDir = externalCacheDir
-            if (cacheDir == null) {
-                Snackbar.make(binding.root, "Cannot access cache directory", Snackbar.LENGTH_SHORT).show()
-                return
-            }
-
-            cleanupTempApkFiles(cacheDir)
-
-            val safeAppName = appName
-                .replace("/", "_")
-                .replace("\\", "_")
-                .replace(":", "_")
-                .replace("?", "_")
-                .replace("*", "_")
-                .replace(" ", "_")
-                .replace("'", "_")
-                .replace("\"", "_")
-            
-            val tempFile = File(cacheDir, "${safeAppName}.apk")
-            if (tempFile.exists()) {
-                tempFile.delete()
-            }
-
-            FileInputStream(sourceFile).use { input ->
-                FileOutputStream(tempFile).use { output ->
-                    input.copyTo(output)
-                }
-            }
-
-            val apkUri = FileProvider.getUriForFile(
-                this,
-                FILE_PROVIDER_AUTHORITY,
-                tempFile
-            )
-
-            LogManager.debug(this, "Share URI", apkUri.toString())
-
-            val shareIntent = Intent(Intent.ACTION_SEND).apply {
-                type = "application/vnd.android.package-archive"
-                putExtra(Intent.EXTRA_STREAM, apkUri)
-                addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
-                addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-            }
-
-            val chooserIntent = Intent.createChooser(
-                shareIntent,
-                "Share APK: ${appName}"
-            )
-            chooserIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-
-            startActivity(chooserIntent)
-
-            LogManager.success(this, "APK shared", "Package: $packageName, Temp file: ${tempFile.absolutePath}")
-
-        } catch (e: Exception) {
-            e.printStackTrace()
-            Snackbar.make(binding.root, "Share failed: ${e.message}", Snackbar.LENGTH_LONG).show()
-            LogManager.error(this, "APK share failed", e.message)
-        }
-    }
-
-    private fun cleanupTempApkFiles(cacheDir: File) {
-        try {
-            val files = cacheDir.listFiles { file ->
-                file.name.endsWith(".apk") && file.lastModified() < System.currentTimeMillis() - (30 * 60 * 1000)
-            }
-            files?.forEach { file ->
-                if (file.exists()) {
-                    file.delete()
-                    LogManager.debug(this, "Cleaned up temp APK file", file.name)
-                }
-            }
-        } catch (e: Exception) {
-            LogManager.warning(this, "Failed to cleanup temp APK files", e.message)
-        }
-    }
-
-    override fun onDestroy() {
-        super.onDestroy()
-        try {
-            val cacheDir = externalCacheDir
-            cacheDir?.let {
-                val files = it.listFiles { file -> file.name.endsWith(".apk") }
-                files?.forEach { file ->
-                    if (file.exists()) {
-                        file.delete()
-                    }
-                }
-            }
-        } catch (e: Exception) {
-            // Ignore cleanup errors
-        }
-    }
-
-    private fun openInGooglePlay() {
-        try {
-            val intent = Intent(Intent.ACTION_VIEW).apply {
-                data = Uri.parse("market://details?id=$packageName")
-                addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-            }
-            startActivity(intent)
-            LogManager.info(this, "Opened Google Play", "Package: $packageName")
-        } catch (e: Exception) {
-            try {
-                val intent = Intent(Intent.ACTION_VIEW).apply {
-                    data = Uri.parse("https://play.google.com/store/apps/details?id=$packageName")
-                    addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-                }
-                startActivity(intent)
-                LogManager.info(this, "Opened Google Play (web)", "Package: $packageName")
-            } catch (e2: Exception) {
-                Snackbar.make(binding.root, "Cannot open Google Play", Snackbar.LENGTH_SHORT).show()
-                LogManager.error(this, "Failed to open Google Play", e2.message)
-            }
-        }
-    }
-
-    private fun openInFDroid() {
-        try {
-            val intent = Intent(Intent.ACTION_VIEW).apply {
-                data = Uri.parse("https://f-droid.org/packages/$packageName/")
-                addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-            }
-            startActivity(intent)
-            LogManager.info(this, "Opened F-Droid", "Package: $packageName")
-        } catch (e: Exception) {
-            Snackbar.make(binding.root, "Cannot open F-Droid", Snackbar.LENGTH_SHORT).show()
-            LogManager.error(this, "Failed to open F-Droid", e.message)
-        }
-    }
-
-    private fun setupPermissionsRecycler() {
-        permAdapter = PermissionDetailAdapter(
-            onToggle = { perm ->
-                handlePermissionToggle(perm)
-            }
-        )
-        binding.permissionsRecycler.layoutManager = LinearLayoutManager(this)
-        binding.permissionsRecycler.adapter = permAdapter
-    }
+    // ===================== Actions =====================
 
     private fun setupActions() {
-        // Open button
         setupButtonAnimation(binding.btnOpen) {
             val launchIntent = packageManager.getLaunchIntentForPackage(packageName)
             if (launchIntent != null) {
@@ -678,7 +800,6 @@ class AppDetailActivity : BaseActivity() {
             }
         }
 
-        // App Info button
         setupButtonAnimation(binding.btnAppInfo) {
             val intent = Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS).apply {
                 data = Uri.parse("package:$packageName")
@@ -687,7 +808,6 @@ class AppDetailActivity : BaseActivity() {
             LogManager.info(this, "Opened system app info", "Package: $packageName")
         }
 
-        // Force Stop button
         setupButtonAnimation(binding.btnForceStop) {
             if (!checkShizuku()) return@setupButtonAnimation
             val app = viewModel.appInfo.value ?: return@setupButtonAnimation
@@ -706,7 +826,6 @@ class AppDetailActivity : BaseActivity() {
                 .show()
         }
 
-        // Uninstall button
         setupButtonAnimation(binding.btnUninstall) {
             if (!checkShizuku()) return@setupButtonAnimation
             val app = viewModel.appInfo.value ?: return@setupButtonAnimation
@@ -726,7 +845,6 @@ class AppDetailActivity : BaseActivity() {
                 .show()
         }
 
-        // Clear Data button
         setupButtonAnimation(binding.btnClearData) {
             if (!checkShizuku()) return@setupButtonAnimation
             val app = viewModel.appInfo.value ?: return@setupButtonAnimation
@@ -745,7 +863,6 @@ class AppDetailActivity : BaseActivity() {
                 .show()
         }
 
-        // Disable/Enable button
         setupButtonAnimation(binding.btnDisableEnable) {
             if (!checkShizuku()) return@setupButtonAnimation
             val app = viewModel.appInfo.value ?: return@setupButtonAnimation
@@ -803,6 +920,16 @@ class AppDetailActivity : BaseActivity() {
             return false
         }
         return true
+    }
+
+    private fun setupPermissionsRecycler() {
+        permAdapter = PermissionDetailAdapter(
+            onToggle = { perm ->
+                handlePermissionToggle(perm)
+            }
+        )
+        binding.permissionsRecycler.layoutManager = LinearLayoutManager(this)
+        binding.permissionsRecycler.adapter = permAdapter
     }
 
     private fun observeViewModel() {

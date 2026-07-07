@@ -1,0 +1,7 @@
+**6.49.94**
+
+**Added** ✨
+- Added support for apps written in split APK format and export as APKS
+
+**Contributors of this version:**
+None

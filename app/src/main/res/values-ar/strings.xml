@@ -290,5 +290,21 @@
     <string name="checking_for_update_dialog">جاري التحقق من التحديث…</string>
     <string name="update_download_complete">اكتمل التنزيل</string>
     <string name="save">حفظ</string>
+
+    <!-- Optional Permissions -->
+    <string name="pref_optional_permissions">الأذونات الاختيارية</string>
+    <string name="pref_optional_permissions_summary">منح أذونات اختيارية لميزات إضافية</string>
+    <string name="title_optional_permissions">الأذونات الاختيارية</string>
+    <string name="pref_storage_permission">إذن التخزين</string>
+    <string name="pref_storage_permission_summary">يتضمن READ_EXTERNAL_STORAGE و WRITE_EXTERNAL_STORAGE لتصدير APK ووظائف التخزين</string>
+    <string name="storage_permission_required">مطلوب لتصدير APK ووظائف التخزين</string>
+    <string name="storage_permission_grant">منح إذن التخزين</string>
+    <string name="perm_read_external_storage">قراءة التخزين الخارجي</string>
+    <string name="perm_read_external_storage_desc">يسمح للتطبيق بقراءة الملفات من التخزين الخارجي لتصدير ومشاركة APK</string>
+    <string name="perm_write_external_storage">كتابة التخزين الخارجي</string>
+    <string name="perm_write_external_storage_desc">يسمح للتطبيق بكتابة الملفات إلى التخزين الخارجي لتصدير ومشاركة APK</string>
+    <string name="optional_perm_granted">تم منحه</string>
+    <string name="optional_perm_denied">مرفوض</string>
+    <string name="optional_perm_grant">منح</string>
     
 </resources>

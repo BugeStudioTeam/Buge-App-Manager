@@ -274,22 +274,22 @@
     <string name="filter_label">Label: %s</string>
 
     <!-- Update Options -->
-    <string name="pref_update_options" translatable="false">Update Options</string>
-    <string name="pref_update_options_summary" translatable="false">Configure update download and installation method</string>
-    <string name="title_update_options" translatable="false">Update Options</string>
-    <string name="update_method_browser" translatable="false">Open in Browser</string>
-    <string name="update_method_silent" translatable="false">Silent Install (Shizuku)</string>
-    <string name="installer_name" translatable="false">Installer Name</string>
-    <string name="installer_name_hint" translatable="false">Enter installer name (e.g. BugeAppManager)</string>
-    <string name="update_downloading" translatable="false">Downloading update...</string>
-    <string name="update_download_failed" translatable="false">Download failed</string>
-    <string name="update_installing" translatable="false">Installing update...</string>
-    <string name="update_install_success" translatable="false">Update installed successfully</string>
-    <string name="update_install_failed" translatable="false">Installation failed</string>
-    <string name="update_already_latest" translatable="false">You are already using the latest version</string>
-    <string name="checking_for_update_dialog" translatable="false">Checking for update...</string>
-    <string name="update_download_complete" translatable="false">Download complete</string>
-    <string name="save" translatable="false">Save</string>
+    <string name="pref_update_options">Update Options</string>
+    <string name="pref_update_options_summary">Configure update download and installation method</string>
+    <string name="title_update_options">Update Options</string>
+    <string name="update_method_browser">Open in Browser</string>
+    <string name="update_method_silent">Silent Install (Shizuku)</string>
+    <string name="installer_name">Installer Name</string>
+    <string name="installer_name_hint">Enter installer name (e.g. BugeAppManager)</string>
+    <string name="update_downloading">Downloading update...</string>
+    <string name="update_download_failed">Download failed</string>
+    <string name="update_installing">Installing update...</string>
+    <string name="update_install_success">Update installed successfully</string>
+    <string name="update_install_failed">Installation failed</string>
+    <string name="update_already_latest">You are already using the latest version</string>
+    <string name="checking_for_update_dialog">Checking for update...</string>
+    <string name="update_download_complete">Download complete</string>
+    <string name="save">Save</string>
 
     <!-- Optional Permissions -->
     <string name="pref_optional_permissions">Optional Permissions</string>

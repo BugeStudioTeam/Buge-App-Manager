@@ -290,5 +290,21 @@
     <string name="checking_for_update_dialog">Buscando actualizaciones…</string>
     <string name="update_download_complete">Descarga completada</string>
     <string name="save">Guardar</string>
+
+    <!-- Optional Permissions -->
+    <string name="pref_optional_permissions">Permisos opcionales</string>
+    <string name="pref_optional_permissions_summary">Conceder permisos opcionales para funciones adicionales</string>
+    <string name="title_optional_permissions">Permisos opcionales</string>
+    <string name="pref_storage_permission">Permiso de almacenamiento</string>
+    <string name="pref_storage_permission_summary">Incluye READ_EXTERNAL_STORAGE y WRITE_EXTERNAL_STORAGE para exportación de APK y funciones de almacenamiento</string>
+    <string name="storage_permission_required">Requerido para exportación de APK y funciones de almacenamiento</string>
+    <string name="storage_permission_grant">Conceder permiso de almacenamiento</string>
+    <string name="perm_read_external_storage">Leer almacenamiento externo</string>
+    <string name="perm_read_external_storage_desc">Permite que la aplicación lea archivos del almacenamiento externo para exportación y compartir APK</string>
+    <string name="perm_write_external_storage">Escribir almacenamiento externo</string>
+    <string name="perm_write_external_storage_desc">Permite que la aplicación escriba archivos en el almacenamiento externo para exportación y compartir APK</string>
+    <string name="optional_perm_granted">Concedido</string>
+    <string name="optional_perm_denied">Denegado</string>
+    <string name="optional_perm_grant">Conceder</string>
     
 </resources>

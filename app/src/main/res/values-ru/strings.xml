@@ -290,5 +290,21 @@
     <string name="checking_for_update_dialog">Проверка обновлений…</string>
     <string name="update_download_complete">Загрузка завершена</string>
     <string name="save">Сохранить</string>
+
+    <!-- Optional Permissions -->
+    <string name="pref_optional_permissions">Дополнительные разрешения</string>
+    <string name="pref_optional_permissions_summary">Предоставить дополнительные разрешения для дополнительных функций</string>
+    <string name="title_optional_permissions">Дополнительные разрешения</string>
+    <string name="pref_storage_permission">Разрешение на хранилище</string>
+    <string name="pref_storage_permission_summary">Включает READ_EXTERNAL_STORAGE и WRITE_EXTERNAL_STORAGE для экспорта APK и функций хранения</string>
+    <string name="storage_permission_required">Требуется для экспорта APK и функций хранения</string>
+    <string name="storage_permission_grant">Предоставить разрешение на хранилище</string>
+    <string name="perm_read_external_storage">Чтение внешнего хранилища</string>
+    <string name="perm_read_external_storage_desc">Разрешает приложению читать файлы из внешнего хранилища для экспорта и обмена APK</string>
+    <string name="perm_write_external_storage">Запись во внешнее хранилище</string>
+    <string name="perm_write_external_storage_desc">Разрешает приложению записывать файлы во внешнее хранилище для экспорта и обмена APK</string>
+    <string name="optional_perm_granted">Предоставлено</string>
+    <string name="optional_perm_denied">Отказано</string>
+    <string name="optional_perm_grant">Предоставить</string>
     
 </resources>

@@ -96,7 +96,7 @@ Follow this step-by-step guide to manage the same permission type across multipl
 
 [<img src="https://raw.githubusercontent.com/BugeStudioTeam/Buge-App-Manager/refs/heads/main/images/README/Release/get-it-on-telegram.svg"
  alt="Get it on Telegram"
- height="80">](https://t.me/bugestudio)
+ height="180">](https://t.me/bugestudio)
 
 ---
 

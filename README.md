@@ -88,6 +88,34 @@ Follow this step-by-step guide to manage the same permission type across multipl
 
 ---
 
+## **🌐** Supported languages
+
+- English - en
+
+- Français - fr
+
+- Deutsch - de
+
+- Русский - ru
+
+- Português - pt
+
+- Português (Brasil) - pt-rBR
+
+- Español - es
+
+- 中文 (简体) - zh
+
+- العربية - ar
+
+- 日本語 - ja
+
+- 한국어 - ko
+
+[Request to add the languages you need](https://github.com/BugeStudioTeam/Buge-App-Manager/issues)
+
+---
+
 ## 📦 Installation
 
 [<img src="https://raw.githubusercontent.com/BugeStudioTeam/Buge-App-Manager/refs/heads/main/images/README/Release/get-it-on-github.svg"

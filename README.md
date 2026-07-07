@@ -90,9 +90,13 @@ Follow this step-by-step guide to manage the same permission type across multipl
 
 ## 📦 Installation
 
-[<img src="https://github.com/Kunzisoft/Github-badge/raw/main/get-it-on-github.png"
+[<img src="https://github.com/BugeStudioTeam/Buge-App-Manager/images/README/Release/raw/main/get-it-on-github.jpg"
     alt="Get it on GitHub"
     height="80">](https://github.com/BugeStudioTeam/Buge-App-Manager/releases)
+
+[<img src="https://github.com/BugeStudioTeam/Buge-App-Manager/images/README/Release/raw/main/get-it-on-telegram.jpg"
+ alt="Get it on Telegram"
+ height="80">](https://t.me/bugestudio)
 
 ---
 

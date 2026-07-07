@@ -1,0 +1,115 @@
+name: "User Feedback"
+description: "Share your feedback, rating, or overall experience with Buge App Manager"
+title: "[Feedback]: "
+labels: ["feedback"]
+assignees:
+  - BugeStudioTeam
+body:
+  - type: markdown
+    attributes:
+      value: |
+        ## User Feedback
+        We value your opinion. Please share your experience with Buge App Manager to help us improve.
+
+  - type: checkboxes
+    id: checklist
+    attributes:
+      label: "Checklist"
+      description: "Please confirm before submitting"
+      options:
+        - label: "I am using the latest version of Buge App Manager"
+          required: true
+        - label: "I have read the project documentation"
+          required: false
+
+  - type: dropdown
+    id: rating
+    attributes:
+      label: "Overall Rating"
+      description: "How would you rate Buge App Manager?"
+      options:
+        - "5 - Excellent"
+        - "4 - Good"
+        - "3 - Average"
+        - "2 - Below Average"
+        - "1 - Poor"
+    validations:
+      required: true
+
+  - type: textarea
+    id: likes
+    attributes:
+      label: "What do you like most?"
+      description: "Share the features or aspects you enjoy about the app"
+      placeholder: "Example: The batch permission management is very efficient..."
+    validations:
+      required: false
+
+  - type: textarea
+    id: dislikes
+    attributes:
+      label: "What could be improved?"
+      description: "Share areas where you think the app could do better"
+      placeholder: "Example: I would like to see more filter options for system apps..."
+    validations:
+      required: false
+
+  - type: textarea
+    id: issues
+    attributes:
+      label: "Did you encounter any issues?"
+      description: "If you experienced any bugs, crashes, or unexpected behavior, please describe them"
+      placeholder: "Example: The app crashed when I tried to revoke camera permission from multiple apps at once..."
+    validations:
+      required: false
+
+  - type: textarea
+    id: suggestions
+    attributes:
+      label: "Feature suggestions"
+      description: "Any new features or changes you would like to see"
+      placeholder: "Example: Add dark mode support or an export function for permission settings..."
+    validations:
+      required: false
+
+  - type: input
+    id: app-version
+    attributes:
+      label: "App version"
+      description: "You can find the version number in the app's 'About' section"
+      placeholder: "Example: 6.49.94"
+    validations:
+      required: true
+
+  - type: dropdown
+    id: android-version
+    attributes:
+      label: "Android version"
+      description: "The operating system version of your device"
+      options:
+        - "Android 8.0 (API 26)"
+        - "Android 9.0 (API 28)"
+        - "Android 10 (API 29)"
+        - "Android 11 (API 30)"
+        - "Android 12 / 12L (API 31/32)"
+        - "Android 13 (API 33)"
+        - "Android 14 (API 34)"
+        - "Android 15 (API 35)"
+        - "Android 16 (API 36) or higher"
+    validations:
+      required: true
+
+  - type: input
+    id: device-model
+    attributes:
+      label: "Device model (optional)"
+      description: "Your phone or tablet model"
+      placeholder: "Example: Google Pixel 6, Samsung Galaxy S22"
+    validations:
+      required: false
+
+  - type: markdown
+    attributes:
+      value: |
+        ---
+        Thank you for taking the time to provide feedback. Your input helps make Buge App Manager better for everyone. By submitting this feedback, you agree to abide by the project's [GNU GPL v3.0](https://github.com/BugeStudioTeam/Buge-App-Manager/blob/main/LICENSE) open-source license.

@@ -15,11 +15,11 @@
 
 ---
 
-## 📱 Screenshots
+## **📸** Screenshots
 
 <div style="overflow-x: auto; white-space: nowrap; padding: 10px 0;">
 
-  <img src="https://raw.githubusercontent.com/BugeStudioTeam/Buge-App-Manager/main/images/Screenshot_Apps.png" width="260" style="display: inline-block; margin-right: 12px;" />
+<img src="https://raw.githubusercontent.com/BugeStudioTeam/Buge-App-Manager/main/images/Screenshot_Apps.png" width="260" style="display: inline-block; margin-right: 12px;" />
   <img src="https://raw.githubusercontent.com/BugeStudioTeam/Buge-App-Manager/main/images/Screenshot_Permissions.png" width="260" style="display: inline-block; margin-right: 12px;" />
   <img src="https://raw.githubusercontent.com/BugeStudioTeam/Buge-App-Manager/main/images/Screenshot_Activities.png" width="260" style="display: inline-block; margin-right: 12px;" />
   <img src="https://raw.githubusercontent.com/BugeStudioTeam/Buge-App-Manager/main/images/Screenshot_Settings.png" width="260" style="display: inline-block; margin-right: 12px;" />
@@ -31,11 +31,19 @@
 
 ### 🚀 Core Capabilities
 
-| Feature | Description |
-|---------|-------------|
-| **Shizuku Integration** | Operates with Shizuku authorization for elevated control without requiring root |
-| **App Management** | Browse and manage both user-installed and system applications with ease |
+| Feature                             | Description                                                                      |
+| ----------------------------------- | -------------------------------------------------------------------------------- |
+| **Shizuku Integration**             | Operates with Shizuku authorization for elevated control without requiring root  |
+| **App Management**                  | Browse and manage both user-installed and system applications with ease          |
 | **Material Design 3 Expressive UI** | Clean, system-themed interface that follows the latest Android design guidelines |
+
+### 📱 Apps Manager
+
+- Manage any app, **including system apps**
+
+- Allow advanced operations such as **uninstall**, **disable**, **force stop**, etc.
+
+- Allow **restoring uninstalled system apps**
 
 ### 🔐 Permission Manager
 
@@ -43,6 +51,11 @@
 - Supported categories include: Microphone, Camera, Location access, Notifications, Phone & Contacts, Storage and other
 - Filter permissions by **granted** or **denied** status
 - Batch permission operations for multiple apps
+
+### 🧩 Activities Launcher
+
+- Browse and **launch** any activity
+- View unexported activities
 
 ### 🛡️ Privacy & Security
 
@@ -53,10 +66,10 @@
 
 ## 📋 Requirements
 
-| Requirement | Minimum Version |
-|-------------|-----------------|
-| Android OS | 8.0 (API 26) or higher |
-| Shizuku | Installed and authorized |
+| Requirement | Minimum Version          |
+| ----------- | ------------------------ |
+| Android OS  | 8.0 (API 26) or higher   |
+| Shizuku     | Installed and authorized |
 
 > **Note**: [Shizuku](https://shizuku.rikka.app/) is required for advanced permission management features.
 

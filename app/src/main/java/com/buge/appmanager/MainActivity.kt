@@ -4,9 +4,9 @@ import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
 import android.content.IntentFilter
-import android.os.Build
 import android.os.Bundle
 import android.view.View
+import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
@@ -24,6 +24,7 @@ import com.buge.appmanager.util.PreferencesManager
 import com.buge.appmanager.util.ThemeManager
 import com.buge.appmanager.util.UpdateChecker
 import com.google.android.material.bottomnavigation.BottomNavigationView
+import com.google.android.material.navigationrail.NavigationRailView
 import kotlinx.coroutines.launch
 import rikka.shizuku.Shizuku
 import java.util.Locale
@@ -63,7 +64,6 @@ class MainActivity : BaseActivity() {
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        // Apply color theme before super.onCreate
         ThemeManager.applyColorTheme(this)
         
         val savedTheme = PreferencesManager.getThemeMode(this)
@@ -80,17 +80,11 @@ class MainActivity : BaseActivity() {
 
         Shizuku.addRequestPermissionResultListener(requestPermissionResultListener)
 
-        setupBottomNavigation()
+        setupNavigation()
         applyHideNavLabels()
 
-        // Register receiver for navigation labels changes
-        // Android 14+ requires explicit export flag
         val filter = IntentFilter("com.buge.appmanager.ACTION_NAV_LABELS_CHANGED")
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-            registerReceiver(navLabelsReceiver, filter, Context.RECEIVER_NOT_EXPORTED)
-        } else {
-            registerReceiver(navLabelsReceiver, filter)
-        }
+        registerReceiver(navLabelsReceiver, filter)
 
         if (savedInstanceState == null) {
             loadDefaultPage()
@@ -104,7 +98,6 @@ class MainActivity : BaseActivity() {
         if (currentFragment is ActivitiesFragment) {
             (currentFragment as? ActivitiesFragment)?.refresh()
         }
-        // Re-apply hide nav labels when returning to activity
         applyHideNavLabels()
     }
 
@@ -118,14 +111,126 @@ class MainActivity : BaseActivity() {
         Shizuku.removeRequestPermissionResultListener(requestPermissionResultListener)
     }
 
+    private fun isLargeScreen(): Boolean {
+        val displayMetrics = resources.displayMetrics
+        val densityDpi = displayMetrics.densityDpi
+        val widthPx = displayMetrics.widthPixels
+        
+        // Use DPI > 480 OR screen width > 600dp (tablet-like)
+        val isHighDpi = densityDpi >= 480
+        val isWideScreen = widthPx > 600 * displayMetrics.density
+        
+        return isHighDpi || isWideScreen
+    }
+
+    private fun getNavigationRailWidth(): Int {
+        // NavigationRail default width is 72dp on most devices
+        return (72 * resources.displayMetrics.density).toInt()
+    }
+
+    private fun setupNavigation() {
+        val useRail = isLargeScreen()
+        
+        if (useRail) {
+            // Use NavigationRail
+            binding.navRail.visibility = View.VISIBLE
+            binding.bottomNav.visibility = View.GONE
+            
+            // Add margin to fragment container to make room for nav rail
+            val params = binding.fragmentContainerWrapper.layoutParams as ViewGroup.MarginLayoutParams
+            params.leftMargin = getNavigationRailWidth()
+            binding.fragmentContainerWrapper.layoutParams = params
+            
+            // Copy selected item from bottom nav to rail
+            val selectedId = binding.bottomNav.selectedItemId
+            if (selectedId != 0) {
+                binding.navRail.selectedItemId = selectedId
+            }
+            
+            binding.navRail.setOnItemSelectedListener { item ->
+                when (item.itemId) {
+                    R.id.nav_apps -> {
+                        loadFragment(AppsFragment())
+                        supportActionBar?.title = getString(R.string.nav_apps)
+                        true
+                    }
+                    R.id.nav_permissions -> {
+                        loadFragment(PermissionsFragment())
+                        supportActionBar?.title = getString(R.string.nav_permissions)
+                        true
+                    }
+                    R.id.nav_activities -> {
+                        loadFragment(ActivitiesFragment())
+                        supportActionBar?.title = getString(R.string.nav_activities)
+                        true
+                    }
+                    R.id.nav_settings -> {
+                        loadFragment(SettingsFragment())
+                        supportActionBar?.title = getString(R.string.nav_settings)
+                        true
+                    }
+                    else -> false
+                }
+            }
+        } else {
+            // Use BottomNavigation
+            binding.navRail.visibility = View.GONE
+            binding.bottomNav.visibility = View.VISIBLE
+            
+            // Reset fragment container margin
+            val params = binding.fragmentContainerWrapper.layoutParams as ViewGroup.MarginLayoutParams
+            params.leftMargin = 0
+            binding.fragmentContainerWrapper.layoutParams = params
+            
+            // Copy selected item from rail to bottom nav
+            val selectedId = binding.navRail.selectedItemId
+            if (selectedId != 0) {
+                binding.bottomNav.selectedItemId = selectedId
+            }
+            
+            binding.bottomNav.setOnItemSelectedListener { item ->
+                when (item.itemId) {
+                    R.id.nav_apps -> {
+                        loadFragment(AppsFragment())
+                        supportActionBar?.title = getString(R.string.nav_apps)
+                        true
+                    }
+                    R.id.nav_permissions -> {
+                        loadFragment(PermissionsFragment())
+                        supportActionBar?.title = getString(R.string.nav_permissions)
+                        true
+                    }
+                    R.id.nav_activities -> {
+                        loadFragment(ActivitiesFragment())
+                        supportActionBar?.title = getString(R.string.nav_activities)
+                        true
+                    }
+                    R.id.nav_settings -> {
+                        loadFragment(SettingsFragment())
+                        supportActionBar?.title = getString(R.string.nav_settings)
+                        true
+                    }
+                    else -> false
+                }
+            }
+        }
+        
+        applyHideNavLabels()
+    }
+
     private fun applyHideNavLabels() {
         val hideLabels = PreferencesManager.getHideNavLabels(this)
-        val navView = binding.bottomNav
         
-        if (hideLabels) {
-            navView.labelVisibilityMode = BottomNavigationView.LABEL_VISIBILITY_SELECTED
+        binding.bottomNav.labelVisibilityMode = if (hideLabels) {
+            BottomNavigationView.LABEL_VISIBILITY_SELECTED
         } else {
-            navView.labelVisibilityMode = BottomNavigationView.LABEL_VISIBILITY_LABELED
+            BottomNavigationView.LABEL_VISIBILITY_LABELED
+        }
+        
+        binding.navRail.labelVisibilityMode = if (hideLabels) {
+            NavigationRailView.LABEL_VISIBILITY_SELECTED
+        } else {
+            NavigationRailView.LABEL_VISIBILITY_LABELED
         }
     }
 
@@ -173,7 +278,13 @@ class MainActivity : BaseActivity() {
             "settings" -> R.id.nav_settings
             else -> R.id.nav_apps
         }
-        binding.bottomNav.selectedItemId = navId
+        
+        if (isLargeScreen()) {
+            binding.navRail.selectedItemId = navId
+        } else {
+            binding.bottomNav.selectedItemId = navId
+        }
+        
         loadFragment(fragment)
         LogManager.info(this, "App started, default page: $defaultPage")
     }
@@ -190,34 +301,6 @@ class MainActivity : BaseActivity() {
             )
             
             insets
-        }
-    }
-
-    private fun setupBottomNavigation() {
-        binding.bottomNav.setOnItemSelectedListener { item ->
-            when (item.itemId) {
-                R.id.nav_apps -> {
-                    loadFragment(AppsFragment())
-                    supportActionBar?.title = getString(R.string.nav_apps)
-                    true
-                }
-                R.id.nav_permissions -> {
-                    loadFragment(PermissionsFragment())
-                    supportActionBar?.title = getString(R.string.nav_permissions)
-                    true
-                }
-                R.id.nav_activities -> {
-                    loadFragment(ActivitiesFragment())
-                    supportActionBar?.title = getString(R.string.nav_activities)
-                    true
-                }
-                R.id.nav_settings -> {
-                    loadFragment(SettingsFragment())
-                    supportActionBar?.title = getString(R.string.nav_settings)
-                    true
-                }
-                else -> false
-            }
         }
     }
 

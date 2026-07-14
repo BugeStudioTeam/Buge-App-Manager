@@ -5,10 +5,10 @@
      android:layout_height="match_parent"
      android:layout_width="match_parent">
 
+    <!-- Fragment Container -->
     <FrameLayout
-         android:layout_height="match_parent"
          android:layout_width="match_parent"
-         android:layout_marginBottom="?attr/actionBarSize"
+         android:layout_height="match_parent"
          android:id="@+id/fragment_container_wrapper">
 
         <androidx.fragment.app.FragmentContainerView
@@ -19,25 +19,25 @@
 
     </FrameLayout>
 
+    <!-- NavigationRail (visible on large/tablet devices) -->
     <com.google.android.material.navigationrail.NavigationRailView
-         android:layout_height="match_parent"
+         android:id="@+id/nav_rail"
          android:layout_width="wrap_content"
+         android:layout_height="match_parent"
+         android:layout_gravity="start"
          android:visibility="gone"
          app:menu="@menu/bottom_nav_menu"
-         android:id="@+id/nav_rail">
+         app:labelVisibilityMode="selected" />
 
-    </com.google.android.material.navigationrail.NavigationRailView>
-
+    <!-- BottomNavigation (visible on normal devices) -->
     <com.google.android.material.bottomnavigation.BottomNavigationView
+         android:id="@+id/bottom_nav"
          android:layout_height="wrap_content"
          android:layout_width="match_parent"
          android:background="@color/bottom_nav_background"
          app:labelVisibilityMode="labeled"
          android:elevation="8dp"
          app:menu="@menu/bottom_nav_menu"
-         android:id="@+id/bottom_nav"
-         android:layout_gravity="bottom">
-
-    </com.google.android.material.bottomnavigation.BottomNavigationView>
+         android:layout_gravity="bottom" />
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

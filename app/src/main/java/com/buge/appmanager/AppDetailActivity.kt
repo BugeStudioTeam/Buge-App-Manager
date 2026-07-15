@@ -551,12 +551,13 @@ class AppDetailActivity : BaseActivity() {
                 packageName
             }
 
-            val cacheDir = externalCacheDir
-            if (cacheDir == null) {
+            val baseCacheDir = externalCacheDir
+            if (baseCacheDir == null) {
                 Snackbar.make(binding.root, "Cannot access cache directory", Snackbar.LENGTH_SHORT).show()
                 return
             }
 
+            val cacheDir = File(baseCacheDir, "apk_cache").apply { mkdirs() }
             cleanupTempApkFiles(cacheDir)
 
             val safeAppName = appName

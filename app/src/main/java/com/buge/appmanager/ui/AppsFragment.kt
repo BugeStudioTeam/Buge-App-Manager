@@ -121,7 +121,7 @@ class AppsFragment : Fragment() {
                 }
                 tempZipFile = null
             }
-            val cacheDir = requireContext().externalCacheDir ?: requireContext().cacheDir
+            val cacheDir = File(requireContext().externalCacheDir ?: requireContext().cacheDir, "apk_cache")
             val files = cacheDir.listFiles { file -> file.name.endsWith(".zip") }
             files?.forEach { file ->
                 if (file.exists()) {
@@ -477,7 +477,7 @@ class AppsFragment : Fragment() {
         fileNameText: TextView
     ): File? = withContext(Dispatchers.IO) {
         try {
-            val cacheDir = requireContext().externalCacheDir ?: requireContext().cacheDir
+            val cacheDir = File(requireContext().externalCacheDir ?: requireContext().cacheDir, "apk_cache").apply { mkdirs() }
             val timestamp = SimpleDateFormat("yyyyMMdd_HHmmss", Locale.US).format(Date())
             val zipFile = File(cacheDir, "apks_${timestamp}.zip")
 

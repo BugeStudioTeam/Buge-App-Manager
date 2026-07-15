@@ -134,8 +134,21 @@ object PreferencesManager {
         return getPreferences(context).getBoolean(HIDE_NAV_LABELS_KEY, false)
     }
 
+    // Security: Only allow alphanumeric, dots, dashes, underscores, and spaces.
+    // Shell metacharacters are rejected to prevent command injection in UpdateHelper.
+    private val INSTALLER_NAME_REGEX = Regex("""^[a-zA-Z0-9._\- ]*$""")
+
     fun setInstallerName(context: Context, name: String) {
-        getPreferences(context).edit().putString(INSTALLER_NAME_KEY, name).apply()
+        val trimmed = name.trim()
+        if (trimmed.isEmpty()) {
+            getPreferences(context).edit().putString(INSTALLER_NAME_KEY, "").apply()
+            return
+        }
+        if (!INSTALLER_NAME_REGEX.matches(trimmed)) {
+            android.util.Log.w("PreferencesManager", "Rejected unsafe installer name: $trimmed")
+            return
+        }
+        getPreferences(context).edit().putString(INSTALLER_NAME_KEY, trimmed).apply()
     }
 
     fun getInstallerName(context: Context): String {

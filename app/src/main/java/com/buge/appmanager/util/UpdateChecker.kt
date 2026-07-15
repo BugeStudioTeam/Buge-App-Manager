@@ -27,6 +27,7 @@ object UpdateChecker {
     private val client = OkHttpClient.Builder()
         .connectTimeout(10, TimeUnit.SECONDS)
         .readTimeout(10, TimeUnit.SECONDS)
+        .followSslRedirects(false)
         .build()
 
     data class ReleaseInfo(

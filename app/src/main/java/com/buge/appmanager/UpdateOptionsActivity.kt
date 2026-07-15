@@ -43,7 +43,7 @@ class UpdateOptionsActivity : BaseActivity() {
         .connectTimeout(60, TimeUnit.SECONDS)
         .readTimeout(120, TimeUnit.SECONDS)
         .followRedirects(true)
-        .followSslRedirects(true)
+        .followSslRedirects(false)
         .build()
 
     private enum class UpdateMethod {

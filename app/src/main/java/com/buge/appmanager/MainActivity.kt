@@ -4,6 +4,7 @@ import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
 import android.content.IntentFilter
+import android.os.Build
 import android.os.Bundle
 import android.view.View
 import android.view.ViewGroup
@@ -83,8 +84,14 @@ class MainActivity : BaseActivity() {
         setupNavigation()
         applyHideNavLabels()
 
+        // Register receiver for navigation labels changes
+        // Android 14+ requires explicit export flag
         val filter = IntentFilter("com.buge.appmanager.ACTION_NAV_LABELS_CHANGED")
-        registerReceiver(navLabelsReceiver, filter)
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            registerReceiver(navLabelsReceiver, filter, Context.RECEIVER_NOT_EXPORTED)
+        } else {
+            registerReceiver(navLabelsReceiver, filter)
+        }
 
         if (savedInstanceState == null) {
             loadDefaultPage()

@@ -15,8 +15,8 @@ android {
         applicationId = "com.buge.appmanager"
         minSdk = 26
         targetSdk = 34
-        versionCode = 124
-        versionName = "7.53.104"
+        versionCode = 136
+        versionName = "8.53.104"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables {
@@ -24,8 +24,7 @@ android {
         }
     }
 
-    // Load signing credentials from a local gitignored keystore.properties file.
-    // Never hardcode passwords in source.
+    // Load signing credentials from local gitignored keystore.properties
     val keystoreProperties = Properties()
     val keystorePropertiesFile = rootProject.file("keystore.properties")
     if (keystorePropertiesFile.exists()) {

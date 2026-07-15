@@ -1,0 +1,18 @@
+**8.53.104**
+
+**Security** 🔒
+This is a major security hardening update primarily contributed by an outstanding developer (see Pull Request #8). Comprehensive security加固 has been applied across multiple critical parts of the application:
+
+- Removed hardcoded keys: Migrated plaintext signing passwords from `build.gradle.kts` to local `.gitignore`d `keystore.properties` to prevent key leakage
+- Prevented command injection: Added strict parameter validation for all Shell-executed commands in `ShizukuManager.kt` using regex `[;|&$()<>\n\r\t'\"]` to reject inputs containing dangerous metacharacters
+- Restricted file access scope: Tightened FileProvider path configuration in `file_paths.xml`, narrowing shared paths from root directory to app-specific subdirectories (e.g., `Download/BugeAppManager/`, `apk_cache/`)
+- Secure transmission config: Disabled SSL redirect following in OkHttpClient (`followSslRedirects(false)`) to prevent potential MITM attacks or unintended redirects
+- Enhanced log security: Added desensitization for commands and results in `LogManager.kt`, automatically filtering package names and long results to prevent user privacy leaks through logs
+- Input validation: Added whitelist character validation for user-controlled inputs like "installer name" in `PreferencesManager` and `UpdateHelper`, allowing only safe characters
+- Disabled unnecessary backups: Set `android:allowBackup` to `false` in `AndroidManifest.xml` to prevent app data from being backed up by the system, reducing data leakage risk
+- Verified APK ownership: Added package name verification for downloaded APKs in `UpdateHelper` before installation, ensuring the update package belongs to the current app
+
+These changes are solid and provide critical security加固.
+
+**Contributors of this version:**
+- Special mention: @Tangmjiu – the primary contributor of this update, who has built a solid security foundation for the app! Many thanks!

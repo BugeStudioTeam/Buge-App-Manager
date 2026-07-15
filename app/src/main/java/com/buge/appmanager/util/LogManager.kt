@@ -227,11 +227,22 @@ object LogManager {
 
     fun shizuku(context: Context, message: String, command: String? = null, result: String? = null) {
         val details = buildString {
-            command?.let { append("Command: $it\n") }
-            result?.let { append("Result: $it") }
+            command?.let { append("Command: ${redactCommand(it)}\n") }
+            result?.let { append("Result: ${redactResult(it)}") }
         }
         addLog(context, LogType.SHIZUKU, message, details.ifEmpty { null }, "Shizuku")
-        Log.d(logTag, "[SHIZUKU] $message${command?.let { " - $it" } ?: ""}")
+        Log.d(logTag, "[SHIZUKU] $message${command?.let { " - ${redactCommand(it)}" } ?: ""}")
+    }
+
+    private fun redactCommand(cmd: String): String {
+        // Redact package names and paths from shell commands to avoid
+        // leaking user app usage data in logs.
+        return cmd.replace(Regex("""\b[a-z][a-z0-9_.]*(\.[a-z][a-z0-9_.]*){2,}\b"""), "***")
+    }
+
+    private fun redactResult(result: String): String {
+        if (result.length > 500) return result.take(500) + "..."
+        return result
     }
 
     fun activity(context: Context, message: String, activityName: String, details: String? = null) {

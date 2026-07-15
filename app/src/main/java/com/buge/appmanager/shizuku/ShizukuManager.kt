@@ -13,6 +13,24 @@ object ShizukuManager {
     private const val TAG = "ShizukuManager"
     private const val REQUEST_CODE = 1001
 
+    // Security: Shell metacharacters that enable command injection.
+    // Any string interpolated into a shell command must pass this check.
+    private val SHELL_METACHARS = Regex("""[;|&`$()><\n\r\t'"]""")
+
+    /**
+     * Validates a string is safe for interpolation into a shell command.
+     * Package names from Android PackageManager are safe by design,
+     * but this provides defense-in-depth against future injection risks.
+     */
+    private fun isSafeShellArg(arg: String, label: String): Boolean {
+        return if (SHELL_METACHARS.containsMatchIn(arg)) {
+            Log.w(TAG, "Rejected unsafe $label containing shell metacharacters")
+            false
+        } else {
+            true
+        }
+    }
+
     fun isShizukuAvailable(): Boolean {
         return try {
             Shizuku.pingBinder()
@@ -96,6 +114,9 @@ object ShizukuManager {
     }
 
     suspend fun grantPermission(packageName: String, permission: String): ShizukuResult {
+        if (!isSafeShellArg(packageName, "packageName")) {
+            return ShizukuResult(false, "", "Unsafe package name")
+        }
         return when (permission) {
             "android.permission.WRITE_SETTINGS" -> {
                 executeCommand("appops set $packageName WRITE_SETTINGS allow")
@@ -116,6 +137,9 @@ object ShizukuManager {
     }
 
     suspend fun revokePermission(packageName: String, permission: String): ShizukuResult {
+        if (!isSafeShellArg(packageName, "packageName")) {
+            return ShizukuResult(false, "", "Unsafe package name")
+        }
         return when (permission) {
             "android.permission.WRITE_SETTINGS" -> {
                 executeCommand("appops set $packageName WRITE_SETTINGS deny")
@@ -224,22 +248,37 @@ object ShizukuManager {
     }
 
     suspend fun forceStop(packageName: String): ShizukuResult {
+        if (!isSafeShellArg(packageName, "packageName")) {
+            return ShizukuResult(false, "", "Unsafe package name")
+        }
         return executeCommand("am force-stop $packageName")
     }
 
     suspend fun clearData(packageName: String): ShizukuResult {
+        if (!isSafeShellArg(packageName, "packageName")) {
+            return ShizukuResult(false, "", "Unsafe package name")
+        }
         return executeCommand("pm clear $packageName")
     }
 
     suspend fun disableApp(packageName: String): ShizukuResult {
+        if (!isSafeShellArg(packageName, "packageName")) {
+            return ShizukuResult(false, "", "Unsafe package name")
+        }
         return executeCommand("pm disable-user --user 0 $packageName")
     }
 
     suspend fun enableApp(packageName: String): ShizukuResult {
+        if (!isSafeShellArg(packageName, "packageName")) {
+            return ShizukuResult(false, "", "Unsafe package name")
+        }
         return executeCommand("pm enable $packageName")
     }
 
     suspend fun uninstallApp(packageName: String): ShizukuResult {
+        if (!isSafeShellArg(packageName, "packageName")) {
+            return ShizukuResult(false, "", "Unsafe package name")
+        }
         return executeCommand("pm uninstall --user 0 $packageName")
     }
 }

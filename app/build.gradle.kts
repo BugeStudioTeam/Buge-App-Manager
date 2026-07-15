@@ -1,3 +1,6 @@
+import java.util.Properties
+import java.io.FileInputStream
+
 plugins {
     id("com.android.application")
     id("org.jetbrains.kotlin.android")
@@ -21,12 +24,22 @@ android {
         }
     }
 
+    // Load signing credentials from a local gitignored keystore.properties file.
+    // Never hardcode passwords in source.
+    val keystoreProperties = Properties()
+    val keystorePropertiesFile = rootProject.file("keystore.properties")
+    if (keystorePropertiesFile.exists()) {
+        keystoreProperties.load(FileInputStream(keystorePropertiesFile))
+    }
+
     signingConfigs {
-        create("release") {
-            storeFile = file("keystore.jks")
-            storePassword = "android"
-            keyAlias = "BugeStudioTeam"
-            keyPassword = "android"
+        if (keystoreProperties.containsKey("storePassword")) {
+            create("release") {
+                storeFile = file(keystoreProperties.getProperty("storeFile", "keystore.jks"))
+                storePassword = keystoreProperties.getProperty("storePassword")
+                keyAlias = keystoreProperties.getProperty("keyAlias")
+                keyPassword = keystoreProperties.getProperty("keyPassword")
+            }
         }
     }
 
@@ -37,7 +50,9 @@ android {
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
             )
-            signingConfig = signingConfigs.getByName("release")
+            if (keystoreProperties.containsKey("storePassword")) {
+                signingConfig = signingConfigs.getByName("release")
+            }
         }
     }
     

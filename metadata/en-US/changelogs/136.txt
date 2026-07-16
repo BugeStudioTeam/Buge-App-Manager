@@ -1,18 +1,16 @@
 **8.53.104**
 
-This is a **major security-hardening update**, primarily contributed by an outstanding developer (see Pull Request #8). Comprehensive security improvements have been applied across multiple critical areas of the application:
+This is a major security-hardening update (see PR #8), primarily contributed by @Tangmjiu:
 
-**Security Enhancements** 🔒
-- **Removed hardcoded keys**: Migrated plaintext signing passwords from `build.gradle.kts` to a local `.gitignore`d `keystore.properties` file, eliminating credential exposure in version control
-- **Prevented command injection**: Added strict input validation for all Shell commands executed via `ShizukuManager.kt`. Inputs containing dangerous metacharacters (matching regex `[;|&$()<>\n\r\t'\"]`) are now rejected outright
-- **Restricted file access scope**: Tightened FileProvider path configurations in `file_paths.xml` — shared access is now limited to app-specific subdirectories (`Download/BugeAppManager/`, `apk_cache/`) instead of the root directory
-- **Secure transmission configuration**: Disabled SSL redirect following in OkHttpClient (`followSslRedirects(false)`) to mitigate MITM attacks and unintended redirects
-- **Enhanced log security**: Added desensitization logic in `LogManager.kt` to automatically filter package names and lengthy command outputs, preventing user privacy leaks via logs
-- **Input validation**: Applied whitelist-based character validation to user-controlled fields such as "installer name" in `PreferencesManager` and `UpdateHelper`, permitting only safe characters
-- **Disabled unnecessary backups**: Set `android:allowBackup` to `false` in `AndroidManifest.xml` to block system-level app data backups, reducing potential data leakage vectors
-- **Verified APK ownership**: Added package name verification for downloaded APKs in `UpdateHelper` prior to installation, ensuring the update package is genuinely intended for this app
+**Security** 🔒
+- Removed hardcoded keys from build.gradle.kts (now use keystore.properties)
+- Added command injection prevention in ShizukuManager.kt
+- Restricted FileProvider paths to app-specific subdirs
+- Disabled SSL redirect following in OkHttpClient
+- Added log desensitization in LogManager.kt
+- Added input validation for user-controlled fields
+- Disabled android:allowBackup
+- Added APK package name verification before installation
 
-These changes are solid, thorough, and lay a strong security foundation for the project going forward.
-
-**Contributors of this version:**
-- Special mention: **@Tangmjiu** — the primary contributor of this update, whose efforts have built a robust security foundation for the app. Huge thanks!
+**Contributors:**
+- @Tangmjiu (primary contributor) — many thanks!

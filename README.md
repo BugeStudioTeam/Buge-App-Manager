@@ -15,7 +15,7 @@
 
 ---
 
-## **📸** Screenshots
+## 📸 Screenshots
 
 <div style="overflow-x: auto; white-space: nowrap; padding: 10px 0;">
 
@@ -88,7 +88,7 @@ Follow this step-by-step guide to manage the same permission type across multipl
 
 ---
 
-## **🌐** Supported languages
+## 🌐 Supported languages
 
 - English - en
 
@@ -113,6 +113,18 @@ Follow this step-by-step guide to manage the same permission type across multipl
 - 한국어 - ko
 
 [If you'd like to request support for a specific language, please open an issue and let us know](https://github.com/BugeStudioTeam/Buge-App-Manager/issues)
+
+---
+
+## ⭐ Star History
+
+<a href="https://www.star-history.com/?repos=BugeStudioTeam%2FBuge-App-Manager&type=date&legend=top-left">
+ <picture>
+   <source media="(prefers-color-scheme: dark)" srcset="https://api.star-history.com/chart?repos=BugeStudioTeam/Buge-App-Manager&type=date&theme=dark&legend=top-left&sealed_token=B4acpbz7wFZGGImwJ1rCCGqTncKqgC1Fiy_2vacEDhmJmgtfGGI7_nNR6gTaGTFAE7Er-AWFy_IbOeeT-mDO5HMc9LagtIb4UEQ0V8y8cBeB26rDlD8TDLcB1Kqe67tD0P-KGg3mk277otf1gUuiJP1UaAlPgt0_MEDosdh4CDeOpdLZ9MuPLFi98P6t" />
+   <source media="(prefers-color-scheme: light)" srcset="https://api.star-history.com/chart?repos=BugeStudioTeam/Buge-App-Manager&type=date&legend=top-left&sealed_token=B4acpbz7wFZGGImwJ1rCCGqTncKqgC1Fiy_2vacEDhmJmgtfGGI7_nNR6gTaGTFAE7Er-AWFy_IbOeeT-mDO5HMc9LagtIb4UEQ0V8y8cBeB26rDlD8TDLcB1Kqe67tD0P-KGg3mk277otf1gUuiJP1UaAlPgt0_MEDosdh4CDeOpdLZ9MuPLFi98P6t" />
+   <img alt="Star History Chart" src="https://api.star-history.com/chart?repos=BugeStudioTeam/Buge-App-Manager&type=date&legend=top-left&sealed_token=B4acpbz7wFZGGImwJ1rCCGqTncKqgC1Fiy_2vacEDhmJmgtfGGI7_nNR6gTaGTFAE7Er-AWFy_IbOeeT-mDO5HMc9LagtIb4UEQ0V8y8cBeB26rDlD8TDLcB1Kqe67tD0P-KGg3mk277otf1gUuiJP1UaAlPgt0_MEDosdh4CDeOpdLZ9MuPLFi98P6t" />
+ </picture>
+</a>
 
 ---
 

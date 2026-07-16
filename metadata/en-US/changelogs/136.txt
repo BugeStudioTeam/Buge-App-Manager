@@ -1,16 +1,16 @@
 **8.53.104**
 
-This is a major security-hardening update (see PR #8), primarily contributed by @Tangmjiu:
+Major security-hardening update (PR #8), primarily by @Tangmjiu:
 
 **Security** 🔒
-- Removed hardcoded keys from build.gradle.kts (now use keystore.properties)
+- Removed hardcoded keys from build.gradle.kts
 - Added command injection prevention in ShizukuManager.kt
-- Restricted FileProvider paths to app-specific subdirs
-- Disabled SSL redirect following in OkHttpClient
-- Added log desensitization in LogManager.kt
-- Added input validation for user-controlled fields
+- Restricted FileProvider paths
+- Disabled SSL redirect following
+- Added log desensitization
+- Added input validation for user fields
 - Disabled android:allowBackup
-- Added APK package name verification before installation
+- Added APK verification before install
 
 **Contributors:**
-- @Tangmjiu (primary contributor) — many thanks!
+- @Tangmjiu (primary) — many thanks!

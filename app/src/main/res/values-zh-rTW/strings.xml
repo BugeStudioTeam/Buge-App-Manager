@@ -1,0 +1,310 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Buge 應用管理器</string>
+    <string name="developer_name">Buge 團隊</string>
+
+    <!-- Navigation -->
+    <string name="nav_apps">應用</string>
+    <string name="nav_activities">活動</string>
+    <string name="nav_permissions">權限</string>
+    <string name="nav_settings">設定</string>
+
+    <!-- Settings Groups -->
+    <string name="settings_group_authorization">授權</string>
+    <string name="settings_group_appearance">外觀</string>
+    <string name="settings_group_apps">應用</string>
+    <string name="settings_group_advanced">進階</string>
+    <string name="settings_group_about">關於</string>
+
+    <!-- Basic Settings -->
+    <string name="title_settings">設定</string>
+    <string name="pref_theme">主題</string>
+    <string name="pref_theme_light">淺色</string>
+    <string name="pref_theme_dark">深色</string>
+    <string name="pref_theme_auto">跟隨系統</string>
+    <string name="pref_language">語言</string>
+    <string name="pref_language_auto">系統預設</string>
+    <string name="pref_default_page">預設頁面</string>
+    <string name="pref_default_page_summary">選擇應用啟動時顯示的頁面</string>
+    <string name="pref_show_system_apps">顯示系統應用</string>
+    <string name="pref_show_disabled_apps">顯示已停用的應用</string>
+    <string name="pref_show_undeclared_activities">顯示未匯出的活動</string>
+    <string name="pref_allow_system_ops">允許系統應用操作</string>
+    <string name="pref_allow_system_ops_summary">允許修改系統應用（權限、停用、解除安裝）</string>
+    <string name="pref_about">關於</string>
+    <string name="setting_saved">設定已儲存</string>
+    <string name="pref_auto_update">自動更新</string>
+
+    <!-- Apps Settings -->
+    <string name="pref_google_services">Google 服務</string>
+    <string name="pref_google_services_summary">啟用或停用 Google 行動服務</string>
+    <string name="pref_google_services_disabled">此裝置上無法使用 Google 服務</string>
+
+    <!-- Log Settings -->
+    <string name="pref_logging">日誌記錄</string>
+    <string name="pref_logging_summary">記錄使用者操作和錯誤</string>
+    <string name="log_activity_title">操作日誌</string>
+    <string name="log_settings_title">日誌設定</string>
+    <string name="log_enable">啟用日誌記錄</string>
+    <string name="log_enable_summary">記錄所有使用者操作和系統錯誤</string>
+    <string name="log_empty">尚無日誌記錄</string>
+    <string name="log_copy">複製</string>
+    <string name="log_cleared">日誌已清除</string>
+    <string name="log_copied">日誌已複製到剪貼簿</string>
+
+    <!-- Default Page Dialog -->
+    <string name="default_page_title">預設啟動頁面</string>
+    <string name="default_page_apps">應用</string>
+    <string name="default_page_permissions">權限</string>
+    <string name="default_page_activities">活動</string>
+    <string name="default_page_settings">設定</string>
+
+    <!-- About Dialog -->
+    <string name="about_desc">Buge 應用管理器是一款強大的應用管理工具，支援 Shizuku 以實現進階權限和應用控制。</string>
+
+    <!-- About Links -->
+    <string name="website">官方網站</string>
+    <string name="website_desc">造訪我們的官方網站</string>
+    <string name="github">GitHub</string>
+    <string name="github_desc">造訪我們的 GitHub 儲存庫</string>
+    <string name="telegram">Telegram</string>
+    <string name="telegram_desc">加入我們的 Telegram 頻道</string>
+    <string name="check_for_update">檢查更新</string>
+    <string name="update_desc">在 GitHub 上檢查新版本</string>
+    <string name="about_more">了解更多關於我們</string>
+    <string name="about_more_summary">了解開發團隊和專案願景</string>
+    <string name="about">關於</string>
+    <string name="close">關閉</string>
+    <string name="open">開啟</string>
+
+    <!-- About Us Activity -->
+    <string name="about_us">關於我們</string>
+    <string name="about_us_title">Buge Studio 團隊</string>
+    <string name="about_us_description">Buge Studio 團隊是一群充滿熱情的開發者和設計師，致力於為 Android 平台創造創新實用的工具應用。我們專注於使用者隱私、系統控制和開放性。我們的目標是為使用者提供透明、高效、可靠的工具。Buge 應用管理器是一個開源專案，也是我們的第一個主要應用。歡迎大家共同參與改進和開發。</string>
+
+    <!-- GMS Disable Warning -->
+    <string name="gms_disable_warning_title">停用 Google 服務？</string>
+    <string name="gms_disable_warning_message">停用 Google 服務將影響以下功能：\n\n• Google Play 商店將停止運作\n• 依賴 Google Play 服務的應用可能崩潰\n• Google 應用的通知將停止\n• 位置服務可能受影響\n• 應用內購買將無法使用\n\n確定要停用 Google 服務嗎？</string>
+
+    <!-- System Operation Blocked -->
+    <string name="system_op_blocked_title">操作被封鎖</string>
+    <string name="system_op_blocked_message">系統應用操作目前已停用。\n\n您可以在設定中啟用「允許系統應用操作」來執行此操作。</string>
+
+    <!-- Restore -->
+    <string name="pref_restore_apps">還原已解除安裝的應用</string>
+    <string name="pref_restore_apps_summary">檢視並還原先前解除安裝的系統應用</string>
+    <string name="title_restore_apps">還原應用</string>
+    <string name="restore">還原</string>
+    <string name="no_uninstalled_apps">未找到已解除安裝的應用</string>
+    <string name="restore_confirm">還原 %s？</string>
+    <string name="restore_success">應用還原成功</string>
+    <string name="restore_failed">還原應用失敗</string>
+
+    <!-- Shizuku -->
+    <string name="shizuku_title">Shizuku 授權</string>
+    <string name="shizuku_desc">需要 Shizuku 來管理應用權限並執行進階操作。請在 Shizuku 中授權此應用。</string>
+    <string name="shizuku_status_ok">已授權且正在執行</string>
+    <string name="shizuku_status_no_auth">正在執行但未授權</string>
+    <string name="shizuku_status_not_running">未執行</string>
+    <string name="shizuku_authorized">已授權</string>
+    <string name="shizuku_not_authorized">未授權</string>
+    <string name="shizuku_not_running">未執行</string>
+    <string name="shizuku_request_auth">要求授權</string>
+
+    <!-- App List -->
+    <string name="title_app_list">已安裝的應用</string>
+    <string name="search_hint">搜尋應用…</string>
+    <string name="filter_all">所有應用</string>
+    <string name="filter_user">使用者應用</string>
+    <string name="filter_system">系統應用</string>
+    <string name="filter_favorite">收藏應用</string>
+    <string name="sort_name">名稱</string>
+    <string name="sort_size">大小</string>
+    <string name="sort_install_date">安裝日期</string>
+    <string name="apps_count">%d 個應用</string>
+    <string name="loading_apps">正在載入應用…</string>
+    <string name="refresh">重新整理</string>
+    <string name="no_apps_found">找不到應用</string>
+    <string name="share_apks">分享 APK</string>
+
+    <!-- App Detail -->
+    <string name="title_app_detail">應用詳情</string>
+    <string name="package_name">套件名稱</string>
+    <string name="version">版本</string>
+    <string name="install_date">安裝日期</string>
+    <string name="update_date">最後更新</string>
+    <string name="app_size">應用大小</string>
+    <string name="data_size">資料大小</string>
+    <string name="cache_size">快取大小</string>
+    <string name="target_sdk">目標 SDK</string>
+    <string name="min_sdk">最低 SDK</string>
+    <string name="permissions_title">權限</string>
+    <string name="granted">已授予</string>
+    <string name="denied">已拒絕</string>
+    <string name="grant_permission">授予</string>
+    <string name="revoke_permission">撤銷</string>
+    <string name="open_app">開啟應用</string>
+    <string name="app_info">應用資訊</string>
+    <string name="uninstall">解除安裝</string>
+    <string name="force_stop">強制停止</string>
+    <string name="clear_data">清除資料</string>
+    <string name="clear_cache">清除快取</string>
+    <string name="disable_app">停用應用</string>
+    <string name="enable_app">啟用應用</string>
+    <string name="freeze_app">凍結應用</string>
+    <string name="unfreeze_app">解凍應用</string>
+
+    <!-- App Detail Activity Strings -->
+    <string name="removed_from_favorites">已從收藏中移除</string>
+    <string name="added_to_favorites">已加入收藏</string>
+    <string name="apk_path_not_found">找不到 APK 路徑</string>
+    <string name="apk_file_not_exist">APK 檔案不存在</string>
+    <string name="apk_saved_to">APK 已儲存至：%s</string>
+    <string name="export_failed">匯出失敗：%s</string>
+    <string name="cannot_open_google_play">無法開啟 Google Play</string>
+    <string name="cannot_open_fdroid">無法開啟 F-Droid</string>
+    <string name="cannot_launch_app">無法啟動此應用</string>
+    <string name="force_stop_confirm">強制停止 %s？</string>
+    <string name="uninstall_confirm">解除安裝 %s？</string>
+    <string name="clear_data_confirm">清除 %s 的所有資料？此操作無法復原。</string>
+
+    <!-- Permissions List -->
+    <string name="title_permissions">權限管理器</string>
+    <string name="perm_microphone">麥克風</string>
+    <string name="perm_camera">相機</string>
+    <string name="perm_location">位置</string>
+    <string name="perm_contacts">聯絡人</string>
+    <string name="perm_storage">儲存空間</string>
+    <string name="perm_manage_storage">所有檔案存取</string>
+    <string name="perm_phone">電話</string>
+    <string name="perm_sms">簡訊</string>
+    <string name="perm_calendar">行事曆</string>
+    <string name="perm_body_sensors">身體感應器</string>
+    <string name="perm_notifications">通知</string>
+    <string name="perm_overlay">懸浮視窗</string>
+    <string name="perm_install_unknown">安裝未知應用</string>
+    <string name="batch_revoke">撤銷權限</string>
+    <string name="batch_grant">授予權限</string>
+    <string name="confirm_revoke">從 %d 個應用撤銷權限？</string>
+    <string name="confirm_grant">向 %d 個應用授予權限？</string>
+    <string name="selected_count">已選擇 %d 個</string>
+    <string name="open_system_settings">開啟系統設定</string>
+    <string name="perm_write_settings">修改系統設定</string>
+
+    <!-- Activities -->
+    <string name="title_activities">活動管理器</string>
+    <string name="title_activity_detail">活動詳情</string>
+    <string name="search_activity_hint">搜尋活動…</string>
+    <string name="launch">啟動</string>
+    <string name="back_to_apps">返回應用列表</string>
+    <string name="no_activities_found">找不到活動</string>
+
+    <!-- Common -->
+    <string name="confirm">確認</string>
+    <string name="cancel">取消</string>
+    <string name="operation_success">操作成功</string>
+    <string name="operation_failed">操作失敗：%s</string>
+    <string name="error_no_shizuku">Shizuku 不可用或未授權</string>
+    <string name="error_system_ops_disabled">系統應用操作已停用。請在設定中啟用「允許系統應用操作」。</string>
+    <string name="language_changed_restart">語言已變更。重新啟動應用以套用變更。</string>
+    <string name="restart">重新啟動</string>
+
+    <!-- Language names -->
+    <string name="pref_language_en">English</string>
+    <string name="pref_language_zh">中文 (简体)</string>
+    <string name="pref_language_ja">日本語</string>
+    <string name="pref_language_ko">한국어</string>
+    <string name="pref_language_fr">Français</string>
+    <string name="pref_language_de">Deutsch</string>
+    <string name="pref_language_ru">Русский</string>
+    <string name="pref_language_ar">العربية</string>
+    <string name="pref_language_pt">Português</string>
+    <string name="pref_language_es">Español</string>
+    
+    <string name="restart_required">需要重新啟動</string>
+    <string name="restart_required_message">預設啟動頁面已變更。重新啟動應用以使變更生效。</string>
+    <string name="restart_now">立即重新啟動</string>
+    <string name="later">稍後</string>
+    
+    <!-- Update Checker -->
+    <string name="update_available">發現更新</string>
+    <string name="download">下載</string>
+    <string name="no_update_title">已是最新版本</string>
+    <string name="no_update_message">您已在使用最新版本。</string>
+    <string name="update_check_failed">檢查更新失敗</string>
+    <string name="update_check_failed_message">檢查更新失敗。請檢查網路連線。</string>
+    <string name="checking_for_update">正在檢查更新…</string>
+    <string name="please_wait">請稍候…</string>
+    <string name="ok">確定</string>
+    <string name="ignore">忽略</string>
+    
+    <!-- Shortcuts -->
+    <string name="shortcut_app_manager_long">開啟 Buge 應用管理器</string>
+    
+    <string name="appearance_settings">外觀設定</string>
+    <string name="theme_mode">主題模式</string>
+    <string name="color_theme">主題顏色</string>
+    <string name="color_default">預設（藍色）</string>
+    <string name="color_red">紅色</string>
+    <string name="color_green">綠色</string>
+    <string name="color_yellow">黃色</string>
+    <string name="more_options">更多選項</string>
+    <string name="more_options_summary">自訂主題和顏色</string>
+    <string name="theme_change_restart_message">主題已變更。重新啟動應用以套用變更。</string>
+    <string name="theme_group">主題</string>
+    <string name="hide_nav_labels">隱藏導覽標籤</string>
+    <string name="hide_nav_labels_summary">未選取的導覽項目隱藏標題，僅顯示已選取項目</string>
+
+    <!-- Custom Labels -->
+    <string name="pref_custom_labels">自訂標籤</string>
+    <string name="pref_custom_labels_summary">建立和管理自訂應用標籤</string>
+    <string name="title_custom_labels">自訂標籤</string>
+    <string name="create_label">建立標籤</string>
+    <string name="label_name">標籤名稱</string>
+    <string name="label_name_hint">輸入標籤名稱</string>
+    <string name="create_new_label">建立新標籤</string>
+    <string name="no_labels_created">尚未建立標籤</string>
+    <string name="tap_to_create">點選 + 建立您的第一個標籤</string>
+    <string name="delete_label_confirm">刪除「%s」？</string>
+    <string name="delete_label">刪除標籤</string>
+    <string name="select_apps_for_label">為「%s」選擇應用</string>
+    <string name="label_created">標籤已建立</string>
+    <string name="label_updated">標籤已更新</string>
+    <string name="label_deleted">標籤已刪除</string>
+    <string name="filter_label">標籤：%s</string>
+
+    <!-- Update Options -->
+    <string name="pref_update_options">更新選項</string>
+    <string name="pref_update_options_summary">設定更新下載和安裝方式</string>
+    <string name="title_update_options">更新選項</string>
+    <string name="update_method_browser">在瀏覽器中開啟</string>
+    <string name="update_method_silent">靜默安裝 (Shizuku)</string>
+    <string name="installer_name">安裝者名稱</string>
+    <string name="installer_name_hint">輸入安裝者名稱（例如 BugeAppManager）</string>
+    <string name="update_downloading">正在下載更新…</string>
+    <string name="update_download_failed">下載失敗</string>
+    <string name="update_installing">正在安裝更新…</string>
+    <string name="update_install_success">更新安裝成功</string>
+    <string name="update_install_failed">安裝失敗</string>
+    <string name="update_already_latest">您已是最新版本</string>
+    <string name="checking_for_update_dialog">正在檢查更新…</string>
+    <string name="update_download_complete">下載完成</string>
+    <string name="save">儲存</string>
+
+    <!-- Optional Permissions -->
+    <string name="pref_optional_permissions">選用權限</string>
+    <string name="pref_optional_permissions_summary">為附加功能授予選用權限</string>
+    <string name="title_optional_permissions">選用權限</string>
+    <string name="pref_storage_permission">儲存權限</string>
+    <string name="pref_storage_permission_summary">包含 READ_EXTERNAL_STORAGE 和 WRITE_EXTERNAL_STORAGE，用於 APK 匯出和儲存功能</string>
+    <string name="storage_permission_required">APK 匯出和儲存功能所需</string>
+    <string name="storage_permission_grant">授予儲存權限</string>
+    <string name="perm_read_external_storage">讀取外部儲存</string>
+    <string name="perm_read_external_storage_desc">允許應用從外部儲存讀取檔案，用於 APK 匯出和分享</string>
+    <string name="perm_write_external_storage">寫入外部儲存</string>
+    <string name="perm_write_external_storage_desc">允許應用向外部儲存寫入檔案，用於 APK 匯出和分享</string>
+    <string name="optional_perm_granted">已授予</string>
+    <string name="optional_perm_denied">已拒絕</string>
+    <string name="optional_perm_grant">授予</string>
+    
+</resources>

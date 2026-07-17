@@ -106,6 +106,8 @@ Follow this step-by-step guide to manage the same permission type across multipl
 
 - 中文 (简体) - zh
 
+- 中文 (繁体) - zh-rTW
+
 - العربية - ar
 
 - 日本語 - ja

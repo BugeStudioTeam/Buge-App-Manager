@@ -118,18 +118,6 @@ Follow this step-by-step guide to manage the same permission type across multipl
 
 ---
 
-## ⭐ Star History
-
-<a href="https://www.star-history.com/?repos=BugeStudioTeam%2FBuge-App-Manager&type=date&legend=top-left">
- <picture>
-   <source media="(prefers-color-scheme: dark)" srcset="https://api.star-history.com/chart?repos=BugeStudioTeam/Buge-App-Manager&type=date&theme=dark&legend=top-left&sealed_token=nYTrU7Ok_eXZkiuurjA-TJ0B2nCFW-OsJf6t3q4t5EsVH9pQTUdZV-dyXH-dV0gpOKWmx1ayHKs_nqCFlCEfepWzE2JP9oCShiIFXXGDuPIxpEtDa55f-4AeJ0jPCLMmHzy_yJaREGdCl8q5ctOsDTjh5WiAcZGCeNYKFIxFXhMF-z57kvE2ReuWt75B" />
-   <source media="(prefers-color-scheme: light)" srcset="https://api.star-history.com/chart?repos=BugeStudioTeam/Buge-App-Manager&type=date&legend=top-left&sealed_token=nYTrU7Ok_eXZkiuurjA-TJ0B2nCFW-OsJf6t3q4t5EsVH9pQTUdZV-dyXH-dV0gpOKWmx1ayHKs_nqCFlCEfepWzE2JP9oCShiIFXXGDuPIxpEtDa55f-4AeJ0jPCLMmHzy_yJaREGdCl8q5ctOsDTjh5WiAcZGCeNYKFIxFXhMF-z57kvE2ReuWt75B" />
-   <img alt="Star History Chart" src="https://api.star-history.com/chart?repos=BugeStudioTeam/Buge-App-Manager&type=date&legend=top-left&sealed_token=nYTrU7Ok_eXZkiuurjA-TJ0B2nCFW-OsJf6t3q4t5EsVH9pQTUdZV-dyXH-dV0gpOKWmx1ayHKs_nqCFlCEfepWzE2JP9oCShiIFXXGDuPIxpEtDa55f-4AeJ0jPCLMmHzy_yJaREGdCl8q5ctOsDTjh5WiAcZGCeNYKFIxFXhMF-z57kvE2ReuWt75B" />
- </picture>
-</a>
-
----
-
 ## 📦 Installation
 
 [<img src="https://raw.githubusercontent.com/BugeStudioTeam/Buge-App-Manager/refs/heads/main/images/README/Release/get-it-on-github.svg"

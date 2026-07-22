@@ -7,8 +7,9 @@
 <p align="center">
   <img src="https://ziadoua.github.io/m3-Markdown-Badges/badges/Android/android2.svg">
   <img src="https://ziadoua.github.io/m3-Markdown-Badges/badges/Kotlin/kotlin2.svg">
-  <img src="https://ziadoua.github.io/m3-Markdown-Badges/badges/LicenceGPLv3/licencegplv32.svg">
   <img src="https://ziadoua.github.io/m3-Markdown-Badges/badges/Github/github3.svg">
+  <img src="https://m3-markdown-badges.vercel.app/stars/1/2/BugeStudioTeam/Buge-App-Manager" alt="Stars Badge"/>
+  <img src="https://ziadoua.github.io/m3-Markdown-Badges/badges/LicenceGPLv3/licencegplv32.svg">
 </p>
 
 **Buge App Manager** is a powerful Android utility application designed for advanced app and permission management. Built with **Material Design 3 Expressive**, it offers a modern and intuitive interface for granular control over your device.

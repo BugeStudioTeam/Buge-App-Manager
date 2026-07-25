@@ -1,5 +1,9 @@
 package com.buge.appmanager.adapter
 
+import android.content.pm.ShortcutInfo
+import android.content.pm.ShortcutManager
+import android.graphics.drawable.Icon
+import android.os.Build
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -12,9 +16,11 @@ import androidx.recyclerview.widget.RecyclerView
 import com.buge.appmanager.R
 import com.buge.appmanager.model.ActivityDetail
 import com.google.android.material.button.MaterialButton
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 
 class ActivityDetailAdapter(
-    private val onActivityClick: (ActivityDetail) -> Unit
+    private val onActivityClick: (ActivityDetail) -> Unit,
+    private val onShortcutCreate: (ActivityDetail, View) -> Unit
 ) : ListAdapter<ActivityDetail, ActivityDetailAdapter.ActivityViewHolder>(ActivityDiffCallback()) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ActivityViewHolder {
@@ -26,6 +32,17 @@ class ActivityDetailAdapter(
     override fun onBindViewHolder(holder: ActivityViewHolder, position: Int) {
         holder.bind(getItem(position))
         updateItemBackground(holder, position)
+
+        // Long click listener for shortcut creation
+        holder.itemView.setOnLongClickListener { view ->
+            val activity = getItem(position)
+            if (activity.isExported) {
+                onShortcutCreate(activity, view)
+                true
+            } else {
+                false
+            }
+        }
     }
 
     override fun onBindViewHolder(holder: ActivityViewHolder, position: Int, payloads: MutableList<Any>) {
@@ -39,7 +56,6 @@ class ActivityDetailAdapter(
 
     override fun onCurrentListChanged(previousList: MutableList<ActivityDetail>, currentList: MutableList<ActivityDetail>) {
         super.onCurrentListChanged(previousList, currentList)
-        // Notify all items to update backgrounds when list size changes
         if (previousList.size != currentList.size) {
             notifyItemRangeChanged(0, currentList.size, "background")
         }
@@ -48,7 +64,7 @@ class ActivityDetailAdapter(
     private fun updateItemBackground(holder: ActivityViewHolder, position: Int) {
         val container = holder.itemView.findViewById<FrameLayout>(R.id.item_container)
         val size = itemCount
-        
+
         val background = when {
             size == 1 -> R.drawable.bg_setting_item_single
             position == 0 -> R.drawable.bg_setting_item_top
@@ -131,7 +147,7 @@ class ActivityDetailAdapter(
                    oldItem.isExported == newItem.isExported &&
                    oldItem.name == newItem.name
         }
-        
+
         override fun getChangePayload(oldItem: ActivityDetail, newItem: ActivityDetail): Any? {
             if (oldItem.isExported != newItem.isExported ||
                 oldItem.name != newItem.name) {

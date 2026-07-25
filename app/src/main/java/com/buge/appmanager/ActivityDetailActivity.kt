@@ -1,6 +1,10 @@
 package com.buge.appmanager
 
 import android.content.Intent
+import android.content.pm.ShortcutInfo
+import android.content.pm.ShortcutManager
+import android.graphics.drawable.Icon
+import android.os.Build
 import android.os.Bundle
 import android.widget.EditText
 import androidx.activity.OnBackPressedCallback
@@ -15,6 +19,7 @@ import com.buge.appmanager.util.LogManager
 import com.buge.appmanager.util.SnackbarHelper
 import com.buge.appmanager.util.SpringAnimationHelper
 import com.buge.appmanager.viewmodel.ActivityDetailViewModel
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
@@ -25,6 +30,7 @@ class ActivityDetailActivity : BaseActivity() {
         const val EXTRA_PACKAGE_NAME = "extra_package_name"
         const val EXTRA_APP_NAME = "extra_app_name"
         const val EXTRA_IS_SYSTEM = "extra_is_system"
+        private const val SHORTCUT_REQUEST_CODE = 1001
     }
 
     private lateinit var binding: ActivityActivityDetailBinding
@@ -133,9 +139,14 @@ class ActivityDetailActivity : BaseActivity() {
     }
 
     private fun setupRecyclerView() {
-        activitiesAdapter = ActivityDetailAdapter { activity ->
-            handleActivityClick(activity)
-        }
+        activitiesAdapter = ActivityDetailAdapter(
+            onActivityClick = { activity ->
+                handleActivityClick(activity)
+            },
+            onShortcutCreate = { activity, view ->
+                showShortcutDialog(activity)
+            }
+        )
         binding.recyclerView.layoutManager = LinearLayoutManager(this)
         binding.recyclerView.adapter = activitiesAdapter
         LogManager.debug(this, "RecyclerView setup complete", "Package: $packageName")
@@ -188,6 +199,84 @@ class ActivityDetailActivity : BaseActivity() {
         } else {
             SnackbarHelper.showSnackbar(binding.root, "This activity is not exported and cannot be launched")
             LogManager.warning(this, "Cannot launch unexported activity", "Package: $packageName, Activity: ${activity.className}")
+        }
+    }
+
+    private fun showShortcutDialog(activity: ActivityDetail) {
+        if (!activity.isExported) {
+            SnackbarHelper.showSnackbar(binding.root, "This activity is not exported, cannot create shortcut")
+            return
+        }
+
+        MaterialAlertDialogBuilder(this)
+            .setTitle("Create Shortcut")
+            .setMessage("Create shortcut for ${activity.name} on home screen?")
+            .setPositiveButton(R.string.confirm) { _, _ ->
+                createShortcut(activity)
+            }
+            .setNegativeButton(R.string.cancel, null)
+            .show()
+    }
+
+    private fun createShortcut(activity: ActivityDetail) {
+        try {
+            val appName = intent.getStringExtra(EXTRA_APP_NAME) ?: packageName
+
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+                val shortcutManager = getSystemService(ShortcutManager::class.java)
+
+                val intent = Intent().apply {
+                    setClassName(packageName, activity.className)
+                    action = Intent.ACTION_MAIN
+                    addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                    addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
+                }
+
+                val shortcut = ShortcutInfo.Builder(this, "activity_${System.currentTimeMillis()}")
+                    .setShortLabel(activity.name)
+                    .setLongLabel("$appName - ${activity.name}")
+                    .setIcon(Icon.createWithResource(this, android.R.drawable.ic_menu_edit))
+                    .setIntent(intent)
+                    .build()
+
+                shortcutManager.requestPinShortcut(shortcut, null)
+                SnackbarHelper.showSnackbar(binding.root, "Shortcut created")
+                LogManager.info(this, "Shortcut created", "Activity: ${activity.className}")
+            } else {
+                createShortcutLegacy(activity)
+            }
+        } catch (e: Exception) {
+            SnackbarHelper.showSnackbar(binding.root, "Failed to create shortcut: ${e.message}")
+            LogManager.error(this, "Shortcut creation failed", e.message)
+        }
+    }
+
+    @Suppress("DEPRECATION")
+    private fun createShortcutLegacy(activity: ActivityDetail) {
+        val intent = Intent().apply {
+            setClassName(packageName, activity.className)
+            action = Intent.ACTION_MAIN
+            addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+            addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
+        }
+
+        val appName = intent.getStringExtra(EXTRA_APP_NAME) ?: packageName
+
+        val shortcutIntent = Intent(Intent.ACTION_CREATE_SHORTCUT).apply {
+            putExtra(Intent.EXTRA_SHORTCUT_INTENT, intent)
+            putExtra(Intent.EXTRA_SHORTCUT_NAME, activity.name)
+            putExtra(Intent.EXTRA_SHORTCUT_ICON_RESOURCE,
+                Intent.ShortcutIconResource.fromContext(this@ActivityDetailActivity, android.R.drawable.ic_menu_edit))
+        }
+
+        startActivityForResult(shortcutIntent, SHORTCUT_REQUEST_CODE)
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (requestCode == SHORTCUT_REQUEST_CODE && resultCode == RESULT_OK) {
+            SnackbarHelper.showSnackbar(binding.root, "Shortcut created")
+            LogManager.info(this, "Shortcut created (legacy)", "Activity: $packageName")
         }
     }
 

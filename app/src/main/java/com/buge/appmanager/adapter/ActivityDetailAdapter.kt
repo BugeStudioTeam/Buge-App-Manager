@@ -30,15 +30,34 @@ class ActivityDetailAdapter(
     }
 
     override fun onBindViewHolder(holder: ActivityViewHolder, position: Int) {
-        holder.bind(getItem(position))
+        val activity = getItem(position)
+        holder.bind(activity)
         updateItemBackground(holder, position)
+
+        // Fuck: clear old listeners to avoid multiple registration
+        holder.itemView.setOnLongClickListener(null)
+        holder.itemView.setOnClickListener(null)
+
+        // Click listener
+        holder.itemView.setOnClickListener {
+            val pos = holder.adapterPosition
+            if (pos != RecyclerView.NO_POSITION) {
+                val item = getItem(pos)
+                onActivityClick(item)
+            }
+        }
 
         // Long click listener for shortcut creation
         holder.itemView.setOnLongClickListener { view ->
-            val activity = getItem(position)
-            if (activity.isExported) {
-                onShortcutCreate(activity, view)
-                true
+            val pos = holder.adapterPosition
+            if (pos != RecyclerView.NO_POSITION) {
+                val item = getItem(pos)
+                if (item.isExported) {
+                    onShortcutCreate(item, view)
+                    true
+                } else {
+                    false
+                }
             } else {
                 false
             }
@@ -49,7 +68,8 @@ class ActivityDetailAdapter(
         if (payloads.isEmpty()) {
             super.onBindViewHolder(holder, position, payloads)
         } else {
-            holder.bind(getItem(position))
+            val activity = getItem(position)
+            holder.bind(activity)
             updateItemBackground(holder, position)
         }
     }
@@ -132,8 +152,6 @@ class ActivityDetailAdapter(
                     onActivityClick(activity)
                 }
             }
-
-            itemView.setOnClickListener(null)
         }
     }
 

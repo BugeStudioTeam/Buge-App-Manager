@@ -3,10 +3,13 @@ package com.buge.appmanager
 import android.content.Intent
 import android.content.pm.ShortcutInfo
 import android.content.pm.ShortcutManager
+import android.graphics.Bitmap
+import android.graphics.Canvas
+import android.graphics.drawable.BitmapDrawable
+import android.graphics.drawable.Drawable
 import android.graphics.drawable.Icon
 import android.os.Build
 import android.os.Bundle
-import android.widget.EditText
 import androidx.activity.OnBackPressedCallback
 import androidx.activity.viewModels
 import androidx.core.widget.addTextChangedListener
@@ -221,38 +224,53 @@ class ActivityDetailActivity : BaseActivity() {
     private fun createShortcut(activity: ActivityDetail) {
         try {
             val appName = intent.getStringExtra(EXTRA_APP_NAME) ?: packageName
+            val appIcon = getAppIcon()
 
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-                val shortcutManager = getSystemService(ShortcutManager::class.java)
-
-                val intent = Intent().apply {
-                    setClassName(packageName, activity.className)
-                    action = Intent.ACTION_MAIN
-                    addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-                    addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
-                }
-
-                val shortcut = ShortcutInfo.Builder(this, "activity_${System.currentTimeMillis()}")
-                    .setShortLabel(activity.name)
-                    .setLongLabel("$appName - ${activity.name}")
-                    .setIcon(Icon.createWithResource(this, android.R.drawable.ic_menu_edit))
-                    .setIntent(intent)
-                    .build()
-
-                shortcutManager.requestPinShortcut(shortcut, null)
-                SnackbarHelper.showSnackbar(binding.root, "Shortcut created")
-                LogManager.info(this, "Shortcut created", "Activity: ${activity.className}")
+                createShortcutModern(activity, appName, appIcon)
             } else {
-                createShortcutLegacy(activity)
+                createShortcutLegacy(activity, appName, appIcon)
             }
         } catch (e: Exception) {
-            SnackbarHelper.showSnackbar(binding.root, "Failed to create shortcut: ${e.message}")
             LogManager.error(this, "Shortcut creation failed", e.message)
+            SnackbarHelper.showSnackbar(binding.root, "Failed to create shortcut: ${e.message}")
+        }
+    }
+
+    private fun getAppIcon(): Drawable? {
+        return try {
+            val appInfo = packageManager.getApplicationInfo(packageName, 0)
+            packageManager.getApplicationIcon(appInfo)
+        } catch (e: Exception) {
+            LogManager.warning(this, "Failed to get app icon", e.message)
+            null
+        }
+    }
+
+    private fun drawableToBitmap(drawable: Drawable?): Bitmap? {
+        if (drawable == null) return null
+
+        return try {
+            when (drawable) {
+                is BitmapDrawable -> drawable.bitmap
+                else -> {
+                    val w = drawable.intrinsicWidth.takeIf { it > 0 } ?: 48
+                    val h = drawable.intrinsicHeight.takeIf { it > 0 } ?: 48
+                    val bitmap = Bitmap.createBitmap(w, h, Bitmap.Config.ARGB_8888)
+                    val canvas = Canvas(bitmap)
+                    drawable.setBounds(0, 0, canvas.width, canvas.height)
+                    drawable.draw(canvas)
+                    bitmap
+                }
+            }
+        } catch (e: Exception) {
+            LogManager.warning(this, "Failed to convert drawable to bitmap", e.message)
+            null
         }
     }
 
     @Suppress("DEPRECATION")
-    private fun createShortcutLegacy(activity: ActivityDetail) {
+    private fun createShortcutLegacy(activity: ActivityDetail, appName: String, appIcon: Drawable?) {
         val intent = Intent().apply {
             setClassName(packageName, activity.className)
             action = Intent.ACTION_MAIN
@@ -260,16 +278,68 @@ class ActivityDetailActivity : BaseActivity() {
             addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
         }
 
-        val appName = intent.getStringExtra(EXTRA_APP_NAME) ?: packageName
-
         val shortcutIntent = Intent(Intent.ACTION_CREATE_SHORTCUT).apply {
             putExtra(Intent.EXTRA_SHORTCUT_INTENT, intent)
             putExtra(Intent.EXTRA_SHORTCUT_NAME, activity.name)
-            putExtra(Intent.EXTRA_SHORTCUT_ICON_RESOURCE,
-                Intent.ShortcutIconResource.fromContext(this@ActivityDetailActivity, android.R.drawable.ic_menu_edit))
+
+            val iconBitmap = drawableToBitmap(appIcon)
+            if (iconBitmap != null) {
+                putExtra(Intent.EXTRA_SHORTCUT_ICON, iconBitmap)
+            } else {
+                putExtra(
+                    Intent.EXTRA_SHORTCUT_ICON_RESOURCE,
+                    Intent.ShortcutIconResource.fromContext(this@ActivityDetailActivity, android.R.drawable.ic_menu_edit)
+                )
+            }
         }
 
-        startActivityForResult(shortcutIntent, SHORTCUT_REQUEST_CODE)
+        try {
+            startActivityForResult(shortcutIntent, SHORTCUT_REQUEST_CODE)
+        } catch (e: Exception) {
+            LogManager.error(this, "Failed to start shortcut activity", e.message)
+            SnackbarHelper.showSnackbar(binding.root, "Failed to create shortcut: ${e.message}")
+        }
+    }
+
+    private fun createShortcutModern(activity: ActivityDetail, appName: String, appIcon: Drawable?) {
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.TIRAMISU) {
+            return
+        }
+
+        val shortcutManager = getSystemService(ShortcutManager::class.java)
+
+        val intent = Intent().apply {
+            setClassName(packageName, activity.className)
+            action = Intent.ACTION_MAIN
+            addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+            addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
+        }
+
+        val shortcutBuilder = ShortcutInfo.Builder(this, "activity_${System.currentTimeMillis()}")
+            .setShortLabel(activity.name)
+            .setLongLabel("$appName - ${activity.name}")
+            .setIntent(intent)
+
+        val iconBitmap = drawableToBitmap(appIcon)
+        if (iconBitmap != null) {
+            try {
+                shortcutBuilder.setIcon(Icon.createWithBitmap(iconBitmap))
+            } catch (e: Exception) {
+                LogManager.warning(this, "Failed to set icon bitmap, using fallback", e.message)
+                shortcutBuilder.setIcon(Icon.createWithResource(this, android.R.drawable.ic_menu_edit))
+            }
+        } else {
+            shortcutBuilder.setIcon(Icon.createWithResource(this, android.R.drawable.ic_menu_edit))
+        }
+
+        try {
+            shortcutManager.requestPinShortcut(shortcutBuilder.build(), null)
+            SnackbarHelper.showSnackbar(binding.root, "Shortcut created")
+            LogManager.info(this, "Shortcut created", "Activity: ${activity.className}")
+        } catch (e: Exception) {
+            LogManager.error(this, "Failed to pin shortcut", e.message)
+            SnackbarHelper.showSnackbar(binding.root, "Failed to create shortcut: ${e.message}")
+        }
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {

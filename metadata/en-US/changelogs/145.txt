@@ -1,12 +1,12 @@
-**9.30.106**
+**9.60.106**
 
 **Added** ✨
-- Added share APKS feature
-- Added batch share APKS feature
-- Added batch share different package types feature
+- Added share APKS functionality
+- Added batch share APKS functionality
+- Added batch share different package types functionality
 
 **Fixes** 🐛
-- Fixed bug causing content errors when batch extracting APKS
+- Fixed content error when batch extracting APKS
 
 **Contributors of this version:**
 None

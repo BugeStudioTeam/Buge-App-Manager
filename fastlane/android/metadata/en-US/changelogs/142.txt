@@ -1,0 +1,10 @@
+**9.58.105**
+
+**Added** ✨
+- Allowed creating shortcuts for activities
+
+**Fixes** 🐛
+- Fixed icon display errors
+
+**Contributors of this version:**
+None

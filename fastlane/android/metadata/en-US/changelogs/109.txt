@@ -1,0 +1,11 @@
+**6.52.101**
+
+**Added** ✨
+- Added support for tablet and high-DPI interfaces
+
+**Fixes** 🐛
+- Fixed tab deformation issues
+- Fixed interface layout confusion
+
+**Contributors of this version:**
+None

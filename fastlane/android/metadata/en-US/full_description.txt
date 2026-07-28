@@ -1,0 +1,25 @@
+Buge App Manager is a modern, lightweight and privacy‑friendly app manager
+that helps you inspect, manage and control applications installed on your device.
+
+You can use Buge App Manager without root access, and optionally enable
+advanced features through Shizuku (https://shizuku.rikka.app/download/).
+
+<b>Features</b>
+<ul>
+    <li>View detailed app information — package name, version, permissions, install source and more</li>
+    <li>Export installed apps as APK files for backup or sharing</li>
+    <li>Manage app permissions to improve privacy and security</li>
+    <li>Clear cache and view storage usage</li>
+    <li>Uninstall apps easily (system app removal requires Shizuku)</li>
+    <li>Modern, clean and minimal UI</li>
+    <li>No ads, no analytics, fully open source</li>
+</ul>
+
+<b>Notes</b>
+<ul>
+    <li>No root required</li>
+    <li>Some advanced operations require Shizuku</li>
+    <li>Designed to be safe — but removing essential system apps may still cause issues after reboot</li>
+</ul>
+
+Source code: https://github.com/BugeStudioTeam/Buge-App-Manager

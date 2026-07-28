@@ -1,0 +1,9 @@
+**6.52.102**
+
+**Fixes** 🐛
+- Fixed crash issues
+
+**Contributors of this version:**
+- @Rayan110 for providing issue (#6)
+- @Tangmjiu for providing logcat
+- tdewq (Telegram) for reporting the issue

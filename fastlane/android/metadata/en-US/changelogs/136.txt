@@ -1,0 +1,16 @@
+**8.53.104**
+
+Major security-hardening update (PR #8), primarily by @Tangmjiu:
+
+**Security** 🔒
+- Removed hardcoded keys from build.gradle.kts
+- Added command injection prevention in ShizukuManager.kt
+- Restricted FileProvider paths
+- Disabled SSL redirect following
+- Added log desensitization
+- Added input validation for user fields
+- Disabled android:allowBackup
+- Added APK verification before install
+
+**Contributors:**
+- @Tangmjiu (primary) — many thanks!

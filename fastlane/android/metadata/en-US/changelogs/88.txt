@@ -1,0 +1,13 @@
+**6.43.86**
+
+**Added** ✨
+- Added missing language entries
+
+**Changed** 🔧
+- Updated latest website URL
+
+**Optimizations** ⚡
+- Improved stability
+
+**Contributors of this version:**
+None

@@ -1,0 +1,11 @@
+**6.45.90**
+
+**Fixes** 🐛
+- Fixed crash issues
+- Fixed translations
+
+**Added** ✨
+- Added "no apps" empty state prompt
+
+**Contributors of this version:**
+None

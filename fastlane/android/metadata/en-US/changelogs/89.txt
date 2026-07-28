@@ -1,0 +1,7 @@
+**6.44.86**
+
+**Added** ✨
+- Added Spanish language
+
+**Contributors of this version:**
+- A C (Telegram, unknown user) for proposing the addition of Spanish language

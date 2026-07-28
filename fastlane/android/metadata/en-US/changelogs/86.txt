@@ -1,0 +1,14 @@
+**6.43.83**
+
+**Fixes** 🐛
+- Completely fixed tag functionality
+- Fixed Portuguese language
+
+**Optimizations** ⚡
+- Improved stability
+
+**Announcement** 📢
+- We sincerely apologize for the loss of some Git versions due to operational errors. We are very sorry for the inconvenience caused.
+
+**Contributors of this version:**
+None

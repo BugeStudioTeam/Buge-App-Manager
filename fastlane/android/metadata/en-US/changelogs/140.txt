@@ -1,0 +1,11 @@
+**9.56.105**
+
+**Updated** ⬆️
+- Updated Material Design library to `com.google.android.material:material:1.13.0`
+
+**Added** ✨
+- Added app storage usage display on app details page
+- Added installer name display on app details page
+
+**Contributors of this version:**
+None

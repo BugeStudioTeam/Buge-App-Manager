@@ -1,0 +1,11 @@
+**6.45.88**
+
+**Added** ✨
+- Added silent update feature
+- Added installer display name
+
+**Fixes** 🐛
+- Fixed update errors
+
+**Contributors of this version:**
+None

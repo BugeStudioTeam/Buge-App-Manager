@@ -1,0 +1,12 @@
+**7.53.104**
+
+**Changed** 🔧
+- Complete UI overhaul
+- Updated underlying DPI detection method
+
+**Fixes** 🐛
+- Fixed Arabic layout issues in tablet mode
+- Fixed phone incorrectly displaying tablet content
+
+**Contributors of this version:**
+- @ablese for pointing out issues with Arabic language and tablet interface

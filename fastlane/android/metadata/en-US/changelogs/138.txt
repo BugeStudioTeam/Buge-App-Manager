@@ -1,0 +1,11 @@
+**8.54.105**
+
+**Added** ✨
+- Added Traditional Chinese language support
+
+**Optimizations** ⚡
+- Optimized icon and resource files
+- Improved language system
+
+**Contributors of this version:**
+None

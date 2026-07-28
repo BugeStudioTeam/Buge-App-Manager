@@ -1,0 +1,7 @@
+**6.49.100**
+
+**Fixes** 🐛
+- Fixed bug where multi-select menu still appeared on app page during search
+
+**Contributors of this version:**
+None

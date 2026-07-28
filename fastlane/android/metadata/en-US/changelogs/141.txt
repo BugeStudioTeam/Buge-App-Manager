@@ -1,0 +1,7 @@
+**9.57.105**
+
+**Added** ✨
+- Added support for custom Shizuku provider package name
+
+**Contributors of this version:**
+None

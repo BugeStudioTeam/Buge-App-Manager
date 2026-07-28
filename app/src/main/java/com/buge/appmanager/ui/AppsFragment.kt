@@ -2,6 +2,7 @@ package com.buge.appmanager.ui
 
 import android.content.Intent
 import android.net.Uri
+import android.os.Build
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -32,7 +33,6 @@ import com.buge.appmanager.util.FontOverrideHelper
 import com.buge.appmanager.util.LogManager
 import com.buge.appmanager.util.PreferencesManager
 import com.buge.appmanager.util.SnackbarHelper
-import com.buge.appmanager.util.SystemOpChecker
 import com.buge.appmanager.viewmodel.AppsViewModel
 import com.google.android.material.chip.Chip
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
@@ -122,7 +122,9 @@ class AppsFragment : Fragment() {
                 tempZipFile = null
             }
             val cacheDir = File(requireContext().externalCacheDir ?: requireContext().cacheDir, "apk_cache")
-            val files = cacheDir.listFiles { file -> file.name.endsWith(".zip") }
+            val files = cacheDir.listFiles { file ->
+                file.name.endsWith(".zip") || file.name.endsWith(".apks") || file.name.endsWith(".apk")
+            }
             files?.forEach { file ->
                 if (file.exists()) {
                     file.delete()
@@ -261,7 +263,6 @@ class AppsFragment : Fragment() {
     private fun setupSearch() {
         if (!isAdded || view == null) return
         binding.searchEditText.addTextChangedListener { text ->
-            // Exit selection mode when search is triggered
             if (adapter.isInSelectionMode()) {
                 adapter.clearSelection()
                 adapter.setSelectionMode(false)
@@ -406,10 +407,11 @@ class AppsFragment : Fragment() {
         }
     }
 
+    // ===================== Batch Share APKs with Split APK Support =====================
+
     private fun batchShareApks(apps: List<AppInfo>) {
         if (!checkShizuku()) return
 
-        // Exit selection mode immediately
         adapter.clearSelection()
         adapter.setSelectionMode(false)
         hideBatchActionBar()
@@ -417,7 +419,6 @@ class AppsFragment : Fragment() {
         isShareCancelled = false
         shareJob?.cancel()
 
-        // Create progress dialog
         val dialogView = LayoutInflater.from(requireContext()).inflate(R.layout.dialog_share_progress, null)
         val progressBar = dialogView.findViewById<ProgressBar>(R.id.share_progress_bar)
         val progressText = dialogView.findViewById<TextView>(R.id.share_progress_text)
@@ -437,7 +438,6 @@ class AppsFragment : Fragment() {
             }
             .show()
 
-        // Disable UI
         binding.batchActionScroll.visibility = View.GONE
         binding.loadingOverlay.visibility = View.VISIBLE
 
@@ -462,7 +462,6 @@ class AppsFragment : Fragment() {
                 LogManager.error(requireContext(), "Batch share failed", e.message)
             } finally {
                 binding.loadingOverlay.visibility = View.GONE
-                // Ensure batch action bar is hidden if not cancelled
                 if (!isShareCancelled) {
                     hideBatchActionBar()
                 }
@@ -481,16 +480,78 @@ class AppsFragment : Fragment() {
             val timestamp = SimpleDateFormat("yyyyMMdd_HHmmss", Locale.US).format(Date())
             val zipFile = File(cacheDir, "apks_${timestamp}.zip")
 
-            val oldZips = cacheDir.listFiles { file -> file.name.endsWith(".zip") }
+            val oldZips = cacheDir.listFiles { file -> file.name.endsWith(".zip") || file.name.endsWith(".apks") || file.name.endsWith(".apk") }
             oldZips?.forEach { if (it.exists()) it.delete() }
 
             var successCount = 0
             var failCount = 0
             val totalApps = apps.size
 
+            // Each app produces either one .apk or one .apks file
+            val appFiles = mutableMapOf<String, File>()
+
+            for (app in apps) {
+                if (isShareCancelled) {
+                    return@withContext null
+                }
+
+                try {
+                    val isSplit = isSplitApk(app.packageName)
+                    val appName = app.appName
+                    val safeAppName = appName
+                        .replace("/", "_")
+                        .replace("\\", "_")
+                        .replace(":", "_")
+                        .replace("?", "_")
+                        .replace("*", "_")
+                        .replace(" ", "_")
+                        .replace("'", "_")
+                        .replace("\"", "_")
+
+                    if (isSplit) {
+                        // For split APK, create .apks file then add to zip
+                        val apksFile = createSplitApkFile(app.packageName, safeAppName, cacheDir)
+                        if (apksFile != null && apksFile.exists()) {
+                            appFiles[app.packageName] = apksFile
+                            successCount++
+                        } else {
+                            failCount++
+                        }
+                    } else {
+                        // For normal APK, copy to cache then add to zip
+                        val applicationInfo = requireContext().packageManager.getApplicationInfo(app.packageName, 0)
+                        val sourcePath = applicationInfo.sourceDir
+                        if (!sourcePath.isNullOrEmpty()) {
+                            val sourceFile = File(sourcePath)
+                            if (sourceFile.exists()) {
+                                val apkFile = File(cacheDir, "${safeAppName}.apk")
+                                sourceFile.copyTo(apkFile, overwrite = true)
+                                appFiles[app.packageName] = apkFile
+                                successCount++
+                            } else {
+                                failCount++
+                            }
+                        } else {
+                            failCount++
+                        }
+                    }
+                } catch (e: Exception) {
+                    failCount++
+                    LogManager.warning(requireContext(), "Failed to process app for sharing", "Package: ${app.packageName}, Error: ${e.message}")
+                }
+            }
+
+            if (appFiles.isEmpty()) {
+                LogManager.error(requireContext(), "No valid APK files to share", "Total apps: $totalApps")
+                return@withContext null
+            }
+
+            val totalFiles = appFiles.size
+
             ZipOutputStream(BufferedOutputStream(FileOutputStream(zipFile))).use { zos ->
-                for ((index, app) in apps.withIndex()) {
-                    // Check if cancelled
+                var processedFiles = 0
+
+                for ((packageName, file) in appFiles) {
                     if (isShareCancelled) {
                         zos.close()
                         zipFile.delete()
@@ -498,31 +559,14 @@ class AppsFragment : Fragment() {
                     }
 
                     try {
-                        val applicationInfo = requireContext().packageManager.getApplicationInfo(app.packageName, 0)
-                        val sourcePath = applicationInfo.sourceDir
-
-                        if (sourcePath.isNullOrEmpty()) {
-                            failCount++
+                        if (!file.exists()) {
                             continue
                         }
 
-                        val sourceFile = File(sourcePath)
-                        if (!sourceFile.exists()) {
-                            failCount++
-                            continue
-                        }
-
-                        val fileName = "${app.appName}.apk"
-                            .replace("/", "_")
-                            .replace("\\", "_")
-                            .replace(":", "_")
-                            .replace("?", "_")
-                            .replace("*", "_")
-                            .replace(" ", "_")
-                        val entry = ZipEntry(fileName)
+                        val entry = ZipEntry(file.name)
                         zos.putNextEntry(entry)
 
-                        BufferedInputStream(FileInputStream(sourceFile)).use { input ->
+                        BufferedInputStream(FileInputStream(file)).use { input ->
                             val buffer = ByteArray(8192)
                             var length: Int
                             while (input.read(buffer).also { length = it } != -1) {
@@ -530,23 +574,21 @@ class AppsFragment : Fragment() {
                             }
                         }
                         zos.closeEntry()
-                        successCount++
+                        processedFiles++
 
-                        // Update progress
-                        val progress = ((index + 1) * 100 / totalApps)
+                        val progress = (processedFiles * 100 / totalFiles)
                         withContext(Dispatchers.Main) {
                             progressBar.progress = progress
-                            progressText.text = "$progress% ($successCount/$totalApps)"
-                            fileNameText.text = "Adding: ${app.appName}"
+                            progressText.text = "$progress% ($processedFiles/$totalFiles)"
+                            fileNameText.text = "Adding: ${file.name}"
                         }
 
                     } catch (e: Exception) {
-                        failCount++
-                        LogManager.warning(requireContext(), "Failed to add APK to zip", "Package: ${app.packageName}, Error: ${e.message}")
+                        LogManager.warning(requireContext(), "Failed to add file to zip", "File: ${file.name}, Error: ${e.message}")
                     }
                 }
 
-                LogManager.info(requireContext(), "Zip created", "Success: $successCount, Failed: $failCount")
+                LogManager.info(requireContext(), "Zip created", "Success: $successCount, Failed: $failCount, Files: $processedFiles")
             }
 
             if (zipFile.exists() && zipFile.length() > 0 && !isShareCancelled) {
@@ -558,6 +600,89 @@ class AppsFragment : Fragment() {
         } catch (e: Exception) {
             LogManager.error(requireContext(), "Failed to create zip", e.message)
             return@withContext null
+        }
+    }
+
+    private suspend fun createSplitApkFile(packageName: String, safeAppName: String, cacheDir: File): File? = withContext(Dispatchers.IO) {
+        try {
+            val result = ShizukuManager.executeCommand("pm path $packageName")
+            if (!result.success) {
+                LogManager.warning(requireContext(), "Failed to get split APK paths", "Package: $packageName, Error: ${result.error}")
+                return@withContext null
+            }
+
+            val apkPaths = result.output.lines()
+                .filter { it.startsWith("package:") }
+                .map { it.removePrefix("package:").trim() }
+                .filter { it.isNotEmpty() }
+
+            if (apkPaths.isEmpty()) {
+                return@withContext null
+            }
+
+            val apksFile = File(cacheDir, "${safeAppName}.apks")
+            if (apksFile.exists()) {
+                apksFile.delete()
+            }
+
+            ZipOutputStream(FileOutputStream(apksFile)).use { zos ->
+                for (path in apkPaths) {
+                    val sourceFile = File(path)
+                    if (!sourceFile.exists()) {
+                        continue
+                    }
+
+                    val entry = ZipEntry(sourceFile.name)
+                    zos.putNextEntry(entry)
+
+                    FileInputStream(sourceFile).use { input ->
+                        val buffer = ByteArray(8192)
+                        var length: Int
+                        while (input.read(buffer).also { length = it } != -1) {
+                            zos.write(buffer, 0, length)
+                        }
+                    }
+                    zos.closeEntry()
+                }
+            }
+
+            return@withContext if (apksFile.exists() && apksFile.length() > 0) apksFile else null
+        } catch (e: Exception) {
+            LogManager.warning(requireContext(), "Failed to create .apks file", "Package: $packageName, Error: ${e.message}")
+            return@withContext null
+        }
+    }
+
+    private suspend fun getSplitApkPaths(packageName: String): List<String> = withContext(Dispatchers.IO) {
+        try {
+            val result = ShizukuManager.executeCommand("pm path $packageName")
+            if (!result.success) {
+                return@withContext emptyList()
+            }
+            result.output.lines()
+                .filter { it.startsWith("package:") }
+                .map { it.removePrefix("package:").trim() }
+                .filter { it.isNotEmpty() }
+        } catch (e: Exception) {
+            LogManager.warning(requireContext(), "Failed to get split APK paths", "Package: $packageName, Error: ${e.message}")
+            emptyList()
+        }
+    }
+
+    private fun isSplitApk(packageName: String): Boolean {
+        return try {
+            val appInfo = requireContext().packageManager.getApplicationInfo(packageName, 0)
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                val splitNames = appInfo.splitNames
+                splitNames != null && splitNames.isNotEmpty()
+            } else {
+                val splitNamesField = appInfo.javaClass.getDeclaredField("splitNames")
+                splitNamesField.isAccessible = true
+                val splitNames = splitNamesField.get(appInfo) as? Array<String>
+                splitNames != null && splitNames.isNotEmpty()
+            }
+        } catch (e: Exception) {
+            false
         }
     }
 
@@ -587,12 +712,10 @@ class AppsFragment : Fragment() {
 
             LogManager.success(requireContext(), "APK zip shared", "App count: $appCount, Size: ${formatFileSize(zipFile.length())}")
 
-            // Ensure selection is cleared
             adapter.clearSelection()
             adapter.setSelectionMode(false)
             hideBatchActionBar()
 
-            // Schedule cleanup after share completes
             lifecycleScope.launch {
                 delay(5000)
                 cleanupTempFiles()

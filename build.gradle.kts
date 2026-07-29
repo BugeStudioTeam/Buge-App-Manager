@@ -1,6 +1,6 @@
 /*
- * SPDX-License-Identifier: GPL-3.0
- * Copyright (C) 2026 BugeStudio Team
+ * SPDX-License-Identifier: GPL-3.0-only
+ * Copyright (C) 2026 Buge Studio
  */
 
 // Top-level build file where you can add configuration options common to all sub-projects/modules.

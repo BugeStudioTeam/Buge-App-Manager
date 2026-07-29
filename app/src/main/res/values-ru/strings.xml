@@ -1,4 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!-- SPDX-License-Identifier: GPL-3.0-only -->
+<!-- Copyright (C) 2026 Buge Studio -->
 <resources>
     <string name="app_name">Диспетчер приложений Buge</string>
     <string name="developer_name">Команда Buge</string>

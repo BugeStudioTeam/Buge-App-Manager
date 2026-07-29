@@ -1,4 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!-- SPDX-License-Identifier: GPL-3.0-only -->
+<!-- Copyright (C) 2026 Buge Studio -->
 <resources>
     <style name="ThemeOverlay.BugeAppManager.MediumContrast" parent="Theme.Material3.Light.NoActionBar">
         <item name="colorPrimary">@color/md_theme_primary_mediumContrast</item>

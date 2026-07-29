@@ -1,3 +1,6 @@
+// SPDX-License-Identifier: GPL-3.0
+// Copyright (C) 2026 BugeStudio Team
+
 package com.buge.appmanager.util
 
 import android.content.Context

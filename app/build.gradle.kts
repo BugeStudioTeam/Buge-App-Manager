@@ -1,3 +1,8 @@
+/*
+ * SPDX-License-Identifier: GPL-3.0
+ * Copyright (C) 2026 BugeStudio Team
+ */
+
 import java.util.Properties
 import java.io.FileInputStream
 

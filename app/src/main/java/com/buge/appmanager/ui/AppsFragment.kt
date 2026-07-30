@@ -317,6 +317,21 @@ class AppsFragment : Fragment() {
     private fun setupBatchActions() {
         if (!isAdded || view == null) return
 
+        // Select all button
+        binding.btnSelectAll.setOnClickListener {
+            val itemCount = adapter.itemCount
+            if (itemCount > 0) {
+                adapter.selectAll()
+            }
+        }
+
+        // Clear selection button
+        binding.btnClearSelection.setOnClickListener {
+            adapter.clearSelection()
+            adapter.setSelectionMode(false)
+            hideBatchActionBar()
+        }
+
         binding.btnBatchUninstall.setOnClickListener {
             val selected = adapter.getSelectedItems()
             if (selected.isEmpty()) return@setOnClickListener
@@ -490,7 +505,6 @@ class AppsFragment : Fragment() {
             var failCount = 0
             val totalApps = apps.size
 
-            // Each app produces either one .apk or one .apks file
             val appFiles = mutableMapOf<String, File>()
 
             for (app in apps) {
@@ -512,7 +526,6 @@ class AppsFragment : Fragment() {
                         .replace("\"", "_")
 
                     if (isSplit) {
-                        // For split APK, create .apks file then add to zip
                         val apksFile = createSplitApkFile(app.packageName, safeAppName, cacheDir)
                         if (apksFile != null && apksFile.exists()) {
                             appFiles[app.packageName] = apksFile
@@ -521,7 +534,6 @@ class AppsFragment : Fragment() {
                             failCount++
                         }
                     } else {
-                        // For normal APK, copy to cache then add to zip
                         val applicationInfo = requireContext().packageManager.getApplicationInfo(app.packageName, 0)
                         val sourcePath = applicationInfo.sourceDir
                         if (!sourcePath.isNullOrEmpty()) {

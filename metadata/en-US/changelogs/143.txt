@@ -1,7 +1,0 @@
-**9.58.106**
-
-**Optimizations** ⚡
-- Improved "Create shortcut" experience
-
-**Contributors of this version:**
-None

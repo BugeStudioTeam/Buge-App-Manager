@@ -163,6 +163,32 @@
                     style="@style/TextAppearance.Material3.LabelLarge" />
 
                 <com.google.android.material.button.MaterialButton
+                    android:id="@+id/btn_select_all"
+                    style="@style/Widget.Material3.Button.IconButton.Filled.Tonal"
+                    android:layout_width="48dp"
+                    android:layout_height="48dp"
+                    android:padding="8dp"
+                    android:minWidth="0dp"
+                    android:layout_marginEnd="4dp"
+                    android:tooltipText="Select all"
+                    app:icon="@drawable/ic_select_all"
+                    app:iconGravity="textStart"
+                    app:iconTint="?attr/colorOnSurfaceVariant" />
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/btn_clear_selection"
+                    style="@style/Widget.Material3.Button.IconButton.Filled.Tonal"
+                    android:layout_width="48dp"
+                    android:layout_height="48dp"
+                    android:padding="8dp"
+                    android:minWidth="0dp"
+                    android:layout_marginEnd="12dp"
+                    android:tooltipText="Clear selection"
+                    app:icon="@drawable/ic_select"
+                    app:iconGravity="textStart"
+                    app:iconTint="?attr/colorOnSurfaceVariant" />
+
+                <com.google.android.material.button.MaterialButton
                     android:id="@+id/btn_batch_uninstall"
                     style="@style/Widget.Material3.Button.TonalButton"
                     android:layout_width="wrap_content"

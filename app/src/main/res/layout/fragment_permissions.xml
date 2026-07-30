@@ -149,53 +149,90 @@
         android:orientation="vertical"
         app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
-        <!-- Batch Action Bar -->
-        <LinearLayout
-            android:id="@+id/batch_action_bar"
+        <!-- Batch Action Bar - Now using HorizontalScrollView -->
+        <HorizontalScrollView
+            android:id="@+id/batch_action_scroll"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:visibility="gone"
-            android:orientation="horizontal"
-            android:paddingHorizontal="12dp"
-            android:paddingVertical="8dp"
-            android:gravity="center_vertical">
+            android:scrollbars="none"
+            android:paddingHorizontal="4dp"
+            android:background="?attr/colorSurface">
 
-            <TextView
-                android:id="@+id/selected_count_text"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:textSize="14sp"
-                style="@style/TextAppearance.Material3.LabelLarge" />
-
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/btn_batch_revoke"
-                style="@style/Widget.Material3.Button.TonalButton"
+            <LinearLayout
+                android:id="@+id/batch_action_bar"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/batch_revoke"
-                android:layout_marginEnd="8dp"
+                android:orientation="horizontal"
                 android:paddingHorizontal="12dp"
-                android:minWidth="0dp"
-                android:singleLine="true"
-                android:maxLines="1"
-                android:ellipsize="end"
-                android:textSize="13sp" />
+                android:paddingVertical="8dp"
+                android:gravity="center_vertical">
 
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/btn_batch_grant"
-                style="@style/Widget.Material3.Button.TonalButton"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/batch_grant"
-                android:paddingHorizontal="12dp"
-                android:minWidth="0dp"
-                android:singleLine="true"
-                android:maxLines="1"
-                android:ellipsize="end"
-                android:textSize="13sp" />
+                <TextView
+                    android:id="@+id/selected_count_text"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="12dp"
+                    android:textSize="14sp"
+                    android:minWidth="60dp"
+                    style="@style/TextAppearance.Material3.LabelLarge" />
 
-        </LinearLayout>
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/btn_select_all"
+                    style="@style/Widget.Material3.Button.IconButton.Filled.Tonal"
+                    android:layout_width="48dp"
+                    android:layout_height="48dp"
+                    android:padding="8dp"
+                    android:minWidth="0dp"
+                    android:layout_marginEnd="4dp"
+                    android:tooltipText="Select all"
+                    app:icon="@drawable/ic_select_all"
+                    app:iconGravity="textStart"
+                    app:iconTint="?attr/colorOnSurfaceVariant" />
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/btn_clear_selection"
+                    style="@style/Widget.Material3.Button.IconButton.Filled.Tonal"
+                    android:layout_width="48dp"
+                    android:layout_height="48dp"
+                    android:padding="8dp"
+                    android:minWidth="0dp"
+                    android:layout_marginEnd="12dp"
+                    android:tooltipText="Clear selection"
+                    app:icon="@drawable/ic_select"
+                    app:iconGravity="textStart"
+                    app:iconTint="?attr/colorOnSurfaceVariant" />
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/btn_batch_revoke"
+                    style="@style/Widget.Material3.Button.TonalButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/batch_revoke"
+                    android:layout_marginEnd="8dp"
+                    android:paddingHorizontal="12dp"
+                    android:minWidth="0dp"
+                    android:singleLine="true"
+                    android:maxLines="1"
+                    android:ellipsize="end"
+                    android:textSize="13sp" />
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/btn_batch_grant"
+                    style="@style/Widget.Material3.Button.TonalButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/batch_grant"
+                    android:paddingHorizontal="12dp"
+                    android:minWidth="0dp"
+                    android:singleLine="true"
+                    android:maxLines="1"
+                    android:ellipsize="end"
+                    android:textSize="13sp" />
+
+            </LinearLayout>
+
+        </HorizontalScrollView>
 
         <!-- Loading Overlay -->
         <FrameLayout

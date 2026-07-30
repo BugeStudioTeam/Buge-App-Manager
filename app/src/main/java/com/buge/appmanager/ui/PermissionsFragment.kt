@@ -129,6 +129,22 @@ class PermissionsFragment : Fragment() {
 
     private fun setupBatchActions() {
         if (!isAdded || view == null) return
+
+        // Select all button
+        binding.btnSelectAll.setOnClickListener {
+            val itemCount = adapter.itemCount
+            if (itemCount > 0) {
+                adapter.selectAll()
+            }
+        }
+
+        // Clear selection button
+        binding.btnClearSelection.setOnClickListener {
+            adapter.clearSelection()
+            adapter.setSelectionMode(false)
+            hideBatchActionBar()
+        }
+
         binding.btnBatchRevoke.setOnClickListener {
             val selected = adapter.getSelectedItems()
             if (selected.isEmpty()) return@setOnClickListener
@@ -169,12 +185,12 @@ class PermissionsFragment : Fragment() {
 
     private fun showBatchActionBar() {
         if (!isAdded || view == null) return
-        if (binding.batchActionBar.visibility != View.VISIBLE) {
-            binding.batchActionBar.visibility = View.VISIBLE
-            binding.batchActionBar.alpha = 0f
-            binding.batchActionBar.scaleX = 0.8f
-            binding.batchActionBar.scaleY = 0.8f
-            binding.batchActionBar.animate()
+        if (binding.batchActionScroll.visibility != View.VISIBLE) {
+            binding.batchActionScroll.visibility = View.VISIBLE
+            binding.batchActionScroll.alpha = 0f
+            binding.batchActionScroll.scaleX = 0.8f
+            binding.batchActionScroll.scaleY = 0.8f
+            binding.batchActionScroll.animate()
                 .alpha(1f)
                 .scaleX(1f)
                 .scaleY(1f)
@@ -186,15 +202,15 @@ class PermissionsFragment : Fragment() {
 
     private fun hideBatchActionBar() {
         if (!isAdded || view == null) return
-        if (binding.batchActionBar.visibility == View.VISIBLE) {
-            binding.batchActionBar.animate()
+        if (binding.batchActionScroll.visibility == View.VISIBLE) {
+            binding.batchActionScroll.animate()
                 .alpha(0f)
                 .scaleX(0.8f)
                 .scaleY(0.8f)
                 .setDuration(200)
                 .withEndAction {
                     if (isAdded && view != null) {
-                        binding.batchActionBar.visibility = View.GONE
+                        binding.batchActionScroll.visibility = View.GONE
                     }
                 }
                 .start()

@@ -1,0 +1,10 @@
+**9.61.106**
+
+**Added** ✨
+- Added "Select All" and "Deselect All" functionality (thanks to @silfsy for issue #9)
+
+**Fixes** 🐛
+- Fixed multi-select menu layout issues on permissions page
+
+**Contributors of this version:**
+- @silfsy

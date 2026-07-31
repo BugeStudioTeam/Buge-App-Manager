@@ -79,6 +79,15 @@ android {
     }
 }
 
+tasks.withType<AbstractArchiveTask>().configureEach {
+    isPreserveFileTimestamps = false
+    isReproducibleFileOrder = true
+}
+
+tasks.withType<com.android.build.gradle.internal.tasks.Aapt2Compile>().configureEach {
+    outputs.cacheIf { true }
+}
+
 dependencies {
     implementation("androidx.core:core-ktx:1.12.0")
     implementation("androidx.appcompat:appcompat:1.6.1")

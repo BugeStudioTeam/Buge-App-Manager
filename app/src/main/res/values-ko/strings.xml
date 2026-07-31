@@ -42,6 +42,13 @@
     <string name="pref_google_services_summary">Google 모바일 서비스 활성화/비활성화</string>
     <string name="pref_google_services_disabled">이 기기에서는 Google 서비스를 사용할 수 없습니다</string>
 
+    <!-- Shizuku Provider -->
+    <string name="pref_shizuku_provider">Shizuku 제공자</string>
+    <string name="pref_shizuku_provider_summary">Shizuku 제공자 패키지 이름 사용자 지정</string>
+    <string name="shizuku_provider_title">Shizuku 제공자 패키지 이름</string>
+    <string name="shizuku_provider_default">moe.shizuku.privileged.api</string>
+    <string name="shizuku_provider_restore_default">기본값 복원</string>
+
     <!-- Log Settings -->
     <string name="pref_logging">로그 기록</string>
     <string name="pref_logging_summary">사용자 작업 및 오류 기록</string>
@@ -156,6 +163,14 @@
     <string name="freeze_app">앱 동결</string>
     <string name="unfreeze_app">앱 동결 해제</string>
 
+    <!-- Storage -->
+    <string name="storage_title">저장소</string>
+    <string name="storage_app">앱</string>
+    <string name="storage_data">데이터</string>
+    <string name="storage_total">전체</string>
+    <string name="storage_unknown">알 수 없음</string>
+    <string name="installer_app">설치자 앱</string>
+
     <!-- App Detail Activity Strings -->
     <string name="removed_from_favorites">즐겨찾기에서 제거됨</string>
     <string name="added_to_favorites">즐겨찾기에 추가됨</string>
@@ -212,16 +227,16 @@
     <string name="restart">다시 시작</string>
 
     <!-- Language names -->
-    <string name="pref_language_en">English</string>
-    <string name="pref_language_zh">中文（简体）</string>
-    <string name="pref_language_ja">日本語</string>
+    <string name="pref_language_en">영어</string>
+    <string name="pref_language_zh">중국어 (간체)</string>
+    <string name="pref_language_ja">일본어</string>
     <string name="pref_language_ko">한국어</string>
-    <string name="pref_language_fr">Français</string>
-    <string name="pref_language_de">Deutsch</string>
-    <string name="pref_language_ru">Русский</string>
-    <string name="pref_language_ar">العربية</string>
-    <string name="pref_language_pt">Português</string>
-    <string name="pref_language_es">Español</string>
+    <string name="pref_language_fr">프랑스어</string>
+    <string name="pref_language_de">독일어</string>
+    <string name="pref_language_ru">러시아어</string>
+    <string name="pref_language_ar">아랍어</string>
+    <string name="pref_language_pt">포르투갈어</string>
+    <string name="pref_language_es">스페인어</string>
     
     <string name="restart_required">재시작 필요</string>
     <string name="restart_required_message">기본 시작 페이지가 변경되었습니다. 변경 사항을 적용하려면 앱을 재시작하세요.</string>

@@ -42,6 +42,13 @@
     <string name="pref_google_services_summary">启用或禁用Google移动服务</string>
     <string name="pref_google_services_disabled">此设备上不可用Google服务</string>
 
+    <!-- Shizuku Provider -->
+    <string name="pref_shizuku_provider">Shizuku提供者</string>
+    <string name="pref_shizuku_provider_summary">自定义Shizuku提供者包名</string>
+    <string name="shizuku_provider_title">Shizuku提供者包名</string>
+    <string name="shizuku_provider_default">moe.shizuku.privileged.api</string>
+    <string name="shizuku_provider_restore_default">恢复默认</string>
+
     <!-- Log Settings -->
     <string name="pref_logging">日志记录</string>
     <string name="pref_logging_summary">记录用户操作和错误</string>
@@ -156,6 +163,14 @@
     <string name="freeze_app">冻结应用</string>
     <string name="unfreeze_app">解冻应用</string>
 
+    <!-- Storage -->
+    <string name="storage_title">存储</string>
+    <string name="storage_app">应用</string>
+    <string name="storage_data">数据</string>
+    <string name="storage_total">总计</string>
+    <string name="storage_unknown">未知</string>
+    <string name="installer_app">安装者应用</string>
+
     <!-- App Detail Activity Strings -->
     <string name="removed_from_favorites">已从收藏中移除</string>
     <string name="added_to_favorites">已添加到收藏</string>
@@ -212,16 +227,16 @@
     <string name="restart">重启</string>
 
     <!-- Language names -->
-    <string name="pref_language_en">English</string>
+    <string name="pref_language_en">英语</string>
     <string name="pref_language_zh">中文（简体）</string>
-    <string name="pref_language_ja">日本語</string>
-    <string name="pref_language_ko">한국어</string>
-    <string name="pref_language_fr">Français</string>
-    <string name="pref_language_de">Deutsch</string>
-    <string name="pref_language_ru">Русский</string>
-    <string name="pref_language_ar">العربية</string>
-    <string name="pref_language_pt">Português</string>
-    <string name="pref_language_es">Español</string>
+    <string name="pref_language_ja">日语</string>
+    <string name="pref_language_ko">韩语</string>
+    <string name="pref_language_fr">法语</string>
+    <string name="pref_language_de">德语</string>
+    <string name="pref_language_ru">俄语</string>
+    <string name="pref_language_ar">阿拉伯语</string>
+    <string name="pref_language_pt">葡萄牙语</string>
+    <string name="pref_language_es">西班牙语</string>
     
     <string name="restart_required">需要重启</string>
     <string name="restart_required_message">默认启动页面已更改。重启应用以使更改生效。</string>

@@ -42,6 +42,13 @@
     <string name="pref_google_services_summary">Ativar ou desativar os serviços móveis Google</string>
     <string name="pref_google_services_disabled">Serviços Google indisponíveis neste dispositivo</string>
 
+    <!-- Shizuku Provider -->
+    <string name="pref_shizuku_provider">Fornecedor Shizuku</string>
+    <string name="pref_shizuku_provider_summary">Personalizar o nome do pacote do fornecedor Shizuku</string>
+    <string name="shizuku_provider_title">Nome do pacote do fornecedor Shizuku</string>
+    <string name="shizuku_provider_default">moe.shizuku.privileged.api</string>
+    <string name="shizuku_provider_restore_default">Restaurar predefinição</string>
+
     <!-- Log Settings -->
     <string name="pref_logging">Registo</string>
     <string name="pref_logging_summary">Registar operações e erros do utilizador</string>
@@ -156,6 +163,14 @@
     <string name="freeze_app">Congelar Aplicação</string>
     <string name="unfreeze_app">Descongelar Aplicação</string>
 
+    <!-- Storage -->
+    <string name="storage_title">Armazenamento</string>
+    <string name="storage_app">Aplicação</string>
+    <string name="storage_data">Dados</string>
+    <string name="storage_total">Total</string>
+    <string name="storage_unknown">Desconhecido</string>
+    <string name="installer_app">Aplicação instaladora</string>
+
     <!-- App Detail Activity Strings -->
     <string name="removed_from_favorites">Removido dos favoritos</string>
     <string name="added_to_favorites">Adicionado aos favoritos</string>
@@ -212,16 +227,16 @@
     <string name="restart">Reiniciar</string>
 
     <!-- Language names -->
-    <string name="pref_language_en">English</string>
-    <string name="pref_language_zh">中文 (Simplified)</string>
-    <string name="pref_language_ja">日本語</string>
-    <string name="pref_language_ko">한국어</string>
-    <string name="pref_language_fr">Français</string>
-    <string name="pref_language_de">Deutsch</string>
-    <string name="pref_language_ru">Русский</string>
-    <string name="pref_language_ar">العربية</string>
+    <string name="pref_language_en">Inglês</string>
+    <string name="pref_language_zh">Chinês (simplificado)</string>
+    <string name="pref_language_ja">Japonês</string>
+    <string name="pref_language_ko">Coreano</string>
+    <string name="pref_language_fr">Francês</string>
+    <string name="pref_language_de">Alemão</string>
+    <string name="pref_language_ru">Russo</string>
+    <string name="pref_language_ar">Árabe</string>
     <string name="pref_language_pt">Português</string>
-    <string name="pref_language_es">Español</string>
+    <string name="pref_language_es">Espanhol</string>
     
     <string name="restart_required">Reinício Necessário</string>
     <string name="restart_required_message">A página de início predefinida foi alterada. Reinicie a aplicação para que a alteração tenha efeito.</string>
@@ -273,7 +288,7 @@
     <string name="label_created">Etiqueta criada</string>
     <string name="label_updated">Etiqueta atualizada</string>
     <string name="label_deleted">Etiqueta eliminada</string>
-    <string name="filter_label">Etiqueta：%s</string>
+    <string name="filter_label">Etiqueta: %s</string>
 
     <!-- Update Options -->
     <string name="pref_update_options">Opções de atualização</string>

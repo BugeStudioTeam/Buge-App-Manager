@@ -42,6 +42,13 @@
     <string name="pref_google_services_summary">Activar o desactivar los servicios móviles de Google</string>
     <string name="pref_google_services_disabled">Servicios de Google no disponibles en este dispositivo</string>
 
+    <!-- Shizuku Provider -->
+    <string name="pref_shizuku_provider">Proveedor de Shizuku</string>
+    <string name="pref_shizuku_provider_summary">Personalizar el nombre del paquete del proveedor de Shizuku</string>
+    <string name="shizuku_provider_title">Nombre del paquete del proveedor de Shizuku</string>
+    <string name="shizuku_provider_default">moe.shizuku.privileged.api</string>
+    <string name="shizuku_provider_restore_default">Restaurar predeterminado</string>
+
     <!-- Log Settings -->
     <string name="pref_logging">Registro</string>
     <string name="pref_logging_summary">Registrar operaciones y errores del usuario</string>
@@ -156,6 +163,14 @@
     <string name="freeze_app">Congelar aplicación</string>
     <string name="unfreeze_app">Descongelar aplicación</string>
 
+    <!-- Storage -->
+    <string name="storage_title">Almacenamiento</string>
+    <string name="storage_app">Aplicación</string>
+    <string name="storage_data">Datos</string>
+    <string name="storage_total">Total</string>
+    <string name="storage_unknown">Desconocido</string>
+    <string name="installer_app">Aplicación instaladora</string>
+
     <!-- App Detail Activity Strings -->
     <string name="removed_from_favorites">Eliminado de favoritos</string>
     <string name="added_to_favorites">Añadido a favoritos</string>
@@ -212,15 +227,15 @@
     <string name="restart">Reiniciar</string>
 
     <!-- Language names -->
-    <string name="pref_language_en">English</string>
-    <string name="pref_language_zh">中文 (Simplified)</string>
-    <string name="pref_language_ja">日本語</string>
-    <string name="pref_language_ko">한국어</string>
-    <string name="pref_language_fr">Français</string>
-    <string name="pref_language_de">Deutsch</string>
-    <string name="pref_language_ru">Русский</string>
-    <string name="pref_language_ar">العربية</string>
-    <string name="pref_language_pt">Português</string>
+    <string name="pref_language_en">Inglés</string>
+    <string name="pref_language_zh">Chino (simplificado)</string>
+    <string name="pref_language_ja">Japonés</string>
+    <string name="pref_language_ko">Coreano</string>
+    <string name="pref_language_fr">Francés</string>
+    <string name="pref_language_de">Alemán</string>
+    <string name="pref_language_ru">Ruso</string>
+    <string name="pref_language_ar">Árabe</string>
+    <string name="pref_language_pt">Portugués</string>
     <string name="pref_language_es">Español</string>
     
     <string name="restart_required">Reinicio requerido</string>

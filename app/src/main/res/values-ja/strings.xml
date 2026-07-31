@@ -42,6 +42,13 @@
     <string name="pref_google_services_summary">Googleモバイルサービスを有効/無効にする</string>
     <string name="pref_google_services_disabled">このデバイスではGoogleサービスは利用できません</string>
 
+    <!-- Shizuku Provider -->
+    <string name="pref_shizuku_provider">Shizukuプロバイダー</string>
+    <string name="pref_shizuku_provider_summary">Shizukuプロバイダーのパッケージ名をカスタマイズ</string>
+    <string name="shizuku_provider_title">Shizukuプロバイダーのパッケージ名</string>
+    <string name="shizuku_provider_default">moe.shizuku.privileged.api</string>
+    <string name="shizuku_provider_restore_default">デフォルトに戻す</string>
+
     <!-- Log Settings -->
     <string name="pref_logging">ログ記録</string>
     <string name="pref_logging_summary">ユーザー操作とエラーを記録</string>
@@ -156,6 +163,14 @@
     <string name="freeze_app">アプリを凍結</string>
     <string name="unfreeze_app">アプリを解凍</string>
 
+    <!-- Storage -->
+    <string name="storage_title">ストレージ</string>
+    <string name="storage_app">アプリ</string>
+    <string name="storage_data">データ</string>
+    <string name="storage_total">合計</string>
+    <string name="storage_unknown">不明</string>
+    <string name="installer_app">インストーラーアプリ</string>
+
     <!-- App Detail Activity Strings -->
     <string name="removed_from_favorites">お気に入りから削除しました</string>
     <string name="added_to_favorites">お気に入りに追加しました</string>
@@ -212,16 +227,16 @@
     <string name="restart">再起動</string>
 
     <!-- Language names -->
-    <string name="pref_language_en">English</string>
-    <string name="pref_language_zh">中文（简体）</string>
+    <string name="pref_language_en">英語</string>
+    <string name="pref_language_zh">中国語（簡体字）</string>
     <string name="pref_language_ja">日本語</string>
-    <string name="pref_language_ko">한국어</string>
-    <string name="pref_language_fr">Français</string>
-    <string name="pref_language_de">Deutsch</string>
-    <string name="pref_language_ru">Русский</string>
-    <string name="pref_language_ar">العربية</string>
-    <string name="pref_language_pt">Português</string>
-    <string name="pref_language_es">Español</string>
+    <string name="pref_language_ko">韓国語</string>
+    <string name="pref_language_fr">フランス語</string>
+    <string name="pref_language_de">ドイツ語</string>
+    <string name="pref_language_ru">ロシア語</string>
+    <string name="pref_language_ar">アラビア語</string>
+    <string name="pref_language_pt">ポルトガル語</string>
+    <string name="pref_language_es">スペイン語</string>
     
     <string name="restart_required">再起動が必要</string>
     <string name="restart_required_message">デフォルトの開始ページが変更されました。変更を適用するにはアプリを再起動してください。</string>

@@ -1,0 +1,10 @@
+**9.61.107**
+
+**Fixes** 🐛
+- Fixed missing language entries
+
+**Optimizations** ⚡
+- Improved stability
+
+**Contributors of this version:**
+None

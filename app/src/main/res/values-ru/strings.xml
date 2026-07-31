@@ -42,6 +42,13 @@
     <string name="pref_google_services_summary">Включить или отключить сервисы Google Mobile</string>
     <string name="pref_google_services_disabled">Сервисы Google недоступны на этом устройстве</string>
 
+    <!-- Shizuku Provider -->
+    <string name="pref_shizuku_provider">Провайдер Shizuku</string>
+    <string name="pref_shizuku_provider_summary">Настроить имя пакета провайдера Shizuku</string>
+    <string name="shizuku_provider_title">Имя пакета провайдера Shizuku</string>
+    <string name="shizuku_provider_default">moe.shizuku.privileged.api</string>
+    <string name="shizuku_provider_restore_default">Восстановить по умолчанию</string>
+
     <!-- Log Settings -->
     <string name="pref_logging">Журналирование</string>
     <string name="pref_logging_summary">Записывать операции пользователя и ошибки</string>
@@ -82,11 +89,11 @@
     <!-- About Us Activity -->
     <string name="about_us">О нас</string>
     <string name="about_us_title">Команда Buge Studio</string>
-    <string name="about_us_description">Команда Buge Studio — это увлеченная группа разработчиков и дизайнеров,致力于创建创新和实用的实用程序 для платформы Android. Мы сосредоточены на конфиденциальности пользователей, контроле системы и открытости. Наша цель — предоставить пользователям прозрачные, эффективные и надежные инструменты. Диспетчер приложений Buge — это проект с открытым исходным кодом и наше первое крупное приложение. Мы приветствуем всех желающих участвовать в его улучшении и развитии.</string>
+    <string name="about_us_description">Команда Buge Studio — это увлеченная группа разработчиков и дизайнеров, посвятившая себя созданию инновационных и практичных утилит для платформы Android. Мы сосредоточены на конфиденциальности пользователей, контроле системы и открытости. Наша цель — предоставить пользователям прозрачные, эффективные и надежные инструменты. Диспетчер приложений Buge — это проект с открытым исходным кодом и наше первое крупное приложение. Мы приветствуем всех желающих участвовать в его улучшении и развитии.</string>
 
     <!-- GMS Disable Warning -->
     <string name="gms_disable_warning_title">Отключить сервисы Google?</string>
-    <string name="gms_disable_warning_message">Отключение сервисов Google повлияет на следующее:\n\n• Google Play Store перестанет работать\n• Приложения,依赖 на Google Play Services, могут вылетать\n• Push-уведомления от приложений Google прекратятся\n• Службы определения местоположения могут быть затронуты\n• Внутриигровые покупки не будут работать\n\nВы уверены, что хотите отключить сервисы Google?</string>
+    <string name="gms_disable_warning_message">Отключение сервисов Google повлияет на следующее:\n\n• Google Play Store перестанет работать\n• Приложения, зависимые от Google Play Services, могут вылетать\n• Push-уведомления от приложений Google прекратятся\n• Службы определения местоположения могут быть затронуты\n• Внутриигровые покупки не будут работать\n\nВы уверены, что хотите отключить сервисы Google?</string>
 
     <!-- System Operation Blocked -->
     <string name="system_op_blocked_title">Операция заблокирована</string>
@@ -156,6 +163,14 @@
     <string name="freeze_app">Заморозить приложение</string>
     <string name="unfreeze_app">Разморозить приложение</string>
 
+    <!-- Storage -->
+    <string name="storage_title">Хранилище</string>
+    <string name="storage_app">Приложение</string>
+    <string name="storage_data">Данные</string>
+    <string name="storage_total">Всего</string>
+    <string name="storage_unknown">Неизвестно</string>
+    <string name="installer_app">Приложение-установщик</string>
+
     <!-- App Detail Activity Strings -->
     <string name="removed_from_favorites">Удалено из избранного</string>
     <string name="added_to_favorites">Добавлено в избранное</string>
@@ -212,16 +227,16 @@
     <string name="restart">Перезагрузить</string>
 
     <!-- Language names -->
-    <string name="pref_language_en">English</string>
-    <string name="pref_language_zh">中文（简体）</string>
-    <string name="pref_language_ja">日本語</string>
-    <string name="pref_language_ko">한국어</string>
-    <string name="pref_language_fr">Français</string>
-    <string name="pref_language_de">Deutsch</string>
+    <string name="pref_language_en">Английский</string>
+    <string name="pref_language_zh">Китайский (упрощенный)</string>
+    <string name="pref_language_ja">Японский</string>
+    <string name="pref_language_ko">Корейский</string>
+    <string name="pref_language_fr">Французский</string>
+    <string name="pref_language_de">Немецкий</string>
     <string name="pref_language_ru">Русский</string>
-    <string name="pref_language_ar">العربية</string>
-    <string name="pref_language_pt">Português</string>
-    <string name="pref_language_es">Español</string>
+    <string name="pref_language_ar">Арабский</string>
+    <string name="pref_language_pt">Португальский</string>
+    <string name="pref_language_es">Испанский</string>
     
     <string name="restart_required">Требуется перезапуск</string>
     <string name="restart_required_message">Стартовая страница по умолчанию была изменена. Перезапустите приложение, чтобы применить изменение.</string>
@@ -273,7 +288,7 @@
     <string name="label_created">Метка создана</string>
     <string name="label_updated">Метка обновлена</string>
     <string name="label_deleted">Метка удалена</string>
-    <string name="filter_label">Метка：%s</string>
+    <string name="filter_label">Метка: %s</string>
 
     <!-- Update Options -->
     <string name="pref_update_options">Параметры обновления</string>

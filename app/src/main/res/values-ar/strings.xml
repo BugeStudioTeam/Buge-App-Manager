@@ -42,6 +42,13 @@
     <string name="pref_google_services_summary">تمكين أو تعطيل خدمات Google Mobile</string>
     <string name="pref_google_services_disabled">خدمات Google غير متوفرة على هذا الجهاز</string>
 
+    <!-- Shizuku Provider -->
+    <string name="pref_shizuku_provider">موفر Shizuku</string>
+    <string name="pref_shizuku_provider_summary">تخصيص اسم حزمة موفر Shizuku</string>
+    <string name="shizuku_provider_title">اسم حزمة موفر Shizuku</string>
+    <string name="shizuku_provider_default">moe.shizuku.privileged.api</string>
+    <string name="shizuku_provider_restore_default">استعادة الافتراضي</string>
+
     <!-- Log Settings -->
     <string name="pref_logging">السجلات</string>
     <string name="pref_logging_summary">تسجيل عمليات المستخدم والأخطاء</string>
@@ -115,7 +122,7 @@
 
     <!-- App List -->
     <string name="title_app_list">التطبيقات المثبتة</string>
-    <string name="search_hint">ابحث عن التطبيقات...</string>
+    <string name="search_hint">ابحث عن التطبيقات…</string>
     <string name="filter_all">جميع التطبيقات</string>
     <string name="filter_user">تطبيقات المستخدم</string>
     <string name="filter_system">تطبيقات النظام</string>
@@ -124,7 +131,7 @@
     <string name="sort_size">الحجم</string>
     <string name="sort_install_date">تاريخ التثبيت</string>
     <string name="apps_count">%d تطبيق</string>
-    <string name="loading_apps">جاري تحميل التطبيقات...</string>
+    <string name="loading_apps">جاري تحميل التطبيقات…</string>
     <string name="refresh">تحديث</string>
     <string name="no_apps_found">لم يتم العثور على تطبيقات</string>
     <string name="share_apks">مشاركة ملفات APK</string>
@@ -155,6 +162,14 @@
     <string name="enable_app">تمكين التطبيق</string>
     <string name="freeze_app">تجميد التطبيق</string>
     <string name="unfreeze_app">إلغاء تجميد التطبيق</string>
+
+    <!-- Storage -->
+    <string name="storage_title">التخزين</string>
+    <string name="storage_app">التطبيق</string>
+    <string name="storage_data">البيانات</string>
+    <string name="storage_total">المجموع</string>
+    <string name="storage_unknown">غير معروف</string>
+    <string name="installer_app">تطبيق المثبت</string>
 
     <!-- App Detail Activity Strings -->
     <string name="removed_from_favorites">تمت الإزالة من المفضلة</string>
@@ -196,7 +211,7 @@
     <!-- Activities -->
     <string name="title_activities">مدير الأنشطة</string>
     <string name="title_activity_detail">تفاصيل النشاط</string>
-    <string name="search_activity_hint">ابحث عن الأنشطة...</string>
+    <string name="search_activity_hint">ابحث عن الأنشطة…</string>
     <string name="launch">تشغيل</string>
     <string name="back_to_apps">العودة إلى التطبيقات</string>
     <string name="no_activities_found">لم يتم العثور على أنشطة</string>
@@ -212,16 +227,16 @@
     <string name="restart">إعادة التشغيل</string>
 
     <!-- Language names -->
-    <string name="pref_language_en">English</string>
-    <string name="pref_language_zh">中文（简体）</string>
-    <string name="pref_language_ja">日本語</string>
-    <string name="pref_language_ko">한국어</string>
-    <string name="pref_language_fr">Français</string>
-    <string name="pref_language_de">Deutsch</string>
-    <string name="pref_language_ru">Русский</string>
+    <string name="pref_language_en">الإنجليزية</string>
+    <string name="pref_language_zh">الصينية (المبسطة)</string>
+    <string name="pref_language_ja">اليابانية</string>
+    <string name="pref_language_ko">الكورية</string>
+    <string name="pref_language_fr">الفرنسية</string>
+    <string name="pref_language_de">الألمانية</string>
+    <string name="pref_language_ru">الروسية</string>
     <string name="pref_language_ar">العربية</string>
-    <string name="pref_language_pt">Português</string>
-    <string name="pref_language_es">Español</string>
+    <string name="pref_language_pt">البرتغالية</string>
+    <string name="pref_language_es">الإسبانية</string>
     
     <string name="restart_required">إعادة التشغيل مطلوبة</string>
     <string name="restart_required_message">تم تغيير صفحة البدء الافتراضية. أعد تشغيل التطبيق لتطبيق التغيير.</string>
@@ -235,8 +250,8 @@
     <string name="no_update_message">أنت تستخدم بالفعل أحدث إصدار.</string>
     <string name="update_check_failed">فشل التحقق من التحديث</string>
     <string name="update_check_failed_message">فشل التحقق من التحديث. يرجى التحقق من اتصال الإنترنت.</string>
-    <string name="checking_for_update">جاري التحقق من التحديث...</string>
-    <string name="please_wait">يرجى الانتظار...</string>
+    <string name="checking_for_update">جاري التحقق من التحديث…</string>
+    <string name="please_wait">يرجى الانتظار…</string>
     <string name="ok">موافق</string>
     <string name="ignore">تجاهل</string>
     
@@ -273,7 +288,7 @@
     <string name="label_created">تم إنشاء التصنيف</string>
     <string name="label_updated">تم تحديث التصنيف</string>
     <string name="label_deleted">تم حذف التصنيف</string>
-    <string name="filter_label">التصنيف：%s</string>
+    <string name="filter_label">التصنيف: %s</string>
 
     <!-- Update Options -->
     <string name="pref_update_options">خيارات التحديث</string>

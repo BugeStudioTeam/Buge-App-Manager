@@ -42,6 +42,13 @@
     <string name="pref_google_services_summary">Google Mobile Services aktivieren oder deaktivieren</string>
     <string name="pref_google_services_disabled">Google-Dienste auf diesem Gerät nicht verfügbar</string>
 
+    <!-- Shizuku Provider -->
+    <string name="pref_shizuku_provider">Shizuku-Anbieter</string>
+    <string name="pref_shizuku_provider_summary">Paketnamen des Shizuku-Anbieters anpassen</string>
+    <string name="shizuku_provider_title">Paketname des Shizuku-Anbieters</string>
+    <string name="shizuku_provider_default">moe.shizuku.privileged.api</string>
+    <string name="shizuku_provider_restore_default">Standard wiederherstellen</string>
+
     <!-- Log Settings -->
     <string name="pref_logging">Protokollierung</string>
     <string name="pref_logging_summary">Benutzeroperationen und Fehler aufzeichnen</string>
@@ -156,6 +163,14 @@
     <string name="freeze_app">App einfrieren</string>
     <string name="unfreeze_app">App auftauen</string>
 
+    <!-- Storage -->
+    <string name="storage_title">Speicher</string>
+    <string name="storage_app">App</string>
+    <string name="storage_data">Daten</string>
+    <string name="storage_total">Gesamt</string>
+    <string name="storage_unknown">Unbekannt</string>
+    <string name="installer_app">Installations-App</string>
+
     <!-- App Detail Activity Strings -->
     <string name="removed_from_favorites">Aus Favoriten entfernt</string>
     <string name="added_to_favorites">Zu Favoriten hinzugefügt</string>
@@ -212,16 +227,16 @@
     <string name="restart">Neu starten</string>
 
     <!-- Language names -->
-    <string name="pref_language_en">English</string>
-    <string name="pref_language_zh">中文（简体）</string>
-    <string name="pref_language_ja">日本語</string>
-    <string name="pref_language_ko">한국어</string>
-    <string name="pref_language_fr">Français</string>
+    <string name="pref_language_en">Englisch</string>
+    <string name="pref_language_zh">Chinesisch (vereinfacht)</string>
+    <string name="pref_language_ja">Japanisch</string>
+    <string name="pref_language_ko">Koreanisch</string>
+    <string name="pref_language_fr">Französisch</string>
     <string name="pref_language_de">Deutsch</string>
-    <string name="pref_language_ru">Русский</string>
-    <string name="pref_language_ar">العربية</string>
-    <string name="pref_language_pt">Português</string>
-    <string name="pref_language_es">Español</string>
+    <string name="pref_language_ru">Russisch</string>
+    <string name="pref_language_ar">Arabisch</string>
+    <string name="pref_language_pt">Portugiesisch</string>
+    <string name="pref_language_es">Spanisch</string>
     
     <string name="restart_required">Neustart erforderlich</string>
     <string name="restart_required_message">Die Standard-Startseite wurde geändert. Starten Sie die App neu, um die Änderung zu übernehmen.</string>
@@ -273,7 +288,7 @@
     <string name="label_created">Label erstellt</string>
     <string name="label_updated">Label aktualisiert</string>
     <string name="label_deleted">Label gelöscht</string>
-    <string name="filter_label">Label：%s</string>
+    <string name="filter_label">Label: %s</string>
 
     <!-- Update Options -->
     <string name="pref_update_options">Update-Optionen</string>

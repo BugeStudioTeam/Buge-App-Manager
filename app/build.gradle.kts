@@ -29,7 +29,6 @@ android {
         }
     }
 
-    // Load signing credentials from local gitignored keystore.properties
     val keystoreProperties = Properties()
     val keystorePropertiesFile = rootProject.file("keystore.properties")
     if (keystorePropertiesFile.exists()) {
@@ -76,6 +75,10 @@ android {
     lint {
         checkReleaseBuilds = false
         abortOnError = false
+    }
+
+    aaptOptions {
+        noCompress("resources.arsc")
     }
 }
 

@@ -15,7 +15,6 @@ plugins {
 android {
     namespace = "com.buge.appmanager"
     compileSdk = 34
-    buildToolsVersion = "34.0.0"
 
     defaultConfig {
         applicationId = "com.buge.appmanager"
@@ -23,12 +22,14 @@ android {
         targetSdk = 34
         versionCode = 148
         versionName = "9.61.108"
+
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables {
             useSupportLibrary = true
         }
     }
 
+    // Load signing credentials from local gitignored keystore.properties
     val keystoreProperties = Properties()
     val keystorePropertiesFile = rootProject.file("keystore.properties")
     if (keystorePropertiesFile.exists()) {
@@ -49,7 +50,6 @@ android {
     buildTypes {
         release {
             isMinifyEnabled = false
-            isShrinkResources = false
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
@@ -59,33 +59,24 @@ android {
             }
         }
     }
-
+    
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_17
         targetCompatibility = JavaVersion.VERSION_17
     }
-
+    
     kotlinOptions {
         jvmTarget = "17"
     }
-
+    
     buildFeatures {
         viewBinding = true
     }
-
+    
     lint {
         checkReleaseBuilds = false
         abortOnError = false
     }
-
-    aaptOptions {
-        noCompress("resources.arsc")
-    }
-}
-
-tasks.withType<AbstractArchiveTask>().configureEach {
-    isPreserveFileTimestamps = false
-    isReproducibleFileOrder = true
 }
 
 dependencies {

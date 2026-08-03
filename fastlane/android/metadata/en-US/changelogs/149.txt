@@ -1,0 +1,7 @@
+**9.61.109**
+
+**Changed** 🔧
+- Disabled PNG optimization to fix certain issues (this will increase APK size by approximately 3 MiB)
+
+**Contributors of this version:**
+None

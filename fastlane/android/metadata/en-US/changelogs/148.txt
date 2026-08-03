@@ -1,0 +1,8 @@
+**9.61.108**
+
+**Optimizations** ⚡
+- Optimized underlying `build.gradle.kts` configuration
+- Added explicit `buildToolsVersion` specification
+
+**Contributors of this version:**
+None

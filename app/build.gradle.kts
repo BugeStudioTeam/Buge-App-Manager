@@ -21,8 +21,9 @@ android {
         applicationId = "com.buge.appmanager"
         minSdk = 26
         targetSdk = 34
-        versionCode = 148
-        versionName = "9.61.108"
+        versionCode = 149
+        versionName = "9.61.109"
+
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables {
             useSupportLibrary = true
@@ -50,6 +51,9 @@ android {
         release {
             isMinifyEnabled = false
             isShrinkResources = false
+            @Suppress("DEPRECATION")
+            isCrunchPngs = false
+            
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
@@ -59,26 +63,27 @@ android {
             }
         }
     }
-
+    
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_17
         targetCompatibility = JavaVersion.VERSION_17
     }
-
+    
     kotlinOptions {
         jvmTarget = "17"
     }
-
+    
     buildFeatures {
         viewBinding = true
     }
-
+    
     lint {
         checkReleaseBuilds = false
         abortOnError = false
     }
 
     aaptOptions {
+        additionalParameters("--no-compress")
         noCompress("resources.arsc")
     }
 }

@@ -8,6 +8,8 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.EditText
+import android.widget.ImageView
 import androidx.activity.OnBackPressedCallback
 import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.Fragment
@@ -37,6 +39,7 @@ class ActivitiesFragment : Fragment() {
     private var searchJob: Job? = null
     private var allApps: List<AppInfo> = emptyList()
     private var fontApplied = false
+    private var searchQuery: String = ""
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -94,6 +97,8 @@ class ActivitiesFragment : Fragment() {
                 val searchText = binding.searchEditText.text.toString()
                 if (searchText.isNotEmpty()) {
                     binding.searchEditText.setText("")
+                    searchQuery = ""
+                    filterApps("")
                     LogManager.info(requireContext(), "Search cleared via back", "Search text was: $searchText")
                 } else {
                     isEnabled = false
@@ -138,17 +143,32 @@ class ActivitiesFragment : Fragment() {
     private fun setupSearch() {
         if (!isAdded || view == null) return
         val searchEditText = binding.searchEditText
+        val btnClear = binding.btnClearSearch
+
         searchEditText?.addTextChangedListener { text ->
-            searchJob?.cancel()
-            searchJob = lifecycleScope.launch {
-                delay(300)
-                val query = text?.toString()?.trim() ?: ""
-                if (query.isNotEmpty()) {
-                    LogManager.info(requireContext(), "Searching activities", "Query: $query")
-                }
-                filterApps(query)
+            searchQuery = text?.toString()?.trim() ?: ""
+            btnClear.visibility = if (searchQuery.isNotEmpty()) View.VISIBLE else View.GONE
+            filterApps(searchQuery)
+        }
+
+        btnClear?.setOnClickListener {
+            searchEditText?.setText("")
+            searchQuery = ""
+            searchEditText?.requestFocus()
+            filterApps("")
+        }
+
+        searchEditText?.setOnEditorActionListener { _, actionId, _ ->
+            if (actionId == android.view.inputmethod.EditorInfo.IME_ACTION_SEARCH) {
+                val imm = requireContext().getSystemService(android.content.Context.INPUT_METHOD_SERVICE) as android.view.inputmethod.InputMethodManager
+                imm.hideSoftInputFromWindow(searchEditText.windowToken, 0)
+                searchEditText.clearFocus()
+                true
+            } else {
+                false
             }
         }
+
         LogManager.debug(requireContext(), "Search setup complete", "ActivitiesFragment")
     }
 
@@ -179,13 +199,13 @@ class ActivitiesFragment : Fragment() {
         viewModel.apps.observe(viewLifecycleOwner) { apps ->
             if (!isAdded || view == null) return@observe
             allApps = apps
-            appsAdapter.submitList(apps)
+            filterApps(searchQuery)
             val isEmpty = apps.isEmpty()
             binding.emptyState.visibility = if (isEmpty) View.VISIBLE else View.GONE
             binding.recyclerView.visibility = if (isEmpty) View.GONE else View.VISIBLE
             binding.swipeRefresh.isRefreshing = false
             binding.loadingOverlay.visibility = View.GONE
-            
+
             LogManager.info(requireContext(), "Activities loaded", "Count: ${apps.size}, Empty: $isEmpty")
         }
 
@@ -203,7 +223,7 @@ class ActivitiesFragment : Fragment() {
                 binding.swipeRefresh.isRefreshing = false
             }
         }
-        
+
         viewModel.error.observe(viewLifecycleOwner) { error ->
             if (error != null) {
                 LogManager.error(requireContext(), "Activities loading error", error)

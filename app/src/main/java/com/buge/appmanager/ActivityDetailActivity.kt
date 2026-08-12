@@ -13,6 +13,8 @@ import android.graphics.drawable.Drawable
 import android.graphics.drawable.Icon
 import android.os.Build
 import android.os.Bundle
+import android.view.View
+import android.view.inputmethod.EditorInfo
 import androidx.activity.OnBackPressedCallback
 import androidx.activity.viewModels
 import androidx.core.widget.addTextChangedListener
@@ -46,6 +48,7 @@ class ActivityDetailActivity : BaseActivity() {
     private var allActivities: List<ActivityDetail> = emptyList()
     private var packageName: String = ""
     private var fontApplied = false
+    private var searchQuery: String = ""
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -95,6 +98,8 @@ class ActivityDetailActivity : BaseActivity() {
                 val searchText = binding.searchEditText.text.toString()
                 if (searchText.isNotEmpty()) {
                     binding.searchEditText.setText("")
+                    searchQuery = ""
+                    filterActivities("")
                     LogManager.debug(this@ActivityDetailActivity, "Search cleared via back", "Package: $packageName")
                 } else {
                     isEnabled = false
@@ -139,7 +144,7 @@ class ActivityDetailActivity : BaseActivity() {
 
         binding.appName.text = appName
         binding.packageName.text = packageName
-        binding.systemBadge.visibility = if (isSystem) android.view.View.VISIBLE else android.view.View.GONE
+        binding.systemBadge.visibility = if (isSystem) View.VISIBLE else View.GONE
 
         LogManager.debug(this, "App info setup complete", "Package: $packageName, App: $appName, System: $isSystem")
     }
@@ -160,17 +165,32 @@ class ActivityDetailActivity : BaseActivity() {
 
     private fun setupSearch() {
         val searchEditText = binding.searchEditText
+        val btnClear = binding.btnClearSearch
+
         searchEditText?.addTextChangedListener { text ->
-            searchJob?.cancel()
-            searchJob = lifecycleScope.launch {
-                delay(300)
-                val query = text?.toString()?.trim() ?: ""
-                if (query.isNotEmpty()) {
-                    LogManager.info(this@ActivityDetailActivity, "Searching activities", "Package: $packageName, Query: $query")
-                }
-                filterActivities(query)
+            searchQuery = text?.toString()?.trim() ?: ""
+            btnClear.visibility = if (searchQuery.isNotEmpty()) View.VISIBLE else View.GONE
+            filterActivities(searchQuery)
+        }
+
+        btnClear?.setOnClickListener {
+            searchEditText?.setText("")
+            searchQuery = ""
+            searchEditText?.requestFocus()
+            filterActivities("")
+        }
+
+        searchEditText?.setOnEditorActionListener { _, actionId, _ ->
+            if (actionId == EditorInfo.IME_ACTION_SEARCH) {
+                val imm = getSystemService(android.content.Context.INPUT_METHOD_SERVICE) as android.view.inputmethod.InputMethodManager
+                imm.hideSoftInputFromWindow(searchEditText.windowToken, 0)
+                searchEditText.clearFocus()
+                true
+            } else {
+                false
             }
         }
+
         LogManager.debug(this, "Search setup complete", "Package: $packageName")
     }
 
@@ -356,16 +376,16 @@ class ActivityDetailActivity : BaseActivity() {
     private fun observeViewModel() {
         viewModel.activities.observe(this) { activities ->
             allActivities = activities
-            activitiesAdapter.submitList(activities)
+            filterActivities(searchQuery)
             val isEmpty = activities.isEmpty()
-            binding.emptyState.visibility = if (isEmpty) android.view.View.VISIBLE else android.view.View.GONE
-            binding.recyclerView.visibility = if (isEmpty) android.view.View.GONE else android.view.View.VISIBLE
+            binding.emptyState.visibility = if (isEmpty) View.VISIBLE else View.GONE
+            binding.recyclerView.visibility = if (isEmpty) View.GONE else View.VISIBLE
 
             LogManager.info(this, "Activities loaded for app", "Package: $packageName, Count: ${activities.size}, Empty: $isEmpty")
         }
 
         viewModel.isLoading.observe(this) { isLoading ->
-            binding.progressBar.visibility = if (isLoading) android.view.View.VISIBLE else android.view.View.GONE
+            binding.progressBar.visibility = if (isLoading) View.VISIBLE else View.GONE
             if (isLoading) {
                 LogManager.debug(this, "Loading activities", "Package: $packageName")
             }

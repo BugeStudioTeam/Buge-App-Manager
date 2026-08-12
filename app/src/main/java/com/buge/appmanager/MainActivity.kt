@@ -9,6 +9,8 @@ import android.content.Intent
 import android.content.IntentFilter
 import android.os.Build
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatDelegate
@@ -21,10 +23,12 @@ import com.buge.appmanager.ui.ActivitiesFragment
 import com.buge.appmanager.ui.AppsFragment
 import com.buge.appmanager.ui.PermissionsFragment
 import com.buge.appmanager.ui.SettingsFragment
+import com.buge.appmanager.ui.SignatureWarningDialog
 import com.buge.appmanager.util.FontOverrideHelper
 import com.buge.appmanager.util.LocaleManager
 import com.buge.appmanager.util.LogManager
 import com.buge.appmanager.util.PreferencesManager
+import com.buge.appmanager.util.SignatureValidator
 import com.buge.appmanager.util.ThemeManager
 import com.buge.appmanager.util.UpdateChecker
 import com.google.android.material.bottomnavigation.BottomNavigationView
@@ -54,7 +58,7 @@ class MainActivity : BaseActivity() {
             val savedLanguage = LocaleManager.getLanguage(newBase)
             val context = LocaleManager.createContextWithLocale(newBase, savedLanguage)
             super.attachBaseContext(context)
-            
+
             val currentLocale = if (savedLanguage.isEmpty()) {
                 Locale.getDefault()
             } else {
@@ -69,14 +73,14 @@ class MainActivity : BaseActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         ThemeManager.applyColorTheme(this)
-        
+
         val savedTheme = PreferencesManager.getThemeMode(this)
         AppCompatDelegate.setDefaultNightMode(savedTheme)
-        
+
         super.onCreate(savedInstanceState)
-        
+
         LogManager.init(this)
-        
+
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
@@ -97,7 +101,12 @@ class MainActivity : BaseActivity() {
         if (savedInstanceState == null) {
             loadDefaultPage()
         }
-        
+
+        // Fuck: Check signature after UI is ready
+        Handler(Looper.getMainLooper()).postDelayed({
+            checkSignature()
+        }, 300)
+
         checkForUpdateOnStart()
     }
 
@@ -107,6 +116,11 @@ class MainActivity : BaseActivity() {
             (currentFragment as? ActivitiesFragment)?.refresh()
         }
         applyHideNavLabels()
+
+        // Fuck: Re-check signature on resume if not showing dialog and not checked yet
+        if (!SignatureWarningDialog.isShowing()) {
+            checkSignature()
+        }
     }
 
     override fun onDestroy() {
@@ -117,6 +131,43 @@ class MainActivity : BaseActivity() {
             // Ignore
         }
         Shizuku.removeRequestPermissionResultListener(requestPermissionResultListener)
+    }
+
+    // ===================== Signature Validation =====================
+
+    private var signatureCheckDone = false
+
+    private fun checkSignature() {
+        // Fuck: Skip if already checked or dialog is showing
+        if (signatureCheckDone) return
+        if (SignatureWarningDialog.isShowing()) return
+
+        // Skip signature check for debug builds (development convenience)
+        if (SignatureValidator.isDebugBuild(this)) {
+            LogManager.debug(this, "Signature check skipped (debug build)")
+            signatureCheckDone = true
+            return
+        }
+
+        val isValid = SignatureValidator.isSignatureValid(this)
+
+        if (!isValid) {
+            LogManager.error(
+                this,
+                "Signature validation FAILED!",
+                "Expected: ${SignatureValidator.EXPECTED_SHA256}, " +
+                "Got: ${SignatureValidator.getSignatureFingerprint(this)}"
+            )
+
+            // Show warning dialog
+            SignatureWarningDialog.show(this) {
+                // User clicked exit
+                finishAffinity()
+            }
+        } else {
+            LogManager.success(this, "Signature validation passed")
+            signatureCheckDone = true
+        }
     }
 
     private fun isLargeScreen(): Boolean {
@@ -136,44 +187,39 @@ class MainActivity : BaseActivity() {
     private fun setupNavigation() {
         val useRail = isLargeScreen()
         val isRtl = isRtl()
-        
+
         if (useRail) {
-            // Use NavigationRail
             binding.navRail.visibility = View.VISIBLE
             binding.bottomNav.visibility = View.GONE
-            
-            // Set navigation rail gravity based on layout direction
+
             if (isRtl) {
-                // In RTL, navigation rail should be on the right
                 binding.navRail.layoutParams = (binding.navRail.layoutParams as ViewGroup.MarginLayoutParams).apply {
                     (this as ViewGroup.MarginLayoutParams).marginStart = 0
                 }
                 val params = binding.navRail.layoutParams as ViewGroup.MarginLayoutParams
                 params.marginStart = 0
                 binding.navRail.layoutParams = params
-                
-                // Add margin to the right of fragment container
+
                 val containerParams = binding.fragmentContainerWrapper.layoutParams as ViewGroup.MarginLayoutParams
                 containerParams.rightMargin = getNavigationRailWidth()
                 containerParams.leftMargin = 0
                 binding.fragmentContainerWrapper.layoutParams = containerParams
             } else {
-                // In LTR, navigation rail should be on the left
                 val params = binding.navRail.layoutParams as ViewGroup.MarginLayoutParams
                 params.marginStart = 0
                 binding.navRail.layoutParams = params
-                
+
                 val containerParams = binding.fragmentContainerWrapper.layoutParams as ViewGroup.MarginLayoutParams
                 containerParams.leftMargin = getNavigationRailWidth()
                 containerParams.rightMargin = 0
                 binding.fragmentContainerWrapper.layoutParams = containerParams
             }
-            
+
             val selectedId = binding.bottomNav.selectedItemId
             if (selectedId != 0) {
                 binding.navRail.selectedItemId = selectedId
             }
-            
+
             binding.navRail.setOnItemSelectedListener { item ->
                 when (item.itemId) {
                     R.id.nav_apps -> {
@@ -200,21 +246,19 @@ class MainActivity : BaseActivity() {
                 }
             }
         } else {
-            // Use BottomNavigation
             binding.navRail.visibility = View.GONE
             binding.bottomNav.visibility = View.VISIBLE
-            
-            // Reset fragment container margins
+
             val containerParams = binding.fragmentContainerWrapper.layoutParams as ViewGroup.MarginLayoutParams
             containerParams.leftMargin = 0
             containerParams.rightMargin = 0
             binding.fragmentContainerWrapper.layoutParams = containerParams
-            
+
             val selectedId = binding.navRail.selectedItemId
             if (selectedId != 0) {
                 binding.bottomNav.selectedItemId = selectedId
             }
-            
+
             binding.bottomNav.setOnItemSelectedListener { item ->
                 when (item.itemId) {
                     R.id.nav_apps -> {
@@ -241,19 +285,19 @@ class MainActivity : BaseActivity() {
                 }
             }
         }
-        
+
         applyHideNavLabels()
     }
 
     private fun applyHideNavLabels() {
         val hideLabels = PreferencesManager.getHideNavLabels(this)
-        
+
         binding.bottomNav.labelVisibilityMode = if (hideLabels) {
             BottomNavigationView.LABEL_VISIBILITY_SELECTED
         } else {
             BottomNavigationView.LABEL_VISIBILITY_LABELED
         }
-        
+
         binding.navRail.labelVisibilityMode = if (hideLabels) {
             NavigationRailView.LABEL_VISIBILITY_SELECTED
         } else {
@@ -266,9 +310,9 @@ class MainActivity : BaseActivity() {
             LogManager.info(this, "Auto update is disabled, skipping check")
             return
         }
-        
+
         if (hasCheckedUpdate) return
-        
+
         lifecycleScope.launch {
             try {
                 val releaseInfo = UpdateChecker.checkForUpdates(this@MainActivity)
@@ -305,13 +349,13 @@ class MainActivity : BaseActivity() {
             "settings" -> R.id.nav_settings
             else -> R.id.nav_apps
         }
-        
+
         if (isLargeScreen()) {
             binding.navRail.selectedItemId = navId
         } else {
             binding.bottomNav.selectedItemId = navId
         }
-        
+
         loadFragment(fragment)
         LogManager.info(this, "App started, default page: $defaultPage")
     }
@@ -319,14 +363,14 @@ class MainActivity : BaseActivity() {
     private fun setupWindowInsets() {
         ViewCompat.setOnApplyWindowInsetsListener(binding.root) { view, insets ->
             val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
-            
+
             view.setPadding(
                 view.paddingLeft,
                 view.paddingTop + systemBars.top,
                 view.paddingRight,
                 view.paddingBottom + systemBars.bottom
             )
-            
+
             insets
         }
     }

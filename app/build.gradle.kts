@@ -1,6 +1,6 @@
 /*
  * SPDX-License-Identifier: GPL-3.0-only
- * Copyright (C) 2026 Buge Studio
+ * Copyright (C) 2026 BugeStudio Team
  */
 
 import java.util.Properties
@@ -15,14 +15,13 @@ plugins {
 android {
     namespace = "com.buge.appmanager"
     compileSdk = 34
-    buildToolsVersion = "34.0.0"
 
     defaultConfig {
         applicationId = "com.buge.appmanager"
         minSdk = 26
         targetSdk = 34
-        versionCode = 149
-        versionName = "9.61.109"
+        versionCode = 164
+        versionName = "10.64.111"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables {
@@ -30,6 +29,7 @@ android {
         }
     }
 
+    // Load signing credentials from local gitignored keystore.properties
     val keystoreProperties = Properties()
     val keystorePropertiesFile = rootProject.file("keystore.properties")
     if (keystorePropertiesFile.exists()) {
@@ -50,10 +50,6 @@ android {
     buildTypes {
         release {
             isMinifyEnabled = false
-            isShrinkResources = false
-            @Suppress("DEPRECATION")
-            isCrunchPngs = false
-            
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
@@ -81,16 +77,6 @@ android {
         checkReleaseBuilds = false
         abortOnError = false
     }
-
-    aaptOptions {
-        additionalParameters("--no-compress")
-        noCompress("resources.arsc")
-    }
-}
-
-tasks.withType<AbstractArchiveTask>().configureEach {
-    isPreserveFileTimestamps = false
-    isReproducibleFileOrder = true
 }
 
 dependencies {

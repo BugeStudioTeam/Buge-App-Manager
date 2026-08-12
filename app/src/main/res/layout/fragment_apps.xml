@@ -21,25 +21,68 @@
             app:layout_scrollFlags="scroll|enterAlways|snap"
             app:menu="@menu/menu_apps" />
 
-        <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/search_bar"
-            style="@style/Widget.Material3.TextInputLayout.OutlinedBox"
+        <!-- Fuck: Search bar as pill shape -->
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginHorizontal="16dp"
-            android:layout_marginBottom="8dp"
-            android:hint="@string/search_hint"
-            app:startIconDrawable="@drawable/ic_search">
+            android:paddingHorizontal="16dp"
+            android:paddingBottom="8dp">
 
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/search_edit_text"
+            <androidx.cardview.widget.CardView
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:imeOptions="actionSearch"
-                android:inputType="text"
-                android:maxLines="1" />
+                android:layout_height="48dp"
+                app:cardCornerRadius="24dp"
+                app:cardElevation="0dp"
+                app:cardBackgroundColor="?attr/colorSurfaceContainerHigh">
 
-        </com.google.android.material.textfield.TextInputLayout>
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="horizontal"
+                    android:gravity="center_vertical"
+                    android:paddingHorizontal="16dp">
+
+                    <ImageView
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
+                        android:src="@drawable/ic_search"
+                        app:tint="?attr/colorOnSurfaceVariant"
+                        android:alpha="0.6" />
+
+                    <EditText
+                        android:id="@+id/search_edit_text"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:layout_marginStart="12dp"
+                        android:background="@android:color/transparent"
+                        android:hint="@string/search_hint"
+                        android:inputType="text"
+                        android:imeOptions="actionSearch"
+                        android:maxLines="1"
+                        android:singleLine="true"
+                        android:textSize="15sp"
+                        android:cursorVisible="true"
+                        android:textCursorDrawable="@null"
+                        android:paddingVertical="0dp"
+                        android:gravity="center_vertical" />
+
+                    <ImageView
+                        android:id="@+id/btn_clear_search"
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
+                        android:src="@drawable/ic_close_small"
+                        app:tint="?attr/colorOnSurfaceVariant"
+                        android:alpha="0.4"
+                        android:visibility="gone"
+                        android:clickable="true"
+                        android:focusable="true" />
+
+                </LinearLayout>
+
+            </androidx.cardview.widget.CardView>
+
+        </LinearLayout>
 
         <HorizontalScrollView
             android:id="@+id/chip_scroll_view"
@@ -97,7 +140,6 @@
 
                 </com.google.android.material.chip.ChipGroup>
 
-                <!-- Divider -->
                 <View
                     android:id="@+id/label_divider"
                     android:layout_width="1dp"
@@ -107,7 +149,6 @@
                     android:layout_gravity="center_vertical"
                     android:visibility="gone" />
 
-                <!-- Label Chips -->
                 <com.google.android.material.chip.ChipGroup
                     android:id="@+id/label_chip_group"
                     android:layout_width="wrap_content"
@@ -116,11 +157,7 @@
                     app:selectionRequired="false"
                     app:chipSpacing="8dp"
                     app:chipSpacingVertical="4dp"
-                    android:visibility="gone">
-
-                    <!-- Label chips will be added programmatically -->
-
-                </com.google.android.material.chip.ChipGroup>
+                    android:visibility="gone" />
 
             </LinearLayout>
 
@@ -134,7 +171,6 @@
         android:orientation="vertical"
         app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
-        <!-- Batch Action Bar -->
         <HorizontalScrollView
             android:id="@+id/batch_action_scroll"
             android:layout_width="match_parent"
@@ -293,6 +329,7 @@
 
     </FrameLayout>
 
+    <!-- Empty State -->
     <LinearLayout
         android:id="@+id/empty_state"
         android:layout_width="match_parent"

@@ -1,0 +1,18 @@
+**10.64.111**
+
+**Changed** 🔧
+- Completely revamped tablet and other interfaces
+- Updated search box style
+- Updated tablet mode navigation bar
+- Restored PNG optimization
+
+**Added** ✨
+- Added signature SHA-256 verification
+- Added F-Droid signature verification
+- Enhanced custom tags
+
+**Fixes** 🐛
+- Fixed multi-select menu appearing during search
+
+**Contributors of this version:**
+None

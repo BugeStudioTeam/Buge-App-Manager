@@ -323,5 +323,15 @@
     <string name="optional_perm_granted">Granted</string>
     <string name="optional_perm_denied">Denied</string>
     <string name="optional_perm_grant">Grant</string>
+
+    <!-- Signature Validation -->
+    <string name="signature_warning_title">Security Warning</string>
+    <string name="signature_warning_message">The signature hash verification has failed!\n\nYou are using an unofficial signed version of this application!\nWe cannot confirm whether this version is safe or trustworthy!\n\nUsing unofficial versions may expose you to security risks,\nincluding data theft, privacy breaches, and malware.\n\nPlease download the official version from our trusted platforms below.</string>
+    <string name="signature_warning_platforms_title">Trusted Download Platforms</string>
+    <string name="signature_warning_sha256_label">Expected Signature SHA-256</string>
+    <string name="signature_warning_button_exit">Exit Application</string>
+    <string name="signature_warning_button_continue">Continue Anyway</string>
+    <string name="signature_warning_github_url">https://github.com/BugeStudioTeam/Buge-App-Manager/releases</string>
+    <string name="signature_warning_fdroid_url">https://f-droid.org/packages/com.buge.appmanager/</string>
     
 </resources>

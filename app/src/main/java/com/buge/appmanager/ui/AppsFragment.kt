@@ -11,6 +11,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.animation.OvershootInterpolator
+import android.widget.EditText
+import android.widget.ImageView
 import android.widget.ProgressBar
 import android.widget.TextView
 import androidx.activity.OnBackPressedCallback
@@ -67,6 +69,7 @@ class AppsFragment : Fragment() {
     private var selectedLabelId: String? = null
     private var currentFilter: AppFilter = AppFilter.ALL
     private var isUpdatingChips = false
+    private var searchQuery: String = ""
 
     private var tempZipFile: File? = null
     private var shareJob: Job? = null
@@ -84,13 +87,13 @@ class AppsFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        setupBackPressedCallback()
         setupRecyclerView()
+        setupBackPressedCallback()
         setupSearch()
         setupFilters()
-        setupToolbar()
         setupBatchActions()
         setupLabelChips()
+        setupToolbarMenu()
         observeViewModel()
 
         binding.swipeRefresh.setOnRefreshListener {
@@ -147,6 +150,18 @@ class AppsFragment : Fragment() {
         progressDialog = null
     }
 
+    private fun setupRecyclerView() {
+        if (!isAdded || view == null) return
+        adapter = AppsAdapter(
+            onAppClick = { app -> openAppDetail(app) },
+            onSelectionChanged = { count ->
+                updateSelectionUI(count)
+            }
+        )
+        binding.recyclerView.layoutManager = LinearLayoutManager(requireContext())
+        binding.recyclerView.adapter = adapter
+    }
+
     private fun setupBackPressedCallback() {
         val callback = object : OnBackPressedCallback(true) {
             override fun handleOnBackPressed() {
@@ -154,30 +169,137 @@ class AppsFragment : Fragment() {
                     adapter.clearSelection()
                     adapter.setSelectionMode(false)
                     hideBatchActionBar()
-                } else if (selectedLabelId != null) {
-                    selectedLabelId = null
-                    isUpdatingChips = true
-                    binding.labelChipGroup.clearCheck()
-                    isUpdatingChips = false
-                    applyFilter(currentFilter)
-                } else {
-                    val searchText = binding.searchEditText.text.toString()
-                    if (searchText.isNotEmpty()) {
-                        binding.searchEditText.setText("")
-                    } else {
-                        isEnabled = false
-                        requireActivity().onBackPressedDispatcher.onBackPressed()
-                    }
+                    return
                 }
+
+                // Fuck: If a label is selected, deselect it and go back to All
+                if (selectedLabelId != null) {
+                    isUpdatingChips = true
+                    for (i in 0 until binding.labelChipGroup.childCount) {
+                        val chip = binding.labelChipGroup.getChildAt(i) as? Chip
+                        chip?.isChecked = false
+                    }
+                    selectedLabelId = null
+                    isUpdatingChips = false
+
+                    val allChip = binding.filterChipGroup.findViewById<Chip>(R.id.chip_all)
+                    allChip?.isChecked = true
+                    currentFilter = AppFilter.ALL
+                    applyFilter(currentFilter)
+                    return
+                }
+
+                val searchText = binding.searchEditText.text.toString()
+                if (searchText.isNotEmpty()) {
+                    binding.searchEditText.setText("")
+                    searchQuery = ""
+                    applyFilter(currentFilter)
+                    return
+                }
+
+                isEnabled = false
+                requireActivity().onBackPressedDispatcher.onBackPressed()
             }
         }
         requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner, callback)
+    }
+
+    private fun setupToolbarMenu() {
+        binding.toolbar.setOnMenuItemClickListener { menuItem ->
+            when (menuItem.itemId) {
+                R.id.action_sort -> {
+                    showSortDialog()
+                    true
+                }
+                else -> false
+            }
+        }
+    }
+
+    private fun setupSearch() {
+        val searchEditText = binding.searchEditText
+        val btnClear = binding.btnClearSearch
+
+        searchEditText.addTextChangedListener { text ->
+            // Fuck: Exit selection mode when user starts typing
+            if (adapter.isInSelectionMode()) {
+                adapter.clearSelection()
+                adapter.setSelectionMode(false)
+                hideBatchActionBar()
+            }
+
+            searchQuery = text?.toString()?.trim() ?: ""
+            btnClear.visibility = if (searchQuery.isNotEmpty()) View.VISIBLE else View.GONE
+            applyFilter(currentFilter)
+        }
+
+        btnClear.setOnClickListener {
+            // Fuck: Exit selection mode when clearing search
+            if (adapter.isInSelectionMode()) {
+                adapter.clearSelection()
+                adapter.setSelectionMode(false)
+                hideBatchActionBar()
+            }
+
+            searchEditText.setText("")
+            searchQuery = ""
+            searchEditText.requestFocus()
+            applyFilter(currentFilter)
+        }
+
+        searchEditText.setOnEditorActionListener { _, actionId, _ ->
+            if (actionId == android.view.inputmethod.EditorInfo.IME_ACTION_SEARCH) {
+                val imm = requireContext().getSystemService(android.content.Context.INPUT_METHOD_SERVICE) as android.view.inputmethod.InputMethodManager
+                imm.hideSoftInputFromWindow(searchEditText.windowToken, 0)
+                searchEditText.clearFocus()
+                true
+            } else {
+                false
+            }
+        }
+    }
+
+    private fun setupFilters() {
+        if (!isAdded || view == null) return
+        binding.filterChipGroup.setOnCheckedStateChangeListener { _, checkedIds ->
+            if (isUpdatingChips) return@setOnCheckedStateChangeListener
+
+            // Fuck: If a built-in filter is selected, clear label selection
+            if (checkedIds.isNotEmpty()) {
+                isUpdatingChips = true
+                for (i in 0 until binding.labelChipGroup.childCount) {
+                    val chip = binding.labelChipGroup.getChildAt(i) as? Chip
+                    chip?.isChecked = false
+                }
+                selectedLabelId = null
+                isUpdatingChips = false
+            }
+
+            val filter = when {
+                checkedIds.contains(R.id.chip_user) -> AppFilter.USER
+                checkedIds.contains(R.id.chip_system) -> AppFilter.SYSTEM
+                checkedIds.contains(R.id.chip_favorite) -> AppFilter.FAVORITE
+                else -> AppFilter.ALL
+            }
+            if (adapter.isInSelectionMode()) {
+                adapter.clearSelection()
+                adapter.setSelectionMode(false)
+                hideBatchActionBar()
+            }
+            binding.searchEditText.setText("")
+            searchQuery = ""
+            applyFilter(filter)
+        }
     }
 
     private fun setupLabelChips() {
         val labels = CustomLabelManager.getLabels(requireContext())
         val chipGroup = binding.labelChipGroup
         chipGroup.removeAllViews()
+
+        // Fuck: Disable ChipGroup's automatic selection management
+        chipGroup.isSelectionRequired = false
+        chipGroup.isSingleSelection = false
 
         if (labels.isNotEmpty()) {
             chipGroup.visibility = View.VISIBLE
@@ -187,34 +309,47 @@ class AppsFragment : Fragment() {
                 val chip = layoutInflater.inflate(R.layout.chip_label, chipGroup, false) as Chip
                 chip.text = label.name
                 chip.id = View.generateViewId()
-                chip.isChecked = selectedLabelId == label.id
+                val isSelected = selectedLabelId == label.id
+                chip.isChecked = isSelected
+                chip.isClickable = true
+                chip.isFocusable = true
 
                 val typeface = FontOverrideHelper.getTypefaceByStyle(android.graphics.Typeface.NORMAL)
                 if (typeface != null) {
                     chip.typeface = typeface
                 }
 
-                chip.setOnCheckedChangeListener { _, isChecked ->
-                    if (isUpdatingChips) return@setOnCheckedChangeListener
-                    if (isChecked) {
-                        isUpdatingChips = true
-                        binding.filterChipGroup.clearCheck()
-                        isUpdatingChips = false
-                        selectedLabelId = label.id
-                        applyLabelFilter(label.id)
-                    } else {
-                        selectedLabelId = null
-                        val checkedId = binding.filterChipGroup.checkedChipId
-                        val filter = when (checkedId) {
-                            R.id.chip_user -> AppFilter.USER
-                            R.id.chip_system -> AppFilter.SYSTEM
-                            R.id.chip_favorite -> AppFilter.FAVORITE
-                            else -> AppFilter.ALL
-                        }
-                        currentFilter = filter
-                        applyFilter(filter)
+                chip.setOnClickListener {
+                    if (isUpdatingChips) return@setOnClickListener
+
+                    val currentId = selectedLabelId
+
+                    // Fuck: Already selected, do nothing
+                    if (currentId == label.id) {
+                        chip.isChecked = true
+                        return@setOnClickListener
                     }
+
+                    // Fuck: Select this label, deselect all others
+                    isUpdatingChips = true
+
+                    for (i in 0 until chipGroup.childCount) {
+                        val c = chipGroup.getChildAt(i) as? Chip
+                        c?.isChecked = false
+                    }
+
+                    chip.isChecked = true
+                    selectedLabelId = label.id
+
+                    binding.filterChipGroup.clearCheck()
+
+                    isUpdatingChips = false
+
+                    binding.searchEditText.setText("")
+                    searchQuery = ""
+                    applyLabelFilter(label.id)
                 }
+
                 chipGroup.addView(chip)
             }
         } else {
@@ -238,86 +373,35 @@ class AppsFragment : Fragment() {
 
     private fun applyFilter(filter: AppFilter) {
         currentFilter = filter
+
         val filtered = when (filter) {
             AppFilter.ALL -> allApps
             AppFilter.USER -> allApps.filter { !it.isSystemApp }
             AppFilter.SYSTEM -> allApps.filter { it.isSystemApp }
             AppFilter.FAVORITE -> allApps.filter { PreferencesManager.isFavoriteApp(requireContext(), it.packageName) }
         }
-        val items = filtered.map { AppsItem(it) }
+
+        val finalList = if (searchQuery.isNotEmpty()) {
+            filtered.filter {
+                it.appName.contains(searchQuery, ignoreCase = true) ||
+                it.packageName.contains(searchQuery, ignoreCase = true)
+            }
+        } else {
+            filtered
+        }
+
+        val items = finalList.map { AppsItem(it) }
         adapter.submitList(items)
-        val isEmpty = filtered.isEmpty()
-        binding.emptyState.visibility = if (isEmpty) View.VISIBLE else View.GONE
-        binding.recyclerView.visibility = if (isEmpty) View.GONE else View.VISIBLE
-    }
 
-    private fun setupRecyclerView() {
-        if (!isAdded || view == null) return
-        adapter = AppsAdapter(
-            onAppClick = { app -> openAppDetail(app) },
-            onSelectionChanged = { count ->
-                updateSelectionUI(count)
-            }
-        )
-        binding.recyclerView.layoutManager = LinearLayoutManager(requireContext())
-        binding.recyclerView.adapter = adapter
-    }
-
-    private fun setupSearch() {
-        if (!isAdded || view == null) return
-        binding.searchEditText.addTextChangedListener { text ->
-            if (adapter.isInSelectionMode()) {
-                adapter.clearSelection()
-                adapter.setSelectionMode(false)
-                hideBatchActionBar()
-            }
-            viewModel.setSearch(text?.toString() ?: "")
-        }
-    }
-
-    private fun setupFilters() {
-        if (!isAdded || view == null) return
-        binding.filterChipGroup.setOnCheckedStateChangeListener { _, checkedIds ->
-            if (isUpdatingChips) return@setOnCheckedStateChangeListener
-            if (selectedLabelId != null) {
-                isUpdatingChips = true
-                binding.labelChipGroup.clearCheck()
-                isUpdatingChips = false
-                selectedLabelId = null
-                setupLabelChips()
-            }
-            val filter = when {
-                checkedIds.contains(R.id.chip_user) -> AppFilter.USER
-                checkedIds.contains(R.id.chip_system) -> AppFilter.SYSTEM
-                checkedIds.contains(R.id.chip_favorite) -> AppFilter.FAVORITE
-                else -> AppFilter.ALL
-            }
-            if (adapter.isInSelectionMode()) {
-                adapter.clearSelection()
-                adapter.setSelectionMode(false)
-                hideBatchActionBar()
-            }
-            applyFilter(filter)
-        }
-    }
-
-    private fun setupToolbar() {
-        if (!isAdded || view == null) return
-        binding.toolbar.setOnMenuItemClickListener { item ->
-            when (item.itemId) {
-                R.id.action_sort -> {
-                    showSortDialog()
-                    true
-                }
-                else -> false
-            }
-        }
+        val isEmpty = finalList.isEmpty()
+        binding.emptyState.visibility = if (isEmpty && allApps.isNotEmpty()) View.VISIBLE else View.GONE
+        binding.recyclerView.visibility = if (isEmpty && allApps.isNotEmpty()) View.GONE else View.VISIBLE
+        binding.swipeRefresh.isRefreshing = false
     }
 
     private fun setupBatchActions() {
         if (!isAdded || view == null) return
 
-        // Select all button
         binding.btnSelectAll.setOnClickListener {
             val itemCount = adapter.itemCount
             if (itemCount > 0) {
@@ -325,7 +409,6 @@ class AppsFragment : Fragment() {
             }
         }
 
-        // Clear selection button
         binding.btnClearSelection.setOnClickListener {
             adapter.clearSelection()
             adapter.setSelectionMode(false)
@@ -425,7 +508,7 @@ class AppsFragment : Fragment() {
         }
     }
 
-    // ===================== Batch Share APKs with Split APK Support =====================
+    // ===================== Batch Share APKs =====================
 
     private fun batchShareApks(apps: List<AppInfo>) {
         if (!checkShizuku()) return
@@ -949,6 +1032,7 @@ class AppsFragment : Fragment() {
                 applyFilter(currentFilter)
             }
             binding.loadingOverlay.visibility = View.GONE
+            binding.swipeRefresh.isRefreshing = false
         }
 
         viewModel.isLoading.observe(viewLifecycleOwner) { isLoading ->

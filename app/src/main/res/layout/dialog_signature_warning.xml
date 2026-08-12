@@ -1,0 +1,189 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- SPDX-License-Identifier: GPL-3.0-only -->
+<!-- Copyright (C) 2026 Buge Studio -->
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:padding="24dp"
+    android:fontFamily="@font/google_sans_regular">
+
+    <!-- Warning Icon - Red -->
+    <ImageView
+        android:layout_width="80dp"
+        android:layout_height="80dp"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginBottom="16dp"
+        android:src="@drawable/ic_warning_large"
+        android:contentDescription="@string/signature_warning_title" />
+
+    <!-- Title - Red -->
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="12dp"
+        android:gravity="center"
+        android:text="@string/signature_warning_title"
+        android:textAlignment="center"
+        android:textAppearance="?attr/textAppearanceHeadlineMedium"
+        android:textColor="@color/color_denied"
+        android:textStyle="bold"
+        android:fontFamily="@font/google_sans_bold" />
+
+    <!-- Message -->
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="16dp"
+        android:gravity="center"
+        android:text="@string/signature_warning_message"
+        android:textAlignment="center"
+        android:textAppearance="?attr/textAppearanceBodyLarge"
+        android:lineSpacingExtra="6dp"
+        android:fontFamily="@font/google_sans_regular" />
+
+    <!-- Divider -->
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginVertical="12dp"
+        android:background="?attr/colorOutlineVariant" />
+
+    <!-- Trusted Platforms Label -->
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="12dp"
+        android:gravity="center"
+        android:text="@string/signature_warning_platforms_title"
+        android:textAlignment="center"
+        android:textAppearance="?attr/textAppearanceTitleMedium"
+        android:textColor="?attr/colorOnSurface"
+        android:textStyle="bold"
+        android:fontFamily="@font/google_sans_bold" />
+
+    <!-- Platform Links - Circle Icons only -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center"
+        android:layout_marginBottom="8dp">
+
+        <!-- GitHub - Circle Icon only -->
+        <ImageView
+            android:id="@+id/github_item"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:padding="10dp"
+            android:src="@drawable/ic_github"
+            android:background="@drawable/bg_circle_chip"
+            android:clickable="true"
+            android:focusable="true"
+            android:layout_marginEnd="12dp"
+            app:tint="?attr/colorPrimary" />
+
+        <!-- F-Droid - Circle Icon only -->
+        <ImageView
+            android:id="@+id/fdroid_item"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:padding="10dp"
+            android:src="@drawable/ic_fdroid"
+            android:background="@drawable/bg_circle_chip"
+            android:clickable="true"
+            android:focusable="true"
+            android:layout_marginStart="12dp"
+            app:tint="?attr/colorPrimary" />
+
+    </LinearLayout>
+
+    <!-- SHA-256 Hash Info -->
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="12dp"
+        android:gravity="center"
+        android:text="@string/signature_warning_sha256_label"
+        android:textAlignment="center"
+        android:textAppearance="?attr/textAppearanceBodySmall"
+        android:alpha="0.5"
+        android:fontFamily="@font/google_sans_regular" />
+
+    <TextView
+        android:id="@+id/tv_expected_hash"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:textAlignment="center"
+        android:textAppearance="?attr/textAppearanceBodySmall"
+        android:alpha="0.4"
+        android:textSize="10sp"
+        android:fontFamily="monospace"
+        android:layout_marginTop="2dp" />
+
+    <TextView
+        android:id="@+id/tv_current_hash"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:textAlignment="center"
+        android:textAppearance="?attr/textAppearanceBodySmall"
+        android:alpha="0.3"
+        android:textSize="10sp"
+        android:fontFamily="monospace"
+        android:layout_marginTop="2dp" />
+
+    <!-- Buttons - No shadow, Google Sans, vertically centered text -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center"
+        android:layout_marginTop="20dp"
+        android:paddingHorizontal="8dp">
+
+        <!-- Continue Anyway - Red Solid, white text -->
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/btn_continue"
+            android:layout_width="0dp"
+            android:layout_height="48dp"
+            android:layout_weight="1"
+            android:layout_marginEnd="6dp"
+            android:background="@drawable/bg_button_red_solid"
+            android:text="@string/signature_warning_button_continue"
+            android:textColor="@android:color/white"
+            android:textAppearance="?attr/textAppearanceButton"
+            android:textStyle="bold"
+            android:fontFamily="@font/google_sans_bold"
+            android:gravity="center"
+            android:includeFontPadding="false"
+            android:paddingHorizontal="16dp"
+            android:paddingVertical="0dp"
+            android:elevation="0dp"
+            android:stateListAnimator="@null" />
+
+        <!-- Exit Application - Red outline, red text -->
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/btn_exit"
+            android:layout_width="0dp"
+            android:layout_height="48dp"
+            android:layout_weight="1"
+            android:layout_marginStart="6dp"
+            android:background="@drawable/bg_button_red_outline"
+            android:text="@string/signature_warning_button_exit"
+            android:textColor="@color/color_denied"
+            android:textAppearance="?attr/textAppearanceButton"
+            android:textStyle="bold"
+            android:fontFamily="@font/google_sans_bold"
+            android:gravity="center"
+            android:includeFontPadding="false"
+            android:paddingHorizontal="16dp"
+            android:paddingVertical="0dp"
+            android:elevation="0dp"
+            android:stateListAnimator="@null" />
+
+    </LinearLayout>
+
+</LinearLayout>

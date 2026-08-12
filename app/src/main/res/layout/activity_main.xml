@@ -2,44 +2,47 @@
 <!-- SPDX-License-Identifier: GPL-3.0-only -->
 <!-- Copyright (C) 2026 Buge Studio -->
 <androidx.coordinatorlayout.widget.CoordinatorLayout
-     xmlns:android="http://schemas.android.com/apk/res/android"
-     xmlns:app="http://schemas.android.com/apk/res-auto"
-     android:layout_height="match_parent"
-     android:layout_width="match_parent">
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_height="match_parent"
+    android:layout_width="match_parent">
 
     <!-- Fragment Container -->
     <FrameLayout
-         android:layout_width="match_parent"
-         android:layout_height="match_parent"
-         android:id="@+id/fragment_container_wrapper">
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/fragment_container_wrapper">
 
         <androidx.fragment.app.FragmentContainerView
-             android:layout_height="match_parent"
-             android:layout_width="match_parent"
-             app:layout_behavior="@string/appbar_scrolling_view_behavior"
-             android:id="@+id/fragment_container" />
+            android:layout_height="match_parent"
+            android:layout_width="match_parent"
+            app:layout_behavior="@string/appbar_scrolling_view_behavior"
+            android:id="@+id/fragment_container" />
 
     </FrameLayout>
 
     <!-- NavigationRail (visible on large/tablet devices) -->
     <com.google.android.material.navigationrail.NavigationRailView
-         android:id="@+id/nav_rail"
-         android:layout_width="wrap_content"
-         android:layout_height="match_parent"
-         android:layout_gravity="start"
-         android:visibility="gone"
-         app:menu="@menu/bottom_nav_menu"
-         app:labelVisibilityMode="selected" />
+        android:id="@+id/nav_rail"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_gravity="start"
+        android:visibility="gone"
+        android:paddingTop="0dp"
+        android:paddingBottom="0dp"
+        app:menu="@menu/bottom_nav_menu"
+        app:labelVisibilityMode="selected"
+        app:menuGravity="center" />
 
     <!-- BottomNavigation (visible on normal devices) -->
     <com.google.android.material.bottomnavigation.BottomNavigationView
-         android:id="@+id/bottom_nav"
-         android:layout_height="wrap_content"
-         android:layout_width="match_parent"
-         android:background="@color/bottom_nav_background"
-         app:labelVisibilityMode="labeled"
-         android:elevation="8dp"
-         app:menu="@menu/bottom_nav_menu"
-         android:layout_gravity="bottom" />
+        android:id="@+id/bottom_nav"
+        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:background="@color/bottom_nav_background"
+        app:labelVisibilityMode="labeled"
+        android:elevation="8dp"
+        app:menu="@menu/bottom_nav_menu"
+        android:layout_gravity="bottom" />
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

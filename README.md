@@ -41,7 +41,7 @@
 
 - Manage any app, **including system apps**
 
-- Allow advanced operations such as **uninstall**, **disable**, **force stop**, etc.
+- Allow advanced operations such as **Uninstall**, **Disable**, **Force Stop**, etc.
 
 - Allow **restoring uninstalled system apps**
 

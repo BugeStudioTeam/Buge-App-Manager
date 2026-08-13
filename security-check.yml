@@ -1,0 +1,51 @@
+name: Check Keystore Files
+
+on:
+  push:
+    branches: [ main, develop, master ]
+  pull_request:
+    branches: [ main, develop, master ]
+  workflow_dispatch:
+
+jobs:
+  check-keystore:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          
+      - name: Get changed files
+        id: changed-files
+        uses: tj-actions/changed-files@v40
+        with:
+          files: |
+            **/keystore.jks
+            **/keystore.properties
+            **/*.jks
+            **/*.keystore
+            
+      - name: Check for keystore files
+        if: steps.changed-files.outputs.any_changed == 'true'
+        run: |
+          echo "WARNING: Keystore files detected in this change!"
+          echo ""
+          echo "Changed files:"
+          echo "${{ steps.changed-files.outputs.all_changed_files }}"
+          echo ""
+          echo "SECURITY ALERT: Please ensure you are not committing sensitive keystore files!"
+          echo "Consider using environment variables or secrets instead."
+          echo ""
+          echo "Files to review:"
+          for file in ${{ steps.changed-files.outputs.all_changed_files }}; do
+            echo "  - $file"
+          done
+          exit 1
+          
+      - name: Success message
+        if: steps.changed-files.outputs.any_changed != 'true'
+        run: |
+          echo "No keystore files detected in this change."
+          echo "Remember to never commit keystore files to version control!"

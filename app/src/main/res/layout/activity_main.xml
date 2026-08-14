@@ -36,13 +36,13 @@
 
     <!-- BottomNavigation (visible on normal devices) -->
     <com.google.android.material.bottomnavigation.BottomNavigationView
-        android:id="@+id/bottom_nav"
-        android:layout_height="wrap_content"
-        android:layout_width="match_parent"
-        android:background="@color/bottom_nav_background"
-        app:labelVisibilityMode="labeled"
-        android:elevation="8dp"
-        app:menu="@menu/bottom_nav_menu"
-        android:layout_gravity="bottom" />
+         android:id="@+id/bottom_nav"
+         android:layout_height="wrap_content"
+         android:layout_width="match_parent"
+         android:background="?attr/colorSurface"
+         app:labelVisibilityMode="labeled"
+         android:elevation="8dp"
+         app:menu="@menu/bottom_nav_menu"
+         android:layout_gravity="bottom" />
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

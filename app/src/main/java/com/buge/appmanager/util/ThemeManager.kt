@@ -6,10 +6,12 @@ package com.buge.appmanager.util
 import android.content.Context
 import androidx.appcompat.app.AppCompatDelegate
 import com.buge.appmanager.R
+import com.google.android.material.color.DynamicColors
 
 object ThemeManager {
 
     enum class ColorTheme(val value: String) {
+        DYNAMIC("dynamic"),  // 莫奈取色（默认，Android 12+ 生效，低版本自动回退 DEFAULT）
         DEFAULT("default"),
         RED("red"),
         GREEN("green"),
@@ -20,11 +22,14 @@ object ThemeManager {
 
     fun getCurrentColorTheme(context: Context): ColorTheme {
         val prefs = context.getSharedPreferences("app_preferences", Context.MODE_PRIVATE)
-        val themeValue = prefs.getString(PREF_COLOR_THEME, ColorTheme.DEFAULT.value)
+        // 默认启用莫奈取色（dynamic），无需用户手动开关
+        val themeValue = prefs.getString(PREF_COLOR_THEME, ColorTheme.DYNAMIC.value)
         return when (themeValue) {
             ColorTheme.RED.value -> ColorTheme.RED
             ColorTheme.GREEN.value -> ColorTheme.GREEN
             ColorTheme.YELLOW.value -> ColorTheme.YELLOW
+            // Android < 12 不支持莫奈取色，回退到 DEFAULT 蓝色主题
+            ColorTheme.DYNAMIC.value -> if (DynamicColors.isDynamicColorAvailable()) ColorTheme.DYNAMIC else ColorTheme.DEFAULT
             else -> ColorTheme.DEFAULT
         }
     }
@@ -36,12 +41,18 @@ object ThemeManager {
 
     fun applyColorTheme(context: Context) {
         val colorTheme = getCurrentColorTheme(context)
-        val themeResId = when (colorTheme) {
-            ColorTheme.RED -> R.style.Theme_BugeAppManager_Red
-            ColorTheme.GREEN -> R.style.Theme_BugeAppManager_Green
-            ColorTheme.YELLOW -> R.style.Theme_BugeAppManager_Yellow
-            ColorTheme.DEFAULT -> R.style.Theme_BugeAppManager
+       val themeResId = when (colorTheme) {
+           ColorTheme.RED -> R.style.Theme_BugeAppManager_Red
+           ColorTheme.GREEN -> R.style.Theme_BugeAppManager_Green
+           ColorTheme.YELLOW -> R.style.Theme_BugeAppManager_Yellow
+           // DYNAMIC 使用不带任何颜色属性的主题，DynamicColors overlay 能覆盖全部 colorScheme
+           // （包括 colorSurface/colorBackground），背景随壁纸变化。
+           ColorTheme.DYNAMIC -> R.style.Theme_BugeAppManager_Dynamic
+           ColorTheme.DEFAULT -> R.style.Theme_BugeAppManager
         }
         context.setTheme(themeResId)
     }
+
+    /** 莫奈取色是否可用（Android 12+） */
+    fun isDynamicColorAvailable(): Boolean = DynamicColors.isDynamicColorAvailable()
 }

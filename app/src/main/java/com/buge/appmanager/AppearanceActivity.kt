@@ -91,7 +91,6 @@ class AppearanceActivity : BaseActivity() {
         val currentColorTheme = ThemeManager.getCurrentColorTheme(this)
         updateColorThemeSelection(currentColorTheme)
 
-        // 莫奈取色仅 Android 12+ 可用，低版本隐藏该选项
         if (!ThemeManager.isDynamicColorAvailable()) {
             binding.colorDynamic.visibility = View.GONE
         }

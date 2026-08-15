@@ -261,6 +261,7 @@
     <string name="appearance_settings">Appearance Settings</string>
     <string name="theme_mode">Theme Mode</string>
     <string name="color_theme">Color Theme</string>
+    <string name="color_dynamic">Dynamic (Monet)</string>
     <string name="color_default">Default (Blue)</string>
     <string name="color_red">Red</string>
     <string name="color_green">Green</string>

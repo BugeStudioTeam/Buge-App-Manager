@@ -90,7 +90,14 @@ class AppearanceActivity : BaseActivity() {
     private fun setupColorThemeGroup() {
         val currentColorTheme = ThemeManager.getCurrentColorTheme(this)
         updateColorThemeSelection(currentColorTheme)
-        
+
+        if (!ThemeManager.isDynamicColorAvailable()) {
+            binding.colorDynamic.visibility = View.GONE
+        }
+
+        binding.colorDynamic.setOnClickListener {
+            selectColorTheme(ThemeManager.ColorTheme.DYNAMIC)
+        }
         binding.colorDefault.setOnClickListener {
             selectColorTheme(ThemeManager.ColorTheme.DEFAULT)
         }
@@ -128,11 +135,13 @@ class AppearanceActivity : BaseActivity() {
     }
 
     private fun updateColorThemeSelection(selectedTheme: ThemeManager.ColorTheme) {
+        val checkDynamic = binding.colorDynamic.findViewById<ImageView>(R.id.color_check_dynamic)
         val checkDefault = binding.colorDefault.findViewById<ImageView>(R.id.color_check_default)
         val checkRed = binding.colorRed.findViewById<ImageView>(R.id.color_check_red)
         val checkGreen = binding.colorGreen.findViewById<ImageView>(R.id.color_check_green)
         val checkYellow = binding.colorYellow.findViewById<ImageView>(R.id.color_check_yellow)
 
+        checkDynamic?.visibility = if (selectedTheme == ThemeManager.ColorTheme.DYNAMIC) View.VISIBLE else View.GONE
         checkDefault?.visibility = if (selectedTheme == ThemeManager.ColorTheme.DEFAULT) View.VISIBLE else View.GONE
         checkRed?.visibility = if (selectedTheme == ThemeManager.ColorTheme.RED) View.VISIBLE else View.GONE
         checkGreen?.visibility = if (selectedTheme == ThemeManager.ColorTheme.GREEN) View.VISIBLE else View.GONE

@@ -1,0 +1,7 @@
+**11.64.112**
+
+**Added** ✨
+- Major milestone: Full Material Design 3 Expressive update with dynamic color theming (Monet theming) — PR and technical support provided by @Tangmjiu
+
+**Contributors of this version:**
+- @Tangmjiu

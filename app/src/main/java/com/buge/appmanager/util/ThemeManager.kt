@@ -22,13 +22,12 @@ object ThemeManager {
 
     fun getCurrentColorTheme(context: Context): ColorTheme {
         val prefs = context.getSharedPreferences("app_preferences", Context.MODE_PRIVATE)
-        // 默认启用莫奈取色（dynamic），无需用户手动开关
+        
         val themeValue = prefs.getString(PREF_COLOR_THEME, ColorTheme.DYNAMIC.value)
         return when (themeValue) {
             ColorTheme.RED.value -> ColorTheme.RED
             ColorTheme.GREEN.value -> ColorTheme.GREEN
             ColorTheme.YELLOW.value -> ColorTheme.YELLOW
-            // Android < 12 不支持莫奈取色，回退到 DEFAULT 蓝色主题
             ColorTheme.DYNAMIC.value -> if (DynamicColors.isDynamicColorAvailable()) ColorTheme.DYNAMIC else ColorTheme.DEFAULT
             else -> ColorTheme.DEFAULT
         }
@@ -45,14 +44,11 @@ object ThemeManager {
            ColorTheme.RED -> R.style.Theme_BugeAppManager_Red
            ColorTheme.GREEN -> R.style.Theme_BugeAppManager_Green
            ColorTheme.YELLOW -> R.style.Theme_BugeAppManager_Yellow
-           // DYNAMIC 使用不带任何颜色属性的主题，DynamicColors overlay 能覆盖全部 colorScheme
-           // （包括 colorSurface/colorBackground），背景随壁纸变化。
            ColorTheme.DYNAMIC -> R.style.Theme_BugeAppManager_Dynamic
            ColorTheme.DEFAULT -> R.style.Theme_BugeAppManager
         }
         context.setTheme(themeResId)
     }
 
-    /** 莫奈取色是否可用（Android 12+） */
     fun isDynamicColorAvailable(): Boolean = DynamicColors.isDynamicColorAvailable()
 }

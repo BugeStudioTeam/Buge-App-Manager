@@ -215,8 +215,7 @@
         <item name="android:windowLightStatusBar">true</item>
     </style>
 
-    <!-- Dynamic Color (Monet) Theme：不设置任何颜色属性，由 DynamicColors overlay 覆盖全部 colorScheme。
-         若在此显式设置 colorSurface/colorBackground 等属性，overlay 无法覆盖它们，背景不会随壁纸变化。 -->
+    <!-- Dynamic Color (Monet) Theme -->
     <style name="Theme.BugeAppManager.Dynamic" parent="Theme.Material3.Light.NoActionBar">
         <item name="android:statusBarColor">?attr/colorSurface</item>
         <item name="android:navigationBarColor">?attr/colorSurface</item>

@@ -1,5 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!-- 莫奈取色选项的圆形色板：多彩渐变象征"跟随壁纸取色" -->
 <shape xmlns:android="http://schemas.android.com/apk/res/android" android:shape="oval">
     <gradient
         android:type="sweep"

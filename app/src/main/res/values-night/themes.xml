@@ -210,7 +210,7 @@
         <item name="android:navigationBarColor">?attr/colorSurface</item>
     </style>
 
-    <!-- Dynamic Color (Monet) Theme (Dark)：不设置任何颜色属性，由 DynamicColors overlay 覆盖全部 -->
+    <!-- Dynamic Color -->
     <style name="Theme.BugeAppManager.Dynamic" parent="Theme.Material3.Dark.NoActionBar">
         <item name="android:statusBarColor">?attr/colorSurface</item>
         <item name="android:navigationBarColor">?attr/colorSurface</item>

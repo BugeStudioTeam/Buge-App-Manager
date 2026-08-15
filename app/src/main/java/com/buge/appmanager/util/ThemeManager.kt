@@ -11,7 +11,7 @@ import com.google.android.material.color.DynamicColors
 object ThemeManager {
 
     enum class ColorTheme(val value: String) {
-        DYNAMIC("dynamic"),  // 莫奈取色（默认，Android 12+ 生效，低版本自动回退 DEFAULT）
+        DYNAMIC("dynamic"),
         DEFAULT("default"),
         RED("red"),
         GREEN("green"),

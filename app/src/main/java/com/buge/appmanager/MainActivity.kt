@@ -72,10 +72,17 @@ class MainActivity : BaseActivity() {
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        // Fuck: Apply theme and dynamic color before super
         ThemeManager.applyColorTheme(this)
 
         val savedTheme = PreferencesManager.getThemeMode(this)
         AppCompatDelegate.setDefaultNightMode(savedTheme)
+
+        // Fuck: Apply dynamic color at activity level if enabled
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S &&
+            PreferencesManager.getDynamicColor(this)) {
+            com.google.android.material.color.DynamicColors.applyToActivityIfAvailable(this)
+        }
 
         super.onCreate(savedInstanceState)
 

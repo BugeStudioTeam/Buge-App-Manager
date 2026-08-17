@@ -33,8 +33,28 @@ class AppsViewModel(application: Application) : AndroidViewModel(application) {
     var currentSort = AppSortOrder.NAME
     var searchQuery = ""
 
+    // Fuck: Save sort order persistently
+    private val SORT_PREF_KEY = "app_sort_order"
+
     init {
+        // Fuck: Restore sort order from preferences
+        currentSort = loadSortOrder()
         loadApps()
+    }
+
+    private fun loadSortOrder(): AppSortOrder {
+        val prefs = getApplication<Application>().getSharedPreferences("app_preferences", Application.MODE_PRIVATE)
+        val sortName = prefs.getString(SORT_PREF_KEY, AppSortOrder.NAME.name) ?: AppSortOrder.NAME.name
+        return try {
+            AppSortOrder.valueOf(sortName)
+        } catch (e: Exception) {
+            AppSortOrder.NAME
+        }
+    }
+
+    private fun saveSortOrder() {
+        val prefs = getApplication<Application>().getSharedPreferences("app_preferences", Application.MODE_PRIVATE)
+        prefs.edit().putString(SORT_PREF_KEY, currentSort.name).apply()
     }
 
     fun loadApps() {
@@ -63,11 +83,22 @@ class AppsViewModel(application: Application) : AndroidViewModel(application) {
 
     fun setSort(sort: AppSortOrder) {
         currentSort = sort
+        saveSortOrder()  // Fuck: Persist sort order
         loadApps()
     }
 
     fun setSearch(query: String) {
         searchQuery = query
+        loadApps()
+    }
+
+    // Fuck: Reset to default state when fragment is recreated
+    fun resetToDefaultState() {
+        // Keep the current sort from preferences, but reset filter and search
+        currentFilter = AppFilter.ALL
+        searchQuery = ""
+        // Fuck: Reload sort from preferences in case it was changed elsewhere
+        currentSort = loadSortOrder()
         loadApps()
     }
 }

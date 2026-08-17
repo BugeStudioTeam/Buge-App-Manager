@@ -21,12 +21,19 @@ import kotlinx.coroutines.async
 import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.withContext
 import java.io.File
+import kotlinx.coroutines.TimeoutCancellationException
+import kotlinx.coroutines.withTimeout
 
 class AppRepository(private val context: Context) {
     private val pm: PackageManager = context.packageManager
 
     companion object {
         private const val TAG = "AppRepository"
+
+        // Fuck: Cache for app sizes to avoid repeated expensive Shizuku calls
+        private var sizeCache: MutableMap<String, Long> = mutableMapOf()
+        private var cacheTimestamp: Long = 0
+        private val CACHE_TTL_MS = 5000L // 5 seconds cache TTL
 
         val PERMISSION_MICROPHONE = listOf(
             "android.permission.RECORD_AUDIO"
@@ -176,56 +183,103 @@ class AppRepository(private val context: Context) {
         }
     }
 
-    /**
-     * Get app storage size (APK + data + cache) using Shizuku
-     */
-    private suspend fun getAppTotalSize(packageName: String): Long {
-        return try {
-            var totalSize = 0L
+    // Fuck: Get app storage size with timeout and parallel execution
+    private suspend fun getAppTotalSize(packageName: String): Long = withContext(Dispatchers.IO) {
+        try {
+            withTimeout(3000L) { // Fuck: 3 second timeout per app
+                var totalSize = 0L
 
-            // Get APK size
-            try {
-                val appInfo = pm.getApplicationInfo(packageName, 0)
-                val apkFile = File(appInfo.sourceDir)
-                if (apkFile.exists()) {
-                    totalSize += apkFile.length()
-                }
-            } catch (e: Exception) {
-                // Ignore
-            }
-
-            // Get data + cache size via Shizuku du command
-            try {
-                val result = ShizukuManager.executeCommand("du -s /data/data/$packageName 2>/dev/null")
-                if (result.success && result.output.isNotEmpty()) {
-                    val sizeKB = result.output.split(Regex("\\s+")).firstOrNull()?.toLongOrNull()
-                    if (sizeKB != null && sizeKB > 0) {
-                        totalSize += sizeKB * 1024
-                    }
-                }
-            } catch (e: Exception) {
-                // Ignore
-            }
-
-            // Fallback: try to check if data directory exists and has content
-            if (totalSize == 0L) {
+                // Fuck: Get APK size (fast, no Shizuku needed)
                 try {
-                    val result = ShizukuManager.executeCommand("ls -la /data/data/$packageName 2>/dev/null | wc -l")
+                    val appInfo = pm.getApplicationInfo(packageName, 0)
+                    val apkFile = File(appInfo.sourceDir)
+                    if (apkFile.exists()) {
+                        totalSize += apkFile.length()
+                    }
+                } catch (e: Exception) {
+                    // Ignore
+                }
+
+                // Fuck: Get data size via Shizuku du command (fast with timeout)
+                try {
+                    val result = ShizukuManager.executeCommand("du -s /data/data/$packageName 2>/dev/null | cut -f1")
                     if (result.success && result.output.isNotEmpty()) {
-                        val lineCount = result.output.trim().toIntOrNull()
-                        if (lineCount != null && lineCount > 1) {
-                            totalSize = 1024L * 1024 // 1MB placeholder
+                        val sizeKB = result.output.trim().toLongOrNull()
+                        if (sizeKB != null && sizeKB > 0) {
+                            totalSize += sizeKB * 1024
                         }
                     }
                 } catch (e: Exception) {
                     // Ignore
                 }
-            }
 
-            totalSize
+                totalSize
+            }
+        } catch (e: TimeoutCancellationException) {
+            // Fuck: Timeout, return APK size only
+            Log.w(TAG, "Timeout getting size for $packageName, using APK size only")
+            try {
+                val appInfo = pm.getApplicationInfo(packageName, 0)
+                val apkFile = File(appInfo.sourceDir)
+                if (apkFile.exists()) {
+                    apkFile.length()
+                } else {
+                    0L
+                }
+            } catch (e2: Exception) {
+                0L
+            }
         } catch (e: Exception) {
             0L
         }
+    }
+
+    // Fuck: Batch get sizes with parallel execution
+    private suspend fun getAppSizesBatch(apps: List<AppInfo>): Map<String, Long> = withContext(Dispatchers.IO) {
+        if (apps.isEmpty()) return@withContext emptyMap()
+
+        // Fuck: Check cache first
+        val now = System.currentTimeMillis()
+        if (now - cacheTimestamp < CACHE_TTL_MS && sizeCache.isNotEmpty()) {
+            // Fuck: Only return cached sizes for apps that exist in cache
+            val result = mutableMapOf<String, Long>()
+            for (app in apps) {
+                sizeCache[app.packageName]?.let {
+                    result[app.packageName] = it
+                }
+            }
+            // Fuck: If all apps are cached, return immediately
+            if (result.size == apps.size) {
+                return@withContext result
+            }
+        }
+
+        // Fuck: Get sizes in parallel with timeout
+        val deferred = apps.map { app ->
+            async {
+                val size = getAppTotalSize(app.packageName)
+                app.packageName to size
+            }
+        }
+
+        try {
+            val results = deferred.awaitAll()
+            val resultMap = results.toMap()
+            // Fuck: Update cache
+            sizeCache.putAll(resultMap)
+            cacheTimestamp = System.currentTimeMillis()
+            resultMap
+        } catch (e: Exception) {
+            Log.w(TAG, "Batch size fetch failed: ${e.message}")
+            // Fuck: Return whatever we have in cache
+            sizeCache.filterKeys { pk -> apps.any { it.packageName == pk } }
+        }
+    }
+
+    // Fuck: Clear size cache when needed
+    fun clearSizeCache() {
+        sizeCache.clear()
+        cacheTimestamp = 0
     }
 
     suspend fun getInstalledApps(
@@ -323,32 +377,13 @@ class AppRepository(private val context: Context) {
                 }.toMutableList()
             }
 
-            // Fuck: Apply sorting
+            // Fuck: Apply sorting - optimized for SIZE
             apps = when (sortOrder) {
                 AppSortOrder.NAME -> apps.sortedBy { it.appName.lowercase() }.toMutableList()
                 AppSortOrder.INSTALL_DATE -> apps.sortedByDescending { it.installTime }.toMutableList()
                 AppSortOrder.SIZE -> {
-                    // Fuck: Get actual storage size for each app using Shizuku
-                    val sizeMap = mutableMapOf<String, Long>()
-                    for (app in apps) {
-                        val size = getAppTotalSize(app.packageName)
-                        if (size > 0) {
-                            sizeMap[app.packageName] = size
-                        } else {
-                            // Fallback: use APK size only
-                            try {
-                                val appInfo = pm.getApplicationInfo(app.packageName, 0)
-                                val apkFile = File(appInfo.sourceDir)
-                                if (apkFile.exists()) {
-                                    sizeMap[app.packageName] = apkFile.length()
-                                } else {
-                                    sizeMap[app.packageName] = 0L
-                                }
-                            } catch (e: Exception) {
-                                sizeMap[app.packageName] = 0L
-                            }
-                        }
-                    }
+                    // Fuck: Get sizes in parallel with cache
+                    val sizeMap = getAppSizesBatch(apps)
                     apps.sortedByDescending { sizeMap[it.packageName] ?: 0L }.toMutableList()
                 }
             }

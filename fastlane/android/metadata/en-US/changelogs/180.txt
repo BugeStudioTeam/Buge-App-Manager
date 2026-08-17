@@ -1,0 +1,10 @@
+**11.65.116**
+
+**Optimizations** ⚡
+- Optimized icons
+- Improved app retrieval speed
+- Added sort order setting persistence
+- Improved page refresh performance
+
+**Contributors of this version:**
+None

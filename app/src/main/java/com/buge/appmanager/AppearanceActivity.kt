@@ -94,7 +94,9 @@ class AppearanceActivity : BaseActivity() {
         val statusText = binding.dynamicColorStatus
         val isDynamicColorEnabled = PreferencesManager.getDynamicColor(this)
 
-        // Fuck: Set initial state
+        // Fuck: Set icon for dynamic color using ic_colorize
+        // The icon is already set in the layout, but we can optionally customize it here
+
         switch.isChecked = isDynamicColorEnabled
 
         if (isAndroid12Plus) {
@@ -104,14 +106,8 @@ class AppearanceActivity : BaseActivity() {
 
             switch.setOnCheckedChangeListener { _, isChecked ->
                 PreferencesManager.setDynamicColor(this, isChecked)
-                // Fuck: Update UI immediately
                 updateColorThemeUI(isChecked)
-                // Fuck: Show restart dialog
-                if (isChecked) {
-                    showDynamicColorRestartDialog(true)
-                } else {
-                    showDynamicColorRestartDialog(false)
-                }
+                showDynamicColorRestartDialog(isChecked)
             }
         } else {
             switch.isEnabled = false
@@ -120,7 +116,6 @@ class AppearanceActivity : BaseActivity() {
             switch.setOnCheckedChangeListener(null)
         }
 
-        // Fuck: Update color theme UI based on dynamic color state
         updateColorThemeUI(isDynamicColorEnabled && isAndroid12Plus)
     }
 
@@ -135,7 +130,6 @@ class AppearanceActivity : BaseActivity() {
             .setTitle(R.string.restart_required)
             .setMessage(message)
             .setPositiveButton(R.string.restart_now) { _, _ ->
-                // Fuck: Apply dynamic color before restart
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S && enabled) {
                     DynamicColors.applyToActivitiesIfAvailable(application)
                 }
@@ -143,16 +137,6 @@ class AppearanceActivity : BaseActivity() {
             }
             .setNegativeButton(R.string.later, null)
             .show()
-    }
-
-    private fun applyDynamicColor(enabled: Boolean) {
-        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.S) {
-            return
-        }
-
-        if (enabled) {
-            DynamicColors.applyToActivitiesIfAvailable(application)
-        }
     }
 
     private fun updateColorThemeUI(dynamicColorEnabled: Boolean) {
@@ -232,15 +216,12 @@ class AppearanceActivity : BaseActivity() {
     private fun selectColorTheme(theme: ThemeManager.ColorTheme) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S &&
             PreferencesManager.getDynamicColor(this)) {
-            return
-        }
-
-        ThemeManager.setColorTheme(this, theme)
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
             PreferencesManager.setDynamicColor(this, false)
             binding.dynamicColorSwitch.isChecked = false
             updateColorThemeUI(false)
         }
+
+        ThemeManager.setColorTheme(this, theme)
         updateColorThemeSelection(theme)
         showRestartDialog()
     }

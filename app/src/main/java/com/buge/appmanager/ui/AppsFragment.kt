@@ -96,6 +96,9 @@ class AppsFragment : Fragment() {
         setupToolbarMenu()
         observeViewModel()
 
+        // Fuck: Restore state when fragment is recreated
+        restoreState()
+
         binding.swipeRefresh.setOnRefreshListener {
             viewModel.loadApps()
         }
@@ -108,6 +111,8 @@ class AppsFragment : Fragment() {
             fontApplied = true
         }
         setupLabelChips()
+        // Fuck: Refresh apps when returning to fragment
+        viewModel.loadApps()
     }
 
     override fun onDestroyView() {
@@ -364,6 +369,8 @@ class AppsFragment : Fragment() {
             val filteredApps = allApps.filter { label.appPackages.contains(it.packageName) }
             val items = filteredApps.map { AppsItem(it) }
             adapter.submitList(items)
+            // Fuck: Scroll to top after label filter
+            binding.recyclerView.scrollToPosition(0)
             val isEmpty = filteredApps.isEmpty()
             binding.emptyState.visibility = if (isEmpty) View.VISIBLE else View.GONE
             binding.recyclerView.visibility = if (isEmpty) View.GONE else View.VISIBLE
@@ -392,6 +399,8 @@ class AppsFragment : Fragment() {
 
         val items = finalList.map { AppsItem(it) }
         adapter.submitList(items)
+        // Fuck: Scroll to top after filtering
+        binding.recyclerView.scrollToPosition(0)
 
         val isEmpty = finalList.isEmpty()
         binding.emptyState.visibility = if (isEmpty && allApps.isNotEmpty()) View.VISIBLE else View.GONE
@@ -1017,6 +1026,10 @@ class AppsFragment : Fragment() {
                     else -> AppSortOrder.NAME
                 }
                 viewModel.setSort(sort)
+                // Fuck: Scroll to top after sorting with post to ensure layout is ready
+                binding.recyclerView.post {
+                    binding.recyclerView.scrollToPosition(0)
+                }
                 dialog.dismiss()
             }
             .show()
@@ -1030,6 +1043,10 @@ class AppsFragment : Fragment() {
                 applyLabelFilter(selectedLabelId!!)
             } else {
                 applyFilter(currentFilter)
+            }
+            // Fuck: Scroll to top when data updates
+            binding.recyclerView.post {
+                binding.recyclerView.scrollToPosition(0)
             }
             binding.loadingOverlay.visibility = View.GONE
             binding.swipeRefresh.isRefreshing = false
@@ -1046,6 +1063,30 @@ class AppsFragment : Fragment() {
             }
             if (!isLoading) binding.swipeRefresh.isRefreshing = false
         }
+    }
+
+    // Fuck: Restore state when fragment is recreated
+    private fun restoreState() {
+        // The viewModel already loads sort from preferences
+        // Just ensure filter is reset to ALL
+        currentFilter = AppFilter.ALL
+        searchQuery = ""
+        // Clear any label selection
+        selectedLabelId = null
+        binding.searchEditText.setText("")
+        // Reset chips
+        isUpdatingChips = true
+        for (i in 0 until binding.filterChipGroup.childCount) {
+            val chip = binding.filterChipGroup.getChildAt(i) as? Chip
+            chip?.isChecked = false
+        }
+        val allChip = binding.filterChipGroup.findViewById<Chip>(R.id.chip_all)
+        allChip?.isChecked = true
+        for (i in 0 until binding.labelChipGroup.childCount) {
+            val chip = binding.labelChipGroup.getChildAt(i) as? Chip
+            chip?.isChecked = false
+        }
+        isUpdatingChips = false
     }
 
     private fun openAppDetail(app: AppInfo) {

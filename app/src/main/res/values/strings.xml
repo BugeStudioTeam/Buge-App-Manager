@@ -261,7 +261,6 @@
     <string name="appearance_settings">Appearance Settings</string>
     <string name="theme_mode">Theme Mode</string>
     <string name="color_theme">Color Theme</string>
-    <string name="color_dynamic">Dynamic (Monet)</string>
     <string name="color_default">Default (Blue)</string>
     <string name="color_red">Red</string>
     <string name="color_green">Green</string>
@@ -272,6 +271,11 @@
     <string name="theme_group">Theme</string>
     <string name="hide_nav_labels">Hide navigation labels</string>
     <string name="hide_nav_labels_summary">Hide titles of unselected navigation items, show only selected one</string>
+
+    <!-- Dynamic Color -->
+    <string name="dynamic_color">Dynamic Color</string>
+    <string name="dynamic_color_summary">Automatically adapt colors from wallpaper (Android 12+)</string>
+    <string name="dynamic_color_unavailable">Requires Android 12 or higher</string>
 
     <!-- Custom Labels -->
     <string name="pref_custom_labels">Custom Labels</string>

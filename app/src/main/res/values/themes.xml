@@ -214,11 +214,4 @@
         <item name="android:navigationBarColor">?attr/colorSurface</item>
         <item name="android:windowLightStatusBar">true</item>
     </style>
-
-    <!-- Dynamic Color (Monet) Theme -->
-    <style name="Theme.BugeAppManager.Dynamic" parent="Theme.Material3.Light.NoActionBar">
-        <item name="android:statusBarColor">?attr/colorSurface</item>
-        <item name="android:navigationBarColor">?attr/colorSurface</item>
-        <item name="android:windowLightStatusBar">true</item>
-    </style>
 </resources>

@@ -261,7 +261,6 @@
     <string name="appearance_settings">外观设置</string>
     <string name="theme_mode">主题模式</string>
     <string name="color_theme">主题色</string>
-    <string name="color_dynamic">动态（莫奈取色）</string>
     <string name="color_default">默认（蓝色）</string>
     <string name="color_red">红色</string>
     <string name="color_green">绿色</string>

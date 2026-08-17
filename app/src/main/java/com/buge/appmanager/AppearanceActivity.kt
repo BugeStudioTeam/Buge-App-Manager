@@ -4,6 +4,7 @@
 package com.buge.appmanager
 
 import android.content.Intent
+import android.os.Build
 import android.os.Bundle
 import android.view.View
 import android.widget.ImageView
@@ -13,6 +14,7 @@ import com.buge.appmanager.databinding.ActivityAppearanceBinding
 import com.buge.appmanager.util.LocaleManager
 import com.buge.appmanager.util.PreferencesManager
 import com.buge.appmanager.util.ThemeManager
+import com.google.android.material.color.DynamicColors
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 
 class AppearanceActivity : BaseActivity() {
@@ -28,6 +30,7 @@ class AppearanceActivity : BaseActivity() {
         setupToolbar()
         setupAppearanceGroup()
         setupThemeGroup()
+        setupDynamicColor()
         setupColorThemeGroup()
         setupHideNavLabelsSwitch()
     }
@@ -50,7 +53,6 @@ class AppearanceActivity : BaseActivity() {
     }
 
     private fun setupAppearanceGroup() {
-        // Default page item
         val defaultPage = PreferencesManager.getDefaultPage(this)
         val defaultPageText = when (defaultPage) {
             "apps" -> getString(R.string.default_page_apps)
@@ -64,7 +66,6 @@ class AppearanceActivity : BaseActivity() {
             showDefaultPageDialog()
         }
 
-        // Language item
         val currentLanguage = LocaleManager.getLanguage(this)
         val languages = LocaleManager.getSupportedLanguages()
         val languageText = languages[currentLanguage] ?: languages[""] ?: "System Default"
@@ -87,17 +88,115 @@ class AppearanceActivity : BaseActivity() {
         }
     }
 
+    private fun setupDynamicColor() {
+        val isAndroid12Plus = Build.VERSION.SDK_INT >= Build.VERSION_CODES.S
+        val switch = binding.dynamicColorSwitch
+        val statusText = binding.dynamicColorStatus
+        val isDynamicColorEnabled = PreferencesManager.getDynamicColor(this)
+
+        // Fuck: Set initial state
+        switch.isChecked = isDynamicColorEnabled
+
+        if (isAndroid12Plus) {
+            switch.isEnabled = true
+            statusText.text = getString(R.string.dynamic_color_summary)
+            switch.alpha = 1f
+
+            switch.setOnCheckedChangeListener { _, isChecked ->
+                PreferencesManager.setDynamicColor(this, isChecked)
+                // Fuck: Update UI immediately
+                updateColorThemeUI(isChecked)
+                // Fuck: Show restart dialog
+                if (isChecked) {
+                    showDynamicColorRestartDialog(true)
+                } else {
+                    showDynamicColorRestartDialog(false)
+                }
+            }
+        } else {
+            switch.isEnabled = false
+            statusText.text = getString(R.string.dynamic_color_unavailable)
+            switch.alpha = 0.4f
+            switch.setOnCheckedChangeListener(null)
+        }
+
+        // Fuck: Update color theme UI based on dynamic color state
+        updateColorThemeUI(isDynamicColorEnabled && isAndroid12Plus)
+    }
+
+    private fun showDynamicColorRestartDialog(enabled: Boolean) {
+        val message = if (enabled) {
+            "Dynamic color has been enabled. Restart the app to apply the changes?"
+        } else {
+            "Dynamic color has been disabled. Restart the app to apply the changes?"
+        }
+
+        MaterialAlertDialogBuilder(this)
+            .setTitle(R.string.restart_required)
+            .setMessage(message)
+            .setPositiveButton(R.string.restart_now) { _, _ ->
+                // Fuck: Apply dynamic color before restart
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S && enabled) {
+                    DynamicColors.applyToActivitiesIfAvailable(application)
+                }
+                restartApp()
+            }
+            .setNegativeButton(R.string.later, null)
+            .show()
+    }
+
+    private fun applyDynamicColor(enabled: Boolean) {
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.S) {
+            return
+        }
+
+        if (enabled) {
+            DynamicColors.applyToActivitiesIfAvailable(application)
+        }
+    }
+
+    private fun updateColorThemeUI(dynamicColorEnabled: Boolean) {
+        val containers = listOf(
+            binding.colorDefault,
+            binding.colorRed,
+            binding.colorGreen,
+            binding.colorYellow
+        )
+
+        for (container in containers) {
+            if (dynamicColorEnabled) {
+                container.isEnabled = false
+                container.alpha = 0.4f
+                container.isClickable = false
+                container.isFocusable = false
+            } else {
+                container.isEnabled = true
+                container.alpha = 1f
+                container.isClickable = true
+                container.isFocusable = true
+            }
+        }
+
+        if (dynamicColorEnabled) {
+            val checkDefault = binding.colorDefault.findViewById<ImageView>(R.id.color_check_default)
+            val checkRed = binding.colorRed.findViewById<ImageView>(R.id.color_check_red)
+            val checkGreen = binding.colorGreen.findViewById<ImageView>(R.id.color_check_green)
+            val checkYellow = binding.colorYellow.findViewById<ImageView>(R.id.color_check_yellow)
+
+            checkDefault?.visibility = View.GONE
+            checkRed?.visibility = View.GONE
+            checkGreen?.visibility = View.GONE
+            checkYellow?.visibility = View.GONE
+        } else {
+            val currentColorTheme = ThemeManager.getCurrentColorTheme(this)
+            updateColorThemeSelection(currentColorTheme)
+        }
+    }
+
     private fun setupColorThemeGroup() {
         val currentColorTheme = ThemeManager.getCurrentColorTheme(this)
         updateColorThemeSelection(currentColorTheme)
 
-        if (!ThemeManager.isDynamicColorAvailable()) {
-            binding.colorDynamic.visibility = View.GONE
-        }
-
-        binding.colorDynamic.setOnClickListener {
-            selectColorTheme(ThemeManager.ColorTheme.DYNAMIC)
-        }
         binding.colorDefault.setOnClickListener {
             selectColorTheme(ThemeManager.ColorTheme.DEFAULT)
         }
@@ -110,6 +209,10 @@ class AppearanceActivity : BaseActivity() {
         binding.colorYellow.setOnClickListener {
             selectColorTheme(ThemeManager.ColorTheme.YELLOW)
         }
+
+        val isDynamicEnabled = Build.VERSION.SDK_INT >= Build.VERSION_CODES.S &&
+                PreferencesManager.getDynamicColor(this)
+        updateColorThemeUI(isDynamicEnabled)
     }
 
     private fun setupHideNavLabelsSwitch() {
@@ -117,31 +220,37 @@ class AppearanceActivity : BaseActivity() {
         binding.hideNavLabelsSwitch.isChecked = isEnabled
         binding.hideNavLabelsSwitch.setOnCheckedChangeListener { _, isChecked ->
             PreferencesManager.setHideNavLabels(this, isChecked)
-            // Apply changes immediately without restart
             applyHideNavLabelsToMainActivity()
         }
     }
 
     private fun applyHideNavLabelsToMainActivity() {
-        // Send broadcast to MainActivity to update nav labels
         val intent = Intent("com.buge.appmanager.ACTION_NAV_LABELS_CHANGED")
         sendBroadcast(intent)
     }
 
     private fun selectColorTheme(theme: ThemeManager.ColorTheme) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S &&
+            PreferencesManager.getDynamicColor(this)) {
+            return
+        }
+
         ThemeManager.setColorTheme(this, theme)
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+            PreferencesManager.setDynamicColor(this, false)
+            binding.dynamicColorSwitch.isChecked = false
+            updateColorThemeUI(false)
+        }
         updateColorThemeSelection(theme)
         showRestartDialog()
     }
 
     private fun updateColorThemeSelection(selectedTheme: ThemeManager.ColorTheme) {
-        val checkDynamic = binding.colorDynamic.findViewById<ImageView>(R.id.color_check_dynamic)
         val checkDefault = binding.colorDefault.findViewById<ImageView>(R.id.color_check_default)
         val checkRed = binding.colorRed.findViewById<ImageView>(R.id.color_check_red)
         val checkGreen = binding.colorGreen.findViewById<ImageView>(R.id.color_check_green)
         val checkYellow = binding.colorYellow.findViewById<ImageView>(R.id.color_check_yellow)
 
-        checkDynamic?.visibility = if (selectedTheme == ThemeManager.ColorTheme.DYNAMIC) View.VISIBLE else View.GONE
         checkDefault?.visibility = if (selectedTheme == ThemeManager.ColorTheme.DEFAULT) View.VISIBLE else View.GONE
         checkRed?.visibility = if (selectedTheme == ThemeManager.ColorTheme.RED) View.VISIBLE else View.GONE
         checkGreen?.visibility = if (selectedTheme == ThemeManager.ColorTheme.GREEN) View.VISIBLE else View.GONE

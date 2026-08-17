@@ -1,0 +1,10 @@
+**11.65.113**
+
+**Changed** 🔧
+- Rewrote dynamic color theming implementation
+
+**Fixes** 🐛
+- Fixed sizing issues (thanks to @Atomsmelody for issue #13)
+
+**Contributors of this version:**
+- @Atomsmelody

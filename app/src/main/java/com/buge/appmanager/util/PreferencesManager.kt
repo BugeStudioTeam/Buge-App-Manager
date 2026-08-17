@@ -24,6 +24,7 @@ object PreferencesManager {
     private const val UPDATE_METHOD_KEY = "update_method"
     private const val UPDATE_SOURCE_KEY = "update_source"
     private const val SHIZUKU_PROVIDER_KEY = "shizuku_provider"
+    private const val DYNAMIC_COLOR_KEY = "dynamic_color"
 
     private fun getPreferences(context: Context): SharedPreferences {
         return context.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE)
@@ -168,5 +169,14 @@ object PreferencesManager {
 
     fun getShizukuProvider(context: Context): String {
         return getPreferences(context).getString(SHIZUKU_PROVIDER_KEY, "moe.shizuku.privileged.api") ?: "moe.shizuku.privileged.api"
+    }
+
+    // Fuck: Dynamic Color
+    fun setDynamicColor(context: Context, enabled: Boolean) {
+        getPreferences(context).edit().putBoolean(DYNAMIC_COLOR_KEY, enabled).apply()
+    }
+
+    fun getDynamicColor(context: Context): Boolean {
+        return getPreferences(context).getBoolean(DYNAMIC_COLOR_KEY, false)
     }
 }

@@ -6,12 +6,10 @@ package com.buge.appmanager.util
 import android.content.Context
 import androidx.appcompat.app.AppCompatDelegate
 import com.buge.appmanager.R
-import com.google.android.material.color.DynamicColors
 
 object ThemeManager {
 
     enum class ColorTheme(val value: String) {
-        DYNAMIC("dynamic"),
         DEFAULT("default"),
         RED("red"),
         GREEN("green"),
@@ -22,13 +20,11 @@ object ThemeManager {
 
     fun getCurrentColorTheme(context: Context): ColorTheme {
         val prefs = context.getSharedPreferences("app_preferences", Context.MODE_PRIVATE)
-        
-        val themeValue = prefs.getString(PREF_COLOR_THEME, ColorTheme.DYNAMIC.value)
+        val themeValue = prefs.getString(PREF_COLOR_THEME, ColorTheme.DEFAULT.value)
         return when (themeValue) {
             ColorTheme.RED.value -> ColorTheme.RED
             ColorTheme.GREEN.value -> ColorTheme.GREEN
             ColorTheme.YELLOW.value -> ColorTheme.YELLOW
-            ColorTheme.DYNAMIC.value -> if (DynamicColors.isDynamicColorAvailable()) ColorTheme.DYNAMIC else ColorTheme.DEFAULT
             else -> ColorTheme.DEFAULT
         }
     }
@@ -40,15 +36,12 @@ object ThemeManager {
 
     fun applyColorTheme(context: Context) {
         val colorTheme = getCurrentColorTheme(context)
-       val themeResId = when (colorTheme) {
-           ColorTheme.RED -> R.style.Theme_BugeAppManager_Red
-           ColorTheme.GREEN -> R.style.Theme_BugeAppManager_Green
-           ColorTheme.YELLOW -> R.style.Theme_BugeAppManager_Yellow
-           ColorTheme.DYNAMIC -> R.style.Theme_BugeAppManager_Dynamic
-           ColorTheme.DEFAULT -> R.style.Theme_BugeAppManager
+        val themeResId = when (colorTheme) {
+            ColorTheme.RED -> R.style.Theme_BugeAppManager_Red
+            ColorTheme.GREEN -> R.style.Theme_BugeAppManager_Green
+            ColorTheme.YELLOW -> R.style.Theme_BugeAppManager_Yellow
+            ColorTheme.DEFAULT -> R.style.Theme_BugeAppManager
         }
         context.setTheme(themeResId)
     }
-
-    fun isDynamicColorAvailable(): Boolean = DynamicColors.isDynamicColorAvailable()
 }

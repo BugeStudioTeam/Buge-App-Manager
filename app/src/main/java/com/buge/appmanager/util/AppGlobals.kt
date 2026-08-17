@@ -8,8 +8,6 @@ import android.content.Context
 import android.graphics.Typeface
 import androidx.core.content.res.ResourcesCompat
 import com.buge.appmanager.R
-import com.google.android.material.color.DynamicColors
-import com.google.android.material.color.DynamicColorsOptions
 
 class AppGlobals : Application() {
 
@@ -45,13 +43,5 @@ class AppGlobals : Application() {
         super.onCreate()
         _applicationContext = applicationContext
         preloadTypefaces()
-        DynamicColors.applyToActivitiesIfAvailable(
-            this,
-            DynamicColorsOptions.Builder()
-                .setPrecondition { _, _ ->
-                    ThemeManager.getCurrentColorTheme(applicationContext) == ThemeManager.ColorTheme.DYNAMIC
-                }
-                .build()
-        )
     }
 }

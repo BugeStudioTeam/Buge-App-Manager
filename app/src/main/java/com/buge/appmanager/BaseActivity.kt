@@ -4,11 +4,14 @@
 package com.buge.appmanager
 
 import android.content.Context
+import android.os.Build
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import com.buge.appmanager.util.FontOverrideHelper
 import com.buge.appmanager.util.LocaleManager
+import com.buge.appmanager.util.PreferencesManager
 import com.buge.appmanager.util.ThemeManager
+import com.google.android.material.color.DynamicColors
 
 abstract class BaseActivity : AppCompatActivity() {
 
@@ -25,6 +28,12 @@ abstract class BaseActivity : AppCompatActivity() {
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        // Fuck: Apply dynamic color if enabled and Android 12+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S &&
+            PreferencesManager.getDynamicColor(this)) {
+            DynamicColors.applyToActivityIfAvailable(this)
+        }
+
         ThemeManager.applyColorTheme(this)
         super.onCreate(savedInstanceState)
     }

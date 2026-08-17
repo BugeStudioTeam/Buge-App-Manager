@@ -225,6 +225,63 @@
 
             </FrameLayout>
 
+            <!-- Dynamic Color Switch -->
+            <FrameLayout
+                android:id="@+id/dynamic_color_container"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="16dp"
+                android:layout_marginBottom="2dp"
+                android:background="@drawable/bg_setting_item_middle"
+                android:clickable="false"
+                android:focusable="false">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:gravity="center_vertical"
+                    android:paddingHorizontal="16dp"
+                    android:paddingVertical="16dp">
+
+                    <ImageView
+                        android:layout_width="24dp"
+                        android:layout_height="24dp"
+                        android:src="@drawable/ic_color"
+                        android:layout_marginEnd="16dp" />
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/dynamic_color"
+                            android:textAppearance="?attr/textAppearanceBodyLarge" />
+
+                        <TextView
+                            android:id="@+id/dynamic_color_status"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/dynamic_color_summary"
+                            android:alpha="0.6"
+                            android:textAppearance="?attr/textAppearanceBodySmall" />
+
+                    </LinearLayout>
+
+                    <com.google.android.material.materialswitch.MaterialSwitch
+                        android:id="@+id/dynamic_color_switch"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        app:thumbIcon="@drawable/switch_thumb_icons" />
+
+                </LinearLayout>
+
+            </FrameLayout>
+
             <!-- Hide Navigation Labels Switch -->
             <FrameLayout
                 android:id="@+id/hide_nav_labels_container"
@@ -323,44 +380,6 @@
                         android:layout_height="wrap_content"
                         android:orientation="horizontal"
                         android:gravity="center_vertical">
-
-                        <!-- Dynamic Color (Monet) -->
-                        <LinearLayout
-                            android:id="@+id/color_dynamic"
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:orientation="vertical"
-                            android:gravity="center"
-                            android:clickable="true"
-                            android:focusable="true"
-                            android:padding="8dp">
-
-                            <FrameLayout
-                                android:layout_width="48dp"
-                                android:layout_height="48dp"
-                                android:background="@drawable/circle_dynamic">
-
-                                <ImageView
-                                    android:id="@+id/color_check_dynamic"
-                                    android:layout_width="24dp"
-                                    android:layout_height="24dp"
-                                    android:layout_gravity="center"
-                                    android:src="@drawable/ic_check"
-                                    android:visibility="gone"
-                                    android:tint="@android:color/white" />
-
-                            </FrameLayout>
-
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_marginTop="8dp"
-                                android:text="@string/color_dynamic"
-                                android:textSize="12sp"
-                                android:alpha="0.7" />
-
-                        </LinearLayout>
 
                         <!-- Default Color -->
                         <LinearLayout

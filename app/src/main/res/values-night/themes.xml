@@ -209,10 +209,4 @@
         <item name="android:statusBarColor">?attr/colorSurface</item>
         <item name="android:navigationBarColor">?attr/colorSurface</item>
     </style>
-
-    <!-- Dynamic Color -->
-    <style name="Theme.BugeAppManager.Dynamic" parent="Theme.Material3.Dark.NoActionBar">
-        <item name="android:statusBarColor">?attr/colorSurface</item>
-        <item name="android:navigationBarColor">?attr/colorSurface</item>
-    </style>
 </resources>

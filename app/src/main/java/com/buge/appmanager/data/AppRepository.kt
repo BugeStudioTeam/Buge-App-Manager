@@ -17,7 +17,10 @@ import com.buge.appmanager.model.PermissionInfo
 import com.buge.appmanager.shizuku.ShizukuManager
 import com.buge.appmanager.util.PreferencesManager
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.async
+import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.withContext
+import java.io.File
 
 class AppRepository(private val context: Context) {
     private val pm: PackageManager = context.packageManager
@@ -173,6 +176,58 @@ class AppRepository(private val context: Context) {
         }
     }
 
+    /**
+     * Get app storage size (APK + data + cache) using Shizuku
+     */
+    private suspend fun getAppTotalSize(packageName: String): Long {
+        return try {
+            var totalSize = 0L
+
+            // Get APK size
+            try {
+                val appInfo = pm.getApplicationInfo(packageName, 0)
+                val apkFile = File(appInfo.sourceDir)
+                if (apkFile.exists()) {
+                    totalSize += apkFile.length()
+                }
+            } catch (e: Exception) {
+                // Ignore
+            }
+
+            // Get data + cache size via Shizuku du command
+            try {
+                val result = ShizukuManager.executeCommand("du -s /data/data/$packageName 2>/dev/null")
+                if (result.success && result.output.isNotEmpty()) {
+                    val sizeKB = result.output.split(Regex("\\s+")).firstOrNull()?.toLongOrNull()
+                    if (sizeKB != null && sizeKB > 0) {
+                        totalSize += sizeKB * 1024
+                    }
+                }
+            } catch (e: Exception) {
+                // Ignore
+            }
+
+            // Fallback: try to check if data directory exists and has content
+            if (totalSize == 0L) {
+                try {
+                    val result = ShizukuManager.executeCommand("ls -la /data/data/$packageName 2>/dev/null | wc -l")
+                    if (result.success && result.output.isNotEmpty()) {
+                        val lineCount = result.output.trim().toIntOrNull()
+                        if (lineCount != null && lineCount > 1) {
+                            totalSize = 1024L * 1024 // 1MB placeholder
+                        }
+                    }
+                } catch (e: Exception) {
+                    // Ignore
+                }
+            }
+
+            totalSize
+        } catch (e: Exception) {
+            0L
+        }
+    }
+
     suspend fun getInstalledApps(
         filter: AppFilter = AppFilter.ALL,
         sortOrder: AppSortOrder = AppSortOrder.NAME,
@@ -187,23 +242,23 @@ class AppRepository(private val context: Context) {
                 @Suppress("DEPRECATION")
                 pm.getInstalledPackages(0)
             }
-            
+
             var apps = mutableListOf<AppInfo>()
-            
+
             for (pkg in packages) {
                 try {
                     val appInfo = pkg.applicationInfo
                     if (appInfo == null) continue
-                    
+
                     val isSystem = (appInfo.flags and ApplicationInfo.FLAG_SYSTEM) != 0
                     val isEnabled = appInfo.enabled
-                    
+
                     val appName = try {
                         pm.getApplicationLabel(appInfo).toString()
                     } catch (e: Exception) {
                         pkg.packageName
                     }
-                    
+
                     val versionName = pkg.versionName ?: "Unknown"
                     val versionCode = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
                         pkg.longVersionCode
@@ -211,22 +266,22 @@ class AppRepository(private val context: Context) {
                         @Suppress("DEPRECATION")
                         pkg.versionCode.toLong()
                     }
-                    
+
                     val icon = try {
                         pm.getApplicationIcon(pkg.packageName)
                     } catch (e: Exception) {
                         null
                     }
-                    
+
                     val targetSdkVersion = appInfo.targetSdkVersion
                     val minSdkVersion = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
                         appInfo.minSdkVersion
                     } else {
                         0
                     }
-                    
+
                     val apkPath = appInfo.sourceDir ?: ""
-                    
+
                     val app = AppInfo(
                         packageName = pkg.packageName,
                         appName = appName,
@@ -241,7 +296,7 @@ class AppRepository(private val context: Context) {
                         minSdkVersion = minSdkVersion,
                         apkPath = apkPath
                     )
-                    
+
                     apps.add(app)
                 } catch (e: Exception) {
                     Log.w(TAG, "Error processing package ${pkg.packageName}: ${e.message}")
@@ -268,12 +323,36 @@ class AppRepository(private val context: Context) {
                 }.toMutableList()
             }
 
+            // Fuck: Apply sorting
             apps = when (sortOrder) {
                 AppSortOrder.NAME -> apps.sortedBy { it.appName.lowercase() }.toMutableList()
-                AppSortOrder.SIZE -> apps.sortedByDescending { it.versionCode }.toMutableList()
                 AppSortOrder.INSTALL_DATE -> apps.sortedByDescending { it.installTime }.toMutableList()
+                AppSortOrder.SIZE -> {
+                    // Fuck: Get actual storage size for each app using Shizuku
+                    val sizeMap = mutableMapOf<String, Long>()
+                    for (app in apps) {
+                        val size = getAppTotalSize(app.packageName)
+                        if (size > 0) {
+                            sizeMap[app.packageName] = size
+                        } else {
+                            // Fallback: use APK size only
+                            try {
+                                val appInfo = pm.getApplicationInfo(app.packageName, 0)
+                                val apkFile = File(appInfo.sourceDir)
+                                if (apkFile.exists()) {
+                                    sizeMap[app.packageName] = apkFile.length()
+                                } else {
+                                    sizeMap[app.packageName] = 0L
+                                }
+                            } catch (e: Exception) {
+                                sizeMap[app.packageName] = 0L
+                            }
+                        }
+                    }
+                    apps.sortedByDescending { sizeMap[it.packageName] ?: 0L }.toMutableList()
+                }
             }
-            
+
             apps
         } catch (e: Exception) {
             Log.e(TAG, "Error getting installed apps: ${e.message}", e)
@@ -345,8 +424,8 @@ class AppRepository(private val context: Context) {
                     )
                 )
             }
-            
-            // Add WRITE_SETTINGS only if declared in manifest - DO NOT MODIFY THIS BLOCK
+
+            // Add WRITE_SETTINGS only if declared in manifest
             if (hasWriteSettingsInManifest) {
                 val writeSettingsStatus = ShizukuManager.getWriteSettingsStatus(packageName)
                 permissions.add(
@@ -358,7 +437,7 @@ class AppRepository(private val context: Context) {
                     )
                 )
             }
-            
+
             // Add SYSTEM_ALERT_WINDOW only if declared in manifest AND not already added in loop
             if (hasOverlayInManifest && !permissions.any { it.name == "android.permission.SYSTEM_ALERT_WINDOW" }) {
                 val overlayStatus = ShizukuManager.getOverlayStatus(packageName)
@@ -371,7 +450,7 @@ class AppRepository(private val context: Context) {
                     )
                 )
             }
-            
+
             // Add REQUEST_INSTALL_PACKAGES only if declared in manifest AND not already added in loop
             if (hasInstallUnknownInManifest && !permissions.any { it.name == "android.permission.REQUEST_INSTALL_PACKAGES" }) {
                 val installStatus = ShizukuManager.getInstallUnknownAppsStatus(packageName)
@@ -471,14 +550,14 @@ class AppRepository(private val context: Context) {
         try {
             val allApps = getInstalledApps(showSystemApps = showSystemApps)
             val result = mutableListOf<Pair<AppInfo, Map<String, Boolean>>>()
-            
+
             for (app in allApps) {
                 val appPermMap = mutableMapOf<String, Boolean>()
-                
+
                 for (targetPerm in permissions) {
                     // Check if app has this permission in its manifest
                     val hasInManifest = hasPermissionInManifest(app.packageName, targetPerm)
-                    
+
                     if (hasInManifest) {
                         val isGranted = when (targetPerm) {
                             "android.permission.WRITE_SETTINGS" -> {
@@ -503,10 +582,10 @@ class AppRepository(private val context: Context) {
                                     @Suppress("DEPRECATION")
                                     pm.getPackageInfo(app.packageName, PackageManager.GET_PERMISSIONS)
                                 }
-                                
+
                                 val requestedPerms = pkgInfo?.requestedPermissions ?: emptyArray()
                                 val permFlags = pkgInfo?.requestedPermissionsFlags ?: IntArray(0)
-                                
+
                                 val idx = requestedPerms.indexOf(targetPerm)
                                 if (idx >= 0 && idx < permFlags.size) {
                                     getSpecialPermissionStatus(app.packageName, targetPerm)
@@ -519,12 +598,12 @@ class AppRepository(private val context: Context) {
                         appPermMap[targetPerm] = isGranted
                     }
                 }
-                
+
                 if (appPermMap.isNotEmpty()) {
                     result.add(Pair(app, appPermMap))
                 }
             }
-            
+
             result.sortedBy { it.first.appName.lowercase() }
         } catch (e: Exception) {
             Log.e(TAG, "Error getting apps with permission category: ${e.message}")

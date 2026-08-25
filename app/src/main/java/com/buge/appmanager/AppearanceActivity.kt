@@ -90,19 +90,20 @@ class AppearanceActivity : BaseActivity() {
 
     private fun setupDynamicColor() {
         val isAndroid12Plus = Build.VERSION.SDK_INT >= Build.VERSION_CODES.S
+        val container = binding.dynamicColorContainer
         val switch = binding.dynamicColorSwitch
         val statusText = binding.dynamicColorStatus
         val isDynamicColorEnabled = PreferencesManager.getDynamicColor(this)
 
-        // Fuck: Set icon for dynamic color using ic_colorize
-        // The icon is already set in the layout, but we can optionally customize it here
-
-        switch.isChecked = isDynamicColorEnabled
-
+        // Fuck: Hide or show dynamic color based on Android version
         if (isAndroid12Plus) {
+            container.visibility = View.VISIBLE
             switch.isEnabled = true
             statusText.text = getString(R.string.dynamic_color_summary)
             switch.alpha = 1f
+            container.alpha = 1f
+
+            switch.isChecked = isDynamicColorEnabled
 
             switch.setOnCheckedChangeListener { _, isChecked ->
                 PreferencesManager.setDynamicColor(this, isChecked)
@@ -110,12 +111,12 @@ class AppearanceActivity : BaseActivity() {
                 showDynamicColorRestartDialog(isChecked)
             }
         } else {
-            switch.isEnabled = false
-            statusText.text = getString(R.string.dynamic_color_unavailable)
-            switch.alpha = 0.4f
+            // Fuck: Hide dynamic color on Android 11 and below
+            container.visibility = View.GONE
             switch.setOnCheckedChangeListener(null)
         }
 
+        // Fuck: Update color theme UI based on dynamic color state (only if Android 12+)
         updateColorThemeUI(isDynamicColorEnabled && isAndroid12Plus)
     }
 
@@ -214,6 +215,7 @@ class AppearanceActivity : BaseActivity() {
     }
 
     private fun selectColorTheme(theme: ThemeManager.ColorTheme) {
+        // Fuck: If dynamic color is enabled, disable it first (only on Android 12+)
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S &&
             PreferencesManager.getDynamicColor(this)) {
             PreferencesManager.setDynamicColor(this, false)

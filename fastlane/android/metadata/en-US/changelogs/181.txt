@@ -1,0 +1,7 @@
+**11.65.117**
+
+**Fixes** 🐛
+- Fixed Dynamic Color option still showing on devices below Android 12
+
+**Contributors of this version:**
+None

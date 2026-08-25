@@ -225,7 +225,7 @@
 
             </FrameLayout>
 
-            <!-- Dynamic Color Switch -->
+            <!-- Dynamic Color Switch - Hidden on Android 11 and below -->
             <FrameLayout
                 android:id="@+id/dynamic_color_container"
                 android:layout_width="match_parent"
@@ -234,7 +234,8 @@
                 android:layout_marginBottom="2dp"
                 android:background="@drawable/bg_setting_item_middle"
                 android:clickable="false"
-                android:focusable="false">
+                android:focusable="false"
+                android:visibility="gone">
 
                 <LinearLayout
                     android:layout_width="match_parent"

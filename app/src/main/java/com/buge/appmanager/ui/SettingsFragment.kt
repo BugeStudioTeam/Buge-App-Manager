@@ -285,6 +285,8 @@ class SettingsFragment : Fragment() {
         return true
     }
 
+    //gms services
+
     private fun handleGoogleServicesToggle(enable: Boolean) {
         if (!enable) {
             MaterialAlertDialogBuilder(requireContext())
@@ -307,13 +309,21 @@ class SettingsFragment : Fragment() {
         lifecycleScope.launch {
             try {
                 val gmsPackage = "com.google.android.gms"
-                val result = ShizukuManager.disableApp(gmsPackage)
-                if (result.success) {
+                val gsfPackage = "com.google.android.gsf"
+
+                val result1 = ShizukuManager.disableApp(gmsPackage)
+                val result2 = ShizukuManager.disableApp(gsfPackage)
+
+                if (result1.success && result2.success) {
                     SnackbarHelper.showSnackbar(binding.root, "Google Services disabled")
                     LogManager.info(requireContext(), "Google Services disabled by user")
                 } else {
-                    SnackbarHelper.showSnackbar(binding.root, "Failed to disable: ${result.error}")
-                    LogManager.error(requireContext(), "Failed to disable Google Services", result.error)
+                    val error = when {
+                        !result1.success -> result1.error
+                        else -> result2.error
+                    }
+                    SnackbarHelper.showSnackbar(binding.root, "Failed to disable: $error")
+                    LogManager.error(requireContext(), "Failed to disable Google Services", error)
                 }
             } catch (e: Exception) {
                 SnackbarHelper.showSnackbar(binding.root, "Error: ${e.message}")
@@ -327,13 +337,21 @@ class SettingsFragment : Fragment() {
         lifecycleScope.launch {
             try {
                 val gmsPackage = "com.google.android.gms"
-                val result = ShizukuManager.enableApp(gmsPackage)
-                if (result.success) {
+                val gsfPackage = "com.google.android.gsf"
+
+                val result1 = ShizukuManager.enableApp(gmsPackage)
+                val result2 = ShizukuManager.enableApp(gsfPackage)
+
+                if (result1.success && result2.success) {
                     SnackbarHelper.showSnackbar(binding.root, "Google Services enabled")
                     LogManager.info(requireContext(), "Google Services enabled by user")
                 } else {
-                    SnackbarHelper.showSnackbar(binding.root, "Failed to enable: ${result.error}")
-                    LogManager.error(requireContext(), "Failed to enable Google Services", result.error)
+                    val error = when {
+                        !result1.success -> result1.error
+                        else -> result2.error
+                    }
+                    SnackbarHelper.showSnackbar(binding.root, "Failed to enable: $error")
+                    LogManager.error(requireContext(), "Failed to enable Google Services", error)
                 }
             } catch (e: Exception) {
                 SnackbarHelper.showSnackbar(binding.root, "Error: ${e.message}")
@@ -347,8 +365,13 @@ class SettingsFragment : Fragment() {
         return try {
             val packageManager = requireContext().packageManager
             val gmsPackage = "com.google.android.gms"
-            val appInfo = packageManager.getApplicationInfo(gmsPackage, 0)
-            appInfo.enabled
+            val gsfPackage = "com.google.android.gsf"
+
+            val gmsInfo = packageManager.getApplicationInfo(gmsPackage, 0)
+            val gsfInfo = packageManager.getApplicationInfo(gsfPackage, 0)
+
+            // Fuck: Both must be enabled for Google Services to be considered enabled
+            gmsInfo.enabled && gsfInfo.enabled
         } catch (e: Exception) {
             false
         }

@@ -1,0 +1,8 @@
+**11.65.119**
+
+**Fixes** 🛠
+- Fixed GMS management
+- Fixed incomplete component list when disabling/enabling GMS
+
+**Contributors of this version:**
+None

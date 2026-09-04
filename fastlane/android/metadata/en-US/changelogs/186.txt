@@ -1,0 +1,11 @@
+**11.65.122**
+
+**Fixes** 🛠
+- Fixed bug where returning to app list always scrolled back to the top (reported by @sunmonb666 in issue #15)
+- Fixed settings page losing scroll position when confirming or canceling the "Disable Google Services" dialog (reported by @sunmonb666 in issue #15)
+
+**Optimizations** ⚡
+- Optimized icon resources
+
+**Contributors of this version:**
+- @sunmonb666 for reporting issue #15

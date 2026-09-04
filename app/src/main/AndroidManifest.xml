@@ -81,7 +81,7 @@
 
         <activity
             android:name=".RestoreAppsActivity"
-            android:exported="false"
+            android:exported="true"
             android:parentActivityName=".MainActivity"
             android:launchMode="singleTop" />
 

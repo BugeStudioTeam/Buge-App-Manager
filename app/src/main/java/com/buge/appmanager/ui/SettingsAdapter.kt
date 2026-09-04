@@ -28,7 +28,7 @@ sealed class SettingItem {
 }
 
 class SettingsAdapter(
-    private val items: List<SettingItem>,
+    val items: MutableList<SettingItem>,
     private val onItemClick: (SettingItem) -> Unit,
     private val onSwitchChange: (SettingItem.SwitchItem, Boolean) -> Unit,
     private val onStorageGrantClick: () -> Unit

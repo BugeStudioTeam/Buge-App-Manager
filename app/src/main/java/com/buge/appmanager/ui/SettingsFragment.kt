@@ -17,7 +17,6 @@ import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import com.buge.appmanager.AboutUsActivity
 import com.buge.appmanager.AppearanceActivity
 import com.buge.appmanager.BaseActivity
@@ -52,7 +51,6 @@ class SettingsFragment : Fragment() {
     private var fontApplied = false
     private var pendingLanguageCode: String? = null
 
-    // Save scroll position
     private var savedScrollPosition: Int = 0
     private var savedScrollOffset: Int = 0
 
@@ -92,7 +90,7 @@ class SettingsFragment : Fragment() {
             fontApplied = true
         }
         updateShizukuStatus()
-        setupRecyclerView()
+        refreshGoogleServiceStatus()
         restoreScrollPosition()
     }
 
@@ -219,6 +217,43 @@ class SettingsFragment : Fragment() {
         }
     }
 
+    private fun refreshGoogleServiceStatus() {
+        if (!::adapter.isInitialized) return
+        val items = adapter.items
+        if (items.isEmpty()) return
+
+        val gmsAvailable = isGmsAvailable()
+        val gmsEnabled = if (gmsAvailable) checkGmsStatus() else false
+
+        for (i in items.indices) {
+            val item = items[i]
+            if (item is SettingItem.SwitchItem &&
+                item.title == getString(R.string.pref_google_services)) {
+                val newItem = item.copy(isChecked = gmsEnabled, isEnabled = gmsAvailable)
+                items[i] = newItem
+                adapter.notifyItemChanged(i)
+                break
+            }
+        }
+    }
+
+    private fun updateGoogleServiceSwitch(enable: Boolean) {
+        if (!::adapter.isInitialized) return
+        val items = adapter.items
+        if (items.isEmpty()) return
+
+        for (i in items.indices) {
+            val item = items[i]
+            if (item is SettingItem.SwitchItem &&
+                item.title == getString(R.string.pref_google_services)) {
+                val newItem = item.copy(isChecked = enable)
+                items[i] = newItem
+                adapter.notifyItemChanged(i)
+                break
+            }
+        }
+    }
+
     private fun showShizukuProviderDialog() {
         val dialogView = LayoutInflater.from(requireContext()).inflate(R.layout.dialog_shizuku_provider, null)
         val inputEditText = dialogView.findViewById<TextInputEditText>(R.id.provider_input)
@@ -285,8 +320,6 @@ class SettingsFragment : Fragment() {
         return true
     }
 
-    //gms services
-
     private fun handleGoogleServicesToggle(enable: Boolean) {
         if (!enable) {
             MaterialAlertDialogBuilder(requireContext())
@@ -297,7 +330,9 @@ class SettingsFragment : Fragment() {
                 }
                 .setNegativeButton(R.string.cancel) { dialog, _ ->
                     dialog.dismiss()
-                    setupRecyclerView()
+                    val currentStatus = checkGmsStatus()
+                    updateGoogleServiceSwitch(currentStatus)
+                    restoreScrollPosition()
                 }
                 .show()
         } else {
@@ -317,6 +352,7 @@ class SettingsFragment : Fragment() {
                 if (result1.success && result2.success) {
                     SnackbarHelper.showSnackbar(binding.root, "Google Services disabled")
                     LogManager.info(requireContext(), "Google Services disabled by user")
+                    updateGoogleServiceSwitch(false)
                 } else {
                     val error = when {
                         !result1.success -> result1.error
@@ -324,12 +360,16 @@ class SettingsFragment : Fragment() {
                     }
                     SnackbarHelper.showSnackbar(binding.root, "Failed to disable: $error")
                     LogManager.error(requireContext(), "Failed to disable Google Services", error)
+                    val currentStatus = checkGmsStatus()
+                    updateGoogleServiceSwitch(currentStatus)
                 }
             } catch (e: Exception) {
                 SnackbarHelper.showSnackbar(binding.root, "Error: ${e.message}")
                 LogManager.error(requireContext(), "Error disabling Google Services", e.message)
+                val currentStatus = checkGmsStatus()
+                updateGoogleServiceSwitch(currentStatus)
             }
-            setupRecyclerView()
+            restoreScrollPosition()
         }
     }
 
@@ -345,6 +385,7 @@ class SettingsFragment : Fragment() {
                 if (result1.success && result2.success) {
                     SnackbarHelper.showSnackbar(binding.root, "Google Services enabled")
                     LogManager.info(requireContext(), "Google Services enabled by user")
+                    updateGoogleServiceSwitch(true)
                 } else {
                     val error = when {
                         !result1.success -> result1.error
@@ -352,12 +393,16 @@ class SettingsFragment : Fragment() {
                     }
                     SnackbarHelper.showSnackbar(binding.root, "Failed to enable: $error")
                     LogManager.error(requireContext(), "Failed to enable Google Services", error)
+                    val currentStatus = checkGmsStatus()
+                    updateGoogleServiceSwitch(currentStatus)
                 }
             } catch (e: Exception) {
                 SnackbarHelper.showSnackbar(binding.root, "Error: ${e.message}")
                 LogManager.error(requireContext(), "Error enabling Google Services", e.message)
+                val currentStatus = checkGmsStatus()
+                updateGoogleServiceSwitch(currentStatus)
             }
-            setupRecyclerView()
+            restoreScrollPosition()
         }
     }
 
@@ -370,7 +415,6 @@ class SettingsFragment : Fragment() {
             val gmsInfo = packageManager.getApplicationInfo(gmsPackage, 0)
             val gsfInfo = packageManager.getApplicationInfo(gsfPackage, 0)
 
-            // Fuck: Both must be enabled for Google Services to be considered enabled
             gmsInfo.enabled && gsfInfo.enabled
         } catch (e: Exception) {
             false
@@ -388,7 +432,7 @@ class SettingsFragment : Fragment() {
         }
     }
 
-    private fun buildSettingItems(): List<SettingItem> {
+    private fun buildSettingItems(): MutableList<SettingItem> {
         val showSystemApps = PreferencesManager.getShowSystemApps(requireContext())
         val showUndeclared = PreferencesManager.getShowUndeclaredActivities(requireContext())
         val showDisabledApps = PreferencesManager.getShowDisabledApps(requireContext())
@@ -416,7 +460,7 @@ class SettingsFragment : Fragment() {
         val gmsAvailable = isGmsAvailable()
         val gmsEnabled = if (gmsAvailable) checkGmsStatus() else false
 
-        return listOf(
+        return mutableListOf(
             SettingItem.Header(getString(R.string.settings_group_authorization)),
             SettingItem.Shizuku,
             SettingItem.Normal(

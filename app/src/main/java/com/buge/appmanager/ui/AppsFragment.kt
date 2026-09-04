@@ -7,6 +7,7 @@ import android.content.Intent
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
+import android.os.Parcelable
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -76,6 +77,11 @@ class AppsFragment : Fragment() {
     private var progressDialog: AlertDialog? = null
     private var isShareCancelled = false
 
+    // Fuck: Save scroll position
+    private var savedScrollPosition: Int = 0
+    private var savedScrollOffset: Int = 0
+    private var isRestoringScroll = false
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -113,6 +119,14 @@ class AppsFragment : Fragment() {
         setupLabelChips()
         // Fuck: Refresh apps when returning to fragment
         viewModel.loadApps()
+        // Fuck: Restore scroll position after refresh
+        restoreScrollPosition()
+    }
+
+    override fun onPause() {
+        super.onPause()
+        // Fuck: Save scroll position before leaving
+        saveScrollPosition()
     }
 
     override fun onDestroyView() {
@@ -121,6 +135,26 @@ class AppsFragment : Fragment() {
         cleanupTempFiles()
         dismissProgressDialog()
         _binding = null
+    }
+
+    private fun saveScrollPosition() {
+        val layoutManager = binding.recyclerView.layoutManager as? LinearLayoutManager
+        layoutManager?.let {
+            savedScrollPosition = it.findFirstVisibleItemPosition()
+            val firstView = it.findViewByPosition(savedScrollPosition)
+            savedScrollOffset = firstView?.top ?: 0
+        }
+    }
+
+    private fun restoreScrollPosition() {
+        if (savedScrollPosition > 0 && !isRestoringScroll) {
+            isRestoringScroll = true
+            binding.recyclerView.post {
+                val layoutManager = binding.recyclerView.layoutManager as? LinearLayoutManager
+                layoutManager?.scrollToPositionWithOffset(savedScrollPosition, savedScrollOffset)
+                isRestoringScroll = false
+            }
+        }
     }
 
     private fun cleanupTempFiles() {
@@ -369,8 +403,11 @@ class AppsFragment : Fragment() {
             val filteredApps = allApps.filter { label.appPackages.contains(it.packageName) }
             val items = filteredApps.map { AppsItem(it) }
             adapter.submitList(items)
-            // Fuck: Scroll to top after label filter
-            binding.recyclerView.scrollToPosition(0)
+            // Fuck: Scroll to top after label filter only if user explicitly clicked label
+            // Don't scroll to top when restoring state
+            if (!isRestoringScroll) {
+                binding.recyclerView.scrollToPosition(0)
+            }
             val isEmpty = filteredApps.isEmpty()
             binding.emptyState.visibility = if (isEmpty) View.VISIBLE else View.GONE
             binding.recyclerView.visibility = if (isEmpty) View.GONE else View.VISIBLE
@@ -399,9 +436,10 @@ class AppsFragment : Fragment() {
 
         val items = finalList.map { AppsItem(it) }
         adapter.submitList(items)
-        // Fuck: Scroll to top after filtering
-        binding.recyclerView.scrollToPosition(0)
-
+        // Fuck: Scroll to top after filtering only if user initiated filter change
+        if (!isRestoringScroll) {
+            binding.recyclerView.scrollToPosition(0)
+        }
         val isEmpty = finalList.isEmpty()
         binding.emptyState.visibility = if (isEmpty && allApps.isNotEmpty()) View.VISIBLE else View.GONE
         binding.recyclerView.visibility = if (isEmpty && allApps.isNotEmpty()) View.GONE else View.VISIBLE
@@ -1026,7 +1064,7 @@ class AppsFragment : Fragment() {
                     else -> AppSortOrder.NAME
                 }
                 viewModel.setSort(sort)
-                // Fuck: Scroll to top after sorting with post to ensure layout is ready
+                // Fuck: Scroll to top after sorting
                 binding.recyclerView.post {
                     binding.recyclerView.scrollToPosition(0)
                 }
@@ -1044,9 +1082,14 @@ class AppsFragment : Fragment() {
             } else {
                 applyFilter(currentFilter)
             }
-            // Fuck: Scroll to top when data updates
-            binding.recyclerView.post {
-                binding.recyclerView.scrollToPosition(0)
+            // Fuck: Only scroll to top if this is a fresh load (not restore)
+            if (!isRestoringScroll) {
+                binding.recyclerView.post {
+                    binding.recyclerView.scrollToPosition(0)
+                }
+            } else {
+                // Fuck: Restore scroll position after data loaded
+                restoreScrollPosition()
             }
             binding.loadingOverlay.visibility = View.GONE
             binding.swipeRefresh.isRefreshing = false
@@ -1087,6 +1130,8 @@ class AppsFragment : Fragment() {
             chip?.isChecked = false
         }
         isUpdatingChips = false
+        // Fuck: Restore saved scroll position
+        isRestoringScroll = true
     }
 
     private fun openAppDetail(app: AppInfo) {
@@ -1094,6 +1139,8 @@ class AppsFragment : Fragment() {
             adapter.toggleSelection(app.packageName)
             return
         }
+        // Fuck: Save scroll position before opening detail
+        saveScrollPosition()
         val intent = Intent(requireContext(), AppDetailActivity::class.java).apply {
             putExtra(AppDetailActivity.EXTRA_PACKAGE_NAME, app.packageName)
         }

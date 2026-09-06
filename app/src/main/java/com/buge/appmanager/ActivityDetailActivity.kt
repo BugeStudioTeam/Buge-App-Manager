@@ -159,7 +159,7 @@ class ActivityDetailActivity : BaseActivity() {
                 showShortcutDialog(activity)
             },
             canLaunchUnexported = {
-                ShizukuManager.isRootMode() && ShizukuManager.isRootAvailable()
+                ShizukuManager.isAuthorized()
             }
         )
         binding.recyclerView.layoutManager = LinearLayoutManager(this)
@@ -227,19 +227,18 @@ class ActivityDetailActivity : BaseActivity() {
                 LogManager.error(this, "Failed to launch activity", "Package: $packageName, Activity: ${activity.className}, Error: ${e.message}")
             }
         } else if (ShizukuManager.isRootMode() && ShizukuManager.isRootAvailable()) {
-            launchUnexportedActivity(activity)
+            launchUnexportedViaRoot(activity)
+        } else if (!ShizukuManager.isRootMode() &&
+            ShizukuManager.isShizukuAvailable() && ShizukuManager.hasShizukuPermission()
+        ) {
+            launchUnexportedViaShizuku(activity)
         } else {
             SnackbarHelper.showSnackbar(binding.root, "This activity is not exported and cannot be launched")
             LogManager.warning(this, "Cannot launch unexported activity", "Package: $packageName, Activity: ${activity.className}")
         }
     }
 
-    /**
-     * Launches a non-exported activity through the root shell (`am start`),
-     * which bypasses the exported-component restriction a normal app Intent
-     * is subject to. Only reachable when the root backend is active.
-     */
-    private fun launchUnexportedActivity(activity: ActivityDetail) {
+    private fun launchUnexportedViaRoot(activity: ActivityDetail) {
         val component = "$packageName/${activity.className}"
         lifecycleScope.launch {
             val result = ShizukuManager.executeCommand("am start -n '$component'")
@@ -250,6 +249,20 @@ class ActivityDetailActivity : BaseActivity() {
                 val detail = result.error.ifBlank { "unknown error" }
                 SnackbarHelper.showSnackbar(binding.root, "Failed to launch: $detail")
                 LogManager.error(this@ActivityDetailActivity, "Failed to launch unexported activity", "Package: $packageName, Activity: ${activity.className}, Error: $detail")
+            }
+        }
+    }
+
+    private fun launchUnexportedViaShizuku(activity: ActivityDetail) {
+        lifecycleScope.launch {
+            val result = ShizukuManager.launchUnexportedViaShizuku(packageName, activity.className)
+            if (result.success) {
+                SnackbarHelper.showSnackbar(binding.root, "Launching ${activity.name}")
+                LogManager.info(this@ActivityDetailActivity, "Unexported activity launched via Shizuku", "Package: $packageName, Activity: ${activity.className}")
+            } else {
+                val detail = result.error.ifBlank { "unknown error" }
+                SnackbarHelper.showSnackbar(binding.root, "Failed to launch: $detail")
+                LogManager.error(this@ActivityDetailActivity, "Failed to launch unexported activity via Shizuku", "Package: $packageName, Activity: ${activity.className}, Error: $detail")
             }
         }
     }

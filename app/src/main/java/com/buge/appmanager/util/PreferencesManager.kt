@@ -27,6 +27,9 @@ object PreferencesManager {
     private const val DYNAMIC_COLOR_KEY = "dynamic_color"
     private const val AUTH_MODE_KEY = "auth_mode"
     private const val ROOT_SU_PATH_KEY = "root_su_path"
+    private const val ASSISTANT_BACKUP_KEY = "assistant_backup_key"
+    private const val VOICE_INTERACTION_BACKUP_KEY = "voice_interaction_backup_key"
+    private const val ASSISTANT_BACKUP_EXISTS_KEY = "assistant_backup_exists_key"
 
     const val AUTH_MODE_SHIZUKU = "shizuku"
     const val AUTH_MODE_ROOT = "root"
@@ -200,5 +203,37 @@ object PreferencesManager {
 
     fun getDynamicColor(context: Context): Boolean {
         return getPreferences(context).getBoolean(DYNAMIC_COLOR_KEY, false)
+    }
+
+    fun setAssistantBackup(context: Context, assistant: String?, voiceInteraction: String?) {
+        val editor = getPreferences(context).edit()
+        if (assistant == null && voiceInteraction == null) {
+            editor.remove(ASSISTANT_BACKUP_EXISTS_KEY)
+            editor.remove(ASSISTANT_BACKUP_KEY)
+            editor.remove(VOICE_INTERACTION_BACKUP_KEY)
+        } else {
+            editor.putBoolean(ASSISTANT_BACKUP_EXISTS_KEY, true)
+            editor.putString(ASSISTANT_BACKUP_KEY, assistant ?: "")
+            editor.putString(VOICE_INTERACTION_BACKUP_KEY, voiceInteraction ?: "")
+        }
+        editor.apply()
+    }
+
+    fun getAssistantBackup(context: Context): Pair<String?, String?>? {
+        val prefs = getPreferences(context)
+        if (!prefs.getBoolean(ASSISTANT_BACKUP_EXISTS_KEY, false)) {
+            return null
+        }
+        val assistant = prefs.getString(ASSISTANT_BACKUP_KEY, null)?.ifEmpty { null }
+        val voiceInteraction = prefs.getString(VOICE_INTERACTION_BACKUP_KEY, null)?.ifEmpty { null }
+        return Pair(assistant, voiceInteraction)
+    }
+
+    fun clearAssistantBackup(context: Context) {
+        val editor = getPreferences(context).edit()
+        editor.remove(ASSISTANT_BACKUP_EXISTS_KEY)
+        editor.remove(ASSISTANT_BACKUP_KEY)
+        editor.remove(VOICE_INTERACTION_BACKUP_KEY)
+        editor.apply()
     }
 }

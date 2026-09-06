@@ -8,6 +8,7 @@ import android.content.Context
 import android.graphics.Typeface
 import androidx.core.content.res.ResourcesCompat
 import com.buge.appmanager.R
+import com.buge.appmanager.shizuku.ShizukuManager
 
 class AppGlobals : Application() {
 
@@ -43,5 +44,6 @@ class AppGlobals : Application() {
         super.onCreate()
         _applicationContext = applicationContext
         preloadTypefaces()
+        ShizukuManager.restoreAssistantBackup()
     }
 }

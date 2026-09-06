@@ -78,6 +78,8 @@
     <string name="github_desc">Visit our GitHub repository</string>
     <string name="telegram">Telegram</string>
     <string name="telegram_desc">Join our Telegram channel</string>
+    <string name="activitymanager">ActivityManager</string>
+    <string name="activitymanager_desc">Open-source project — the Shizuku method for launching non-exported activities</string>
     <string name="check_for_update">Check for Update</string>
     <string name="update_desc">Check for new versions on GitHub</string>
     <string name="about_more">Show more about us</string>

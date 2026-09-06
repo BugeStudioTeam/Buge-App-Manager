@@ -23,7 +23,8 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder
 
 class ActivityDetailAdapter(
     private val onActivityClick: (ActivityDetail) -> Unit,
-    private val onShortcutCreate: (ActivityDetail, View) -> Unit
+    private val onShortcutCreate: (ActivityDetail, View) -> Unit,
+    private val canLaunchUnexported: () -> Boolean = { false }
 ) : ListAdapter<ActivityDetail, ActivityDetailAdapter.ActivityViewHolder>(ActivityDiffCallback()) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ActivityViewHolder {
@@ -115,23 +116,26 @@ class ActivityDetailAdapter(
             val shortClassName = activity.className.substringAfterLast(".")
             className.text = shortClassName
 
+            // A non-exported activity is normally unserializable, but the root
+            // backend can start it via `am start`, so allow launching then.
+            val launchable = activity.isExported || canLaunchUnexported()
+
             if (activity.isExported) {
                 exportIcon.setImageResource(R.drawable.ic_check)
                 exportIcon.setColorFilter(itemView.context.getColor(R.color.color_granted))
                 exportStatus.text = "Exported"
                 exportStatus.setTextColor(itemView.context.getColor(R.color.color_granted))
                 activityName.setTextColor(itemView.context.getColor(R.color.color_granted))
-                btnLaunch.isEnabled = true
-                btnLaunch.alpha = 1.0f
             } else {
                 exportIcon.setImageResource(R.drawable.ic_block)
                 exportIcon.setColorFilter(itemView.context.getColor(R.color.color_denied))
                 exportStatus.text = "Not Exported"
                 exportStatus.setTextColor(itemView.context.getColor(R.color.color_denied))
                 activityName.setTextColor(itemView.context.getColor(R.color.color_denied))
-                btnLaunch.isEnabled = false
-                btnLaunch.alpha = 0.5f
             }
+
+            btnLaunch.isEnabled = launchable
+            btnLaunch.alpha = if (launchable) 1.0f else 0.5f
 
             val modeText = when (activity.launchMode) {
                 "standard" -> "Mode: Standard"
@@ -151,7 +155,7 @@ class ActivityDetailAdapter(
             }
 
             btnLaunch.setOnClickListener {
-                if (activity.isExported) {
+                if (launchable) {
                     onActivityClick(activity)
                 }
             }

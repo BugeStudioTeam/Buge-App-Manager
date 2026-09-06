@@ -3,12 +3,18 @@
 
 package com.buge.appmanager.shizuku
 
+import android.Manifest
+import android.content.ComponentName
+import android.content.Context
 import android.content.pm.PackageManager
+import android.provider.Settings
 import android.util.Log
+import android.view.KeyEvent
 import com.buge.appmanager.root.RootManager
 import com.buge.appmanager.util.AppGlobals
 import com.buge.appmanager.util.PreferencesManager
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.withContext
 import rikka.shizuku.Shizuku
 import java.io.BufferedReader
@@ -18,6 +24,10 @@ import java.lang.reflect.Method
 object ShizukuManager {
     private const val TAG = "ShizukuManager"
     private const val REQUEST_CODE = 1001
+
+    private const val KEY_ASSISTANT = "assistant"
+    private const val KEY_VOICE_INTERACTION = "voice_interaction_service"
+    private const val ASSIST_LAUNCH_WINDOW_MS = 2000L
 
     // Security: Shell metacharacters that enable command injection.
     // Any string interpolated into a shell command must pass this check.
@@ -69,7 +79,12 @@ object ShizukuManager {
         }
     }
 
-    private fun isRootMode(): Boolean {
+    /**
+     * Whether the selected privilege backend is root (as opposed to Shizuku).
+     * Public so UI layers can decide whether shell-only operations (such as
+     * launching a non-exported activity) are permitted.
+     */
+    fun isRootMode(): Boolean {
         return try {
             PreferencesManager.getAuthMode(AppGlobals.applicationContext) == PreferencesManager.AUTH_MODE_ROOT
         } catch (e: Exception) {
@@ -340,6 +355,74 @@ object ShizukuManager {
             return ShizukuResult(false, "", "Unsafe package name")
         }
         return executeCommand("pm uninstall --user 0 $packageName")
+    }
+
+    suspend fun launchUnexportedViaShizuku(packageName: String, className: String): ShizukuResult {
+        if (!isShizukuAvailable()) {
+            return ShizukuResult(false, "", "Shizuku is not running")
+        }
+        if (!hasShizukuPermission()) {
+            return ShizukuResult(false, "", "Shizuku permission not granted")
+        }
+
+        val context = AppGlobals.applicationContext
+        var needsRestore = false
+        try {
+            if (context.checkSelfPermission(Manifest.permission.WRITE_SECURE_SETTINGS) != PackageManager.PERMISSION_GRANTED) {
+                val grant = executeViaShizuku("pm grant ${context.packageName} android.permission.WRITE_SECURE_SETTINGS")
+                if (!grant.success) {
+                    return ShizukuResult(false, "", "Failed to grant WRITE_SECURE_SETTINGS: ${grant.error.ifBlank { "unknown error" }}")
+                }
+            }
+
+            val resolver = context.contentResolver
+            val originalAssistant = Settings.Secure.getString(resolver, KEY_ASSISTANT)
+            val originalVoiceInteraction = Settings.Secure.getString(resolver, KEY_VOICE_INTERACTION)
+            PreferencesManager.setAssistantBackup(context, originalAssistant, originalVoiceInteraction)
+            needsRestore = true
+
+            val component = ComponentName(packageName, className)
+            Settings.Secure.putString(resolver, KEY_ASSISTANT, component.flattenToString())
+            Settings.Secure.putString(resolver, KEY_VOICE_INTERACTION, "")
+
+            val injected = executeViaShizuku("input keyevent ${KeyEvent.KEYCODE_ASSIST}")
+            delay(ASSIST_LAUNCH_WINDOW_MS)
+
+            return if (injected.success) {
+                ShizukuResult(true, "", "")
+            } else {
+                ShizukuResult(false, "", injected.error.ifBlank { "Failed to inject assist key" })
+            }
+        } catch (e: Exception) {
+            Log.e(TAG, "Shizuku launch failed: ${e.message}", e)
+            return ShizukuResult(false, "", "Exception: ${e.message ?: "Unknown error"}")
+        } finally {
+            if (needsRestore) {
+                restoreAssistantBackup(context)
+            }
+        }
+    }
+
+    fun restoreAssistantBackup(context: Context = AppGlobals.applicationContext) {
+        val backup = try {
+            PreferencesManager.getAssistantBackup(context)
+        } catch (e: Exception) {
+            Log.w(TAG, "Error reading assistant backup: ${e.message}")
+            null
+        } ?: return
+
+        try {
+            if (context.checkSelfPermission(Manifest.permission.WRITE_SECURE_SETTINGS) != PackageManager.PERMISSION_GRANTED) {
+                return
+            }
+            val resolver = context.contentResolver
+            Settings.Secure.putString(resolver, KEY_ASSISTANT, backup.first)
+            Settings.Secure.putString(resolver, KEY_VOICE_INTERACTION, backup.second)
+            PreferencesManager.clearAssistantBackup(context)
+            Log.d(TAG, "Restored assistant backup")
+        } catch (e: Exception) {
+            Log.e(TAG, "Failed to restore assistant backup: ${e.message}", e)
+        }
     }
 }
 

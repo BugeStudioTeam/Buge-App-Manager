@@ -19,6 +19,7 @@ class AboutUsActivity : BaseActivity() {
     private lateinit var cardGithub: LinearLayout
     private lateinit var cardTelegram: LinearLayout
     private lateinit var cardWebsite: LinearLayout
+    private lateinit var cardActivityManager: LinearLayout
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -36,6 +37,7 @@ class AboutUsActivity : BaseActivity() {
         cardGithub = findViewById(R.id.card_github)
         cardTelegram = findViewById(R.id.card_telegram)
         cardWebsite = findViewById(R.id.card_website)
+        cardActivityManager = findViewById(R.id.card_activitymanager)
     }
 
     private fun setupToolbar() {
@@ -63,6 +65,9 @@ class AboutUsActivity : BaseActivity() {
         }
         setupCardClickListener(cardWebsite) {
             openUrl("https://bugestudio.website/")
+        }
+        setupCardClickListener(cardActivityManager) {
+            openUrl("https://github.com/sdex/ActivityManager")
         }
     }
 

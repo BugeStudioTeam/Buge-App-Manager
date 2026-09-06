@@ -158,6 +158,12 @@ class SettingsFragment : Fragment() {
                             item.title == getString(R.string.pref_shizuku_provider) -> {
                                 showShizukuProviderDialog()
                             }
+                            item.title == getString(R.string.pref_auth_mode) -> {
+                                showAuthModeDialog()
+                            }
+                            item.title == getString(R.string.pref_root_su_path) -> {
+                                showRootSuPathDialog()
+                            }
                         }
                     }
                     is SettingItem.About -> {
@@ -284,6 +290,76 @@ class SettingsFragment : Fragment() {
             .show()
     }
 
+    private fun showAuthModeDialog() {
+        if (!isAdded || view == null) return
+        saveScrollPosition()
+        val options = arrayOf(
+            getString(R.string.auth_mode_shizuku),
+            getString(R.string.auth_mode_root)
+        )
+        val currentMode = PreferencesManager.getAuthMode(requireContext())
+        val currentIndex = if (currentMode == PreferencesManager.AUTH_MODE_ROOT) 1 else 0
+
+        MaterialAlertDialogBuilder(requireContext())
+            .setTitle(R.string.auth_mode_title)
+            .setSingleChoiceItems(options, currentIndex) { dialog, which ->
+                val newMode = if (which == 1) {
+                    PreferencesManager.AUTH_MODE_ROOT
+                } else {
+                    PreferencesManager.AUTH_MODE_SHIZUKU
+                }
+                PreferencesManager.setAuthMode(requireContext(), newMode)
+                dialog.dismiss()
+                LogManager.info(requireContext(), "Authorization method changed", newMode)
+                rebuildSettingItems()
+            }
+            .show()
+    }
+
+    private fun showRootSuPathDialog() {
+        if (!isAdded || view == null) return
+        saveScrollPosition()
+        val dialogView = LayoutInflater.from(requireContext()).inflate(R.layout.dialog_root_su_path, null)
+        val inputEditText = dialogView.findViewById<TextInputEditText>(R.id.su_path_input)
+
+        val currentSuPath = PreferencesManager.getRootSuPath(requireContext())
+        inputEditText?.setText(currentSuPath)
+
+        MaterialAlertDialogBuilder(requireContext())
+            .setTitle(R.string.root_su_path_title)
+            .setView(dialogView)
+            .setPositiveButton(R.string.confirm) { _, _ ->
+                val newSuPath = inputEditText?.text?.toString()?.trim() ?: ""
+                val finalSuPath = if (newSuPath.isEmpty()) {
+                    getString(R.string.root_su_path_default)
+                } else {
+                    newSuPath
+                }
+                PreferencesManager.setRootSuPath(requireContext(), finalSuPath)
+                SnackbarHelper.showSnackbar(binding.root, getString(R.string.setting_saved))
+                LogManager.info(requireContext(), "su command changed", finalSuPath)
+                rebuildSettingItems()
+            }
+            .setNegativeButton(R.string.cancel, null)
+            .setNeutralButton(R.string.shizuku_provider_restore_default) { _, _ ->
+                PreferencesManager.setRootSuPath(requireContext(), getString(R.string.root_su_path_default))
+                inputEditText?.setText(getString(R.string.root_su_path_default))
+                SnackbarHelper.showSnackbar(binding.root, getString(R.string.setting_saved))
+                LogManager.info(requireContext(), "su command restored to default")
+                rebuildSettingItems()
+            }
+            .show()
+    }
+
+    private fun rebuildSettingItems() {
+        if (!::adapter.isInitialized) return
+        val newItems = buildSettingItems()
+        adapter.items.clear()
+        adapter.items.addAll(newItems)
+        adapter.notifyDataSetChanged()
+        binding.recyclerView.post { updateShizukuStatus() }
+    }
+
     private fun grantStoragePermission() {
         if (!checkShizuku()) return
 
@@ -308,12 +384,12 @@ class SettingsFragment : Fragment() {
     }
 
     private fun checkShizuku(): Boolean {
-        if (!ShizukuManager.isShizukuAvailable() || !ShizukuManager.hasShizukuPermission()) {
+        if (!ShizukuManager.isAuthorized()) {
             SnackbarHelper.showSnackbar(
                 binding.root,
-                getString(R.string.error_no_shizuku),
-                getString(R.string.shizuku_request_auth),
-                { ShizukuManager.requestShizukuPermission() }
+                getString(R.string.error_no_privilege),
+                getString(R.string.request_auth),
+                { ShizukuManager.requestAuthorization() }
             )
             return false
         }
@@ -457,12 +533,30 @@ class SettingsFragment : Fragment() {
             else -> getString(R.string.default_page_apps)
         }
 
+        val authMode = PreferencesManager.getAuthMode(requireContext())
+        val authModeText = if (authMode == PreferencesManager.AUTH_MODE_ROOT) {
+            getString(R.string.auth_mode_root)
+        } else {
+            getString(R.string.auth_mode_shizuku)
+        }
+        val rootSuPath = PreferencesManager.getRootSuPath(requireContext())
+
         val gmsAvailable = isGmsAvailable()
         val gmsEnabled = if (gmsAvailable) checkGmsStatus() else false
 
         return mutableListOf(
             SettingItem.Header(getString(R.string.settings_group_authorization)),
             SettingItem.Shizuku,
+            SettingItem.Normal(
+                getString(R.string.pref_auth_mode),
+                authModeText,
+                R.drawable.ic_shield
+            ),
+            SettingItem.Normal(
+                getString(R.string.pref_root_su_path),
+                rootSuPath,
+                R.drawable.ic_security
+            ),
             SettingItem.Normal(
                 getString(R.string.pref_optional_permissions),
                 getString(R.string.pref_optional_permissions_summary),
@@ -533,37 +627,63 @@ class SettingsFragment : Fragment() {
     private fun updateShizukuStatus() {
         if (!isAdded || view == null) return
         try {
-            val isAvailable = ShizukuManager.isShizukuAvailable()
-            val hasPermission = ShizukuManager.hasShizukuPermission()
+            val isRootMode = PreferencesManager.getAuthMode(requireContext()) == PreferencesManager.AUTH_MODE_ROOT
 
             val statusText: String
             val iconRes: Int
             val buttonEnabled: Boolean
             val buttonText: String
             val statusColor: Int
+            val titleText: String
+            val descText: String
 
-            when {
-                isAvailable && hasPermission -> {
-                    statusText = getString(R.string.shizuku_status_ok)
-                    iconRes = R.drawable.ic_shield
-                    buttonEnabled = false
-                    buttonText = getString(R.string.shizuku_authorized)
+            if (isRootMode) {
+                val rootAvailable = ShizukuManager.isRootAvailable()
+                if (rootAvailable) {
+                    statusText = getString(R.string.root_status_ok)
                     statusColor = ContextCompat.getColor(requireContext(), R.color.color_granted)
-                }
-                isAvailable && !hasPermission -> {
-                    statusText = getString(R.string.shizuku_status_no_auth)
-                    iconRes = R.drawable.ic_shield_badge_x
-                    buttonEnabled = true
-                    buttonText = getString(R.string.shizuku_request_auth)
+                } else {
+                    statusText = getString(R.string.root_status_not_ok)
                     statusColor = ContextCompat.getColor(requireContext(), com.google.android.material.R.color.design_default_color_error)
                 }
-                else -> {
-                    statusText = getString(R.string.shizuku_status_not_running)
-                    iconRes = R.drawable.ic_shield_badge_x
-                    buttonEnabled = true
-                    buttonText = getString(R.string.shizuku_request_auth)
-                    statusColor = ContextCompat.getColor(requireContext(), com.google.android.material.R.color.design_default_color_error)
+                iconRes = R.drawable.ic_shield
+                buttonEnabled = false
+                buttonText = if (rootAvailable) {
+                    getString(R.string.shizuku_authorized)
+                } else {
+                    getString(R.string.not_authorized)
                 }
+                titleText = getString(R.string.root_authorization_title)
+                descText = getString(R.string.root_authorization_desc)
+            } else {
+                val isAvailable = ShizukuManager.isShizukuAvailable()
+                val hasPermission = ShizukuManager.hasShizukuPermission()
+
+                when {
+                    isAvailable && hasPermission -> {
+                        statusText = getString(R.string.shizuku_status_ok)
+                        iconRes = R.drawable.ic_shield
+                        buttonEnabled = false
+                        buttonText = getString(R.string.shizuku_authorized)
+                        statusColor = ContextCompat.getColor(requireContext(), R.color.color_granted)
+                    }
+                    isAvailable && !hasPermission -> {
+                        statusText = getString(R.string.shizuku_status_no_auth)
+                        iconRes = R.drawable.ic_shield_badge_x
+                        buttonEnabled = true
+                        buttonText = getString(R.string.shizuku_request_auth)
+                        statusColor = ContextCompat.getColor(requireContext(), com.google.android.material.R.color.design_default_color_error)
+                    }
+                    else -> {
+                        statusText = getString(R.string.shizuku_status_not_running)
+                        iconRes = R.drawable.ic_shield_badge_x
+                        buttonEnabled = true
+                        buttonText = getString(R.string.shizuku_request_auth)
+                        statusColor = ContextCompat.getColor(requireContext(), com.google.android.material.R.color.design_default_color_error)
+                    }
+                }
+                titleText = getString(R.string.shizuku_title)
+                descText = getString(R.string.shizuku_desc)
             }
 
             val recyclerView = binding.recyclerView
@@ -572,17 +692,24 @@ class SettingsFragment : Fragment() {
                 if (holder is SettingsAdapter.ShizukuViewHolder) {
                     val itemView = holder.itemView
                     val shizukuIcon = itemView.findViewById<ImageView>(R.id.shizuku_icon)
+                    val shizukuTitle = itemView.findViewById<TextView>(R.id.shizuku_title)
                     val shizukuStatusText = itemView.findViewById<TextView>(R.id.shizuku_status_text)
+                    val shizukuDesc = itemView.findViewById<TextView>(R.id.shizuku_desc)
                     val requestButton = itemView.findViewById<MaterialButton>(R.id.btn_request_shizuku)
 
                     shizukuIcon?.setImageResource(iconRes)
                     shizukuIcon?.setColorFilter(null)
+                    shizukuTitle?.text = titleText
                     shizukuStatusText?.text = statusText
                     shizukuStatusText?.setTextColor(statusColor)
+                    shizukuDesc?.text = descText
                     requestButton?.isEnabled = buttonEnabled
                     requestButton?.text = buttonText
                     requestButton?.setOnClickListener {
-                        if (!ShizukuManager.isShizukuAvailable()) {
+                        if (isRootMode) {
+                            // Root has no per-app authorization flow.
+                            SnackbarHelper.showSnackbar(binding.root, getString(R.string.root_authorization_desc))
+                        } else if (!ShizukuManager.isShizukuAvailable()) {
                             showShizukuGuideDialog()
                         } else {
                             ShizukuManager.requestShizukuPermission()

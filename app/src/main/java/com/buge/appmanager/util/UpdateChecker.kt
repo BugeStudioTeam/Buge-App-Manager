@@ -207,8 +207,8 @@ object UpdateChecker {
 
         when (updateMethod) {
             "silent" -> {
-                if (!ShizukuManager.isShizukuAvailable() || !ShizukuManager.hasShizukuPermission()) {
-                    showErrorDialog(context, "Shizuku not available. Please check Shizuku authorization.")
+                if (!ShizukuManager.isAuthorized()) {
+                    showErrorDialog(context, "No privilege backend is available or authorized. Please check your authorization method in Settings.")
                     return
                 }
                 UpdateHelper.startSilentUpdate(context, apkUrl, installerName)

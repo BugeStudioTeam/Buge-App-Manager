@@ -120,6 +120,23 @@
     <string name="shizuku_not_running">Not Running</string>
     <string name="shizuku_request_auth">Request Authorization</string>
 
+    <!-- Root / Authorization Method -->
+    <string name="pref_auth_mode">Authorization Method</string>
+    <string name="auth_mode_title">Authorization Method</string>
+    <string name="auth_mode_shizuku">Shizuku</string>
+    <string name="auth_mode_root">Root (su)</string>
+    <string name="pref_root_su_path">su Command</string>
+    <string name="root_su_path_title">su Command</string>
+    <string name="root_su_path_hint">e.g. su, ksu, /system/bin/su</string>
+    <string name="root_su_path_default">su</string>
+    <string name="root_authorization_title">Root Authorization</string>
+    <string name="root_authorization_desc">Root access is used to manage app permissions and perform advanced operations. Make sure your device is rooted and the su command is configured correctly.</string>
+    <string name="root_status_ok">Root available</string>
+    <string name="root_status_not_ok">Root not available</string>
+    <string name="error_no_privilege">No privilege backend is available or authorized. Select one in Settings.</string>
+    <string name="request_auth">Authorize</string>
+    <string name="not_authorized">Not Authorized</string>
+
     <!-- App List -->
     <string name="title_app_list">Installed Apps</string>
     <string name="search_hint">Search apps…</string>

@@ -207,12 +207,12 @@ class RestoreAppsActivity : BaseActivity() {
     }
 
     private fun checkShizuku(): Boolean {
-        if (!ShizukuManager.isShizukuAvailable() || !ShizukuManager.hasShizukuPermission()) {
+        if (!ShizukuManager.isAuthorized()) {
             SnackbarHelper.showSnackbar(
                 binding.root,
-                getString(R.string.error_no_shizuku),
-                getString(R.string.shizuku_request_auth),
-                { ShizukuManager.requestShizukuPermission() }
+                getString(R.string.error_no_privilege),
+                getString(R.string.request_auth),
+                { ShizukuManager.requestAuthorization() }
             )
             return false
         }

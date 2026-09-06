@@ -550,12 +550,12 @@ class SettingsFragment : Fragment() {
             SettingItem.Normal(
                 getString(R.string.pref_auth_mode),
                 authModeText,
-                R.drawable.ic_shield
+                R.drawable.ic_auth_method
             ),
             SettingItem.Normal(
                 getString(R.string.pref_root_su_path),
                 rootSuPath,
-                R.drawable.ic_security
+                R.drawable.ic_command
             ),
             SettingItem.Normal(
                 getString(R.string.pref_optional_permissions),
@@ -642,11 +642,12 @@ class SettingsFragment : Fragment() {
                 if (rootAvailable) {
                     statusText = getString(R.string.root_status_ok)
                     statusColor = ContextCompat.getColor(requireContext(), R.color.color_granted)
+                    iconRes = R.drawable.ic_shield
                 } else {
                     statusText = getString(R.string.root_status_not_ok)
                     statusColor = ContextCompat.getColor(requireContext(), com.google.android.material.R.color.design_default_color_error)
+                    iconRes = R.drawable.ic_shield_badge_x
                 }
-                iconRes = R.drawable.ic_shield
                 buttonEnabled = false
                 buttonText = if (rootAvailable) {
                     getString(R.string.shizuku_authorized)
@@ -707,7 +708,6 @@ class SettingsFragment : Fragment() {
                     requestButton?.text = buttonText
                     requestButton?.setOnClickListener {
                         if (isRootMode) {
-                            // Root has no per-app authorization flow.
                             SnackbarHelper.showSnackbar(binding.root, getString(R.string.root_authorization_desc))
                         } else if (!ShizukuManager.isShizukuAvailable()) {
                             showShizukuGuideDialog()

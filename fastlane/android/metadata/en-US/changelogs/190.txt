@@ -1,0 +1,19 @@
+**12.68.123**
+
+**Milestone Update** 🎉
+
+**Added** ✨
+- Added Root support (PR #16 by @Kevin233B)
+- Added custom su command configuration (PR #16 by @Kevin233B)
+- Added launch unexported activities via Shizuku (PR #17 by @Kevin233B)
+- Added launch unexported activities via Root (PR #17 by @Kevin233B)
+
+**Optimizations** ⚡
+- Improved settings page grouping
+- Improved option icons
+
+**Fixes** 🛠
+- Fixed Root icon detection
+
+**Contributors of this version:**
+- @Kevin233B

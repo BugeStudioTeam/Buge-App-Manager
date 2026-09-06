@@ -1011,10 +1011,10 @@ class AppDetailActivity : BaseActivity() {
     }
 
     private fun checkShizuku(): Boolean {
-        if (!ShizukuManager.isShizukuAvailable() || !ShizukuManager.hasShizukuPermission()) {
-            Snackbar.make(binding.root, R.string.error_no_shizuku, Snackbar.LENGTH_LONG)
-                .setAction(R.string.shizuku_request_auth) {
-                    ShizukuManager.requestShizukuPermission()
+        if (!ShizukuManager.isAuthorized()) {
+            Snackbar.make(binding.root, R.string.error_no_privilege, Snackbar.LENGTH_LONG)
+                .setAction(R.string.request_auth) {
+                    ShizukuManager.requestAuthorization()
                 }
                 .show()
             return false

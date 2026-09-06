@@ -310,9 +310,9 @@ class SettingsAdapter(
         private val statusText: TextView = itemView.findViewById(R.id.storage_status_text)
 
         fun bind() {
-            val isShizukuAvailable = ShizukuManager.isShizukuAvailable() && ShizukuManager.hasShizukuPermission()
+            val isAuthorized = ShizukuManager.isAuthorized()
 
-            if (isShizukuAvailable) {
+            if (isAuthorized) {
                 btnGrant.isEnabled = true
                 btnGrant.alpha = 1f
                 btnGrant.text = itemView.context.getString(R.string.storage_permission_grant)
@@ -320,8 +320,8 @@ class SettingsAdapter(
             } else {
                 btnGrant.isEnabled = false
                 btnGrant.alpha = 0.4f
-                btnGrant.text = itemView.context.getString(R.string.shizuku_not_authorized)
-                statusText.text = itemView.context.getString(R.string.error_no_shizuku)
+                btnGrant.text = itemView.context.getString(R.string.not_authorized)
+                statusText.text = itemView.context.getString(R.string.error_no_privilege)
             }
 
             btnGrant.setOnClickListener {

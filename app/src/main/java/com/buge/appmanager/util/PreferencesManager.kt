@@ -25,6 +25,12 @@ object PreferencesManager {
     private const val UPDATE_SOURCE_KEY = "update_source"
     private const val SHIZUKU_PROVIDER_KEY = "shizuku_provider"
     private const val DYNAMIC_COLOR_KEY = "dynamic_color"
+    private const val AUTH_MODE_KEY = "auth_mode"
+    private const val ROOT_SU_PATH_KEY = "root_su_path"
+
+    const val AUTH_MODE_SHIZUKU = "shizuku"
+    const val AUTH_MODE_ROOT = "root"
+    const val DEFAULT_SU_PATH = "su"
 
     private fun getPreferences(context: Context): SharedPreferences {
         return context.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE)
@@ -169,6 +175,22 @@ object PreferencesManager {
 
     fun getShizukuProvider(context: Context): String {
         return getPreferences(context).getString(SHIZUKU_PROVIDER_KEY, "moe.shizuku.privileged.api") ?: "moe.shizuku.privileged.api"
+    }
+
+    fun setAuthMode(context: Context, mode: String) {
+        getPreferences(context).edit().putString(AUTH_MODE_KEY, mode).apply()
+    }
+
+    fun getAuthMode(context: Context): String {
+        return getPreferences(context).getString(AUTH_MODE_KEY, AUTH_MODE_SHIZUKU) ?: AUTH_MODE_SHIZUKU
+    }
+
+    fun setRootSuPath(context: Context, suPath: String) {
+        getPreferences(context).edit().putString(ROOT_SU_PATH_KEY, suPath).apply()
+    }
+
+    fun getRootSuPath(context: Context): String {
+        return getPreferences(context).getString(ROOT_SU_PATH_KEY, DEFAULT_SU_PATH) ?: DEFAULT_SU_PATH
     }
 
     // Fuck: Dynamic Color

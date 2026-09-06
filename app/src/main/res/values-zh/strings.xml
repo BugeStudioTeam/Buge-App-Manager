@@ -120,6 +120,23 @@
     <string name="shizuku_not_running">未运行</string>
     <string name="shizuku_request_auth">请求授权</string>
 
+    <!-- Root / Authorization Method -->
+    <string name="pref_auth_mode">授权方式</string>
+    <string name="auth_mode_title">授权方式</string>
+    <string name="auth_mode_shizuku">Shizuku</string>
+    <string name="auth_mode_root">Root（su）</string>
+    <string name="pref_root_su_path">su 命令</string>
+    <string name="root_su_path_title">su 命令</string>
+    <string name="root_su_path_hint">例如：su、ksu、/system/bin/su</string>
+    <string name="root_su_path_default">su</string>
+    <string name="root_authorization_title">Root 授权</string>
+    <string name="root_authorization_desc">Root 权限用于管理应用权限并执行高级操作。请确保设备已获得 Root 权限，且 su 命令配置正确。</string>
+    <string name="root_status_ok">Root 可用</string>
+    <string name="root_status_not_ok">Root 不可用</string>
+    <string name="error_no_privilege">没有可用的授权方式或尚未授权。请在设置中选择授权方式。</string>
+    <string name="request_auth">授权</string>
+    <string name="not_authorized">未授权</string>
+
     <!-- App List -->
     <string name="title_app_list">已安装应用</string>
     <string name="search_hint">搜索应用…</string>

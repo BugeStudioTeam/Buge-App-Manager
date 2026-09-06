@@ -5,6 +5,9 @@ package com.buge.appmanager.shizuku
 
 import android.content.pm.PackageManager
 import android.util.Log
+import com.buge.appmanager.root.RootManager
+import com.buge.appmanager.util.AppGlobals
+import com.buge.appmanager.util.PreferencesManager
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import rikka.shizuku.Shizuku
@@ -66,7 +69,61 @@ object ShizukuManager {
         }
     }
 
-    suspend fun executeCommand(command: String): ShizukuResult = withContext(Dispatchers.IO) {
+    private fun isRootMode(): Boolean {
+        return try {
+            PreferencesManager.getAuthMode(AppGlobals.applicationContext) == PreferencesManager.AUTH_MODE_ROOT
+        } catch (e: Exception) {
+            Log.w(TAG, "Error reading auth mode: ${e.message}")
+            false
+        }
+    }
+
+    private fun getRootSuPath(): String {
+        return try {
+            PreferencesManager.getRootSuPath(AppGlobals.applicationContext)
+        } catch (e: Exception) {
+            PreferencesManager.DEFAULT_SU_PATH
+        }
+    }
+
+    fun isRootAvailable(): Boolean {
+        return try {
+            RootManager.isSuBinaryAvailable(getRootSuPath())
+        } catch (e: Exception) {
+            Log.w(TAG, "Error checking root availability: ${e.message}")
+            false
+        }
+    }
+
+    /**
+     * Whether the currently selected privilege backend (Shizuku or root)
+     * is available and authorized.
+     */
+    fun isAuthorized(): Boolean {
+        return if (isRootMode()) {
+            isRootAvailable()
+        } else {
+            isShizukuAvailable() && hasShizukuPermission()
+        }
+    }
+
+    fun requestAuthorization() {
+        if (isRootMode()) {
+            // Root has no per-app authorization flow; the su manager may
+            // prompt on first command execution. Re-check current status.
+        } else {
+            requestShizukuPermission()
+        }
+    }
+
+    suspend fun executeCommand(command: String): ShizukuResult {
+        if (isRootMode()) {
+            return RootManager.executeCommand(command, getRootSuPath())
+        }
+        return executeViaShizuku(command)
+    }
+
+    private suspend fun executeViaShizuku(command: String): ShizukuResult = withContext(Dispatchers.IO) {
         if (!isShizukuAvailable()) {
             return@withContext ShizukuResult(false, "", "Shizuku is not running")
         }

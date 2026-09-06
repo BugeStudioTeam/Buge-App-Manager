@@ -69,7 +69,12 @@ object ShizukuManager {
         }
     }
 
-    private fun isRootMode(): Boolean {
+    /**
+     * Whether the selected privilege backend is root (as opposed to Shizuku).
+     * Public so UI layers can decide whether shell-only operations (such as
+     * launching a non-exported activity) are permitted.
+     */
+    fun isRootMode(): Boolean {
         return try {
             PreferencesManager.getAuthMode(AppGlobals.applicationContext) == PreferencesManager.AUTH_MODE_ROOT
         } catch (e: Exception) {

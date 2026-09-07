@@ -34,6 +34,7 @@
 | Feature                             | Description                                                                      |
 | ----------------------------------- | -------------------------------------------------------------------------------- |
 | **Shizuku Integration**             | Operates with Shizuku authorization for elevated control without requiring root  |
+| **ROOT Integration**                | Operates with ROOT authorization for elevated control                            |
 | **App Management**                  | Browse and manage both user-installed and system applications with ease          |
 | **Material Design 3 Expressive UI** | Clean, system-themed interface that follows the latest Android design guidelines |
 
@@ -66,10 +67,13 @@
 
 ## 📋 Requirements
 
-| Requirement | Minimum Version          |
-| ----------- | ------------------------ |
-| Android OS  | 8.0 (API 26) or higher   |
-| Shizuku     | Installed and authorized |
+| Requirement | Minimum Version                       |
+| ----------- | ------------------------------------- |
+| Android OS  | 8.0 (API 26) or higher                |
+| Shizuku     | Installed and authorized              |
+| ROOT        | Device has been rooted and authorized |
+
+Choose between **Shizuku** or **ROOT** authorization.
 
 > **Note**: [Shizuku](https://shizuku.rikka.app/) is required for advanced permission management features.
 

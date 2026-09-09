@@ -44,6 +44,13 @@ class LogViewerActivity : BaseActivity() {
         LogManager.addListener(logUpdateListener)
     }
 
+    override fun onResume() {
+        super.onResume()
+        // Fuck: Refresh logcat when user opens the viewer
+        LogManager.refreshLogcat(this)
+        updateLogDisplay()
+    }
+
     private fun setupToolbar() {
         setSupportActionBar(binding.toolbar)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
@@ -57,6 +64,7 @@ class LogViewerActivity : BaseActivity() {
         menu.add(0, 3, 2, "Export TXT")
         menu.add(0, 4, 3, "Export CSV")
         menu.add(0, 5, 4, "Statistics")
+        menu.add(0, 6, 5, "Refresh Logcat")
         return super.onCreateOptionsMenu(menu)
     }
 
@@ -86,8 +94,18 @@ class LogViewerActivity : BaseActivity() {
                 showStatisticsDialog()
                 return true
             }
+            6 -> {
+                refreshLogcat()
+                return true
+            }
         }
         return super.onOptionsItemSelected(item)
+    }
+
+    private fun refreshLogcat() {
+        SnackbarHelper.showSnackbar(binding.root, "Refreshing Logcat...", Snackbar.LENGTH_SHORT)
+        LogManager.refreshLogcat(this)
+        updateLogDisplay()
     }
 
     private fun showClearLogsDialog() {
@@ -106,6 +124,7 @@ class LogViewerActivity : BaseActivity() {
     private fun showStatisticsDialog() {
         val stats = LogManager.getStatistics()
         val totalLogs = stats["totalLogs"] as Int
+        val logcatCount = stats["logcatCount"] as Int
         val typeCounts = stats["typeCounts"] as Map<LogManager.LogType, Int>
         val timeRangeSeconds = stats["timeRangeSeconds"] as Long
         val sessionId = stats["sessionId"] as Long
@@ -115,6 +134,8 @@ class LogViewerActivity : BaseActivity() {
             appendLine()
             appendLine("Session ID: $sessionId")
             appendLine("Total Logs: $totalLogs")
+            appendLine("Logcat Entries: $logcatCount")
+            appendLine("App Logs: ${totalLogs - logcatCount}")
             appendLine("Time Range: ${formatTimeRange(timeRangeSeconds)}")
             appendLine()
             appendLine("--- By Type ---")
@@ -227,12 +248,23 @@ class LogViewerActivity : BaseActivity() {
             private val logType: TextView = itemView.findViewById(R.id.log_type)
             private val logMessage: TextView = itemView.findViewById(R.id.log_message)
             private val logDetails: TextView = itemView.findViewById(R.id.log_details)
+            private val logcatBadge: TextView = itemView.findViewById(R.id.logcat_badge)
 
             fun bind(entry: LogManager.LogEntry) {
                 logTime.text = entry.getDisplayTime()
                 logType.text = entry.type.display
                 logType.setTextColor(getTypeColor(entry.type))
                 logMessage.text = entry.message
+
+                // Fuck: Show logcat badge for logcat entries
+                if (entry.isLogcat) {
+                    logcatBadge.visibility = View.VISIBLE
+                    logcatBadge.text = "LOGCAT"
+                    logcatBadge.setTextColor(ContextCompat.getColor(itemView.context, android.R.color.holo_blue_dark))
+                } else {
+                    logcatBadge.visibility = View.GONE
+                }
+
                 if (!entry.details.isNullOrEmpty()) {
                     logDetails.visibility = View.VISIBLE
                     logDetails.text = entry.details
@@ -256,6 +288,7 @@ class LogViewerActivity : BaseActivity() {
                     LogManager.LogType.UI -> ContextCompat.getColor(itemView.context, R.color.color_granted)
                     LogManager.LogType.STORAGE -> ContextCompat.getColor(itemView.context, android.R.color.holo_blue_dark)
                     LogManager.LogType.NETWORK -> ContextCompat.getColor(itemView.context, android.R.color.holo_purple)
+                    LogManager.LogType.LOGCAT -> ContextCompat.getColor(itemView.context, android.R.color.holo_blue_dark)
                     else -> ContextCompat.getColor(itemView.context, android.R.color.darker_gray)
                 }
             }

@@ -78,6 +78,8 @@
     <string name="github_desc">Visitez notre dépôt GitHub</string>
     <string name="telegram">Telegram</string>
     <string name="telegram_desc">Rejoignez notre chaîne Telegram</string>
+    <string name="activitymanager">ActivityManager</string>
+    <string name="activitymanager_desc">Projet open-source — la méthode Shizuku pour lancer des activités non exportées</string>
     <string name="check_for_update">Vérifier les mises à jour</string>
     <string name="update_desc">Vérifier les nouvelles versions sur GitHub</string>
     <string name="about_more">En savoir plus</string>
@@ -119,6 +121,23 @@
     <string name="shizuku_not_authorized">Non autorisé</string>
     <string name="shizuku_not_running">Non en cours d\'exécution</string>
     <string name="shizuku_request_auth">Demander l\'autorisation</string>
+
+    <!-- Root / Authorization Method -->
+    <string name="pref_auth_mode">Méthode d\'autorisation</string>
+    <string name="auth_mode_title">Méthode d\'autorisation</string>
+    <string name="auth_mode_shizuku">Shizuku</string>
+    <string name="auth_mode_root">Root (su)</string>
+    <string name="pref_root_su_path">Commande su</string>
+    <string name="root_su_path_title">Commande su</string>
+    <string name="root_su_path_hint">ex. su, ksu, /system/bin/su</string>
+    <string name="root_su_path_default">su</string>
+    <string name="root_authorization_title">Autorisation Root</string>
+    <string name="root_authorization_desc">L\'accès Root est utilisé pour gérer les permissions des applications et effectuer des opérations avancées. Assurez-vous que votre appareil est rooté et que la commande su est correctement configurée.</string>
+    <string name="root_status_ok">Root disponible</string>
+    <string name="root_status_not_ok">Root non disponible</string>
+    <string name="error_no_privilege">Aucun backend de privilège n\'est disponible ou autorisé. Sélectionnez-en un dans les paramètres.</string>
+    <string name="request_auth">Autoriser</string>
+    <string name="not_authorized">Non autorisé</string>
 
     <!-- App List -->
     <string name="title_app_list">Applications installées</string>
@@ -272,6 +291,11 @@
     <string name="hide_nav_labels">Masquer les étiquettes de navigation</string>
     <string name="hide_nav_labels_summary">Masquer les titres des éléments de navigation non sélectionnés, afficher uniquement celui sélectionné</string>
 
+    <!-- Dynamic Color -->
+    <string name="dynamic_color">Couleur dynamique</string>
+    <string name="dynamic_color_summary">Adapte automatiquement les couleurs du fond d\'écran (Android 12+)</string>
+    <string name="dynamic_color_unavailable">Nécessite Android 12 ou supérieur</string>
+
     <!-- Custom Labels -->
     <string name="pref_custom_labels">Étiquettes personnalisées</string>
     <string name="pref_custom_labels_summary">Créer et gérer des étiquettes d\'applications personnalisées</string>
@@ -323,5 +347,15 @@
     <string name="optional_perm_granted">Accordée</string>
     <string name="optional_perm_denied">Refusée</string>
     <string name="optional_perm_grant">Accorder</string>
+
+    <!-- Signature Validation -->
+    <string name="signature_warning_title">Avertissement de sécurité</string>
+    <string name="signature_warning_message">La vérification de l\'empreinte de signature a échoué !\n\nVous utilisez une version non officielle de cette application !\nNous ne pouvons pas confirmer que cette version est sûre ou fiable !\n\nL\'utilisation de versions non officielles peut vous exposer à des risques de sécurité,\nnotamment le vol de données, les atteintes à la vie privée et les logiciels malveillants.\n\nVeuillez télécharger la version officielle depuis nos plateformes de confiance ci-dessous.</string>
+    <string name="signature_warning_platforms_title">Plateformes de téléchargement de confiance</string>
+    <string name="signature_warning_sha256_label">Empreinte SHA-256 attendue</string>
+    <string name="signature_warning_button_exit">Quitter l\'application</string>
+    <string name="signature_warning_button_continue">Continuer quand même</string>
+    <string name="signature_warning_github_url">https://github.com/BugeStudioTeam/Buge-App-Manager/releases</string>
+    <string name="signature_warning_fdroid_url">https://f-droid.org/packages/com.buge.appmanager/</string>
     
 </resources>

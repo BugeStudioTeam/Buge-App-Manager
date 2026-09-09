@@ -33,6 +33,18 @@
             android:textStyle="bold"
             android:textSize="11sp" />
 
+        <TextView
+            android:id="@+id/logcat_badge"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:textAppearance="?attr/textAppearanceLabelSmall"
+            android:textStyle="bold"
+            android:textSize="9sp"
+            android:visibility="gone"
+            android:text="LOGCAT"
+            android:textColor="?attr/colorPrimary" />
+
     </LinearLayout>
 
     <TextView

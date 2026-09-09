@@ -78,6 +78,8 @@
     <string name="github_desc">访问我们的GitHub仓库</string>
     <string name="telegram">Telegram</string>
     <string name="telegram_desc">加入我们的Telegram频道</string>
+    <string name="activitymanager">ActivityManager</string>
+    <string name="activitymanager_desc">开源项目 — 通过Shizuku启动未导出活动的方法</string>
     <string name="check_for_update">检查更新</string>
     <string name="update_desc">在GitHub上检查新版本</string>
     <string name="about_more">了解更多关于我们</string>
@@ -289,6 +291,11 @@
     <string name="hide_nav_labels">隐藏导航栏标签</string>
     <string name="hide_nav_labels_summary">未选中的导航项隐藏标题，仅显示选中的</string>
 
+    <!-- Dynamic Color -->
+    <string name="dynamic_color">动态取色</string>
+    <string name="dynamic_color_summary">从壁纸自动适配颜色（Android 12+）</string>
+    <string name="dynamic_color_unavailable">需要 Android 12 或更高版本</string>
+
     <!-- Custom Labels -->
     <string name="pref_custom_labels">自定义标签</string>
     <string name="pref_custom_labels_summary">创建和管理自定义应用标签</string>
@@ -341,4 +348,14 @@
     <string name="optional_perm_denied">已拒绝</string>
     <string name="optional_perm_grant">授予</string>
 
+    <!-- Signature Validation -->
+    <string name="signature_warning_title">安全警告</string>
+    <string name="signature_warning_message">签名哈希验证失败！\n\n您正在使用非官方签名的应用版本！\n我们无法确认此版本是否安全可信！\n\n使用非官方版本可能会使您面临安全风险，\n包括数据盗窃、隐私泄露和恶意软件。\n\n请从我们下面的可信平台下载官方版本。</string>
+    <string name="signature_warning_platforms_title">可信下载平台</string>
+    <string name="signature_warning_sha256_label">预期签名 SHA-256</string>
+    <string name="signature_warning_button_exit">退出应用</string>
+    <string name="signature_warning_button_continue">继续</string>
+    <string name="signature_warning_github_url">https://github.com/BugeStudioTeam/Buge-App-Manager/releases</string>
+    <string name="signature_warning_fdroid_url">https://f-droid.org/packages/com.buge.appmanager/</string>
+    
 </resources>

@@ -78,6 +78,8 @@
     <string name="github_desc">Посетите наш репозиторий GitHub</string>
     <string name="telegram">Telegram</string>
     <string name="telegram_desc">Присоединяйтесь к нашему Telegram-каналу</string>
+    <string name="activitymanager">ActivityManager</string>
+    <string name="activitymanager_desc">Проект с открытым исходным кодом — метод Shizuku для запуска неэкспортируемых активностей</string>
     <string name="check_for_update">Проверить обновления</string>
     <string name="update_desc">Проверить новые версии на GitHub</string>
     <string name="about_more">Подробнее о нас</string>
@@ -119,6 +121,23 @@
     <string name="shizuku_not_authorized">Не авторизовано</string>
     <string name="shizuku_not_running">Не работает</string>
     <string name="shizuku_request_auth">Запросить авторизацию</string>
+
+    <!-- Root / Authorization Method -->
+    <string name="pref_auth_mode">Метод авторизации</string>
+    <string name="auth_mode_title">Метод авторизации</string>
+    <string name="auth_mode_shizuku">Shizuku</string>
+    <string name="auth_mode_root">Root (su)</string>
+    <string name="pref_root_su_path">Команда su</string>
+    <string name="root_su_path_title">Команда su</string>
+    <string name="root_su_path_hint">например: su, ksu, /system/bin/su</string>
+    <string name="root_su_path_default">su</string>
+    <string name="root_authorization_title">Авторизация Root</string>
+    <string name="root_authorization_desc">Root-доступ используется для управления разрешениями приложений и выполнения расширенных операций. Убедитесь, что ваше устройство рутировано и команда su настроена правильно.</string>
+    <string name="root_status_ok">Root доступен</string>
+    <string name="root_status_not_ok">Root недоступен</string>
+    <string name="error_no_privilege">Нет доступного или авторизованного бэкенда привилегий. Выберите один в настройках.</string>
+    <string name="request_auth">Авторизовать</string>
+    <string name="not_authorized">Не авторизовано</string>
 
     <!-- App List -->
     <string name="title_app_list">Установленные приложения</string>
@@ -272,6 +291,11 @@
     <string name="hide_nav_labels">Скрыть метки навигации</string>
     <string name="hide_nav_labels_summary">Скрыть заголовки невыбранных элементов навигации, показывать только выбранный</string>
 
+    <!-- Dynamic Color -->
+    <string name="dynamic_color">Динамический цвет</string>
+    <string name="dynamic_color_summary">Автоматически адаптировать цвета из обоев (Android 12+)</string>
+    <string name="dynamic_color_unavailable">Требуется Android 12 или выше</string>
+
     <!-- Custom Labels -->
     <string name="pref_custom_labels">Пользовательские метки</string>
     <string name="pref_custom_labels_summary">Создание и управление пользовательскими метками приложений</string>
@@ -323,5 +347,15 @@
     <string name="optional_perm_granted">Предоставлено</string>
     <string name="optional_perm_denied">Отказано</string>
     <string name="optional_perm_grant">Предоставить</string>
+
+    <!-- Signature Validation -->
+    <string name="signature_warning_title">Предупреждение безопасности</string>
+    <string name="signature_warning_message">Проверка хэша подписи не удалась!\n\nВы используете неофициально подписанную версию этого приложения!\nМы не можем подтвердить, безопасна ли эта версия!\n\nИспользование неофициальных версий может подвергнуть вас рискам безопасности,\nвключая кражу данных, утечку конфиденциальности и вредоносное ПО.\n\nПожалуйста, загрузите официальную версию с наших доверенных платформ ниже.</string>
+    <string name="signature_warning_platforms_title">Доверенные платформы загрузки</string>
+    <string name="signature_warning_sha256_label">Ожидаемая подпись SHA-256</string>
+    <string name="signature_warning_button_exit">Выйти из приложения</string>
+    <string name="signature_warning_button_continue">Продолжить</string>
+    <string name="signature_warning_github_url">https://github.com/BugeStudioTeam/Buge-App-Manager/releases</string>
+    <string name="signature_warning_fdroid_url">https://f-droid.org/packages/com.buge.appmanager/</string>
     
 </resources>

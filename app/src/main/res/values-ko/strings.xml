@@ -78,6 +78,8 @@
     <string name="github_desc">GitHub 저장소 방문</string>
     <string name="telegram">텔레그램</string>
     <string name="telegram_desc">텔레그램 채널 참여</string>
+    <string name="activitymanager">ActivityManager</string>
+    <string name="activitymanager_desc">오픈소스 프로젝트 — Shizuku로 비공개 활동을 실행하는 방법</string>
     <string name="check_for_update">업데이트 확인</string>
     <string name="update_desc">GitHub에서 새 버전 확인</string>
     <string name="about_more">더 알아보기</string>
@@ -119,6 +121,23 @@
     <string name="shizuku_not_authorized">승인되지 않음</string>
     <string name="shizuku_not_running">실행 중이 아님</string>
     <string name="shizuku_request_auth">승인 요청</string>
+
+    <!-- Root / Authorization Method -->
+    <string name="pref_auth_mode">인증 방식</string>
+    <string name="auth_mode_title">인증 방식</string>
+    <string name="auth_mode_shizuku">Shizuku</string>
+    <string name="auth_mode_root">Root (su)</string>
+    <string name="pref_root_su_path">su 명령어</string>
+    <string name="root_su_path_title">su 명령어</string>
+    <string name="root_su_path_hint">예: su, ksu, /system/bin/su</string>
+    <string name="root_su_path_default">su</string>
+    <string name="root_authorization_title">Root 인증</string>
+    <string name="root_authorization_desc">Root 권한은 앱 권한 관리와 고급 작업을 수행하는 데 사용됩니다. 기기가 Root 상태이고 su 명령어가 올바르게 설정되어 있는지 확인하세요.</string>
+    <string name="root_status_ok">Root 사용 가능</string>
+    <string name="root_status_not_ok">Root 사용 불가</string>
+    <string name="error_no_privilege">사용 가능한 인증 방식이 없거나 인증되지 않았습니다. 설정에서 선택하세요.</string>
+    <string name="request_auth">인증</string>
+    <string name="not_authorized">인증되지 않음</string>
 
     <!-- App List -->
     <string name="title_app_list">설치된 앱</string>
@@ -272,6 +291,11 @@
     <string name="hide_nav_labels">탐색 레이블 숨기기</string>
     <string name="hide_nav_labels_summary">선택되지 않은 탐색 항목의 제목을 숨기고 선택된 항목만 표시</string>
 
+    <!-- Dynamic Color -->
+    <string name="dynamic_color">동적 색상</string>
+    <string name="dynamic_color_summary">벽지에서 색상 자동 적용 (Android 12+)</string>
+    <string name="dynamic_color_unavailable">Android 12 이상 필요</string>
+
     <!-- Custom Labels -->
     <string name="pref_custom_labels">사용자 정의 레이블</string>
     <string name="pref_custom_labels_summary">사용자 정의 앱 레이블 생성 및 관리</string>
@@ -323,5 +347,15 @@
     <string name="optional_perm_granted">허용됨</string>
     <string name="optional_perm_denied">거부됨</string>
     <string name="optional_perm_grant">허용</string>
+
+    <!-- Signature Validation -->
+    <string name="signature_warning_title">보안 경고</string>
+    <string name="signature_warning_message">서명 해시 검증에 실패했습니다!\n\n비공식 서명 버전의 앱을 사용하고 있습니다!\n이 버전이 안전하고 신뢰할 수 있는지 확인할 수 없습니다!\n\n비공식 버전을 사용하면 데이터 도난, 개인 정보 유출, 악성 코드 등의 보안 위험에 노출될 수 있습니다.\n\n아래 신뢰할 수 있는 플랫폼에서 공식 버전을 다운로드하세요.</string>
+    <string name="signature_warning_platforms_title">신뢰할 수 있는 다운로드 플랫폼</string>
+    <string name="signature_warning_sha256_label">예상 서명 SHA-256</string>
+    <string name="signature_warning_button_exit">앱 종료</string>
+    <string name="signature_warning_button_continue">계속</string>
+    <string name="signature_warning_github_url">https://github.com/BugeStudioTeam/Buge-App-Manager/releases</string>
+    <string name="signature_warning_fdroid_url">https://f-droid.org/packages/com.buge.appmanager/</string>
     
 </resources>

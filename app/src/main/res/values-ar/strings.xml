@@ -78,6 +78,8 @@
     <string name="github_desc">قم بزيارة مستودع GitHub الخاص بنا</string>
     <string name="telegram">تيليجرام</string>
     <string name="telegram_desc">انضم إلى قناتنا على تيليجرام</string>
+    <string name="activitymanager">ActivityManager</string>
+    <string name="activitymanager_desc">مشروع مفتوح المصدر — طريقة Shizuku لتشغيل الأنشطة غير المصدرة</string>
     <string name="check_for_update">التحقق من التحديث</string>
     <string name="update_desc">التحقق من الإصدارات الجديدة على GitHub</string>
     <string name="about_more">اعرف المزيد عنا</string>
@@ -119,6 +121,23 @@
     <string name="shizuku_not_authorized">لم يتم التفويض</string>
     <string name="shizuku_not_running">لا يعمل</string>
     <string name="shizuku_request_auth">طلب التفويض</string>
+
+    <!-- Root / Authorization Method -->
+    <string name="pref_auth_mode">طريقة التفويض</string>
+    <string name="auth_mode_title">طريقة التفويض</string>
+    <string name="auth_mode_shizuku">Shizuku</string>
+    <string name="auth_mode_root">Root (su)</string>
+    <string name="pref_root_su_path">أمر su</string>
+    <string name="root_su_path_title">أمر su</string>
+    <string name="root_su_path_hint">مثال: su, ksu, /system/bin/su</string>
+    <string name="root_su_path_default">su</string>
+    <string name="root_authorization_title">تفويض Root</string>
+    <string name="root_authorization_desc">يستخدم وصول Root لإدارة أذونات التطبيقات وتنفيذ العمليات المتقدمة. تأكد من أن جهازك لديه صلاحيات Root وأن أمر su تم تكوينه بشكل صحيح.</string>
+    <string name="root_status_ok">Root متاح</string>
+    <string name="root_status_not_ok">Root غير متاح</string>
+    <string name="error_no_privilege">لا يوجد خلفية صلاحيات متاحة أو مصرح بها. اختر واحدة في الإعدادات.</string>
+    <string name="request_auth">تفويض</string>
+    <string name="not_authorized">غير مصرح</string>
 
     <!-- App List -->
     <string name="title_app_list">التطبيقات المثبتة</string>
@@ -272,6 +291,11 @@
     <string name="hide_nav_labels">إخفاء تسميات التنقل</string>
     <string name="hide_nav_labels_summary">إخفاء عناوين عناصر التنقل غير المحددة، وإظهار العنصر المحدد فقط</string>
 
+    <!-- Dynamic Color -->
+    <string name="dynamic_color">اللون الديناميكي</string>
+    <string name="dynamic_color_summary">تكيف الألوان تلقائياً من خلفية الشاشة (Android 12+)</string>
+    <string name="dynamic_color_unavailable">يتطلب Android 12 أو أعلى</string>
+
     <!-- Custom Labels -->
     <string name="pref_custom_labels">التصنيفات المخصصة</string>
     <string name="pref_custom_labels_summary">إنشاء وإدارة تصنيفات التطبيقات المخصصة</string>
@@ -323,5 +347,15 @@
     <string name="optional_perm_granted">تم منحه</string>
     <string name="optional_perm_denied">مرفوض</string>
     <string name="optional_perm_grant">منح</string>
+
+    <!-- Signature Validation -->
+    <string name="signature_warning_title">تحذير أمني</string>
+    <string name="signature_warning_message">فشل التحقق من تجزئة التوقيع!\n\nأنت تستخدم إصدارًا موقعًا بشكل غير رسمي من هذا التطبيق!\nلا يمكننا التأكد من أن هذا الإصدار آمن أو موثوق!\n\nقد يعرضك استخدام الإصدارات غير الرسمية لمخاطر أمنية،\nبما في ذلك سرقة البيانات واختراق الخصوصية والبرامج الضارة.\n\nيرجى تنزيل الإصدار الرسمي من منصاتنا الموثوقة أدناه.</string>
+    <string name="signature_warning_platforms_title">منصات التنزيل الموثوقة</string>
+    <string name="signature_warning_sha256_label">التوقيع المتوقع SHA-256</string>
+    <string name="signature_warning_button_exit">الخروج من التطبيق</string>
+    <string name="signature_warning_button_continue">المتابعة</string>
+    <string name="signature_warning_github_url">https://github.com/BugeStudioTeam/Buge-App-Manager/releases</string>
+    <string name="signature_warning_fdroid_url">https://f-droid.org/packages/com.buge.appmanager/</string>
     
 </resources>

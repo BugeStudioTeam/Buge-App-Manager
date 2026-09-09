@@ -78,6 +78,8 @@
     <string name="github_desc">GitHubリポジトリにアクセス</string>
     <string name="telegram">Telegram</string>
     <string name="telegram_desc">Telegramチャンネルに参加</string>
+    <string name="activitymanager">ActivityManager</string>
+    <string name="activitymanager_desc">オープンソースプロジェクト — Shizukuで非公開アクティビティを起動する方法</string>
     <string name="check_for_update">アップデートを確認</string>
     <string name="update_desc">GitHubで新バージョンを確認</string>
     <string name="about_more">詳細を見る</string>
@@ -119,6 +121,23 @@
     <string name="shizuku_not_authorized">未認可</string>
     <string name="shizuku_not_running">実行していません</string>
     <string name="shizuku_request_auth">認可をリクエスト</string>
+
+    <!-- Root / Authorization Method -->
+    <string name="pref_auth_mode">認可方式</string>
+    <string name="auth_mode_title">認可方式</string>
+    <string name="auth_mode_shizuku">Shizuku</string>
+    <string name="auth_mode_root">Root（su）</string>
+    <string name="pref_root_su_path">su コマンド</string>
+    <string name="root_su_path_title">su コマンド</string>
+    <string name="root_su_path_hint">例：su、ksu、/system/bin/su</string>
+    <string name="root_su_path_default">su</string>
+    <string name="root_authorization_title">Root 認可</string>
+    <string name="root_authorization_desc">Root 権限はアプリの権限管理と高度な操作に使用されます。デバイスが Root 化されており、su コマンドが正しく設定されていることを確認してください。</string>
+    <string name="root_status_ok">Root 利用可能</string>
+    <string name="root_status_not_ok">Root 利用不可</string>
+    <string name="error_no_privilege">利用可能な認可方式がないか、認可されていません。設定で選択してください。</string>
+    <string name="request_auth">認可</string>
+    <string name="not_authorized">未認可</string>
 
     <!-- App List -->
     <string name="title_app_list">インストール済みアプリ</string>
@@ -272,6 +291,11 @@
     <string name="hide_nav_labels">ナビゲーションラベルを非表示</string>
     <string name="hide_nav_labels_summary">未選択のナビゲーション項目のタイトルを非表示にし、選択したものだけを表示</string>
 
+    <!-- Dynamic Color -->
+    <string name="dynamic_color">動的カラー</string>
+    <string name="dynamic_color_summary">壁紙から色を自動適応（Android 12+）</string>
+    <string name="dynamic_color_unavailable">Android 12 以上が必要です</string>
+
     <!-- Custom Labels -->
     <string name="pref_custom_labels">カスタムラベル</string>
     <string name="pref_custom_labels_summary">カスタムアプリラベルを作成・管理</string>
@@ -323,5 +347,15 @@
     <string name="optional_perm_granted">付与済み</string>
     <string name="optional_perm_denied">拒否</string>
     <string name="optional_perm_grant">付与</string>
+
+    <!-- Signature Validation -->
+    <string name="signature_warning_title">セキュリティ警告</string>
+    <string name="signature_warning_message">署名ハッシュ検証に失敗しました！\n\n非公式署名バージョンのアプリを使用しています！\nこのバージョンが安全で信頼できるか確認できません！\n\n非公式バージョンを使用すると、データ盗難、プライバシー漏洩、マルウェアなどのセキュリティリスクにさらされる可能性があります。\n\n以下の信頼できるプラットフォームから公式バージョンをダウンロードしてください。</string>
+    <string name="signature_warning_platforms_title">信頼できるダウンロードプラットフォーム</string>
+    <string name="signature_warning_sha256_label">期待される署名 SHA-256</string>
+    <string name="signature_warning_button_exit">アプリを終了</string>
+    <string name="signature_warning_button_continue">続行</string>
+    <string name="signature_warning_github_url">https://github.com/BugeStudioTeam/Buge-App-Manager/releases</string>
+    <string name="signature_warning_fdroid_url">https://f-droid.org/packages/com.buge.appmanager/</string>
     
 </resources>

@@ -545,6 +545,7 @@ class SettingsFragment : Fragment() {
         val gmsEnabled = if (gmsAvailable) checkGmsStatus() else false
 
         return mutableListOf(
+            // Fuck: Authorization Group - Shizuku, Auth Mode
             SettingItem.Header(getString(R.string.settings_group_authorization)),
             SettingItem.Shizuku,
             SettingItem.Normal(
@@ -553,20 +554,19 @@ class SettingsFragment : Fragment() {
                 R.drawable.ic_auth_method
             ),
             SettingItem.Normal(
-                getString(R.string.pref_root_su_path),
-                rootSuPath,
-                R.drawable.ic_command
-            ),
-            SettingItem.Normal(
                 getString(R.string.pref_optional_permissions),
                 getString(R.string.pref_optional_permissions_summary),
                 R.drawable.ic_security
             ),
+
+            // Fuck: Appearance Group
             SettingItem.Header(getString(R.string.settings_group_appearance)),
             SettingItem.Normal(getString(R.string.pref_theme), themeText, R.drawable.ic_theme),
             SettingItem.Normal(getString(R.string.pref_language), languageText, R.drawable.ic_language),
             SettingItem.Normal(getString(R.string.pref_default_page), defaultPageText, R.drawable.ic_home_page),
             SettingItem.Normal(getString(R.string.more_options), getString(R.string.more_options_summary), R.drawable.ic_palette),
+
+            // Fuck: Apps Group
             SettingItem.Header(getString(R.string.settings_group_apps)),
             SettingItem.SwitchItem(
                 getString(R.string.pref_google_services),
@@ -599,16 +599,25 @@ class SettingsFragment : Fragment() {
                 getString(R.string.pref_custom_labels_summary),
                 R.drawable.ic_tag
             ),
+
+            // Fuck: Advanced Group - Shizuku Provider, su command, show system apps, show disabled apps, etc.
             SettingItem.Header(getString(R.string.settings_group_advanced)),
-            SettingItem.SwitchItem(getString(R.string.pref_show_disabled_apps), showDisabledApps, R.drawable.ic_disabled_apps),
-            SettingItem.SwitchItem(getString(R.string.pref_show_system_apps), showSystemApps, R.drawable.ic_system_apps),
-            SettingItem.SwitchItem(getString(R.string.pref_show_undeclared_activities), showUndeclared, R.drawable.ic_undeclared),
             SettingItem.Normal(
                 getString(R.string.pref_shizuku_provider),
                 getString(R.string.pref_shizuku_provider_summary),
                 R.drawable.ic_shizuku_icon
             ),
+            SettingItem.Normal(
+                getString(R.string.pref_root_su_path),
+                rootSuPath,
+                R.drawable.ic_command
+            ),
+            SettingItem.SwitchItem(getString(R.string.pref_show_disabled_apps), showDisabledApps, R.drawable.ic_disabled_apps),
+            SettingItem.SwitchItem(getString(R.string.pref_show_system_apps), showSystemApps, R.drawable.ic_system_apps),
+            SettingItem.SwitchItem(getString(R.string.pref_show_undeclared_activities), showUndeclared, R.drawable.ic_undeclared),
             SettingItem.Normal(getString(R.string.pref_logging), getString(R.string.pref_logging_summary), R.drawable.ic_log),
+
+            // Fuck: About Group
             SettingItem.Header(getString(R.string.settings_group_about)),
             SettingItem.About(getVersionName()),
             SettingItem.AboutMore(getString(R.string.about_more), getString(R.string.about_more_summary))

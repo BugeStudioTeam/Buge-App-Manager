@@ -1,0 +1,13 @@
+**12.69.125**
+
+**Added** ✨
+- Added LOGGING and LOGCAT recording
+
+**Fixes** 🛠
+- Fixed all missing language entries
+
+**Optimizations** ⚡
+- Improved settings tab categorization
+
+**Contributors of this version:**
+None

@@ -40,7 +40,7 @@
 
 ### 📱 Apps Manager
 
-- Manage any app, **including system apps**
+- Manage any apps, **including system apps**
 
 - Allow advanced operations such as **Uninstall**, **Disable**, **Force Stop**, etc.
 
@@ -48,7 +48,7 @@
 
 ### 🔐 Permission Manager
 
-- View and modify app permissions by category
+- View and modify app permissions by **category**
 - Supported categories include: Microphone, Camera, Location access, Notifications, Phone & Contacts, Storage and other
 - Filter permissions by **granted** or **denied** status
 - Batch permission operations for multiple apps

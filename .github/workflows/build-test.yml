@@ -1,8 +1,6 @@
 name: Build Signed Test Release APK
 
 on:
-  push:
-    branches: [ main, master ]
   workflow_dispatch:
 
 jobs:
@@ -43,7 +41,7 @@ jobs:
           ./gradlew assembleRelease \
             -Pandroid.injected.signing.store.file=$(pwd)/keystore.jks \
             -Pandroid.injected.signing.store.password=android \
-            -Pandroid.injected.signing.key.alias=bugestudioteam\
+            -Pandroid.injected.signing.key.alias=bugestudioteam \
             -Pandroid.injected.signing.key.password=android
 
       - name: Upload Signed Release APK

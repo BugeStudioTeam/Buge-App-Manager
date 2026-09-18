@@ -6,38 +6,38 @@
     <item
         android:id="@+id/action_favorite"
         android:icon="@drawable/ic_favorite"
-        android:title="Favorite"
+        android:title="@string/menu_favorite"
         app:showAsAction="ifRoom" />
     <item
         android:id="@+id/action_share_apk"
-        android:title="Share APK"
+        android:title="@string/menu_share_apk"
         app:showAsAction="never" />
     <item
         android:id="@+id/action_export_apk"
-        android:title="Export APK"
+        android:title="@string/menu_export_apk"
         app:showAsAction="never" />
     <item
         android:id="@+id/action_export_info"
-        android:title="Export App Info"
+        android:title="@string/menu_export_info"
         app:showAsAction="never" />
     <item
         android:id="@+id/action_other_languages"
-        android:title="Other Languages"
+        android:title="@string/menu_other_languages"
         app:showAsAction="never" />
     <item
         android:id="@+id/action_google_play"
-        android:title="View on Google Play Store"
+        android:title="@string/menu_google_play"
         app:showAsAction="never" />
     <item
         android:id="@+id/action_f_droid"
-        android:title="View on F-Droid"
+        android:title="@string/menu_f_droid"
         app:showAsAction="never" />
     <item
         android:id="@+id/action_grant_all_permissions"
-        android:title="Grant All Permissions"
+        android:title="@string/menu_grant_all_permissions"
         app:showAsAction="never" />
     <item
         android:id="@+id/action_revoke_all_permissions"
-        android:title="Revoke All Permissions"
+        android:title="@string/menu_revoke_all_permissions"
         app:showAsAction="never" />
 </menu>

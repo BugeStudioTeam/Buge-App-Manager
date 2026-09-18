@@ -1,0 +1,16 @@
+**12.71.128**
+
+**Added** ✨
+- Added backup feature (will be significantly optimized later) — suggested by Telegram: Ashuchiha
+- Added automatic backup feature — suggested by Telegram: Ashuchiha
+- Added multi-language support for the app details more menu — suggested by @ChinaXiaole
+
+**Fixes** 🛠
+- Fixed duplicate logcat bug
+
+**Optimizations** ⚡
+- Improved logcat
+
+**Contributors of this version:**
+- Telegram: Ashuchiha
+- @ChinaXiaole

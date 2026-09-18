@@ -29,13 +29,13 @@
         android:orientation="vertical"
         app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
-        <!-- Fuck: Top bar with switch -->
+        <!-- Fuck: Top bar with switch, same style as log viewer -->
         <FrameLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="16dp"
             android:layout_marginTop="8dp"
-            android:layout_marginBottom="8dp"
+            android:layout_marginBottom="16dp"
             android:background="@drawable/bg_logging_setting">
 
             <LinearLayout
@@ -75,4 +75,4 @@
 
     </LinearLayout>
 
-</androidx.coordinatorlayout.widget.CoordinatorLayout>
+</androidxcoordinatorlayout.widget.CoordinatorLayout>

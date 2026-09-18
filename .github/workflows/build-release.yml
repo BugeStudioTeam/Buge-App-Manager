@@ -73,12 +73,12 @@ jobs:
 
       - name: Verify keystore secrets are set
         run: |
-          if [ -z "${{ secrets.KEYSTORE_PROPERTIES_B64 }}" ]; then
-            echo "ERROR: KEYSTORE_PROPERTIES_B64 secret is missing"
+          if [ -z "${{ secrets.KEYSTORE_PROPERTIES_BASE64 }}" ]; then
+            echo "ERROR: KEYSTORE_PROPERTIES_BASE64 secret is missing"
             exit 1
           fi
-          if [ -z "${{ secrets.KEYSTORE_JKS_B64 }}" ]; then
-            echo "ERROR: KEYSTORE_JKS_B64 secret is missing"
+          if [ -z "${{ secrets.KEYSTORE_JKS_BASE64 }}" ]; then
+            echo "ERROR: KEYSTORE_JKS_BASE64 secret is missing"
             exit 1
           fi
           echo "Keystore secrets are set"
@@ -105,12 +105,12 @@ jobs:
 
       - name: Decode keystore.properties
         run: |
-          echo "${{ secrets.KEYSTORE_PROPERTIES_B64 }}" | base64 -d > keystore.properties
+          echo "${{ secrets.KEYSTORE_PROPERTIES_BASE64 }}" | base64 -d > keystore.properties
           chmod 600 keystore.properties
 
       - name: Decode keystore.jks
         run: |
-          echo "${{ secrets.KEYSTORE_JKS_B64 }}" | base64 -d > app/keystore.jks
+          echo "${{ secrets.KEYSTORE_JKS_BASE64 }}" | base64 -d > app/keystore.jks
           chmod 600 app/keystore.jks
 
       - name: Grant execute permission for gradlew

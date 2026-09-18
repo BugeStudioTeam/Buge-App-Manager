@@ -21,6 +21,10 @@
         android:title="Export App Info"
         app:showAsAction="never" />
     <item
+        android:id="@+id/action_other_languages"
+        android:title="Other Languages"
+        app:showAsAction="never" />
+    <item
         android:id="@+id/action_google_play"
         android:title="View on Google Play Store"
         app:showAsAction="never" />

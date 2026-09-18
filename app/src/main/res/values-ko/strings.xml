@@ -357,5 +357,16 @@
     <string name="signature_warning_button_continue">계속</string>
     <string name="signature_warning_github_url">https://github.com/BugeStudioTeam/Buge-App-Manager/releases</string>
     <string name="signature_warning_fdroid_url">https://f-droid.org/packages/com.buge.appmanager/</string>
+
+    <!-- App Detail Menu -->
+    <string name="menu_favorite">즐겨찾기</string>
+    <string name="menu_share_apk">APK 공유</string>
+    <string name="menu_export_apk">APK 내보내기</string>
+    <string name="menu_export_info">앱 정보 내보내기</string>
+    <string name="menu_other_languages">다른 언어</string>
+    <string name="menu_google_play">Google Play 스토어에서 보기</string>
+    <string name="menu_f_droid">F-Droid에서 보기</string>
+    <string name="menu_grant_all_permissions">모든 권한 허용</string>
+    <string name="menu_revoke_all_permissions">모든 권한 취소</string>
     
 </resources>

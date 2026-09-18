@@ -184,14 +184,3 @@ class BackupSettingsActivity : BaseActivity() {
         }
     }
 }
-
-data class BackupSettingItem(
-    val title: String,
-    val subtitle: String,
-    val isHeader: Boolean,
-    val type: BackupItemType = BackupItemType.NONE
-)
-
-enum class BackupItemType {
-    NONE, BACKUP, INTERVAL, LOCATION
-}

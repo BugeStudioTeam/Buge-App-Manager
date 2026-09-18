@@ -112,6 +112,18 @@
             android:parentActivityName=".MainActivity"
             android:launchMode="singleTop" />
 
+        <activity
+            android:name=".BackupActivity"
+            android:exported="true"
+            android:parentActivityName=".MainActivity"
+            android:launchMode="singleTop" />
+
+        <activity
+            android:name=".BackupSettingsActivity"
+            android:exported="true"
+            android:parentActivityName=".BackupActivity"
+            android:launchMode="singleTop" />
+
         <provider
             android:name="androidx.core.content.FileProvider"
             android:authorities="com.buge.appmanager.fileprovider"

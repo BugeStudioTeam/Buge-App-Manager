@@ -340,5 +340,16 @@
     <string name="optional_perm_granted">已授予</string>
     <string name="optional_perm_denied">已拒絕</string>
     <string name="optional_perm_grant">授予</string>
+
+    <!-- App Detail Menu -->
+    <string name="menu_favorite">收藏</string>
+    <string name="menu_share_apk">分享 APK</string>
+    <string name="menu_export_apk">匯出 APK</string>
+    <string name="menu_export_info">匯出應用資訊</string>
+    <string name="menu_other_languages">其他語言</string>
+    <string name="menu_google_play">在 Google Play 商店中檢視</string>
+    <string name="menu_f_droid">在 F-Droid 中檢視</string>
+    <string name="menu_grant_all_permissions">授予所有權限</string>
+    <string name="menu_revoke_all_permissions">撤銷所有權限</string>
     
 </resources>

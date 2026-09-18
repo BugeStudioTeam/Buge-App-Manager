@@ -20,12 +20,15 @@ jobs:
       - name: Setup Android SDK
         uses: android-actions/setup-android@v4
 
+      - name: Decode keystore.properties
+        run: |
+          echo "${{ secrets.KEYSTORE_PROPERTIES_B64 }}" | base64 -d > keystore.properties
+          chmod 600 keystore.properties
+
       - name: Decode keystore.jks
         run: |
-          echo "${{ secrets.KEYSTORE_JKS_BASE64 }}" | base64 -d > keystore.jks
-          chmod 600 keystore.jks
-        env:
-          KEYSTORE_JKS_BASE64: ${{ secrets.KEYSTORE_JKS_BASE64 }}
+          echo "${{ secrets.KEYSTORE_JKS_BASE64 }}" | base64 -d > app/keystore.jks
+          chmod 600 app/keystore.jks
 
       - name: Fix gradle.properties
         run: |
@@ -37,12 +40,7 @@ jobs:
         run: chmod +x gradlew
 
       - name: Build Signed Release APK
-        run: |
-          ./gradlew assembleRelease \
-            -Pandroid.injected.signing.store.file=$(pwd)/keystore.jks \
-            -Pandroid.injected.signing.store.password=android \
-            -Pandroid.injected.signing.key.alias=bugestudioteam \
-            -Pandroid.injected.signing.key.password=android
+        run: ./gradlew assembleRelease
 
       - name: Upload Signed Release APK
         uses: actions/upload-artifact@v4

@@ -78,6 +78,10 @@ object LogManager {
     private var logcatReaderThread: Thread? = null
     private var isLogcatReading = false
 
+    // Fuck: Track processed logcat entries to avoid duplicates
+    private val processedLogcatKeys = mutableSetOf<String>()
+    private var lastLogcatTimestamp = 0L
+
     fun init(context: Context) {
         isEnabled = PreferencesManager.getLoggingEnabled(context)
         currentSessionId = System.currentTimeMillis()
@@ -94,6 +98,9 @@ object LogManager {
         PreferencesManager.setLoggingEnabled(context, enabled)
         if (enabled) {
             info(context, "Logging enabled", "Session resumed")
+            // Fuck: Reset logcat tracking when re-enabling
+            processedLogcatKeys.clear()
+            lastLogcatTimestamp = System.currentTimeMillis()
             startLogcatReader(context)
         } else {
             info(context, "Logging disabled", "Session paused")
@@ -120,6 +127,7 @@ object LogManager {
 
     fun clearLogs(context: Context) {
         logEntries.clear()
+        processedLogcatKeys.clear()
         saveLogsToFile(context)
         info(context, "Logs cleared", "All logs have been cleared")
         notifyListeners()
@@ -208,7 +216,8 @@ object LogManager {
 
     private fun readLogcat(context: Context) {
         try {
-            // Fuck: Only read ERROR level from logcat
+            // Fuck: Use -T 1 to read from the beginning, but we track processed keys
+            // Only read ERROR level
             val process = Runtime.getRuntime().exec(arrayOf(
                 "logcat",
                 "-v", "time",
@@ -261,7 +270,6 @@ object LogManager {
     private fun flushBuffer(context: Context, buffer: MutableList<String>) {
         if (buffer.isEmpty()) return
 
-        val timestamp = System.currentTimeMillis()
         val regex = Regex("""(\d{2}-\d{2}\s+\d{2}:\d{2}:\d{2}\.\d{3})\s+(\w)/([^:]+):(.*)""")
 
         for (line in buffer) {
@@ -279,8 +287,33 @@ object LogManager {
                     // Fuck: Only record ERROR level from logcat
                     if (level != "E" && level != "F") continue
 
+                    // Fuck: Build a unique key to avoid duplicates
+                    // Key = time + tag + message
+                    val uniqueKey = "$timeStr|$tag|$message"
+
+                    if (processedLogcatKeys.contains(uniqueKey)) {
+                        continue
+                    }
+
+                    // Fuck: Add to processed set
+                    processedLogcatKeys.add(uniqueKey)
+
+                    // Fuck: Limit the processed set size to avoid memory leak
+                    if (processedLogcatKeys.size > 5000) {
+                        val iterator = processedLogcatKeys.iterator()
+                        var count = 0
+                        while (iterator.hasNext() && count < 2500) {
+                            iterator.next()
+                            iterator.remove()
+                            count++
+                        }
+                    }
+
+                    // Fuck: Parse the logcat time to a real timestamp
+                    val logcatTime = parseLogcatTime(timeStr)
+
                     val entry = LogEntry(
-                        timestamp = timestamp,
+                        timestamp = logcatTime,
                         type = LogType.ERROR,
                         message = message,
                         details = "Logcat",
@@ -305,6 +338,18 @@ object LogManager {
         }
 
         buffer.clear()
+    }
+
+    // Fuck: Parse logcat time format "MM-dd HH:mm:ss.SSS" to timestamp
+    private fun parseLogcatTime(timeStr: String): Long {
+        return try {
+            val currentYear = SimpleDateFormat("yyyy", Locale.getDefault()).format(Date())
+            val fullTime = "$currentYear-$timeStr"
+            val format = SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS", Locale.getDefault())
+            format.parse(fullTime)?.time ?: System.currentTimeMillis()
+        } catch (e: Exception) {
+            System.currentTimeMillis()
+        }
     }
 
     fun refreshLogcat(context: Context) {

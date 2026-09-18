@@ -332,6 +332,36 @@
     <string name="update_download_complete">Download complete</string>
     <string name="save">Save</string>
 
+    <!-- Backup -->
+    <string name="pref_backup">Backup</string>
+    <string name="pref_backup_summary">Backup app settings, app list, and restore</string>
+    <string name="title_backup">Backup</string>
+    <string name="backup_app_settings">Backup App Settings</string>
+    <string name="backup_app_settings_summary">Backup this app\'s settings to a file</string>
+    <string name="backup_app_list">Backup App List</string>
+    <string name="backup_app_list_summary">Export list of all installed apps</string>
+    <string name="import_app_settings">Import App Settings</string>
+    <string name="import_app_settings_summary">Restore settings from a backup file</string>
+    <string name="backup_auto_settings">Backup Settings</string>
+    <string name="backup_enable">Enable Backup</string>
+    <string name="backup_section">Backup</string>
+    <string name="backup_auto_section">Auto Backup Interval</string>
+    <string name="backup_location">Backup Location</string>
+    <string name="backup_location_default">Documents</string>
+    <string name="backup_location_hint">Select backup folder</string>
+    <string name="backup_success">Backup created successfully</string>
+    <string name="backup_failed">Backup failed</string>
+    <string name="import_success">Settings imported successfully</string>
+    <string name="import_failed">Import failed</string>
+    <string name="backup_auto_hours">%d hours</string>
+    <string name="backup_auto_disabled">Disabled</string>
+    <string name="backup_auto_title">Auto Backup Interval</string>
+    <string name="backup_auto_summary">Automatically backup every N hours (0 = disabled)</string>
+    <string name="backup_auto_hint">Enter hours (0 to disable)</string>
+    <string name="other_languages">Other Languages</string>
+    <string name="other_languages_title">App Languages</string>
+    <string name="no_other_languages">This app has no other language resources</string>
+
     <!-- Optional Permissions -->
     <string name="pref_optional_permissions">Optional Permissions</string>
     <string name="pref_optional_permissions_summary">Grant optional permissions for additional features</string>

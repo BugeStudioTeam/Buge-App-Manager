@@ -19,6 +19,7 @@ import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.buge.appmanager.AboutUsActivity
 import com.buge.appmanager.AppearanceActivity
+import com.buge.appmanager.BackupActivity
 import com.buge.appmanager.BaseActivity
 import com.buge.appmanager.CustomLabelsActivity
 import com.buge.appmanager.LogViewerActivity
@@ -163,6 +164,9 @@ class SettingsFragment : Fragment() {
                             }
                             item.title == getString(R.string.pref_root_su_path) -> {
                                 showRootSuPathDialog()
+                            }
+                            item.title == getString(R.string.pref_backup) -> {
+                                startActivity(Intent(requireContext(), BackupActivity::class.java))
                             }
                         }
                     }
@@ -545,7 +549,7 @@ class SettingsFragment : Fragment() {
         val gmsEnabled = if (gmsAvailable) checkGmsStatus() else false
 
         return mutableListOf(
-            // Fuck: Authorization Group - Shizuku, Auth Mode
+            // Fuck: Authorization Group
             SettingItem.Header(getString(R.string.settings_group_authorization)),
             SettingItem.Shizuku,
             SettingItem.Normal(
@@ -566,7 +570,7 @@ class SettingsFragment : Fragment() {
             SettingItem.Normal(getString(R.string.pref_default_page), defaultPageText, R.drawable.ic_home_page),
             SettingItem.Normal(getString(R.string.more_options), getString(R.string.more_options_summary), R.drawable.ic_palette),
 
-            // Fuck: Apps Group
+            // Fuck: Apps Group - includes Backup
             SettingItem.Header(getString(R.string.settings_group_apps)),
             SettingItem.SwitchItem(
                 getString(R.string.pref_google_services),
@@ -599,8 +603,13 @@ class SettingsFragment : Fragment() {
                 getString(R.string.pref_custom_labels_summary),
                 R.drawable.ic_tag
             ),
+            SettingItem.Normal(
+                getString(R.string.pref_backup),
+                getString(R.string.pref_backup_summary),
+                R.drawable.ic_download
+            ),
 
-            // Fuck: Advanced Group - Shizuku Provider, su command, show system apps, show disabled apps, etc.
+            // Fuck: Advanced Group
             SettingItem.Header(getString(R.string.settings_group_advanced)),
             SettingItem.Normal(
                 getString(R.string.pref_shizuku_provider),

@@ -7,6 +7,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.FrameLayout
+import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 
@@ -16,6 +17,11 @@ class BackupSettingsAdapter(
     private val onLocationClick: () -> Unit
 ) : RecyclerView.Adapter<BackupSettingsAdapter.ViewHolder>() {
 
+    companion object {
+        private const val TYPE_HEADER = 1
+        private const val TYPE_ITEM = 2
+    }
+
     private var items: List<BackupSettingItem> = emptyList()
 
     fun submitList(newItems: List<BackupSettingItem>) {
@@ -23,36 +29,60 @@ class BackupSettingsAdapter(
         notifyDataSetChanged()
     }
 
+    override fun getItemViewType(position: Int): Int {
+        return if (items[position].isHeader) TYPE_HEADER else TYPE_ITEM
+    }
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        val view = LayoutInflater.from(parent.context)
-            .inflate(R.layout.item_backup_setting, parent, false)
-        return ViewHolder(view)
+        return if (viewType == TYPE_HEADER) {
+            val view = LayoutInflater.from(parent.context)
+                .inflate(R.layout.item_setting_group_header, parent, false)
+            ViewHolder(view, isHeader = true)
+        } else {
+            val view = LayoutInflater.from(parent.context)
+                .inflate(R.layout.item_backup_setting, parent, false)
+            ViewHolder(view, isHeader = false)
+        }
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        holder.bind(items[position])
-        applyBackground(holder, position)
+        val item = items[position]
+        holder.bind(item)
 
-        holder.itemView.setOnClickListener {
-            when (items[position].type) {
-                BackupItemType.BACKUP -> onBackupClick()
-                BackupItemType.INTERVAL -> onIntervalClick()
-                BackupItemType.LOCATION -> onLocationClick()
-                BackupItemType.NONE -> { }
+        if (!item.isHeader) {
+            applyBackground(holder, position)
+            holder.itemView.setOnClickListener {
+                when (item.type) {
+                    BackupItemType.BACKUP -> onBackupClick()
+                    BackupItemType.INTERVAL -> onIntervalClick()
+                    BackupItemType.LOCATION -> onLocationClick()
+                    BackupItemType.NONE -> { }
+                }
             }
         }
     }
 
     private fun applyBackground(holder: ViewHolder, position: Int) {
-        val container = holder.itemView.findViewById<FrameLayout>(R.id.item_container)
+        val container = holder.itemView.findViewById<FrameLayout>(R.id.item_container) ?: return
         val size = items.size
 
-        val isFirstInGroup = position == 0 || items[position - 1].isHeader
-        val isLastInGroup = position == size - 1 || items[position + 1].isHeader
+        // Fuck: Find the boundaries of the current group
+        var groupStart = position
+        while (groupStart > 0 && !items[groupStart - 1].isHeader) {
+            groupStart--
+        }
+
+        var groupEnd = position
+        while (groupEnd < size - 1 && !items[groupEnd + 1].isHeader) {
+            groupEnd++
+        }
+
+        val isFirstInGroup = position == groupStart
+        val isLastInGroup = position == groupEnd
+        val isSingleInGroup = isFirstInGroup && isLastInGroup
 
         val background = when {
-            size == 1 -> R.drawable.bg_setting_item_single
-            isFirstInGroup && isLastInGroup -> R.drawable.bg_setting_item_single
+            isSingleInGroup -> R.drawable.bg_setting_item_single
             isFirstInGroup -> R.drawable.bg_setting_item_top
             isLastInGroup -> R.drawable.bg_setting_item_bottom
             else -> R.drawable.bg_setting_item_middle
@@ -62,25 +92,37 @@ class BackupSettingsAdapter(
 
     override fun getItemCount(): Int = items.size
 
-    inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        private val container: FrameLayout = itemView.findViewById(R.id.item_container)
-        private val title: TextView = itemView.findViewById(R.id.title)
-        private val subtitle: TextView = itemView.findViewById(R.id.subtitle)
+    inner class ViewHolder(itemView: View, private val isHeader: Boolean) : RecyclerView.ViewHolder(itemView) {
+        private val title: TextView? = if (isHeader) {
+            itemView.findViewById(R.id.group_header)
+        } else {
+            itemView.findViewById(R.id.title)
+        }
+        private val subtitle: TextView? = if (isHeader) null else itemView.findViewById(R.id.subtitle)
+        private val arrow: ImageView? = if (isHeader) null else itemView.findViewById(R.id.arrow_icon)
 
         fun bind(item: BackupSettingItem) {
             if (item.isHeader) {
-                container.visibility = View.GONE
-                itemView.layoutParams = RecyclerView.LayoutParams(0, 0)
+                title?.text = item.title
             } else {
-                container.visibility = View.VISIBLE
-                itemView.layoutParams = RecyclerView.LayoutParams(
-                    ViewGroup.LayoutParams.MATCH_PARENT,
-                    ViewGroup.LayoutParams.WRAP_CONTENT
-                )
-                title.text = item.title
-                subtitle.text = item.subtitle
-                subtitle.visibility = if (item.subtitle.isEmpty()) View.GONE else View.VISIBLE
+                title?.text = item.title
+                subtitle?.text = item.subtitle
+                subtitle?.visibility = if (item.subtitle.isEmpty()) View.GONE else View.VISIBLE
+
+                // Fuck: Hide arrow for interval/location items since they are clickable but lead to dialogs/pickers
+                arrow?.visibility = View.VISIBLE
             }
         }
     }
+}
+
+data class BackupSettingItem(
+    val title: String,
+    val subtitle: String,
+    val isHeader: Boolean,
+    val type: BackupItemType = BackupItemType.NONE
+)
+
+enum class BackupItemType {
+    NONE, BACKUP, INTERVAL, LOCATION
 }

@@ -30,6 +30,9 @@ object PreferencesManager {
     private const val ASSISTANT_BACKUP_KEY = "assistant_backup_key"
     private const val VOICE_INTERACTION_BACKUP_KEY = "voice_interaction_backup_key"
     private const val ASSISTANT_BACKUP_EXISTS_KEY = "assistant_backup_exists_key"
+    private const val BACKUP_ENABLED_KEY = "backup_enabled"
+    private const val BACKUP_INTERVAL_HOURS_KEY = "backup_interval_hours"
+    private const val BACKUP_LOCATION_KEY = "backup_location"
 
     const val AUTH_MODE_SHIZUKU = "shizuku"
     const val AUTH_MODE_ROOT = "root"
@@ -126,6 +129,10 @@ object PreferencesManager {
         }
     }
 
+    fun setFavoriteApps(context: Context, favorites: Set<String>) {
+        saveFavoriteApps(context, favorites)
+    }
+
     private fun saveFavoriteApps(context: Context, favorites: Set<String>) {
         val gson = com.google.gson.Gson()
         val json = gson.toJson(favorites)
@@ -196,7 +203,6 @@ object PreferencesManager {
         return getPreferences(context).getString(ROOT_SU_PATH_KEY, DEFAULT_SU_PATH) ?: DEFAULT_SU_PATH
     }
 
-    // Fuck: Dynamic Color
     fun setDynamicColor(context: Context, enabled: Boolean) {
         getPreferences(context).edit().putBoolean(DYNAMIC_COLOR_KEY, enabled).apply()
     }
@@ -235,5 +241,30 @@ object PreferencesManager {
         editor.remove(ASSISTANT_BACKUP_KEY)
         editor.remove(VOICE_INTERACTION_BACKUP_KEY)
         editor.apply()
+    }
+
+    // Fuck: Backup settings
+    fun setBackupEnabled(context: Context, enabled: Boolean) {
+        getPreferences(context).edit().putBoolean(BACKUP_ENABLED_KEY, enabled).apply()
+    }
+
+    fun getBackupEnabled(context: Context): Boolean {
+        return getPreferences(context).getBoolean(BACKUP_ENABLED_KEY, false)
+    }
+
+    fun setBackupIntervalHours(context: Context, hours: Int) {
+        getPreferences(context).edit().putInt(BACKUP_INTERVAL_HOURS_KEY, hours).apply()
+    }
+
+    fun getBackupIntervalHours(context: Context): Int {
+        return getPreferences(context).getInt(BACKUP_INTERVAL_HOURS_KEY, 0)
+    }
+
+    fun setBackupLocation(context: Context, uri: String) {
+        getPreferences(context).edit().putString(BACKUP_LOCATION_KEY, uri).apply()
+    }
+
+    fun getBackupLocation(context: Context): String {
+        return getPreferences(context).getString(BACKUP_LOCATION_KEY, "") ?: ""
     }
 }

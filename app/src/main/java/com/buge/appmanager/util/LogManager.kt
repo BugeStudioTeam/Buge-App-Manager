@@ -208,11 +208,12 @@ object LogManager {
 
     private fun readLogcat(context: Context) {
         try {
+            // Fuck: Only read ERROR level from logcat
             val process = Runtime.getRuntime().exec(arrayOf(
                 "logcat",
                 "-v", "time",
                 "-d",
-                "*:I"
+                "*:E"
             ))
 
             val reader = process.inputStream.bufferedReader()
@@ -220,7 +221,6 @@ object LogManager {
             var lastReadTime = System.currentTimeMillis()
 
             while (isLogcatReading) {
-                // Fuck: Read all available lines
                 var line: String? = reader.readLine()
                 while (line != null && isLogcatReading) {
                     buffer.add(line)
@@ -236,10 +236,8 @@ object LogManager {
                     buffer = mutableListOf()
                 }
 
-                // Fuck: Poll every 2 seconds
                 Thread.sleep(2000)
 
-                // Fuck: Check if we need to restart process
                 if (System.currentTimeMillis() - lastReadTime > 60000) {
                     lastReadTime = System.currentTimeMillis()
                     process.destroy()
@@ -278,19 +276,12 @@ object LogManager {
                     if (message.isEmpty()) continue
                     if (tag == "BugeAppManager") continue
 
-                    val logType = when (level) {
-                        "V" -> LogType.VERBOSE
-                        "D" -> LogType.DEBUG
-                        "I" -> LogType.INFO
-                        "W" -> LogType.WARNING
-                        "E" -> LogType.ERROR
-                        "F" -> LogType.ERROR
-                        else -> LogType.INFO
-                    }
+                    // Fuck: Only record ERROR level from logcat
+                    if (level != "E" && level != "F") continue
 
                     val entry = LogEntry(
                         timestamp = timestamp,
-                        type = logType,
+                        type = LogType.ERROR,
                         message = message,
                         details = "Logcat",
                         tag = tag,
@@ -307,26 +298,6 @@ object LogManager {
 
                     saveLogsToFile(context)
                     notifyListeners()
-                } else {
-                    if (line.isNotBlank() && !line.startsWith("---------")) {
-                        val entry = LogEntry(
-                            timestamp = timestamp,
-                            type = LogType.LOGCAT,
-                            message = line.take(200),
-                            details = "Raw logcat",
-                            tag = "logcat",
-                            threadName = null,
-                            stackTrace = null,
-                            isLogcat = true
-                        )
-                        logEntries.add(0, entry)
-
-                        while (logEntries.size > MAX_LOG_LINES) {
-                            logEntries.removeAt(logEntries.lastIndex)
-                        }
-                        saveLogsToFile(context)
-                        notifyListeners()
-                    }
                 }
             } catch (e: Exception) {
                 // Fuck: Skip malformed lines

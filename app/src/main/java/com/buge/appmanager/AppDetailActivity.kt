@@ -42,6 +42,7 @@ import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
 import java.util.zip.ZipEntry
+import java.util.zip.ZipFile
 import java.util.zip.ZipOutputStream
 
 class AppDetailActivity : BaseActivity() {
@@ -117,6 +118,10 @@ class AppDetailActivity : BaseActivity() {
                 exportAppInfo()
                 return true
             }
+            R.id.action_other_languages -> {
+                showOtherLanguages()
+                return true
+            }
             R.id.action_google_play -> {
                 openInGooglePlay()
                 return true
@@ -160,6 +165,74 @@ class AppDetailActivity : BaseActivity() {
                 start()
             }
             onClick.invoke()
+        }
+    }
+
+    // ===================== Other Languages =====================
+
+    private fun showOtherLanguages() {
+        try {
+            val appInfo = packageManager.getApplicationInfo(packageName, 0)
+            val sourceDir = appInfo.sourceDir ?: run {
+                Snackbar.make(binding.root, "Cannot read app resources", Snackbar.LENGTH_SHORT).show()
+                return
+            }
+
+            val apkFile = File(sourceDir)
+            if (!apkFile.exists()) {
+                Snackbar.make(binding.root, "APK file not found", Snackbar.LENGTH_SHORT).show()
+                return
+            }
+
+            val locales = mutableSetOf<String>()
+            ZipFile(apkFile).use { zipFile ->
+                val entries = zipFile.entries()
+                while (entries.hasMoreElements()) {
+                    val entry = entries.nextElement()
+                    val name = entry.name
+                    if (name.startsWith("resources.arsc")) continue
+                    // Fuck: Match res/values-xx/ or res/values-xx-rYY/
+                    val match = Regex("""res/values-([a-z]{2}(?:-r[A-Z]{2})?)/""").find(name)
+                    if (match != null) {
+                        locales.add(match.groupValues[1])
+                    }
+                }
+            }
+
+            if (locales.isEmpty()) {
+                Snackbar.make(binding.root, getString(R.string.no_other_languages), Snackbar.LENGTH_SHORT).show()
+                return
+            }
+
+            val sorted = locales.sorted()
+            val displayNames = sorted.map { code ->
+                val locale = try {
+                    if (code.contains("-r")) {
+                        val parts = code.split("-r")
+                        Locale(parts[0], parts[1])
+                    } else {
+                        Locale(code)
+                    }
+                } catch (e: Exception) {
+                    Locale(code)
+                }
+                val displayName = try {
+                    locale.getDisplayName(locale)
+                } catch (e: Exception) {
+                    code
+                }
+                "$displayName ($code)"
+            }.toTypedArray()
+
+            MaterialAlertDialogBuilder(this)
+                .setTitle(R.string.other_languages_title)
+                .setItems(displayNames) { _, _ -> }
+                .setPositiveButton(R.string.close, null)
+                .show()
+
+        } catch (e: Exception) {
+            Snackbar.make(binding.root, "Failed to read languages: ${e.message}", Snackbar.LENGTH_LONG).show()
+            LogManager.error(this, "Failed to read app languages", e.message)
         }
     }
 
@@ -533,10 +606,8 @@ class AppDetailActivity : BaseActivity() {
             val isSplit = isSplitApk(packageName)
 
             if (isSplit) {
-                // For split APK, create a .apks file and share it
                 shareSplitApk(packageName, appName)
             } else {
-                // For single APK, share directly
                 shareSingleApk(sourcePath, appName)
             }
 
@@ -607,7 +678,6 @@ class AppDetailActivity : BaseActivity() {
             startActivity(chooserIntent)
             LogManager.success(this, "APK shared", "Package: $packageName")
 
-            // Schedule cleanup
             lifecycleScope.launch {
                 kotlinx.coroutines.delay(30000)
                 cleanupTempApkFiles(cacheDir)
@@ -710,7 +780,6 @@ class AppDetailActivity : BaseActivity() {
                 startActivity(chooserIntent)
                 LogManager.success(this@AppDetailActivity, "Split APK shared", "Package: $packageName, Splits: ${apkPaths.size}")
 
-                // Schedule cleanup
                 kotlinx.coroutines.delay(30000)
                 cleanupTempApkFiles(cacheDir)
 
@@ -1077,7 +1146,6 @@ class AppDetailActivity : BaseActivity() {
             addInfoRow(getString(R.string.min_sdk), "API ${app.minSdkVersion}")
             addInfoRow(getString(R.string.package_name), app.packageName)
 
-            // Add storage info (app size + data size)
             val storageInfo = viewModel.storageInfo.value
             if (storageInfo != null) {
                 addInfoRow(getString(R.string.storage_app), formatFileSize(storageInfo.totalSize))
@@ -1085,7 +1153,6 @@ class AppDetailActivity : BaseActivity() {
                 addInfoRow(getString(R.string.storage_app), getString(R.string.storage_unknown))
             }
 
-            // Add installer info
             val installer = viewModel.installerAppName.value
             if (!installer.isNullOrEmpty()) {
                 addInfoRow(getString(R.string.installer_app), installer)
@@ -1122,14 +1189,9 @@ class AppDetailActivity : BaseActivity() {
         }
 
         viewModel.storageInfo.observe(this) { storageInfo ->
-            // Storage info is now displayed in the app info list via appInfo observer
-            // This observer triggers a refresh of the app info to show storage data
             viewModel.appInfo.value?.let { app ->
-                // The appInfo observer will handle updating the UI
-                // Force a refresh by re-observing the same data
                 val currentApp = viewModel.appInfo.value
                 if (currentApp != null) {
-                    // Update the info rows with storage data
                     binding.infoContainer.removeAllViews()
                     val currentLocale = getCurrentLocale()
                     val dateFormat = SimpleDateFormat("yyyy-MM-dd HH:mm", currentLocale)
@@ -1152,8 +1214,6 @@ class AppDetailActivity : BaseActivity() {
         }
 
         viewModel.installerAppName.observe(this) { installerName ->
-            // Installer info is now displayed in the app info list via appInfo observer
-            // Trigger refresh
             viewModel.appInfo.value?.let { app ->
                 val currentApp = viewModel.appInfo.value
                 if (currentApp != null) {

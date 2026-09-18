@@ -22,7 +22,7 @@ jobs:
 
       - name: Decode keystore.properties
         run: |
-          echo "${{ secrets.KEYSTORE_PROPERTIES_B64 }}" | base64 -d > keystore.properties
+          echo "${{ secrets.KEYSTORE_PROPERTIES_BASE64 }}" | base64 -d > keystore.properties
           chmod 600 keystore.properties
 
       - name: Decode keystore.jks

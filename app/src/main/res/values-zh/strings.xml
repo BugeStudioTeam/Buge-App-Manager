@@ -357,5 +357,16 @@
     <string name="signature_warning_button_continue">继续</string>
     <string name="signature_warning_github_url">https://github.com/BugeStudioTeam/Buge-App-Manager/releases</string>
     <string name="signature_warning_fdroid_url">https://f-droid.org/packages/com.buge.appmanager/</string>
+
+    <!-- App Detail Menu -->
+    <string name="menu_favorite">收藏</string>
+    <string name="menu_share_apk">分享 APK</string>
+    <string name="menu_export_apk">导出 APK</string>
+    <string name="menu_export_info">导出应用信息</string>
+    <string name="menu_other_languages">其他语言</string>
+    <string name="menu_google_play">在 Google Play 商店中查看</string>
+    <string name="menu_f_droid">在 F-Droid 中查看</string>
+    <string name="menu_grant_all_permissions">授予所有权限</string>
+    <string name="menu_revoke_all_permissions">撤销所有权限</string>
     
 </resources>

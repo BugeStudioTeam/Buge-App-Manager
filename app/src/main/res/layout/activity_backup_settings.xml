@@ -75,4 +75,4 @@
 
     </LinearLayout>
 
-</androidxcoordinatorlayout.widget.CoordinatorLayout>
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

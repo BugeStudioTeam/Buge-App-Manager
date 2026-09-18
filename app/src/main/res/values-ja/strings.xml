@@ -357,5 +357,16 @@
     <string name="signature_warning_button_continue">続行</string>
     <string name="signature_warning_github_url">https://github.com/BugeStudioTeam/Buge-App-Manager/releases</string>
     <string name="signature_warning_fdroid_url">https://f-droid.org/packages/com.buge.appmanager/</string>
+
+    <!-- App Detail Menu -->
+    <string name="menu_favorite">お気に入り</string>
+    <string name="menu_share_apk">APKを共有</string>
+    <string name="menu_export_apk">APKをエクスポート</string>
+    <string name="menu_export_info">アプリ情報をエクスポート</string>
+    <string name="menu_other_languages">その他の言語</string>
+    <string name="menu_google_play">Google Play Storeで表示</string>
+    <string name="menu_f_droid">F-Droidで表示</string>
+    <string name="menu_grant_all_permissions">すべての権限を許可</string>
+    <string name="menu_revoke_all_permissions">すべての権限を取り消し</string>
     
 </resources>

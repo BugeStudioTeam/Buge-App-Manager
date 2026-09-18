@@ -26,6 +26,16 @@ class BackupSettingsActivity : BaseActivity() {
         ActivityResultContracts.OpenDocumentTree()
     ) { uri: Uri? ->
         uri ?: return@registerForActivityResult
+        // Fuck: Persist permission for the selected folder
+        try {
+            contentResolver.takePersistableUriPermission(
+                uri,
+                android.content.Intent.FLAG_GRANT_READ_URI_PERMISSION or
+                android.content.Intent.FLAG_GRANT_WRITE_URI_PERMISSION
+            )
+        } catch (e: Exception) {
+            LogManager.warning(this, "Failed to persist folder permission", e.message)
+        }
         PreferencesManager.setBackupLocation(this, uri.toString())
         LogManager.info(this, "Backup location changed", uri.toString())
         rebuildList()

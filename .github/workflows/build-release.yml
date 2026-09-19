@@ -216,14 +216,29 @@ jobs:
       - name: Verify release asset
         run: |
           TAG="${{ needs.preflight.outputs.tag }}"
-          ASSETS=$(curl -s -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" \
-            "https://api.github.com/repos/${{ github.repository }}/releases/tags/$TAG/assets")
           EXPECTED="BugeAppManager-v${{ needs.preflight.outputs.version_name }}-release.apk"
-          if ! echo "$ASSETS" | grep -q "$EXPECTED"; then
-            echo "ERROR: APK asset not found in release: $EXPECTED"
-            exit 1
-          fi
-          echo "Release asset found: $EXPECTED"
+          echo "Expected: [$EXPECTED]"
+
+          for i in 1 2 3 4 5; do
+            echo "Attempt $i"
+            RELEASE=$(curl -s -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" \
+              "https://api.github.com/repos/${{ github.repository }}/releases/tags/$TAG")
+
+            echo "--- Parsed asset names ---"
+            echo "$RELEASE" | grep -oP '"name":\s*"\K[^"]+' || true
+            echo "--- End ---"
+
+            if echo "$RELEASE" | grep -qF -- "$EXPECTED"; then
+              echo "OK: Release asset found"
+              exit 0
+            fi
+            sleep 5
+          done
+
+          echo "ERROR: APK asset not found"
+          echo "Full release JSON:"
+          echo "$RELEASE"
+          exit 1
 
       - name: Summary
         run: |

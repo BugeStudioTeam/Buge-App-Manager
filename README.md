@@ -1,7 +1,11 @@
 <p align="center">
   <img src="https://raw.githubusercontent.com/BugeStudioTeam/Buge-App-Manager/refs/heads/main/images/icons/icon.png" alt="Buge App Manager Icon" width="120"/>
+</p>
+
+<p align="center">
   <img src="https://raw.githubusercontent.com/BugeStudioTeam/Buge-App-Manager/refs/heads/main/images/title.svg" alt="Buge App Manager" width="520"/>
 </p>
+
 
 <p align="center">
   <img src="https://ziadoua.github.io/m3-Markdown-Badges/badges/Android/android2.svg">

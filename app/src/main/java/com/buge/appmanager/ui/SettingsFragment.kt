@@ -555,7 +555,7 @@ class SettingsFragment : Fragment() {
             SettingItem.Normal(
                 getString(R.string.pref_auth_mode),
                 authModeText,
-                R.drawable.ic_backup
+                R.drawable.ic_auth_method
             ),
             SettingItem.Normal(
                 getString(R.string.pref_optional_permissions),
@@ -606,7 +606,7 @@ class SettingsFragment : Fragment() {
             SettingItem.Normal(
                 getString(R.string.pref_backup),
                 getString(R.string.pref_backup_summary),
-                R.drawable.ic_download
+                R.drawable.ic_backup
             ),
 
             // Fuck: Advanced Group

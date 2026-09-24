@@ -1,0 +1,8 @@
+**12.72.130**
+
+**Fixes** 🛠
+- Fixed text errors
+- Fixed icon errors in certain cases
+
+**Contributors of this version:**
+None

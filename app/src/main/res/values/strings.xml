@@ -356,7 +356,7 @@
     <string name="backup_auto_hours">%d hours</string>
     <string name="backup_auto_disabled">Disabled</string>
     <string name="backup_auto_title">Auto Backup Interval</string>
-    <string name="backup_auto_summary">Automatically backup every N hours (0 = disabled)</string>
+    <string name="backup_auto_summary">Automatically backup when you launch the app</string>
     <string name="backup_auto_hint">Enter hours (0 to disable)</string>
     <string name="other_languages">Other Languages</string>
     <string name="other_languages_title">App Languages</string>

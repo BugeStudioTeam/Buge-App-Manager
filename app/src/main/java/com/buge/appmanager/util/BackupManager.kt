@@ -5,13 +5,11 @@ package com.buge.appmanager.util
 
 import android.content.Context
 import android.net.Uri
+import android.provider.DocumentsContract
 import androidx.appcompat.app.AppCompatDelegate
 import com.buge.appmanager.model.CustomLabel
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
-import com.google.gson.reflect.TypeToken
-import java.io.File
-import java.io.FileOutputStream
 import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
@@ -133,30 +131,72 @@ object BackupManager {
     }
 
     /**
-     * Perform automatic backup using the configured location
+     * Perform automatic backup using the configured location and content mode
      */
     fun performAutoBackup(context: Context): Boolean {
         return try {
             val locationUri = PreferencesManager.getBackupLocation(context)
-            if (locationUri.isEmpty()) return false
+            if (locationUri.isEmpty()) {
+                LogManager.warning(context, "Auto backup skipped", "No backup location configured")
+                return false
+            }
 
             val locationDir = Uri.parse(locationUri)
             val timestamp = SimpleDateFormat("yyyyMMdd_HHmmss", Locale.US).format(Date())
-            val fileName = "buge_auto_backup_$timestamp.json"
+            val contentMode = PreferencesManager.getBackupContentMode(context)
 
-            // Build document URI inside the tree
-            val docUri = android.provider.DocumentsContract.buildDocumentUriUsingTree(
+            // Fuck: Build document URI inside the tree
+            val docUri = DocumentsContract.buildDocumentUriUsingTree(
                 locationDir,
-                android.provider.DocumentsContract.getTreeDocumentId(locationDir) ?: return false
+                DocumentsContract.getTreeDocumentId(locationDir) ?: return false
             )
-            val newDocUri = android.provider.DocumentsContract.createDocument(
-                context.contentResolver,
-                docUri,
-                "application/json",
-                fileName
-            ) ?: return false
 
-            backupSettings(context, newDocUri)
+            when (contentMode) {
+                PreferencesManager.BACKUP_CONTENT_APP_LIST -> {
+                    val fileName = "buge_auto_app_list_$timestamp.txt"
+                    val newDocUri = DocumentsContract.createDocument(
+                        context.contentResolver,
+                        docUri,
+                        "text/plain",
+                        fileName
+                    ) ?: return false
+                    backupAppList(context, newDocUri)
+                }
+                PreferencesManager.BACKUP_CONTENT_BOTH -> {
+                    // Fuck: Backup settings first
+                    val settingsFileName = "buge_auto_backup_$timestamp.json"
+                    val settingsUri = DocumentsContract.createDocument(
+                        context.contentResolver,
+                        docUri,
+                        "application/json",
+                        settingsFileName
+                    ) ?: return false
+                    val settingsOk = backupSettings(context, settingsUri)
+
+                    // Fuck: Then backup app list
+                    val appListFileName = "buge_auto_app_list_$timestamp.txt"
+                    val appListUri = DocumentsContract.createDocument(
+                        context.contentResolver,
+                        docUri,
+                        "text/plain",
+                        appListFileName
+                    ) ?: return false
+                    val appListOk = backupAppList(context, appListUri)
+
+                    settingsOk && appListOk
+                }
+                else -> {
+                    // Fuck: Default - backup settings only
+                    val fileName = "buge_auto_backup_$timestamp.json"
+                    val newDocUri = DocumentsContract.createDocument(
+                        context.contentResolver,
+                        docUri,
+                        "application/json",
+                        fileName
+                    ) ?: return false
+                    backupSettings(context, newDocUri)
+                }
+            }
         } catch (e: Exception) {
             LogManager.error(context, "Auto backup failed", e.message)
             false
@@ -187,7 +227,9 @@ object BackupManager {
             "dynamic_color" to PreferencesManager.getDynamicColor(context),
             "backup_enabled" to PreferencesManager.getBackupEnabled(context),
             "backup_interval_hours" to PreferencesManager.getBackupIntervalHours(context),
-            "backup_location" to PreferencesManager.getBackupLocation(context)
+            "backup_location" to PreferencesManager.getBackupLocation(context),
+            "auto_backup_on_launch" to PreferencesManager.getAutoBackupOnLaunch(context),
+            "backup_content_mode" to PreferencesManager.getBackupContentMode(context)
         )
     }
 
@@ -228,5 +270,7 @@ object BackupManager {
         PreferencesManager.setBackupEnabled(context, getBool("backup_enabled", false))
         PreferencesManager.setBackupIntervalHours(context, getInt("backup_interval_hours", 0))
         PreferencesManager.setBackupLocation(context, getString("backup_location", ""))
+        PreferencesManager.setAutoBackupOnLaunch(context, getBool("auto_backup_on_launch", false))
+        PreferencesManager.setBackupContentMode(context, getString("backup_content_mode", PreferencesManager.BACKUP_CONTENT_SETTINGS))
     }
 }

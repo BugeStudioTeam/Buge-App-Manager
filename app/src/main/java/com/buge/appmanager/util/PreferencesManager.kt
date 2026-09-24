@@ -33,10 +33,17 @@ object PreferencesManager {
     private const val BACKUP_ENABLED_KEY = "backup_enabled"
     private const val BACKUP_INTERVAL_HOURS_KEY = "backup_interval_hours"
     private const val BACKUP_LOCATION_KEY = "backup_location"
+    private const val AUTO_BACKUP_ON_LAUNCH_KEY = "auto_backup_on_launch"
+    private const val BACKUP_CONTENT_MODE_KEY = "backup_content_mode"
 
     const val AUTH_MODE_SHIZUKU = "shizuku"
     const val AUTH_MODE_ROOT = "root"
     const val DEFAULT_SU_PATH = "su"
+
+    // Fuck: Backup content mode constants
+    const val BACKUP_CONTENT_SETTINGS = "settings"
+    const val BACKUP_CONTENT_APP_LIST = "app_list"
+    const val BACKUP_CONTENT_BOTH = "both"
 
     private fun getPreferences(context: Context): SharedPreferences {
         return context.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE)
@@ -266,5 +273,23 @@ object PreferencesManager {
 
     fun getBackupLocation(context: Context): String {
         return getPreferences(context).getString(BACKUP_LOCATION_KEY, "") ?: ""
+    }
+
+    // Fuck: Auto backup on app launch
+    fun setAutoBackupOnLaunch(context: Context, enabled: Boolean) {
+        getPreferences(context).edit().putBoolean(AUTO_BACKUP_ON_LAUNCH_KEY, enabled).apply()
+    }
+
+    fun getAutoBackupOnLaunch(context: Context): Boolean {
+        return getPreferences(context).getBoolean(AUTO_BACKUP_ON_LAUNCH_KEY, false)
+    }
+
+    // Fuck: Backup content mode (settings / app_list / both)
+    fun setBackupContentMode(context: Context, mode: String) {
+        getPreferences(context).edit().putString(BACKUP_CONTENT_MODE_KEY, mode).apply()
+    }
+
+    fun getBackupContentMode(context: Context): String {
+        return getPreferences(context).getString(BACKUP_CONTENT_MODE_KEY, BACKUP_CONTENT_SETTINGS) ?: BACKUP_CONTENT_SETTINGS
     }
 }

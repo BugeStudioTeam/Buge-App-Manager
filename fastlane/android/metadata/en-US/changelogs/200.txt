@@ -1,0 +1,11 @@
+**12.72.129**
+
+**Added** ✨
+- Added automatic backup on app launch
+- Added automatic backup for installed apps
+
+**Optimizations** ⚡
+- Improved backup functionality
+
+**Contributors of this version:**
+None

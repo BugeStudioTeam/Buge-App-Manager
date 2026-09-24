@@ -66,7 +66,7 @@
                     <ImageView
                         android:layout_width="24dp"
                         android:layout_height="24dp"
-                        android:src="@drawable/ic_download"
+                        android:src="@drawable/ic_settings"
                         android:layout_marginEnd="16dp" />
 
                     <LinearLayout
@@ -178,7 +178,7 @@
                     <ImageView
                         android:layout_width="24dp"
                         android:layout_height="24dp"
-                        android:src="@drawable/ic_restore"
+                        android:src="@drawable/ic_import"
                         android:layout_marginEnd="16dp" />
 
                     <LinearLayout
@@ -244,7 +244,7 @@
                     <ImageView
                         android:layout_width="24dp"
                         android:layout_height="24dp"
-                        android:src="@drawable/ic_autoupdate"
+                        android:src="@drawable/ic_backup"
                         android:layout_marginEnd="16dp" />
 
                     <LinearLayout

@@ -555,7 +555,7 @@ class SettingsFragment : Fragment() {
             SettingItem.Normal(
                 getString(R.string.pref_auth_mode),
                 authModeText,
-                R.drawable.ic_auth_method
+                R.drawable.ic_backup
             ),
             SettingItem.Normal(
                 getString(R.string.pref_optional_permissions),

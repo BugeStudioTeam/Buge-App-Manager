@@ -14,7 +14,6 @@ import com.buge.appmanager.util.LogManager
 import com.buge.appmanager.util.PreferencesManager
 import com.buge.appmanager.util.SnackbarHelper
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
-import com.google.android.material.textfield.TextInputEditText
 
 class BackupSettingsActivity : BaseActivity() {
 
@@ -26,7 +25,6 @@ class BackupSettingsActivity : BaseActivity() {
         ActivityResultContracts.OpenDocumentTree()
     ) { uri: Uri? ->
         uri ?: return@registerForActivityResult
-        // Fuck: Persist permission for the selected folder
         try {
             contentResolver.takePersistableUriPermission(
                 uri,
@@ -85,7 +83,13 @@ class BackupSettingsActivity : BaseActivity() {
         adapter = BackupSettingsAdapter(
             onBackupClick = { performManualBackup() },
             onIntervalClick = { showIntervalDialog() },
-            onLocationClick = { pickFolderLauncher.launch(null) }
+            onLocationClick = { pickFolderLauncher.launch(null) },
+            onAutoBackupToggle = { enabled ->
+                PreferencesManager.setAutoBackupOnLaunch(this, enabled)
+                LogManager.info(this, "Auto backup on launch changed to $enabled")
+                rebuildList()
+            },
+            onContentClick = { showContentDialog() }
         )
         binding.recyclerView.layoutManager = LinearLayoutManager(this)
         binding.recyclerView.adapter = adapter
@@ -97,12 +101,7 @@ class BackupSettingsActivity : BaseActivity() {
     }
 
     private fun buildItems(): List<BackupSettingItem> {
-        val interval = PreferencesManager.getBackupIntervalHours(this)
-        val intervalText = if (interval <= 0) {
-            getString(R.string.backup_auto_disabled)
-        } else {
-            getString(R.string.backup_auto_hours, interval)
-        }
+        val autoBackupOnLaunch = PreferencesManager.getAutoBackupOnLaunch(this)
 
         val locationUri = PreferencesManager.getBackupLocation(this)
         val locationText = if (locationUri.isEmpty()) {
@@ -111,7 +110,15 @@ class BackupSettingsActivity : BaseActivity() {
             Uri.parse(locationUri).lastPathSegment ?: getString(R.string.backup_location_default)
         }
 
+        val contentMode = PreferencesManager.getBackupContentMode(this)
+        val contentText = when (contentMode) {
+            PreferencesManager.BACKUP_CONTENT_APP_LIST -> getString(R.string.backup_content_app_list)
+            PreferencesManager.BACKUP_CONTENT_BOTH -> getString(R.string.backup_content_both)
+            else -> getString(R.string.backup_content_settings)
+        }
+
         return listOf(
+            // Fuck: Manual Backup section
             BackupSettingItem(
                 title = getString(R.string.backup_section),
                 subtitle = "",
@@ -119,20 +126,29 @@ class BackupSettingsActivity : BaseActivity() {
             ),
             BackupSettingItem(
                 title = getString(R.string.backup_app_settings),
-                subtitle = "Create a manual backup now",
+                subtitle = getString(R.string.backup_app_settings_summary),
                 isHeader = false,
                 type = BackupItemType.BACKUP
             ),
+
+            // Fuck: Auto Backup section
             BackupSettingItem(
                 title = getString(R.string.backup_auto_section),
                 subtitle = "",
                 isHeader = true
             ),
             BackupSettingItem(
-                title = getString(R.string.backup_auto_title),
-                subtitle = intervalText,
+                title = getString(R.string.backup_auto_on_launch),
+                subtitle = getString(R.string.backup_auto_on_launch_summary),
                 isHeader = false,
-                type = BackupItemType.INTERVAL
+                type = BackupItemType.AUTO_BACKUP_SWITCH,
+                isChecked = autoBackupOnLaunch
+            ),
+            BackupSettingItem(
+                title = getString(R.string.backup_content),
+                subtitle = contentText,
+                isHeader = false,
+                type = BackupItemType.CONTENT
             ),
             BackupSettingItem(
                 title = getString(R.string.backup_location),
@@ -148,18 +164,34 @@ class BackupSettingsActivity : BaseActivity() {
     }
 
     private fun showIntervalDialog() {
-        val dialogView = layoutInflater.inflate(R.layout.dialog_backup_interval, null)
-        val input = dialogView.findViewById<TextInputEditText>(R.id.interval_input)
-        val current = PreferencesManager.getBackupIntervalHours(this)
-        input.setText(current.toString())
+        // Fuck: Deprecated, kept for backward compat but not used
+    }
+
+    private fun showContentDialog() {
+        val options = arrayOf(
+            getString(R.string.backup_content_settings),
+            getString(R.string.backup_content_app_list),
+            getString(R.string.backup_content_both)
+        )
+        val currentMode = PreferencesManager.getBackupContentMode(this)
+        val currentIndex = when (currentMode) {
+            PreferencesManager.BACKUP_CONTENT_APP_LIST -> 1
+            PreferencesManager.BACKUP_CONTENT_BOTH -> 2
+            else -> 0
+        }
 
         MaterialAlertDialogBuilder(this)
-            .setTitle(R.string.backup_auto_title)
-            .setView(dialogView)
-            .setPositiveButton(R.string.confirm) { _, _ ->
-                val hours = input.text?.toString()?.trim()?.toIntOrNull() ?: 0
-                PreferencesManager.setBackupIntervalHours(this, hours.coerceAtLeast(0))
-                LogManager.info(this, "Backup interval changed to $hours hours")
+            .setTitle(R.string.backup_content)
+            .setSingleChoiceItems(options, currentIndex) { dialog, which ->
+                val mode = when (which) {
+                    0 -> PreferencesManager.BACKUP_CONTENT_SETTINGS
+                    1 -> PreferencesManager.BACKUP_CONTENT_APP_LIST
+                    2 -> PreferencesManager.BACKUP_CONTENT_BOTH
+                    else -> PreferencesManager.BACKUP_CONTENT_SETTINGS
+                }
+                PreferencesManager.setBackupContentMode(this, mode)
+                LogManager.info(this, "Backup content changed to $mode")
+                dialog.dismiss()
                 rebuildList()
             }
             .setNegativeButton(R.string.cancel, null)
@@ -169,7 +201,7 @@ class BackupSettingsActivity : BaseActivity() {
     private fun performManualBackup() {
         val locationUri = PreferencesManager.getBackupLocation(this)
         if (locationUri.isEmpty()) {
-            SnackbarHelper.showSnackbar(binding.root, "Please select a backup location first")
+            SnackbarHelper.showSnackbar(binding.root, getString(R.string.backup_select_location_first))
             return
         }
         try {

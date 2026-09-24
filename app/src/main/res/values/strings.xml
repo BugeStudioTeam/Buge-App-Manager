@@ -361,6 +361,13 @@
     <string name="other_languages">Other Languages</string>
     <string name="other_languages_title">App Languages</string>
     <string name="no_other_languages">This app has no other language resources</string>
+    <string name="backup_auto_on_launch">Auto backup on launch</string>
+    <string name="backup_auto_on_launch_summary">Create or replace backup every time the app starts</string>
+    <string name="backup_content">Backup content</string>
+    <string name="backup_content_settings">App settings</string>
+    <string name="backup_content_app_list">Installed apps</string>
+    <string name="backup_content_both">Settings and installed apps</string>
+    <string name="backup_select_location_first">Please select a backup location first</string>
 
     <!-- Optional Permissions -->
     <string name="pref_optional_permissions">Optional Permissions</string>

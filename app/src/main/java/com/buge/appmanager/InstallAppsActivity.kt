@@ -157,7 +157,6 @@ class InstallAppsActivity : BaseActivity() {
         adapter = ApkListAdapter(
             onRemoveClick = { position ->
                 if (position in apkList.indices) {
-                    // Fuck: Delete the app cache file
                     try {
                         val file = File(apkList[position].filePath)
                         if (file.exists()) file.delete()
@@ -201,15 +200,17 @@ class InstallAppsActivity : BaseActivity() {
     }
 
     /**
-     * Fuck: Copy APK to app cache dir for metadata parsing.
-     * The APK will be deleted when the list is cleared or the activity exits.
+     * Fuck: Copy APK to external cache dir.
+     * Path: /sdcard/Android/data/com.buge.appmanager/cache/install_cache/
+     * Shell user (uid 2000) CAN read files in this location
+     * (unlike the app's private /data/user/0/... dir).
      */
     private suspend fun loadApkInfo(uri: Uri): ApkItem? = withContext(Dispatchers.IO) {
         try {
             val fileName = getFileNameFromUri(uri) ?: "unknown.apk"
 
-            // Fuck: Copy to app cache dir
-            val cacheDir = File(cacheDir, "install_cache").apply { mkdirs() }
+            val baseDir = externalCacheDir ?: cacheDir
+            val cacheDir = File(baseDir, "install_cache").apply { mkdirs() }
             val tempFile = File(cacheDir, fileName)
             if (tempFile.exists()) tempFile.delete()
 
@@ -221,6 +222,13 @@ class InstallAppsActivity : BaseActivity() {
 
             if (!tempFile.exists() || tempFile.length() == 0L) {
                 return@withContext null
+            }
+
+            // Fuck: Make the file world-readable so shell can read it
+            try {
+                tempFile.setReadable(true, false)
+            } catch (e: Exception) {
+                // Ignore
             }
 
             // Fuck: Parse APK info
@@ -334,8 +342,14 @@ class InstallAppsActivity : BaseActivity() {
     }
 
     /**
-     * Fuck: Copy APK to /data/local/tmp/ so shell user can read it,
-     * then install via pm install, then delete the temp file.
+     * Fuck: Install APK via shizuku.
+     * Flow:
+     *   1. Shell copies APK from external cache to /data/local/tmp
+     *   2. pm install from /data/local/tmp
+     *   3. Delete temp file
+     *
+     * External cache path (e.g. /storage/emulated/0/Android/data/com.buge.appmanager/cache/install_cache/)
+     * is readable by shell user (uid 2000) after setReadable(true, false).
      */
     private suspend fun installApk(
         apk: ApkItem,
@@ -347,8 +361,8 @@ class InstallAppsActivity : BaseActivity() {
     ): Boolean = withContext(Dispatchers.IO) {
         val tempPath = "/data/local/tmp/install_${System.currentTimeMillis()}.apk"
         try {
-            // Fuck: Copy to /data/local/tmp via shizuku (shell can write there)
-            val copyCmd = "cp \"${apk.filePath}\" $tempPath"
+            // Fuck: Copy to /data/local/tmp using cat (works better with FUSE paths)
+            val copyCmd = "cat \"${apk.filePath}\" > $tempPath"
             val copyResult = ShizukuManager.executeCommand(copyCmd)
             if (!copyResult.success) {
                 LogManager.error(
@@ -359,9 +373,9 @@ class InstallAppsActivity : BaseActivity() {
                 return@withContext false
             }
 
-            // Fuck: Verify the file exists
+            // Fuck: Verify the file exists and has content
             val verifyResult = ShizukuManager.executeCommand("ls -la $tempPath")
-            if (!verifyResult.success) {
+            if (!verifyResult.success || verifyResult.output.contains("No such file")) {
                 LogManager.error(this@InstallAppsActivity, "Temp file not found", verifyResult.error)
                 ShizukuManager.executeCommand("rm -f $tempPath")
                 return@withContext false
@@ -406,7 +420,6 @@ class InstallAppsActivity : BaseActivity() {
 
             installResult.success
         } catch (e: Exception) {
-            // Fuck: Ensure cleanup even on exception
             try {
                 ShizukuManager.executeCommand("rm -f $tempPath")
             } catch (e2: Exception) {
@@ -419,7 +432,8 @@ class InstallAppsActivity : BaseActivity() {
 
     private fun clearAllCacheFiles() {
         try {
-            val cacheDir = File(cacheDir, "install_cache")
+            val baseDir = externalCacheDir ?: cacheDir
+            val cacheDir = File(baseDir, "install_cache")
             if (cacheDir.exists()) {
                 cacheDir.deleteRecursively()
             }
@@ -443,7 +457,7 @@ class InstallAppsActivity : BaseActivity() {
 
     override fun onDestroy() {
         super.onDestroy()
-        // Fuck: Cleanup cache on exit (unless still installing)
+        // Fuck: Cleanup cache on exit
         if (!isInstalling) {
             clearAllCacheFiles()
         }

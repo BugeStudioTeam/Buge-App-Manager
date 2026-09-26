@@ -406,4 +406,31 @@
     <string name="menu_grant_all_permissions">Grant All Permissions</string>
     <string name="menu_revoke_all_permissions">Revoke All Permissions</string>
     
+    <!-- Install Apps -->
+    <string name="pref_install_apps">Install Apps</string>
+    <string name="pref_install_apps_summary">Install APK files with advanced options</string>
+    <string name="title_install_apps">Install Apps</string>
+    <string name="install_installer_name">Installer Name</string>
+    <string name="install_installer_name_summary">Set installer package name for -i flag</string>
+    <string name="install_allow_downgrade">Allow Downgrade</string>
+    <string name="install_allow_downgrade_summary">Allow installing older versions over newer ones</string>
+    <string name="install_allow_test_packages">Allow Test Packages</string>
+    <string name="install_allow_test_packages_summary">Allow installing test-only APKs</string>
+    <string name="install_allow_system_apps">Allow System App Install</string>
+    <string name="install_allow_system_apps_summary">Allow installing or updating system applications</string>
+    <string name="install_all_users">Install for All Users</string>
+    <string name="install_all_users_summary">Install the APK for every user on the device</string>
+    <string name="install_no_apks">No APK files selected</string>
+    <string name="install_add_apk">Add APK</string>
+    <string name="install_button">Install</string>
+    <string name="install_installing">Installing %1$s...</string>
+    <string name="install_success">Installed: %1$s</string>
+    <string name="install_failed">Failed: %1$s - %2$s</string>
+    <string name="install_complete">Install complete: %1$d success, %2$d failed</string>
+    <string name="install_remove">Remove</string>
+    <string name="install_apk_version">Version</string>
+    <string name="install_apk_package">Package</string>
+    <string name="install_apk_path">Path</string>
+    <string name="install_invalid_apk">Invalid APK file</string>
+    
 </resources>

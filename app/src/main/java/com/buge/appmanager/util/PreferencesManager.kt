@@ -35,6 +35,11 @@ object PreferencesManager {
     private const val BACKUP_LOCATION_KEY = "backup_location"
     private const val AUTO_BACKUP_ON_LAUNCH_KEY = "auto_backup_on_launch"
     private const val BACKUP_CONTENT_MODE_KEY = "backup_content_mode"
+    private const val INSTALL_INSTALLER_NAME_KEY = "install_installer_name"
+    private const val INSTALL_ALLOW_DOWNGRADE_KEY = "install_allow_downgrade"
+    private const val INSTALL_ALLOW_TEST_KEY = "install_allow_test"
+    private const val INSTALL_ALLOW_SYSTEM_KEY = "install_allow_system"
+    private const val INSTALL_ALL_USERS_KEY = "install_all_users"
 
     const val AUTH_MODE_SHIZUKU = "shizuku"
     const val AUTH_MODE_ROOT = "root"
@@ -291,5 +296,46 @@ object PreferencesManager {
 
     fun getBackupContentMode(context: Context): String {
         return getPreferences(context).getString(BACKUP_CONTENT_MODE_KEY, BACKUP_CONTENT_SETTINGS) ?: BACKUP_CONTENT_SETTINGS
+    }
+
+    // Fuck: Install options
+    fun setInstallInstallerName(context: Context, name: String) {
+        getPreferences(context).edit().putString(INSTALL_INSTALLER_NAME_KEY, name).apply()
+    }
+
+    fun getInstallInstallerName(context: Context): String {
+        return getPreferences(context).getString(INSTALL_INSTALLER_NAME_KEY, "") ?: ""
+    }
+
+    fun setInstallAllowDowngrade(context: Context, allow: Boolean) {
+        getPreferences(context).edit().putBoolean(INSTALL_ALLOW_DOWNGRADE_KEY, allow).apply()
+    }
+
+    fun getInstallAllowDowngrade(context: Context): Boolean {
+        return getPreferences(context).getBoolean(INSTALL_ALLOW_DOWNGRADE_KEY, false)
+    }
+
+    fun setInstallAllowTest(context: Context, allow: Boolean) {
+        getPreferences(context).edit().putBoolean(INSTALL_ALLOW_TEST_KEY, allow).apply()
+    }
+
+    fun getInstallAllowTest(context: Context): Boolean {
+        return getPreferences(context).getBoolean(INSTALL_ALLOW_TEST_KEY, true)
+    }
+
+    fun setInstallAllowSystem(context: Context, allow: Boolean) {
+        getPreferences(context).edit().putBoolean(INSTALL_ALLOW_SYSTEM_KEY, allow).apply()
+    }
+
+    fun getInstallAllowSystem(context: Context): Boolean {
+        return getPreferences(context).getBoolean(INSTALL_ALLOW_SYSTEM_KEY, false)
+    }
+
+    fun setInstallAllUsers(context: Context, all: Boolean) {
+        getPreferences(context).edit().putBoolean(INSTALL_ALL_USERS_KEY, all).apply()
+    }
+
+    fun getInstallAllUsers(context: Context): Boolean {
+        return getPreferences(context).getBoolean(INSTALL_ALL_USERS_KEY, false)
     }
 }

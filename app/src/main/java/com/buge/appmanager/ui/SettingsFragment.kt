@@ -22,6 +22,7 @@ import com.buge.appmanager.AppearanceActivity
 import com.buge.appmanager.BackupActivity
 import com.buge.appmanager.BaseActivity
 import com.buge.appmanager.CustomLabelsActivity
+import com.buge.appmanager.InstallAppsActivity
 import com.buge.appmanager.LogViewerActivity
 import com.buge.appmanager.OptionalPermissionsActivity
 import com.buge.appmanager.MainActivity
@@ -146,6 +147,9 @@ class SettingsFragment : Fragment() {
                             }
                             item.title == getString(R.string.pref_restore_apps) -> {
                                 startActivity(Intent(requireContext(), RestoreAppsActivity::class.java))
+                            }
+                            item.title == getString(R.string.pref_install_apps) -> {
+                                startActivity(Intent(requireContext(), InstallAppsActivity::class.java))
                             }
                             item.title == getString(R.string.pref_update_options) -> {
                                 startActivity(Intent(requireContext(), UpdateOptionsActivity::class.java))
@@ -570,7 +574,7 @@ class SettingsFragment : Fragment() {
             SettingItem.Normal(getString(R.string.pref_default_page), defaultPageText, R.drawable.ic_home_page),
             SettingItem.Normal(getString(R.string.more_options), getString(R.string.more_options_summary), R.drawable.ic_palette),
 
-            // Fuck: Apps Group - includes Backup
+            // Fuck: Apps Group
             SettingItem.Header(getString(R.string.settings_group_apps)),
             SettingItem.SwitchItem(
                 getString(R.string.pref_google_services),
@@ -592,6 +596,11 @@ class SettingsFragment : Fragment() {
                 getString(R.string.pref_restore_apps),
                 getString(R.string.pref_restore_apps_summary),
                 R.drawable.ic_restore
+            ),
+            SettingItem.Normal(
+                getString(R.string.pref_install_apps),
+                getString(R.string.pref_install_apps_summary),
+                R.drawable.ic_download
             ),
             SettingItem.Normal(
                 getString(R.string.pref_update_options),

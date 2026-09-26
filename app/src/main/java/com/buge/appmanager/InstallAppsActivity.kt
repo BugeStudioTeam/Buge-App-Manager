@@ -157,7 +157,6 @@ class InstallAppsActivity : BaseActivity() {
         adapter = ApkListAdapter(
             onRemoveClick = { position ->
                 if (position in apkList.indices) {
-                    // Fuck: Delete the temp file
                     try {
                         val file = File(apkList[position].filePath)
                         if (file.exists()) file.delete()
@@ -201,16 +200,23 @@ class InstallAppsActivity : BaseActivity() {
     }
 
     /**
-     * Fuck: Copy APK to external cache dir so shell/root can read it.
-     * external cache is /sdcard/Android/data/<pkg>/cache, which is world-readable
-     * for the shell user (uid 2000), unlike the app's private /data/data dir.
+     * Fuck: Copy APK to externalCacheDir which is /sdcard/Android/data/<pkg>/cache
+     * This directory is readable by the shell user (uid 2000), so pm install works.
      */
     private suspend fun loadApkInfo(uri: Uri): ApkItem? = withContext(Dispatchers.IO) {
         try {
             val fileName = getFileNameFromUri(uri) ?: "unknown.apk"
 
-            // Fuck: Use external cache dir, accessible by shell user
-            val cacheDir = File(externalCacheDir ?: cacheDir, "install_cache").apply { mkdirs() }
+            val cacheDir = externalCacheDir ?: run {
+                LogManager.error(this@InstallAppsActivity, "externalCacheDir is null")
+                return@withContext null
+            }
+
+            // Fuck: Make sure directory exists
+            if (!cacheDir.exists()) {
+                cacheDir.mkdirs()
+            }
+
             val tempFile = File(cacheDir, fileName)
             if (tempFile.exists()) tempFile.delete()
 
@@ -252,6 +258,12 @@ class InstallAppsActivity : BaseActivity() {
             } catch (e: Exception) {
                 packageInfo.packageName
             }
+
+            LogManager.info(
+                this@InstallAppsActivity,
+                "APK cached",
+                "Path: ${tempFile.absolutePath}, Size: ${tempFile.length()}"
+            )
 
             ApkItem(
                 uri = uri,
@@ -324,27 +336,17 @@ class InstallAppsActivity : BaseActivity() {
                 getString(R.string.install_complete, successCount, failCount)
             )
 
-            // Fuck: Clear list on full success
-            if (failCount == 0) {
-                for (apk in apkList) {
-                    try {
-                        val f = File(apk.filePath)
-                        if (f.exists()) f.delete()
-                    } catch (e: Exception) {
-                        // Ignore
-                    }
-                }
-                apkList.clear()
-                adapter.notifyDataSetChanged()
-                updateEmptyState()
-            }
+            // Fuck: Cleanup cached APKs after install completes
+            cleanupAllCachedApks()
+            apkList.clear()
+            adapter.notifyDataSetChanged()
+            updateEmptyState()
         }
     }
 
     /**
-     * Fuck: Install APK directly from its external cache path.
-     * Shell user (uid 2000) can read /sdcard/Android/data/<pkg>/cache/, so
-     * pm install works without copying to /data/local/tmp.
+     * Fuck: Install APK directly from its externalCacheDir path.
+     * Shell user can read /sdcard/Android/data/<pkg>/cache/, so no /data/local/tmp copy needed.
      */
     private suspend fun installApk(
         apk: ApkItem,
@@ -371,7 +373,7 @@ class InstallAppsActivity : BaseActivity() {
                 ""
             }
 
-            // Fuck: Quote the path to handle spaces
+            // Fuck: Quote path to handle spaces
             val quotedPath = "\"${apk.filePath}\""
 
             val installCmd = if (safeInstallerName.isNotEmpty()) {
@@ -412,19 +414,32 @@ class InstallAppsActivity : BaseActivity() {
         return true
     }
 
+    /**
+     * Fuck: Delete all cached APK files from externalCacheDir
+     */
+    private fun cleanupAllCachedApks() {
+        try {
+            val cacheDir = externalCacheDir ?: return
+            if (!cacheDir.exists()) return
+
+            val files = cacheDir.listFiles { file ->
+                file.isFile && file.name.endsWith(".apk", ignoreCase = true)
+            }
+            files?.forEach { file ->
+                if (file.exists()) {
+                    val deleted = file.delete()
+                    LogManager.debug(this, "Cleaned cached APK", "${file.name}: deleted=$deleted")
+                }
+            }
+        } catch (e: Exception) {
+            LogManager.warning(this, "Failed to cleanup cached APKs", e.message)
+        }
+    }
+
     override fun onDestroy() {
         super.onDestroy()
-        // Fuck: Only cleanup on destroy if not installing
-        if (!isInstalling) {
-            try {
-                val cacheDir = File(externalCacheDir ?: cacheDir, "install_cache")
-                if (cacheDir.exists()) {
-                    cacheDir.deleteRecursively()
-                }
-            } catch (e: Exception) {
-                // Ignore
-            }
-        }
+        // Fuck: Cleanup all cached APKs when activity is destroyed
+        cleanupAllCachedApks()
     }
 
     inner class ApkListAdapter(

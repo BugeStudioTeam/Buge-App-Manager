@@ -11,7 +11,6 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.FrameLayout
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.activity.result.contract.ActivityResultContracts
@@ -96,7 +95,6 @@ class InstallAppsActivity : BaseActivity() {
     }
 
     private fun setupOptions() {
-        // Fuck: Installer name
         val installerName = PreferencesManager.getInstallInstallerName(this)
         binding.installerNameValue.text = if (installerName.isEmpty()) {
             getString(R.string.installer_name_hint)
@@ -107,28 +105,24 @@ class InstallAppsActivity : BaseActivity() {
             showInstallerNameDialog()
         }
 
-        // Fuck: Allow downgrade
         binding.allowDowngradeSwitch.isChecked = PreferencesManager.getInstallAllowDowngrade(this)
         binding.allowDowngradeSwitch.setOnCheckedChangeListener { _, isChecked ->
             PreferencesManager.setInstallAllowDowngrade(this, isChecked)
             LogManager.info(this, "Install allow downgrade changed to $isChecked")
         }
 
-        // Fuck: Allow test packages
         binding.allowTestSwitch.isChecked = PreferencesManager.getInstallAllowTest(this)
         binding.allowTestSwitch.setOnCheckedChangeListener { _, isChecked ->
             PreferencesManager.setInstallAllowTest(this, isChecked)
             LogManager.info(this, "Install allow test changed to $isChecked")
         }
 
-        // Fuck: Allow system apps
         binding.allowSystemSwitch.isChecked = PreferencesManager.getInstallAllowSystem(this)
         binding.allowSystemSwitch.setOnCheckedChangeListener { _, isChecked ->
             PreferencesManager.setInstallAllowSystem(this, isChecked)
             LogManager.info(this, "Install allow system changed to $isChecked")
         }
 
-        // Fuck: All users
         binding.allUsersSwitch.isChecked = PreferencesManager.getInstallAllUsers(this)
         binding.allUsersSwitch.setOnCheckedChangeListener { _, isChecked ->
             PreferencesManager.setInstallAllUsers(this, isChecked)
@@ -163,6 +157,13 @@ class InstallAppsActivity : BaseActivity() {
         adapter = ApkListAdapter(
             onRemoveClick = { position ->
                 if (position in apkList.indices) {
+                    // Fuck: Delete the temp file
+                    try {
+                        val file = File(apkList[position].filePath)
+                        if (file.exists()) file.delete()
+                    } catch (e: Exception) {
+                        // Ignore
+                    }
                     apkList.removeAt(position)
                     adapter.notifyItemRemoved(position)
                     adapter.notifyItemRangeChanged(position, apkList.size)
@@ -199,12 +200,19 @@ class InstallAppsActivity : BaseActivity() {
         binding.btnInstall.alpha = if (isEmpty) 0.5f else 1f
     }
 
+    /**
+     * Fuck: Copy APK to external cache dir so shell/root can read it.
+     * external cache is /sdcard/Android/data/<pkg>/cache, which is world-readable
+     * for the shell user (uid 2000), unlike the app's private /data/data dir.
+     */
     private suspend fun loadApkInfo(uri: Uri): ApkItem? = withContext(Dispatchers.IO) {
         try {
-            // Fuck: Copy APK to cache first
             val fileName = getFileNameFromUri(uri) ?: "unknown.apk"
-            val cacheDir = File(cacheDir, "install_cache").apply { mkdirs() }
+
+            // Fuck: Use external cache dir, accessible by shell user
+            val cacheDir = File(externalCacheDir ?: cacheDir, "install_cache").apply { mkdirs() }
             val tempFile = File(cacheDir, fileName)
+            if (tempFile.exists()) tempFile.delete()
 
             contentResolver.openInputStream(uri)?.use { input ->
                 FileOutputStream(tempFile).use { output ->
@@ -218,11 +226,6 @@ class InstallAppsActivity : BaseActivity() {
 
             // Fuck: Parse APK info
             val pm = packageManager
-            val flags = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
-                PackageManager.PackageInfoFlags.of(0)
-            } else {
-                0
-            }
             val packageInfo = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
                 pm.getPackageArchiveInfo(tempFile.absolutePath, PackageManager.PackageInfoFlags.of(0))
             } else {
@@ -316,23 +319,33 @@ class InstallAppsActivity : BaseActivity() {
             isInstalling = false
             updateEmptyState()
 
+            SnackbarHelper.showSnackbar(
+                binding.root,
+                getString(R.string.install_complete, successCount, failCount)
+            )
+
+            // Fuck: Clear list on full success
             if (failCount == 0) {
-                SnackbarHelper.showSnackbar(
-                    binding.root,
-                    getString(R.string.install_complete, successCount, failCount)
-                )
+                for (apk in apkList) {
+                    try {
+                        val f = File(apk.filePath)
+                        if (f.exists()) f.delete()
+                    } catch (e: Exception) {
+                        // Ignore
+                    }
+                }
                 apkList.clear()
                 adapter.notifyDataSetChanged()
                 updateEmptyState()
-            } else {
-                SnackbarHelper.showSnackbar(
-                    binding.root,
-                    getString(R.string.install_complete, successCount, failCount)
-                )
             }
         }
     }
 
+    /**
+     * Fuck: Install APK directly from its external cache path.
+     * Shell user (uid 2000) can read /sdcard/Android/data/<pkg>/cache/, so
+     * pm install works without copying to /data/local/tmp.
+     */
     private suspend fun installApk(
         apk: ApkItem,
         installerName: String,
@@ -342,28 +355,14 @@ class InstallAppsActivity : BaseActivity() {
         allUsers: Boolean
     ): Boolean = withContext(Dispatchers.IO) {
         try {
-            val tempPath = "/data/local/tmp/install_temp.apk"
-
-            // Fuck: Copy to /data/local/tmp
-            val copyCmd = "cat \"${apk.filePath}\" > $tempPath"
-            val copyResult = ShizukuManager.executeCommand(copyCmd)
-            if (!copyResult.success) {
-                LogManager.error(this@InstallAppsActivity, "Copy to tmp failed", copyResult.error)
-                return@withContext false
-            }
-
             // Fuck: Build install command
             val flags = StringBuilder()
-            flags.append("-r")  // Replace existing
+            flags.append("-r")
             if (allowDowngrade) flags.append(" -d")
             if (allowTest) flags.append(" -t")
-            if (allowSystem) flags.append(" -g")  // Grant all permissions for system apps
+            if (allowSystem) flags.append(" -g")
 
-            val userFlag = if (allUsers) {
-                "--user all"
-            } else {
-                "--user 0"
-            }
+            val userFlag = if (allUsers) "--user all" else "--user 0"
 
             val safeInstallerName = if (installerName.isNotEmpty() &&
                 installerName.matches(Regex("^[a-zA-Z0-9._\\- ]*$"))) {
@@ -372,18 +371,26 @@ class InstallAppsActivity : BaseActivity() {
                 ""
             }
 
+            // Fuck: Quote the path to handle spaces
+            val quotedPath = "\"${apk.filePath}\""
+
             val installCmd = if (safeInstallerName.isNotEmpty()) {
-                "pm install $flags $userFlag -i \"$safeInstallerName\" $tempPath"
+                "pm install $flags $userFlag -i \"$safeInstallerName\" $quotedPath"
             } else {
-                "pm install $flags $userFlag $tempPath"
+                "pm install $flags $userFlag $quotedPath"
             }
 
             LogManager.info(this@InstallAppsActivity, "Executing install", installCmd)
 
             val installResult = ShizukuManager.executeCommand(installCmd)
 
-            // Fuck: Cleanup
-            ShizukuManager.executeCommand("rm -f $tempPath")
+            if (!installResult.success) {
+                LogManager.error(
+                    this@InstallAppsActivity,
+                    "Install command failed",
+                    installResult.error.ifEmpty { installResult.output }
+                )
+            }
 
             installResult.success
         } catch (e: Exception) {
@@ -407,14 +414,16 @@ class InstallAppsActivity : BaseActivity() {
 
     override fun onDestroy() {
         super.onDestroy()
-        // Fuck: Cleanup cache
-        try {
-            val cacheDir = File(cacheDir, "install_cache")
-            if (cacheDir.exists()) {
-                cacheDir.deleteRecursively()
+        // Fuck: Only cleanup on destroy if not installing
+        if (!isInstalling) {
+            try {
+                val cacheDir = File(externalCacheDir ?: cacheDir, "install_cache")
+                if (cacheDir.exists()) {
+                    cacheDir.deleteRecursively()
+                }
+            } catch (e: Exception) {
+                // Ignore
             }
-        } catch (e: Exception) {
-            // Ignore
         }
     }
 
@@ -447,13 +456,12 @@ class InstallAppsActivity : BaseActivity() {
 
             fun bind(item: ApkItem) {
                 appName.text = item.appLabel
-                packageName.text = "${getString(R.string.install_apk_package)}: ${item.packageName}"
-                versionName.text = "${getString(R.string.install_apk_version)}: ${item.versionName}"
+                packageName.text = "${itemView.context.getString(R.string.install_apk_package)}: ${item.packageName}"
+                versionName.text = "${itemView.context.getString(R.string.install_apk_version)}: ${item.versionName}"
                 filePath.text = item.filePath
 
-                // Fuck: Try to load icon from APK
                 try {
-                    val pm = packageManager
+                    val pm = itemView.context.packageManager
                     val packageInfo = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
                         pm.getPackageArchiveInfo(item.filePath, PackageManager.PackageInfoFlags.of(0))
                     } else {

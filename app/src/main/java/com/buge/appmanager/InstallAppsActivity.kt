@@ -157,6 +157,7 @@ class InstallAppsActivity : BaseActivity() {
         adapter = ApkListAdapter(
             onRemoveClick = { position ->
                 if (position in apkList.indices) {
+                    // Fuck: Delete the app cache file
                     try {
                         val file = File(apkList[position].filePath)
                         if (file.exists()) file.delete()
@@ -200,54 +201,45 @@ class InstallAppsActivity : BaseActivity() {
     }
 
     /**
-     * Fuck: Copy APK to app cache for icon parsing, then push to /data/local/tmp
-     * via Shizuku so pm install can read it directly.
-     *
-     * /sdcard/Android/data/... is a FUSE path and pm cannot parse APKs there.
+     * Fuck: Copy APK to app cache dir for metadata parsing.
+     * The APK will be deleted when the list is cleared or the activity exits.
      */
     private suspend fun loadApkInfo(uri: Uri): ApkItem? = withContext(Dispatchers.IO) {
         try {
             val fileName = getFileNameFromUri(uri) ?: "unknown.apk"
 
-            val cacheDir = cacheDir ?: run {
-                LogManager.error(this@InstallAppsActivity, "cacheDir is null")
-                return@withContext null
-            }
-
-            if (!cacheDir.exists()) {
-                cacheDir.mkdirs()
-            }
-
-            val localFile = File(cacheDir, fileName)
-            if (localFile.exists()) localFile.delete()
+            // Fuck: Copy to app cache dir
+            val cacheDir = File(cacheDir, "install_cache").apply { mkdirs() }
+            val tempFile = File(cacheDir, fileName)
+            if (tempFile.exists()) tempFile.delete()
 
             contentResolver.openInputStream(uri)?.use { input ->
-                FileOutputStream(localFile).use { output ->
+                FileOutputStream(tempFile).use { output ->
                     input.copyTo(output)
                 }
             }
 
-            if (!localFile.exists() || localFile.length() == 0L) {
+            if (!tempFile.exists() || tempFile.length() == 0L) {
                 return@withContext null
             }
 
-            // Fuck: Parse APK info locally
+            // Fuck: Parse APK info
             val pm = packageManager
             val packageInfo = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-                pm.getPackageArchiveInfo(localFile.absolutePath, PackageManager.PackageInfoFlags.of(0))
+                pm.getPackageArchiveInfo(tempFile.absolutePath, PackageManager.PackageInfoFlags.of(0))
             } else {
                 @Suppress("DEPRECATION")
-                pm.getPackageArchiveInfo(localFile.absolutePath, 0)
+                pm.getPackageArchiveInfo(tempFile.absolutePath, 0)
             }
 
             if (packageInfo == null) {
-                localFile.delete()
+                tempFile.delete()
                 return@withContext null
             }
 
             packageInfo.applicationInfo?.let { appInfo ->
-                appInfo.sourceDir = localFile.absolutePath
-                appInfo.publicSourceDir = localFile.absolutePath
+                appInfo.sourceDir = tempFile.absolutePath
+                appInfo.publicSourceDir = tempFile.absolutePath
             }
 
             val appLabel = try {
@@ -260,35 +252,10 @@ class InstallAppsActivity : BaseActivity() {
                 packageInfo.packageName
             }
 
-            // Fuck: Push the APK to /data/local/tmp via Shizuku so pm install can read it.
-            // The app cannot write to /data/local/tmp directly, so we use cat > file.
-            val remotePath = "/data/local/tmp/$fileName"
-            val pushCmd = "cat \"${localFile.absolutePath}\" > \"$remotePath\""
-            val pushResult = ShizukuManager.executeCommand(pushCmd)
-
-            if (!pushResult.success) {
-                LogManager.error(
-                    this@InstallAppsActivity,
-                    "Failed to push APK to /data/local/tmp",
-                    pushResult.error.ifEmpty { pushResult.output }
-                )
-                localFile.delete()
-                return@withContext null
-            }
-
-            // Fuck: Delete local copy after successful push
-            localFile.delete()
-
-            LogManager.info(
-                this@InstallAppsActivity,
-                "APK pushed to tmp",
-                "Path: $remotePath"
-            )
-
             ApkItem(
                 uri = uri,
                 fileName = fileName,
-                filePath = remotePath,
+                filePath = tempFile.absolutePath,
                 packageName = packageInfo.packageName,
                 versionName = packageInfo.versionName ?: "Unknown",
                 appLabel = appLabel
@@ -356,16 +323,19 @@ class InstallAppsActivity : BaseActivity() {
                 getString(R.string.install_complete, successCount, failCount)
             )
 
-            // Fuck: Cleanup all tmp APKs after install completes
-            cleanupAllTmpApks()
-            apkList.clear()
-            adapter.notifyDataSetChanged()
-            updateEmptyState()
+            // Fuck: Clear list on full success and delete cache files
+            if (failCount == 0) {
+                clearAllCacheFiles()
+                apkList.clear()
+                adapter.notifyDataSetChanged()
+                updateEmptyState()
+            }
         }
     }
 
     /**
-     * Fuck: Install APK from /data/local/tmp path.
+     * Fuck: Copy APK to /data/local/tmp/ so shell user can read it,
+     * then install via pm install, then delete the temp file.
      */
     private suspend fun installApk(
         apk: ApkItem,
@@ -375,7 +345,29 @@ class InstallAppsActivity : BaseActivity() {
         allowSystem: Boolean,
         allUsers: Boolean
     ): Boolean = withContext(Dispatchers.IO) {
+        val tempPath = "/data/local/tmp/install_${System.currentTimeMillis()}.apk"
         try {
+            // Fuck: Copy to /data/local/tmp via shizuku (shell can write there)
+            val copyCmd = "cp \"${apk.filePath}\" $tempPath"
+            val copyResult = ShizukuManager.executeCommand(copyCmd)
+            if (!copyResult.success) {
+                LogManager.error(
+                    this@InstallAppsActivity,
+                    "Copy to tmp failed",
+                    copyResult.error.ifEmpty { copyResult.output }
+                )
+                return@withContext false
+            }
+
+            // Fuck: Verify the file exists
+            val verifyResult = ShizukuManager.executeCommand("ls -la $tempPath")
+            if (!verifyResult.success) {
+                LogManager.error(this@InstallAppsActivity, "Temp file not found", verifyResult.error)
+                ShizukuManager.executeCommand("rm -f $tempPath")
+                return@withContext false
+            }
+
+            // Fuck: Build install command
             val flags = StringBuilder()
             flags.append("-r")
             if (allowDowngrade) flags.append(" -d")
@@ -391,17 +383,18 @@ class InstallAppsActivity : BaseActivity() {
                 ""
             }
 
-            val quotedPath = "\"${apk.filePath}\""
-
             val installCmd = if (safeInstallerName.isNotEmpty()) {
-                "pm install $flags $userFlag -i \"$safeInstallerName\" $quotedPath"
+                "pm install $flags $userFlag -i \"$safeInstallerName\" $tempPath"
             } else {
-                "pm install $flags $userFlag $quotedPath"
+                "pm install $flags $userFlag $tempPath"
             }
 
             LogManager.info(this@InstallAppsActivity, "Executing install", installCmd)
 
             val installResult = ShizukuManager.executeCommand(installCmd)
+
+            // Fuck: Cleanup temp file
+            ShizukuManager.executeCommand("rm -f $tempPath")
 
             if (!installResult.success) {
                 LogManager.error(
@@ -413,8 +406,25 @@ class InstallAppsActivity : BaseActivity() {
 
             installResult.success
         } catch (e: Exception) {
+            // Fuck: Ensure cleanup even on exception
+            try {
+                ShizukuManager.executeCommand("rm -f $tempPath")
+            } catch (e2: Exception) {
+                // Ignore
+            }
             LogManager.error(this@InstallAppsActivity, "Install exception", e.message)
             false
+        }
+    }
+
+    private fun clearAllCacheFiles() {
+        try {
+            val cacheDir = File(cacheDir, "install_cache")
+            if (cacheDir.exists()) {
+                cacheDir.deleteRecursively()
+            }
+        } catch (e: Exception) {
+            LogManager.warning(this, "Failed to clear cache files", e.message)
         }
     }
 
@@ -431,36 +441,11 @@ class InstallAppsActivity : BaseActivity() {
         return true
     }
 
-    /**
-     * Fuck: Delete all APK files in /data/local/tmp that we pushed.
-     */
-    private suspend fun cleanupAllTmpApks() {
-        try {
-            val cacheDir = cacheDir
-            val localFiles = cacheDir?.listFiles { file ->
-                file.isFile && file.name.endsWith(".apk", ignoreCase = true)
-            }
-            localFiles?.forEach { it.delete() }
-        } catch (e: Exception) {
-            // Ignore local cache cleanup errors
-        }
-
-        // Fuck: Remove remote tmp files
-        try {
-            val names = apkList.map { it.fileName }
-            for (name in names) {
-                ShizukuManager.executeCommand("rm -f \"/data/local/tmp/$name\"")
-            }
-        } catch (e: Exception) {
-            LogManager.warning(this, "Failed to cleanup tmp APKs", e.message)
-        }
-    }
-
     override fun onDestroy() {
         super.onDestroy()
-        // Fuck: Cleanup on activity destroy
-        lifecycleScope.launch {
-            cleanupAllTmpApks()
+        // Fuck: Cleanup cache on exit (unless still installing)
+        if (!isInstalling) {
+            clearAllCacheFiles()
         }
     }
 

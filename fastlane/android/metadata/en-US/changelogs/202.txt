@@ -1,0 +1,7 @@
+**12.73.130**
+
+**Added** ✨
+- Added batch install feature (issue #22 by @Bryancyriel7)
+
+**Contributors of this version:**
+- @Bryancyriel7

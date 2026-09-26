@@ -23,345 +23,336 @@
 
     </com.google.android.material.appbar.AppBarLayout>
 
-    <LinearLayout
+    <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical"
+        android:clipToPadding="false"
+        android:paddingBottom="80dp"
         app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
-        <androidx.core.widget.NestedScrollView
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="1"
-            android:clipToPadding="false"
-            android:paddingBottom="80dp">
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:paddingHorizontal="16dp"
+            android:paddingTop="8dp">
 
-            <LinearLayout
+            <!-- Option 1: Installer Name -->
+            <FrameLayout
+                android:id="@+id/installer_name_item"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:paddingHorizontal="16dp"
-                android:paddingTop="8dp">
+                android:layout_marginHorizontal="16dp"
+                android:layout_marginBottom="2dp"
+                android:background="@drawable/bg_setting_item_top"
+                android:clickable="true"
+                android:focusable="true">
 
-                <!-- Option 1: Installer Name -->
-                <FrameLayout
-                    android:id="@+id/installer_name_item"
+                <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginHorizontal="16dp"
-                    android:layout_marginBottom="2dp"
-                    android:background="@drawable/bg_setting_item_top"
-                    android:clickable="true"
-                    android:focusable="true">
+                    android:orientation="horizontal"
+                    android:gravity="center_vertical"
+                    android:paddingHorizontal="16dp"
+                    android:paddingVertical="16dp">
 
                     <LinearLayout
-                        android:layout_width="match_parent"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:orientation="horizontal"
-                        android:gravity="center_vertical"
-                        android:paddingHorizontal="16dp"
-                        android:paddingVertical="16dp">
+                        android:layout_weight="1"
+                        android:orientation="vertical">
 
-                        <LinearLayout
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:orientation="vertical">
-
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="@string/install_installer_name"
-                                android:textAppearance="?attr/textAppearanceBodyLarge" />
-
-                            <TextView
-                                android:id="@+id/installer_name_value"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:alpha="0.6"
-                                android:textAppearance="?attr/textAppearanceBodySmall" />
-
-                        </LinearLayout>
-
-                        <ImageView
-                            android:layout_width="20dp"
-                            android:layout_height="20dp"
-                            android:src="@drawable/ic_arrow_forward"
-                            android:alpha="0.4" />
-
-                    </LinearLayout>
-
-                </FrameLayout>
-
-                <!-- Option 2: Allow Downgrade -->
-                <FrameLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginHorizontal="16dp"
-                    android:layout_marginBottom="2dp"
-                    android:background="@drawable/bg_setting_item_middle">
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:orientation="horizontal"
-                        android:gravity="center_vertical"
-                        android:paddingHorizontal="16dp"
-                        android:paddingVertical="16dp">
-
-                        <LinearLayout
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:orientation="vertical">
-
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="@string/install_allow_downgrade"
-                                android:textAppearance="?attr/textAppearanceBodyLarge" />
-
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="@string/install_allow_downgrade_summary"
-                                android:alpha="0.6"
-                                android:textAppearance="?attr/textAppearanceBodySmall" />
-
-                        </LinearLayout>
-
-                        <com.google.android.material.materialswitch.MaterialSwitch
-                            android:id="@+id/allow_downgrade_switch"
+                        <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            app:thumbIcon="@drawable/switch_thumb_icons" />
+                            android:text="@string/install_installer_name"
+                            android:textAppearance="?attr/textAppearanceBodyLarge" />
 
-                    </LinearLayout>
-
-                </FrameLayout>
-
-                <!-- Option 3: Allow Test Packages -->
-                <FrameLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginHorizontal="16dp"
-                    android:layout_marginBottom="2dp"
-                    android:background="@drawable/bg_setting_item_middle">
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:orientation="horizontal"
-                        android:gravity="center_vertical"
-                        android:paddingHorizontal="16dp"
-                        android:paddingVertical="16dp">
-
-                        <LinearLayout
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:orientation="vertical">
-
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="@string/install_allow_test_packages"
-                                android:textAppearance="?attr/textAppearanceBodyLarge" />
-
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="@string/install_allow_test_packages_summary"
-                                android:alpha="0.6"
-                                android:textAppearance="?attr/textAppearanceBodySmall" />
-
-                        </LinearLayout>
-
-                        <com.google.android.material.materialswitch.MaterialSwitch
-                            android:id="@+id/allow_test_switch"
+                        <TextView
+                            android:id="@+id/installer_name_value"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            app:thumbIcon="@drawable/switch_thumb_icons" />
+                            android:alpha="0.6"
+                            android:textAppearance="?attr/textAppearanceBodySmall" />
 
                     </LinearLayout>
 
-                </FrameLayout>
+                    <ImageView
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
+                        android:src="@drawable/ic_arrow_forward"
+                        android:alpha="0.4" />
 
-                <!-- Option 4: Allow System Apps -->
-                <FrameLayout
+                </LinearLayout>
+
+            </FrameLayout>
+
+            <!-- Option 2: Allow Downgrade -->
+            <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="16dp"
+                android:layout_marginBottom="2dp"
+                android:background="@drawable/bg_setting_item_middle">
+
+                <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginHorizontal="16dp"
-                    android:layout_marginBottom="2dp"
-                    android:background="@drawable/bg_setting_item_middle">
+                    android:orientation="horizontal"
+                    android:gravity="center_vertical"
+                    android:paddingHorizontal="16dp"
+                    android:paddingVertical="16dp">
 
                     <LinearLayout
-                        android:layout_width="match_parent"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:orientation="horizontal"
-                        android:gravity="center_vertical"
-                        android:paddingHorizontal="16dp"
-                        android:paddingVertical="16dp">
+                        android:layout_weight="1"
+                        android:orientation="vertical">
 
-                        <LinearLayout
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:orientation="vertical">
-
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="@string/install_allow_system_apps"
-                                android:textAppearance="?attr/textAppearanceBodyLarge" />
-
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="@string/install_allow_system_apps_summary"
-                                android:alpha="0.6"
-                                android:textAppearance="?attr/textAppearanceBodySmall" />
-
-                        </LinearLayout>
-
-                        <com.google.android.material.materialswitch.MaterialSwitch
-                            android:id="@+id/allow_system_switch"
+                        <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            app:thumbIcon="@drawable/switch_thumb_icons" />
+                            android:text="@string/install_allow_downgrade"
+                            android:textAppearance="?attr/textAppearanceBodyLarge" />
 
-                    </LinearLayout>
-
-                </FrameLayout>
-
-                <!-- Option 5: All Users -->
-                <FrameLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginHorizontal="16dp"
-                    android:layout_marginBottom="16dp"
-                    android:background="@drawable/bg_setting_item_bottom">
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:orientation="horizontal"
-                        android:gravity="center_vertical"
-                        android:paddingHorizontal="16dp"
-                        android:paddingVertical="16dp">
-
-                        <LinearLayout
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:orientation="vertical">
-
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="@string/install_all_users"
-                                android:textAppearance="?attr/textAppearanceBodyLarge" />
-
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="@string/install_all_users_summary"
-                                android:alpha="0.6"
-                                android:textAppearance="?attr/textAppearanceBodySmall" />
-
-                        </LinearLayout>
-
-                        <com.google.android.material.materialswitch.MaterialSwitch
-                            android:id="@+id/all_users_switch"
+                        <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            app:thumbIcon="@drawable/switch_thumb_icons" />
+                            android:text="@string/install_allow_downgrade_summary"
+                            android:alpha="0.6"
+                            android:textAppearance="?attr/textAppearanceBodySmall" />
 
                     </LinearLayout>
 
-                </FrameLayout>
+                    <com.google.android.material.materialswitch.MaterialSwitch
+                        android:id="@+id/allow_downgrade_switch"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        app:thumbIcon="@drawable/switch_thumb_icons" />
 
-                <!-- APK List Section -->
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="16dp"
-                    android:layout_marginTop="8dp"
-                    android:layout_marginBottom="8dp"
-                    android:text="@string/install_add_apk"
-                    android:textAppearance="?attr/textAppearanceTitleMedium"
-                    android:textColor="?attr/colorPrimary" />
+                </LinearLayout>
 
-                <FrameLayout
+            </FrameLayout>
+
+            <!-- Option 3: Allow Test Packages -->
+            <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="16dp"
+                android:layout_marginBottom="2dp"
+                android:background="@drawable/bg_setting_item_middle">
+
+                <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginHorizontal="16dp"
-                    android:layout_marginBottom="16dp"
-                    android:background="@drawable/bg_setting_item_single"
-                    android:minHeight="200dp">
+                    android:orientation="horizontal"
+                    android:gravity="center_vertical"
+                    android:paddingHorizontal="16dp"
+                    android:paddingVertical="16dp">
 
                     <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/install_allow_test_packages"
+                            android:textAppearance="?attr/textAppearanceBodyLarge" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/install_allow_test_packages_summary"
+                            android:alpha="0.6"
+                            android:textAppearance="?attr/textAppearanceBodySmall" />
+
+                    </LinearLayout>
+
+                    <com.google.android.material.materialswitch.MaterialSwitch
+                        android:id="@+id/allow_test_switch"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        app:thumbIcon="@drawable/switch_thumb_icons" />
+
+                </LinearLayout>
+
+            </FrameLayout>
+
+            <!-- Option 4: Allow System Apps -->
+            <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="16dp"
+                android:layout_marginBottom="2dp"
+                android:background="@drawable/bg_setting_item_middle">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:gravity="center_vertical"
+                    android:paddingHorizontal="16dp"
+                    android:paddingVertical="16dp">
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/install_allow_system_apps"
+                            android:textAppearance="?attr/textAppearanceBodyLarge" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/install_allow_system_apps_summary"
+                            android:alpha="0.6"
+                            android:textAppearance="?attr/textAppearanceBodySmall" />
+
+                    </LinearLayout>
+
+                    <com.google.android.material.materialswitch.MaterialSwitch
+                        android:id="@+id/allow_system_switch"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        app:thumbIcon="@drawable/switch_thumb_icons" />
+
+                </LinearLayout>
+
+            </FrameLayout>
+
+            <!-- Option 5: All Users -->
+            <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="16dp"
+                android:layout_marginBottom="16dp"
+                android:background="@drawable/bg_setting_item_bottom">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:gravity="center_vertical"
+                    android:paddingHorizontal="16dp"
+                    android:paddingVertical="16dp">
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/install_all_users"
+                            android:textAppearance="?attr/textAppearanceBodyLarge" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/install_all_users_summary"
+                            android:alpha="0.6"
+                            android:textAppearance="?attr/textAppearanceBodySmall" />
+
+                    </LinearLayout>
+
+                    <com.google.android.material.materialswitch.MaterialSwitch
+                        android:id="@+id/all_users_switch"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        app:thumbIcon="@drawable/switch_thumb_icons" />
+
+                </LinearLayout>
+
+            </FrameLayout>
+
+            <!-- APK List Section -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginBottom="8dp"
+                android:text="@string/install_add_apk"
+                android:textAppearance="?attr/textAppearanceTitleMedium"
+                android:textColor="?attr/colorPrimary" />
+
+            <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="16dp"
+                android:layout_marginBottom="16dp"
+                android:background="@drawable/bg_setting_item_single"
+                android:minHeight="200dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="8dp">
+
+                    <!-- Empty State -->
+                    <LinearLayout
+                        android:id="@+id/empty_state"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:orientation="vertical"
-                        android:padding="8dp">
+                        android:gravity="center"
+                        android:padding="32dp"
+                        android:visibility="visible">
 
-                        <!-- Empty State -->
-                        <LinearLayout
-                            android:id="@+id/empty_state"
-                            android:layout_width="match_parent"
+                        <ImageView
+                            android:layout_width="48dp"
+                            android:layout_height="48dp"
+                            android:src="@drawable/ic_download"
+                            android:alpha="0.3" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:orientation="vertical"
-                            android:gravity="center"
-                            android:padding="32dp"
-                            android:visibility="visible">
-
-                            <ImageView
-                                android:layout_width="48dp"
-                                android:layout_height="48dp"
-                                android:src="@drawable/ic_download"
-                                android:alpha="0.3" />
-
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_marginTop="12dp"
-                                android:text="@string/install_no_apks"
-                                android:alpha="0.5"
-                                style="@style/TextAppearance.Material3.BodyMedium" />
-
-                        </LinearLayout>
-
-                        <!-- APK List -->
-                        <androidx.recyclerview.widget.RecyclerView
-                            android:id="@+id/apk_recycler"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:nestedScrollingEnabled="false"
-                            android:visibility="gone" />
+                            android:layout_marginTop="12dp"
+                            android:text="@string/install_no_apks"
+                            android:alpha="0.5"
+                            style="@style/TextAppearance.Material3.BodyMedium" />
 
                     </LinearLayout>
 
-                </FrameLayout>
+                    <!-- APK List -->
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/apk_recycler"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:nestedScrollingEnabled="false"
+                        android:visibility="gone" />
 
-            </LinearLayout>
+                </LinearLayout>
 
-        </androidx.core.widget.NestedScrollView>
+            </FrameLayout>
 
-        <!-- Install Button -->
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/btn_install"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginHorizontal="32dp"
-            android:layout_marginTop="8dp"
-            android:layout_marginBottom="16dp"
-            android:text="@string/install_button"
-            android:paddingVertical="14dp"
-            android:textSize="16sp"
-            app:cornerRadius="24dp" />
+            <!-- Install Button - right below the APK list box -->
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btn_install"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="16dp"
+                android:layout_marginBottom="24dp"
+                android:text="@string/install_button"
+                android:paddingVertical="14dp"
+                android:textSize="16sp"
+                app:cornerRadius="24dp" />
 
-    </LinearLayout>
+        </LinearLayout>
+
+    </androidx.core.widget.NestedScrollView>
 
     <!-- FAB for adding APKs -->
     <com.google.android.material.floatingactionbutton.FloatingActionButton
@@ -370,7 +361,6 @@
         android:layout_height="56dp"
         android:layout_gravity="bottom|end"
         android:layout_margin="16dp"
-        android:layout_marginBottom="88dp"
         android:src="@drawable/ic_add"
         app:shapeAppearanceOverlay="@style/ShapeAppearance.M3.Bigger"
         app:tint="?attr/colorOnPrimaryContainer"

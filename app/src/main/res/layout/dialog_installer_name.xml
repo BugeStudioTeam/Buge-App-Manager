@@ -20,7 +20,7 @@
         style="@style/Widget.Material3.TextInputLayout.OutlinedBox"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="@string/installer_name">
+        android:hint="@string/install_installer_name">
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/installer_name_input"
@@ -28,8 +28,7 @@
             android:layout_height="wrap_content"
             android:inputType="text"
             android:maxLines="1"
-            android:singleLine="true"
-            android:hint="@string/installer_name_hint" />
+            android:singleLine="true" />
 
     </com.google.android.material.textfield.TextInputLayout>
 

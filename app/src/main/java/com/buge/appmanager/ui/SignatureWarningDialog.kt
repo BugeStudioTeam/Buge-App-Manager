@@ -4,6 +4,7 @@
 package com.buge.appmanager.ui
 
 import android.content.Context
+import android.content.DialogInterface
 import android.content.Intent
 import android.net.Uri
 import android.view.LayoutInflater
@@ -61,6 +62,17 @@ object SignatureWarningDialog {
         }
         view.findViewById<ImageView>(R.id.fdroid_item)?.setOnClickListener {
             openUrl(context, context.getString(R.string.signature_warning_fdroid_url))
+        }
+
+        // Fuck: Allow back key to dismiss the dialog (default to "exit" behavior is too aggressive)
+        currentDialog?.setOnKeyListener { _, keyCode, event ->
+            if (keyCode == android.view.KeyEvent.KEYCODE_BACK && event.action == android.view.KeyEvent.ACTION_UP) {
+                currentDialog.dismiss()
+                dialog = null
+                true
+            } else {
+                false
+            }
         }
 
         dialog?.setOnDismissListener {

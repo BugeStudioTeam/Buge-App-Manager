@@ -47,7 +47,7 @@ jobs:
       - name: Verify changelog exists
         run: |
           VERSION_CODE="${{ steps.version.outputs.version_code }}"
-          FILE="fastlane/android/metadata/en-US/changelogs/${VERSION_CODE}.txt"
+          FILE="fastlane/metadata/android/en-US/changelogs/${VERSION_CODE}.txt"
           if [ ! -f "$FILE" ]; then
             echo "ERROR: Changelog not found: $FILE"
             exit 1

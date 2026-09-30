@@ -160,7 +160,7 @@ jobs:
       - name: Read changelog
         run: |
           VERSION_CODE="${{ needs.preflight.outputs.version_code }}"
-          FILE="fastlane/android/metadata/en-US/changelogs/${VERSION_CODE}.txt"
+          FILE="fastlane/metadata/android/en-US/changelogs/${VERSION_CODE}.txt"
           cp "$FILE" release_body.txt
           echo "Loaded changelog from $FILE"
 

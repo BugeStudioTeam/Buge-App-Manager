@@ -1,0 +1,7 @@
+**12.73.131**
+
+**Fixes** 🛠
+- Fixed scrolling and display issues in the signature warning interface
+
+**Contributors of this version:**
+None

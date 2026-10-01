@@ -43,7 +43,6 @@ import androidx.compose.material.icons.outlined.Code
 import androidx.compose.material.icons.outlined.Email
 import androidx.compose.material.icons.outlined.FavoriteBorder
 import androidx.compose.material.icons.outlined.Info
-import androidx.compose.material.icons.outlined.Palette
 import androidx.compose.material.icons.outlined.Star
 import androidx.compose.material3.AssistChip
 import androidx.compose.material3.AssistChipDefaults
@@ -55,9 +54,8 @@ import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.FilledTonalButton
 import androidx.compose.material3.FilterChip
-import androidx.compose.material3.HorizontalDivider
+import androidx.compose.material3.FilterChipDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.LinearProgressIndicator
@@ -221,28 +219,24 @@ private fun AboutUsScreen(
 
             Spacer(Modifier.height(24.dp))
 
-            // Fuck: Quick status card with progress indicator
             AnimatedEntry(delayMillis = 100) {
                 StatusCard()
             }
 
             Spacer(Modifier.height(24.dp))
 
-            // Fuck: Description card
             AnimatedEntry(delayMillis = 200) {
                 DescriptionCard()
             }
 
             Spacer(Modifier.height(24.dp))
 
-            // Fuck: Feature chips row
             AnimatedEntry(delayMillis = 300) {
                 FeatureChips()
             }
 
             Spacer(Modifier.height(32.dp))
 
-            // Fuck: "Connect with us" section
             SectionLabel(text = "Connect with us")
 
             Spacer(Modifier.height(12.dp))
@@ -286,7 +280,6 @@ private fun AboutUsScreen(
 
             Spacer(Modifier.height(32.dp))
 
-            // Fuck: Special thanks
             SectionLabel(text = "Special thanks")
 
             Spacer(Modifier.height(12.dp))
@@ -304,7 +297,6 @@ private fun AboutUsScreen(
 
             Spacer(Modifier.height(32.dp))
 
-            // Fuck: Action buttons row
             AnimatedEntry(delayMillis = 800) {
                 ActionButtons(
                     onPrimaryClick = {
@@ -625,13 +617,14 @@ private fun FeatureChips() {
                 leadingIconContentColor = MaterialTheme.colorScheme.onSecondaryContainer
             )
         )
+        // Fuck: FilterChip uses FilterChipDefaults (SelectableChipColors)
         FilterChip(
             selected = true,
             onClick = { },
             label = { Text("Free") },
-            colors = AssistChipDefaults.assistChipColors(
-                containerColor = MaterialTheme.colorScheme.tertiaryContainer,
-                labelColor = MaterialTheme.colorScheme.onTertiaryContainer
+            colors = FilterChipDefaults.filterChipColors(
+                selectedContainerColor = MaterialTheme.colorScheme.tertiaryContainer,
+                selectedLabelColor = MaterialTheme.colorScheme.onTertiaryContainer
             )
         )
     }

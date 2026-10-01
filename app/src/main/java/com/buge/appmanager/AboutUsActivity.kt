@@ -9,9 +9,16 @@ import android.os.Build
 import android.os.Bundle
 import androidx.activity.compose.setContent
 import androidx.compose.animation.animateColorAsState
+import androidx.compose.animation.animateContentSize
+import androidx.compose.animation.core.FastOutSlowInEasing
+import androidx.compose.animation.core.RepeatMode
 import androidx.compose.animation.core.Spring
 import androidx.compose.animation.core.animateFloatAsState
+import androidx.compose.animation.core.infiniteRepeatable
+import androidx.compose.animation.core.rememberInfiniteTransition
 import androidx.compose.animation.core.spring
+import androidx.compose.animation.core.tween
+import androidx.compose.foundation.background
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -31,14 +38,18 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.rememberLazyListState
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.rounded.ArrowBack
 import androidx.compose.material.icons.rounded.ArrowOutward
 import androidx.compose.material.icons.rounded.AutoAwesome
 import androidx.compose.material.icons.rounded.Check
+import androidx.compose.material.icons.rounded.Close
 import androidx.compose.material.icons.rounded.Code
 import androidx.compose.material.icons.rounded.Language
+import androidx.compose.material.icons.rounded.Menu
 import androidx.compose.material.icons.rounded.MenuBook
 import androidx.compose.material.icons.rounded.Send
 import androidx.compose.material3.AssistChip
@@ -47,8 +58,8 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.ElevatedCard
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.FloatingActionButton
-import androidx.compose.material3.FloatingActionButtonDefaults
+import androidx.compose.material3.FilledIconButton
+import androidx.compose.material3.FilledTonalIconButton
 import androidx.compose.material3.FilterChip
 import androidx.compose.material3.FilterChipDefaults
 import androidx.compose.material3.Icon
@@ -66,6 +77,8 @@ import androidx.compose.material3.dynamicLightColorScheme
 import androidx.compose.material3.lightColorScheme
 import androidx.compose.material3.rememberTopAppBarState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -74,14 +87,17 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.scale
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
 class AboutUsActivity : BaseActivity() {
@@ -173,7 +189,7 @@ private data class StudioLink(
     val title: String,
     val description: String,
     val url: String,
-    val icon: androidx.compose.ui.graphics.vector.ImageVector,
+    val icon: ImageVector,
 )
 
 private val links = listOf(
@@ -183,9 +199,107 @@ private val links = listOf(
     StudioLink("ActivityManager", "A project we are proud to support", "https://github.com/sdex/ActivityManager", Icons.Rounded.MenuBook),
 )
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 private fun AboutUsExpressiveScreen(
+    versionName: String,
+    onBack: () -> Unit,
+    onOpenUrl: (String) -> Unit,
+) {
+    // Fuck: Show loading animation on entry
+    var isLoading by remember { mutableStateOf(true) }
+    LaunchedEffect(Unit) {
+        delay(1400)
+        isLoading = false
+    }
+
+    if (isLoading) {
+        LoadingScreen()
+    } else {
+        AboutUsContent(
+            versionName = versionName,
+            onBack = onBack,
+            onOpenUrl = onOpenUrl,
+        )
+    }
+}
+
+// ===================== Loading Screen =====================
+
+@Composable
+private fun LoadingScreen() {
+    val infiniteTransition = rememberInfiniteTransition(label = "loading")
+    val dotColors = listOf(
+        MaterialTheme.colorScheme.primary,
+        MaterialTheme.colorScheme.secondary,
+        MaterialTheme.colorScheme.tertiary,
+    )
+
+    Box(
+        modifier = Modifier
+            .fillMaxSize()
+            .background(MaterialTheme.colorScheme.surface),
+        contentAlignment = Alignment.Center,
+    ) {
+        Column(horizontalAlignment = Alignment.CenterHorizontally) {
+            Surface(
+                modifier = Modifier.size(96.dp),
+                shape = CircleShape,
+                color = MaterialTheme.colorScheme.primaryContainer,
+                tonalElevation = 2.dp,
+            ) {
+                Box(contentAlignment = Alignment.Center) {
+                    Icon(
+                        imageVector = Icons.Rounded.AutoAwesome,
+                        contentDescription = null,
+                        modifier = Modifier.size(40.dp),
+                        tint = MaterialTheme.colorScheme.onPrimaryContainer,
+                    )
+                }
+            }
+
+            Spacer(Modifier.height(32.dp))
+
+            Row(horizontalArrangement = Arrangement.spacedBy(10.dp)) {
+                repeat(3) { index ->
+                    val scale by infiniteTransition.animateFloat(
+                        initialValue = 0.5f,
+                        targetValue = 1.15f,
+                        animationSpec = infiniteRepeatable(
+                            animation = tween(
+                                durationMillis = 520,
+                                delayMillis = index * 130,
+                                easing = FastOutSlowInEasing,
+                            ),
+                            repeatMode = RepeatMode.Reverse,
+                        ),
+                        label = "dot_scale_$index",
+                    )
+                    Box(
+                        modifier = Modifier
+                            .size(14.dp)
+                            .scale(scale)
+                            .clip(CircleShape)
+                            .background(dotColors[index]),
+                    )
+                }
+            }
+
+            Spacer(Modifier.height(20.dp))
+
+            Text(
+                text = "Loading the studio",
+                style = MaterialTheme.typography.labelLarge,
+                color = MaterialTheme.colorScheme.onSurfaceVariant,
+            )
+        }
+    }
+}
+
+// ===================== Main Content =====================
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+private fun AboutUsContent(
     versionName: String,
     onBack: () -> Unit,
     onOpenUrl: (String) -> Unit,
@@ -193,8 +307,20 @@ private fun AboutUsExpressiveScreen(
     val scope = rememberCoroutineScope()
     val snackbarHostState = remember { SnackbarHostState() }
     val scrollBehavior = TopAppBarDefaults.exitUntilCollapsedScrollBehavior(rememberTopAppBarState())
+    val listState = rememberLazyListState()
     var selectedFilter by rememberSaveable { mutableStateOf("All") }
+    var toolbarExpanded by rememberSaveable { mutableStateOf(true) }
     val filters = listOf("All", "Projects", "Community")
+
+    // Fuck: Auto-collapse toolbar when scrolling, expand when back at top
+    val isAtTop by remember {
+        derivedStateOf {
+            listState.firstVisibleItemIndex == 0 && listState.firstVisibleItemScrollOffset < 30
+        }
+    }
+    LaunchedEffect(isAtTop) {
+        toolbarExpanded = isAtTop
+    }
 
     Scaffold(
         modifier = Modifier.nestedScroll(scrollBehavior.nestedScrollConnection),
@@ -236,17 +362,6 @@ private fun AboutUsExpressiveScreen(
                 scrollBehavior = scrollBehavior,
             )
         },
-        floatingActionButton = {
-            FloatingActionButton(
-                onClick = {
-                    scope.launch { snackbarHostState.showSnackbar("Choose a place to start a conversation") }
-                },
-                shape = MaterialTheme.shapes.large,
-                elevation = FloatingActionButtonDefaults.elevation(defaultElevation = 2.dp),
-            ) {
-                Icon(Icons.Rounded.Send, contentDescription = "Start a conversation")
-            }
-        },
         snackbarHost = { SnackbarHost(snackbarHostState) },
     ) { paddingValues ->
         BoxWithConstraints(
@@ -255,15 +370,18 @@ private fun AboutUsExpressiveScreen(
                 .padding(paddingValues),
         ) {
             val wide = maxWidth >= 600.dp
+
+            // Fuck: Main scrollable content
             LazyColumn(
                 modifier = Modifier
                     .fillMaxWidth()
                     .then(if (wide) Modifier.padding(horizontal = 24.dp) else Modifier),
+                state = listState,
                 contentPadding = PaddingValues(
                     start = if (wide) 0.dp else 16.dp,
                     end = if (wide) 0.dp else 16.dp,
                     top = 12.dp,
-                    bottom = 112.dp,
+                    bottom = 120.dp,
                 ),
                 verticalArrangement = Arrangement.spacedBy(16.dp),
             ) {
@@ -274,6 +392,7 @@ private fun AboutUsExpressiveScreen(
                         },
                     )
                 }
+
                 item {
                     Row(
                         modifier = Modifier.fillMaxWidth(),
@@ -297,6 +416,7 @@ private fun AboutUsExpressiveScreen(
                         }
                     }
                 }
+
                 item {
                     Text(
                         "Find us in the wild",
@@ -304,26 +424,117 @@ private fun AboutUsExpressiveScreen(
                         modifier = Modifier.padding(top = 8.dp),
                     )
                 }
-                items(links.filter { selectedFilter == "All" || (selectedFilter == "Projects" && it.title == "GitHub" || selectedFilter == "Community" && it.title == "Telegram") }) { link ->
+
+                items(
+                    links.filter {
+                        selectedFilter == "All" ||
+                            (selectedFilter == "Projects" && it.title == "GitHub") ||
+                            (selectedFilter == "Community" && it.title == "Telegram")
+                    }
+                ) { link ->
                     LinkCard(link = link, onClick = { onOpenUrl(link.url) })
                 }
+
                 item {
                     Row(
                         modifier = Modifier
                             .fillMaxWidth()
-                            .padding(top = 4.dp)
-                            .navigationBarsPadding(),
+                            .padding(top = 4.dp),
                         horizontalArrangement = Arrangement.SpaceBetween,
                         verticalAlignment = Alignment.CenterVertically,
                     ) {
-                        Text("Made with intention.", style = MaterialTheme.typography.labelLarge, color = MaterialTheme.colorScheme.onSurfaceVariant)
-                        Text("© 2026", style = MaterialTheme.typography.labelLarge, color = MaterialTheme.colorScheme.onSurfaceVariant)
+                        Text(
+                            "Made with intention.",
+                            style = MaterialTheme.typography.labelLarge,
+                            color = MaterialTheme.colorScheme.onSurfaceVariant,
+                        )
+                        Text(
+                            "© 2026",
+                            style = MaterialTheme.typography.labelLarge,
+                            color = MaterialTheme.colorScheme.onSurfaceVariant,
+                        )
                     }
                 }
+            }
+
+            // Fuck: Expandable floating toolbar pinned above the navigation bar
+            ExpandableFloatingToolbar(
+                expanded = toolbarExpanded,
+                onToggle = { toolbarExpanded = !toolbarExpanded },
+                links = links,
+                onLinkClick = onOpenUrl,
+                modifier = Modifier
+                    .align(Alignment.BottomCenter)
+                    .navigationBarsPadding()
+                    .padding(bottom = 16.dp),
+            )
+        }
+    }
+}
+
+// ===================== Expandable Floating Toolbar =====================
+
+@Composable
+private fun ExpandableFloatingToolbar(
+    expanded: Boolean,
+    onToggle: () -> Unit,
+    links: List<StudioLink>,
+    onLinkClick: (String) -> Unit,
+    modifier: Modifier = Modifier,
+) {
+    Surface(
+        modifier = modifier,
+        shape = RoundedCornerShape(32.dp),
+        color = MaterialTheme.colorScheme.surfaceContainerHigh,
+        tonalElevation = 3.dp,
+        shadowElevation = 6.dp,
+    ) {
+        Row(
+            modifier = Modifier
+                .animateContentSize(
+                    animationSpec = spring(
+                        dampingRatio = Spring.DampingRatioLowBouncy,
+                        stiffness = Spring.StiffnessLow,
+                    )
+                )
+                .padding(horizontal = 6.dp, vertical = 6.dp),
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.spacedBy(4.dp),
+        ) {
+            // Fuck: Expanded content — link action buttons
+            if (expanded) {
+                links.forEach { link ->
+                    FilledTonalIconButton(
+                        onClick = { onLinkClick(link.url) },
+                        shape = RoundedCornerShape(22.dp),
+                        modifier = Modifier.size(44.dp),
+                    ) {
+                        Icon(
+                            imageVector = link.icon,
+                            contentDescription = link.title,
+                            modifier = Modifier.size(20.dp),
+                        )
+                    }
+                }
+                Spacer(Modifier.width(2.dp))
+            }
+
+            // Fuck: Primary toggle button (expand / collapse)
+            FilledIconButton(
+                onClick = onToggle,
+                shape = CircleShape,
+                modifier = Modifier.size(52.dp),
+            ) {
+                Icon(
+                    imageVector = if (expanded) Icons.Rounded.Close else Icons.Rounded.Menu,
+                    contentDescription = if (expanded) "Collapse toolbar" else "Expand toolbar",
+                )
             }
         }
     }
 }
+
+// ===================== Hero & Link Cards =====================
 
 @Composable
 private fun HeroCard(onExplore: () -> Unit) {
@@ -345,7 +556,12 @@ private fun HeroCard(onExplore: () -> Unit) {
                 Text("BUge /\nstudio", style = MaterialTheme.typography.displaySmall)
                 Surface(
                     modifier = Modifier.size(56.dp),
-                    shape = RoundedCornerShape(topStart = 28.dp, topEnd = 10.dp, bottomEnd = 28.dp, bottomStart = 10.dp),
+                    shape = RoundedCornerShape(
+                        topStart = 28.dp,
+                        topEnd = 10.dp,
+                        bottomEnd = 28.dp,
+                        bottomStart = 10.dp,
+                    ),
                     color = MaterialTheme.colorScheme.primary,
                     contentColor = MaterialTheme.colorScheme.onPrimary,
                     tonalElevation = 2.dp,
@@ -383,7 +599,11 @@ private fun LinkCard(link: StudioLink, onClick: () -> Unit) {
         label = "expressiveCardScale",
     )
     val containerColor by animateColorAsState(
-        targetValue = if (pressed) MaterialTheme.colorScheme.secondaryContainer else MaterialTheme.colorScheme.surfaceContainer,
+        targetValue = if (pressed) {
+            MaterialTheme.colorScheme.secondaryContainer
+        } else {
+            MaterialTheme.colorScheme.surfaceContainer
+        },
         label = "expressiveCardColor",
     )
 

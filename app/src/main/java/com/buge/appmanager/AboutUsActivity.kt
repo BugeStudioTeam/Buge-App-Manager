@@ -13,6 +13,7 @@ import androidx.compose.animation.animateContentSize
 import androidx.compose.animation.core.FastOutSlowInEasing
 import androidx.compose.animation.core.RepeatMode
 import androidx.compose.animation.core.Spring
+import androidx.compose.animation.core.animateFloat
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.infiniteRepeatable
 import androidx.compose.animation.core.rememberInfiniteTransition
@@ -205,7 +206,6 @@ private fun AboutUsExpressiveScreen(
     onBack: () -> Unit,
     onOpenUrl: (String) -> Unit,
 ) {
-    // Fuck: Show loading animation on entry
     var isLoading by remember { mutableStateOf(true) }
     LaunchedEffect(Unit) {
         delay(1400)
@@ -222,8 +222,6 @@ private fun AboutUsExpressiveScreen(
         )
     }
 }
-
-// ===================== Loading Screen =====================
 
 @Composable
 private fun LoadingScreen() {
@@ -261,7 +259,7 @@ private fun LoadingScreen() {
 
             Row(horizontalArrangement = Arrangement.spacedBy(10.dp)) {
                 repeat(3) { index ->
-                    val scale by infiniteTransition.animateFloat(
+                    val dotScale by infiniteTransition.animateFloat(
                         initialValue = 0.5f,
                         targetValue = 1.15f,
                         animationSpec = infiniteRepeatable(
@@ -277,7 +275,7 @@ private fun LoadingScreen() {
                     Box(
                         modifier = Modifier
                             .size(14.dp)
-                            .scale(scale)
+                            .scale(dotScale)
                             .clip(CircleShape)
                             .background(dotColors[index]),
                     )
@@ -295,8 +293,6 @@ private fun LoadingScreen() {
     }
 }
 
-// ===================== Main Content =====================
-
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 private fun AboutUsContent(
@@ -312,7 +308,6 @@ private fun AboutUsContent(
     var toolbarExpanded by rememberSaveable { mutableStateOf(true) }
     val filters = listOf("All", "Projects", "Community")
 
-    // Fuck: Auto-collapse toolbar when scrolling, expand when back at top
     val isAtTop by remember {
         derivedStateOf {
             listState.firstVisibleItemIndex == 0 && listState.firstVisibleItemScrollOffset < 30
@@ -371,7 +366,6 @@ private fun AboutUsContent(
         ) {
             val wide = maxWidth >= 600.dp
 
-            // Fuck: Main scrollable content
             LazyColumn(
                 modifier = Modifier
                     .fillMaxWidth()
@@ -457,7 +451,6 @@ private fun AboutUsContent(
                 }
             }
 
-            // Fuck: Expandable floating toolbar pinned above the navigation bar
             ExpandableFloatingToolbar(
                 expanded = toolbarExpanded,
                 onToggle = { toolbarExpanded = !toolbarExpanded },
@@ -471,8 +464,6 @@ private fun AboutUsContent(
         }
     }
 }
-
-// ===================== Expandable Floating Toolbar =====================
 
 @Composable
 private fun ExpandableFloatingToolbar(
@@ -501,7 +492,6 @@ private fun ExpandableFloatingToolbar(
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.spacedBy(4.dp),
         ) {
-            // Fuck: Expanded content — link action buttons
             if (expanded) {
                 links.forEach { link ->
                     FilledTonalIconButton(
@@ -519,7 +509,6 @@ private fun ExpandableFloatingToolbar(
                 Spacer(Modifier.width(2.dp))
             }
 
-            // Fuck: Primary toggle button (expand / collapse)
             FilledIconButton(
                 onClick = onToggle,
                 shape = CircleShape,
@@ -533,8 +522,6 @@ private fun ExpandableFloatingToolbar(
         }
     }
 }
-
-// ===================== Hero & Link Cards =====================
 
 @Composable
 private fun HeroCard(onExplore: () -> Unit) {

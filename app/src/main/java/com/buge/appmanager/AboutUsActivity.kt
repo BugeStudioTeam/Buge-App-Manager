@@ -5,40 +5,84 @@ package com.buge.appmanager
 
 import android.content.Intent
 import android.net.Uri
+import android.os.Build
 import android.os.Bundle
 import androidx.activity.compose.setContent
-import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
-import androidx.compose.foundation.interaction.MutableInteractionSource
+import androidx.compose.animation.animateColorAsState
+import androidx.compose.animation.core.Spring
+import androidx.compose.animation.core.animateFloatAsState
+import androidx.compose.animation.core.spring
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.statusBarsPadding
+import androidx.compose.foundation.layout.safeDrawing
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.foundation.verticalScroll
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.rounded.ArrowBack
+import androidx.compose.material.icons.rounded.ArrowOutward
+import androidx.compose.material.icons.rounded.AutoAwesome
+import androidx.compose.material.icons.rounded.Check
+import androidx.compose.material.icons.rounded.Code
+import androidx.compose.material.icons.rounded.Language
+import androidx.compose.material.icons.rounded.MenuBook
+import androidx.compose.material.icons.rounded.Send
+import androidx.compose.material3.AssistChip
+import androidx.compose.material3.AssistChipDefaults
+import androidx.compose.material3.Button
+import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.ElevatedCard
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.FloatingActionButton
+import androidx.compose.material3.FloatingActionButtonDefaults
+import androidx.compose.material3.FilterChip
+import androidx.compose.material3.FilterChipDefaults
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Scaffold
+import androidx.compose.material3.SnackbarHost
+import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
+import androidx.compose.material3.TopAppBarDefaults
+import androidx.compose.material3.darkColorScheme
+import androidx.compose.material3.dynamicDarkColorScheme
+import androidx.compose.material3.dynamicLightColorScheme
+import androidx.compose.material3.isSystemInDarkTheme
 import androidx.compose.material3.lightColorScheme
+import androidx.compose.material3.rememberTopAppBarState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.scale
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.text.TextStyle
-import androidx.compose.ui.text.font.FontFamily
+import androidx.compose.ui.input.nestedscroll.nestedScroll
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import kotlinx.coroutines.launch
 
 class AboutUsActivity : BaseActivity() {
 
@@ -51,7 +95,7 @@ class AboutUsActivity : BaseActivity() {
 
         setContent {
             AboutUsTheme {
-                AboutUsScreen(
+                AboutUsExpressiveScreen(
                     versionName = versionName,
                     onBack = { onBackPressedDispatcher.onBackPressed() },
                     onOpenUrl = ::openUrl,
@@ -67,225 +111,322 @@ class AboutUsActivity : BaseActivity() {
     }
 }
 
-private val Ink = Color(0xFF20201D)
-private val Paper = Color(0xFFF4F1EA)
-private val Clay = Color(0xFFC66345)
-private val Moss = Color(0xFF4F6653)
-private val Sand = Color(0xFFE4D6BF)
-private val MutedInk = Color(0xFF77736B)
+private val SeedBlue = Color(0xFF4F5D92)
+private val SeedOrange = Color(0xFF8F4B39)
 
 @Composable
 private fun AboutUsTheme(content: @Composable () -> Unit) {
-    MaterialTheme(
-        colorScheme = lightColorScheme(
-            primary = Clay,
+    val context = LocalContext.current
+    val dark = isSystemInDarkTheme()
+    val colors = when {
+        Build.VERSION.SDK_INT >= Build.VERSION_CODES.S && dark -> dynamicDarkColorScheme(context)
+        Build.VERSION.SDK_INT >= Build.VERSION_CODES.S -> dynamicLightColorScheme(context)
+        dark -> darkColorScheme(
+            primary = Color(0xFFB9C4FF),
+            onPrimary = Color(0xFF14295D),
+            primaryContainer = Color(0xFF354778),
+            onPrimaryContainer = Color(0xFFDDE2FF),
+            secondary = Color(0xFFE7BDB0),
+            onSecondary = Color(0xFF44291F),
+            secondaryContainer = Color(0xFF5D4036),
+            onSecondaryContainer = Color(0xFFFFDBCF),
+        )
+        else -> lightColorScheme(
+            primary = SeedBlue,
             onPrimary = Color.White,
-            secondary = Moss,
+            primaryContainer = Color(0xFFDDE2FF),
+            onPrimaryContainer = Color(0xFF06164A),
+            secondary = SeedOrange,
             onSecondary = Color.White,
-            tertiary = Sand,
-            background = Paper,
-            onBackground = Ink,
-            surface = Paper,
-            onSurface = Ink,
-            surfaceVariant = Sand,
-            onSurfaceVariant = MutedInk,
-            outline = Color(0xFFB9B0A2),
+            secondaryContainer = Color(0xFFFFDBCF),
+            onSecondaryContainer = Color(0xFF351108),
+            tertiary = Color(0xFF006874),
+            onTertiary = Color.White,
+            tertiaryContainer = Color(0xFF97F0FF),
+            onTertiaryContainer = Color(0xFF001F24),
+        )
+    }
+
+    MaterialTheme(
+        colorScheme = colors,
+        shapes = androidx.compose.material3.Shapes(
+            extraSmall = RoundedCornerShape(8.dp),
+            small = RoundedCornerShape(12.dp),
+            medium = RoundedCornerShape(20.dp),
+            large = RoundedCornerShape(28.dp),
+            extraLarge = RoundedCornerShape(36.dp),
         ),
-        typography = androidx.compose.material3.Typography(
-            displayLarge = TextStyle(
-                fontFamily = FontFamily.Serif,
-                fontWeight = FontWeight.Normal,
-                fontSize = 66.sp,
-                lineHeight = 62.sp,
-                letterSpacing = (-2.5).sp,
-            ),
-            headlineSmall = TextStyle(
-                fontFamily = FontFamily.Serif,
-                fontWeight = FontWeight.Normal,
-                fontSize = 28.sp,
-                lineHeight = 32.sp,
-                letterSpacing = (-0.5).sp,
-            ),
-            bodyLarge = TextStyle(
-                fontFamily = FontFamily.Serif,
-                fontSize = 18.sp,
-                lineHeight = 27.sp,
-            ),
-            labelSmall = TextStyle(
-                fontFamily = FontFamily.SansSerif,
-                fontWeight = FontWeight.Bold,
-                fontSize = 10.sp,
-                letterSpacing = 1.8.sp,
-            ),
-        ),
+        typography = androidx.compose.material3.Typography().run {
+            copy(
+                displayLarge = displayLarge.copy(fontWeight = FontWeight.ExtraBold, letterSpacing = (-2).sp),
+                headlineLarge = headlineLarge.copy(fontWeight = FontWeight.Bold),
+                headlineSmall = headlineSmall.copy(fontWeight = FontWeight.Bold),
+                titleLarge = titleLarge.copy(fontWeight = FontWeight.Bold),
+                labelLarge = labelLarge.copy(fontWeight = FontWeight.Bold),
+            )
+        },
         content = content,
     )
 }
 
+private data class StudioLink(
+    val title: String,
+    val description: String,
+    val url: String,
+    val icon: androidx.compose.ui.graphics.vector.ImageVector,
+)
+
+private val links = listOf(
+    StudioLink("GitHub", "Open-source projects and code", "https://github.com/BugeStudioTeam", Icons.Rounded.Code),
+    StudioLink("Telegram", "News, releases, and conversation", "https://t.me/bugestudio", Icons.Rounded.Send),
+    StudioLink("Website", "The studio, in its natural habitat", "https://bugestudio.website/", Icons.Rounded.Language),
+    StudioLink("ActivityManager", "A project we are proud to support", "https://github.com/sdex/ActivityManager", Icons.Rounded.MenuBook),
+)
+
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
-private fun AboutUsScreen(
+private fun AboutUsExpressiveScreen(
     versionName: String,
     onBack: () -> Unit,
     onOpenUrl: (String) -> Unit,
 ) {
-    Surface(
-        modifier = Modifier.fillMaxSize(),
-        color = MaterialTheme.colorScheme.background,
-    ) {
-        Column(
+    val scope = rememberCoroutineScope()
+    val snackbarHostState = remember { SnackbarHostState() }
+    val scrollBehavior = TopAppBarDefaults.exitUntilCollapsedScrollBehavior(rememberTopAppBarState())
+    var selectedFilter by rememberSaveable { mutableStateOf("All") }
+    val filters = listOf("All", "Projects", "Community")
+
+    Scaffold(
+        modifier = Modifier.nestedScroll(scrollBehavior.nestedScrollConnection),
+        contentWindowInsets = WindowInsets.safeDrawing,
+        topBar = {
+            androidx.compose.material3.LargeTopAppBar(
+                title = {
+                    Column {
+                        Text("About us")
+                        Text(
+                            "Buge Studio · $versionName",
+                            style = MaterialTheme.typography.labelMedium,
+                            color = MaterialTheme.colorScheme.onSurfaceVariant,
+                        )
+                    }
+                },
+                navigationIcon = {
+                    IconButton(onClick = onBack) {
+                        Icon(Icons.AutoMirrored.Rounded.ArrowBack, contentDescription = "Back")
+                    }
+                },
+                actions = {
+                    AssistChip(
+                        onClick = {
+                            scope.launch { snackbarHostState.showSnackbar("You are already in the studio") }
+                        },
+                        label = { Text("Inside") },
+                        leadingIcon = {
+                            Icon(Icons.Rounded.AutoAwesome, contentDescription = null, Modifier.size(18.dp))
+                        },
+                        colors = AssistChipDefaults.assistChipColors(
+                            containerColor = MaterialTheme.colorScheme.tertiaryContainer,
+                            labelColor = MaterialTheme.colorScheme.onTertiaryContainer,
+                            leadingIconContentColor = MaterialTheme.colorScheme.onTertiaryContainer,
+                        ),
+                    )
+                    Spacer(Modifier.width(8.dp))
+                },
+                scrollBehavior = scrollBehavior,
+            )
+        },
+        floatingActionButton = {
+            FloatingActionButton(
+                onClick = {
+                    scope.launch { snackbarHostState.showSnackbar("Choose a place to start a conversation") }
+                },
+                shape = MaterialTheme.shapes.large,
+                elevation = FloatingActionButtonDefaults.elevation(defaultElevation = 2.dp),
+            ) {
+                Icon(Icons.Rounded.Send, contentDescription = "Start a conversation")
+            }
+        },
+        snackbarHost = { SnackbarHost(snackbarHostState) },
+    ) { paddingValues ->
+        BoxWithConstraints(
             modifier = Modifier
                 .fillMaxSize()
-                .verticalScroll(rememberScrollState())
-                .statusBarsPadding()
-                .navigationBarsPadding()
-                .padding(horizontal = 28.dp),
+                .padding(paddingValues),
         ) {
-            Spacer(Modifier.height(20.dp))
-
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.SpaceBetween,
-                verticalAlignment = Alignment.CenterVertically,
+            val wide = maxWidth >= 600.dp
+            LazyColumn(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .then(if (wide) Modifier.padding(horizontal = 24.dp) else Modifier),
+                contentPadding = PaddingValues(
+                    start = if (wide) 0.dp else 16.dp,
+                    end = if (wide) 0.dp else 16.dp,
+                    top = 12.dp,
+                    bottom = 112.dp,
+                ),
+                verticalArrangement = Arrangement.spacedBy(16.dp),
             ) {
-                Text(
-                    text = "BUge / studio",
-                    style = MaterialTheme.typography.labelSmall,
-                    color = MaterialTheme.colorScheme.primary,
-                )
-                Text(
-                    text = "CLOSE",
-                    modifier = Modifier.clickable(
-                        interactionSource = remember { MutableInteractionSource() },
-                        indication = null,
-                        onClick = onBack,
-                    ),
-                    style = MaterialTheme.typography.labelSmall,
-                    color = MaterialTheme.colorScheme.onSurfaceVariant,
-                )
+                item {
+                    HeroCard(
+                        onExplore = {
+                            scope.launch { snackbarHostState.showSnackbar("The studio is small, curious, and open") }
+                        },
+                    )
+                }
+                item {
+                    Row(
+                        modifier = Modifier.fillMaxWidth(),
+                        horizontalArrangement = Arrangement.spacedBy(8.dp),
+                    ) {
+                        filters.forEach { filter ->
+                            FilterChip(
+                                selected = selectedFilter == filter,
+                                onClick = { selectedFilter = filter },
+                                label = { Text(filter) },
+                                leadingIcon = if (selectedFilter == filter) {
+                                    { Icon(Icons.Rounded.Check, contentDescription = null, Modifier.size(18.dp)) }
+                                } else null,
+                                shape = MaterialTheme.shapes.extraLarge,
+                                colors = FilterChipDefaults.filterChipColors(
+                                    selectedContainerColor = MaterialTheme.colorScheme.secondaryContainer,
+                                    selectedLabelColor = MaterialTheme.colorScheme.onSecondaryContainer,
+                                    selectedLeadingIconColor = MaterialTheme.colorScheme.onSecondaryContainer,
+                                ),
+                            )
+                        }
+                    }
+                }
+                item {
+                    Text(
+                        "Find us in the wild",
+                        style = MaterialTheme.typography.headlineSmall,
+                        modifier = Modifier.padding(top = 8.dp),
+                    )
+                }
+                items(links.filter { selectedFilter == "All" || (selectedFilter == "Projects" && it.title == "GitHub" || selectedFilter == "Community" && it.title == "Telegram") }) { link ->
+                    LinkCard(link = link, onClick = { onOpenUrl(link.url) })
+                }
+                item {
+                    Row(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(top = 4.dp)
+                            .navigationBarsPadding(),
+                        horizontalArrangement = Arrangement.SpaceBetween,
+                        verticalAlignment = Alignment.CenterVertically,
+                    ) {
+                        Text("Made with intention.", style = MaterialTheme.typography.labelLarge, color = MaterialTheme.colorScheme.onSurfaceVariant)
+                        Text("© 2026", style = MaterialTheme.typography.labelLarge, color = MaterialTheme.colorScheme.onSurfaceVariant)
+                    }
+                }
             }
-
-            Spacer(Modifier.height(54.dp))
-
-            Text(
-                text = "ABOUT\nUS",
-                style = MaterialTheme.typography.displayLarge,
-                color = MaterialTheme.colorScheme.onBackground,
-            )
-
-            Spacer(Modifier.height(24.dp))
-
-            Text(
-                text = "A small studio making useful things\nwith a little more intention.",
-                style = MaterialTheme.typography.bodyLarge,
-                color = MaterialTheme.colorScheme.onSurfaceVariant,
-            )
-
-            Spacer(Modifier.height(38.dp))
-            EditorialRule()
-            Spacer(Modifier.height(30.dp))
-
-            Text(
-                text = "A NOTE FROM THE DESK",
-                style = MaterialTheme.typography.labelSmall,
-                color = MaterialTheme.colorScheme.secondary,
-            )
-
-            Spacer(Modifier.height(14.dp))
-
-            Text(
-                text = "We believe software can feel calm,\nclear, and quietly delightful.",
-                style = MaterialTheme.typography.headlineSmall,
-                color = MaterialTheme.colorScheme.onBackground,
-            )
-
-            Spacer(Modifier.height(46.dp))
-
-            Text(
-                text = "FIND US IN THE WILD",
-                style = MaterialTheme.typography.labelSmall,
-                color = MaterialTheme.colorScheme.secondary,
-            )
-
-            Spacer(Modifier.height(12.dp))
-
-            LinkRow("GITHUB", "BugeStudioTeam", "https://github.com/BugeStudioTeam", onOpenUrl)
-            LinkRow("TELEGRAM", "@bugestudio", "https://t.me/bugestudio", onOpenUrl)
-            LinkRow("WEBSITE", "bugestudio.website", "https://bugestudio.website/", onOpenUrl)
-            LinkRow("ACTIVITYMANAGER", "github.com/sdex/ActivityManager", "https://github.com/sdex/ActivityManager", onOpenUrl)
-
-            Spacer(Modifier.height(34.dp))
-            EditorialRule()
-            Spacer(Modifier.height(18.dp))
-
-            Box(modifier = Modifier.fillMaxWidth()) {
-                Text(
-                    text = "VERSION $versionName",
-                    style = MaterialTheme.typography.labelSmall,
-                    color = MaterialTheme.colorScheme.onSurfaceVariant,
-                )
-                Text(
-                    text = "© 2026",
-                    modifier = Modifier.align(Alignment.CenterEnd),
-                    style = MaterialTheme.typography.labelSmall,
-                    color = MaterialTheme.colorScheme.onSurfaceVariant,
-                )
-            }
-
-            Spacer(Modifier.height(22.dp))
         }
     }
 }
 
 @Composable
-private fun EditorialRule() {
-    Row(
+private fun HeroCard(onExplore: () -> Unit) {
+    ElevatedCard(
         modifier = Modifier.fillMaxWidth(),
-        verticalAlignment = Alignment.CenterVertically,
+        shape = MaterialTheme.shapes.extraLarge,
+        colors = CardDefaults.elevatedCardColors(
+            containerColor = MaterialTheme.colorScheme.primaryContainer,
+            contentColor = MaterialTheme.colorScheme.onPrimaryContainer,
+        ),
+        elevation = CardDefaults.elevatedCardElevation(defaultElevation = 3.dp),
     ) {
-        Box(
-            modifier = Modifier
-                .width(42.dp)
-                .height(3.dp)
-                .background(MaterialTheme.colorScheme.primary, RoundedCornerShape(50)),
-        )
-        Spacer(Modifier.width(10.dp))
-        Box(
-            modifier = Modifier
-                .weight(1f)
-                .height(1.dp)
-                .background(MaterialTheme.colorScheme.outline),
-        )
+        Column(modifier = Modifier.padding(24.dp)) {
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.SpaceBetween,
+                verticalAlignment = Alignment.Top,
+            ) {
+                Text("BUge /\nstudio", style = MaterialTheme.typography.displaySmall)
+                Surface(
+                    modifier = Modifier.size(56.dp),
+                    shape = RoundedCornerShape(topStart = 28.dp, topEnd = 10.dp, bottomEnd = 28.dp, bottomStart = 10.dp),
+                    color = MaterialTheme.colorScheme.primary,
+                    contentColor = MaterialTheme.colorScheme.onPrimary,
+                    tonalElevation = 2.dp,
+                ) {
+                    Box(contentAlignment = Alignment.Center) {
+                        Icon(Icons.Rounded.AutoAwesome, contentDescription = null)
+                    }
+                }
+            }
+            Spacer(Modifier.height(20.dp))
+            Text(
+                "Useful things, made with a little more intention.",
+                style = MaterialTheme.typography.headlineSmall,
+            )
+            Spacer(Modifier.height(20.dp))
+            Button(
+                onClick = onExplore,
+                shape = MaterialTheme.shapes.extraLarge,
+                contentPadding = PaddingValues(horizontal = 20.dp, vertical = 12.dp),
+            ) {
+                Text("Explore the studio")
+                Spacer(Modifier.width(8.dp))
+                Icon(Icons.Rounded.ArrowOutward, contentDescription = null, Modifier.size(18.dp))
+            }
+        }
     }
 }
 
 @Composable
-private fun LinkRow(
-    category: String,
-    value: String,
-    url: String,
-    onOpenUrl: (String) -> Unit,
-) {
-    Row(
+private fun LinkCard(link: StudioLink, onClick: () -> Unit) {
+    var pressed by remember { mutableStateOf(false) }
+    val scale by animateFloatAsState(
+        targetValue = if (pressed) 0.97f else 1f,
+        animationSpec = spring(stiffness = Spring.StiffnessMediumLow),
+        label = "expressiveCardScale",
+    )
+    val containerColor by animateColorAsState(
+        targetValue = if (pressed) MaterialTheme.colorScheme.secondaryContainer else MaterialTheme.colorScheme.surfaceContainer,
+        label = "expressiveCardColor",
+    )
+
+    ElevatedCard(
         modifier = Modifier
             .fillMaxWidth()
-            .clickable(
-                interactionSource = remember { MutableInteractionSource() },
-                indication = null,
-                onClick = { onOpenUrl(url) },
-            )
-            .padding(vertical = 16.dp),
-        verticalAlignment = Alignment.CenterVertically,
+            .scale(scale),
+        onClick = {
+            pressed = true
+            onClick()
+            pressed = false
+        },
+        shape = RoundedCornerShape(24.dp, 24.dp, 12.dp, 24.dp),
+        colors = CardDefaults.elevatedCardColors(containerColor = containerColor),
+        elevation = CardDefaults.elevatedCardElevation(defaultElevation = 1.dp),
     ) {
-        Text(
-            text = category,
-            modifier = Modifier.width(126.dp),
-            style = MaterialTheme.typography.labelSmall,
-            color = MaterialTheme.colorScheme.onSurfaceVariant,
-        )
-        Text(
-            text = value,
-            style = MaterialTheme.typography.bodyLarge,
-            color = MaterialTheme.colorScheme.onBackground,
-        )
+        Row(
+            modifier = Modifier.padding(horizontal = 18.dp, vertical = 16.dp),
+            verticalAlignment = Alignment.CenterVertically,
+        ) {
+            Surface(
+                modifier = Modifier.size(48.dp),
+                shape = RoundedCornerShape(16.dp, 24.dp, 16.dp, 24.dp),
+                color = MaterialTheme.colorScheme.tertiaryContainer,
+                contentColor = MaterialTheme.colorScheme.onTertiaryContainer,
+            ) {
+                Box(contentAlignment = Alignment.Center) {
+                    Icon(link.icon, contentDescription = null)
+                }
+            }
+            Spacer(Modifier.width(16.dp))
+            Column(modifier = Modifier.weight(1f)) {
+                Text(link.title, style = MaterialTheme.typography.titleLarge)
+                Text(
+                    link.description,
+                    style = MaterialTheme.typography.bodyMedium,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant,
+                    maxLines = 2,
+                    overflow = TextOverflow.Ellipsis,
+                )
+            }
+            Spacer(Modifier.width(8.dp))
+            Icon(Icons.Rounded.ArrowOutward, contentDescription = "Open ${link.title}")
+        }
     }
 }

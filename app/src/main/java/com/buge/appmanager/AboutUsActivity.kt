@@ -6,6 +6,7 @@ package com.buge.appmanager
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
+import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.animation.core.Spring
 import androidx.compose.animation.core.animateFloatAsState
@@ -52,7 +53,6 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.scale
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -61,9 +61,8 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.buge.appmanager.util.ThemeManager
 
-class AboutUsActivity : BaseActivity() {
+class AboutUsActivity : ComponentActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -118,8 +117,6 @@ private fun AboutUsScreen(
     onOpenUrl: (String) -> Unit,
     versionName: String
 ) {
-    val context = LocalContext.current
-
     Scaffold(
         topBar = {
             CenterAlignedTopAppBar(
@@ -156,12 +153,10 @@ private fun AboutUsScreen(
         ) {
             Spacer(Modifier.height(24.dp))
 
-            // Fuck: Hero logo with expressive gradient circle
             HeroLogo()
 
             Spacer(Modifier.height(24.dp))
 
-            // Fuck: Team name
             Text(
                 text = "Buge Studio",
                 style = MaterialTheme.typography.displaySmall.copy(
@@ -174,7 +169,6 @@ private fun AboutUsScreen(
 
             Spacer(Modifier.height(8.dp))
 
-            // Fuck: Version chip
             Surface(
                 shape = RoundedCornerShape(50),
                 color = MaterialTheme.colorScheme.primaryContainer
@@ -189,7 +183,6 @@ private fun AboutUsScreen(
 
             Spacer(Modifier.height(32.dp))
 
-            // Fuck: Description card with large expressive corners
             ExpressiveCard {
                 Text(
                     text = stringResource(R.string.about_us_title),
@@ -209,7 +202,6 @@ private fun AboutUsScreen(
 
             Spacer(Modifier.height(24.dp))
 
-            // Fuck: Links section title
             Text(
                 text = "Connect with us",
                 style = MaterialTheme.typography.titleMedium.copy(
@@ -221,7 +213,6 @@ private fun AboutUsScreen(
                     .padding(start = 8.dp, bottom = 12.dp)
             )
 
-            // Fuck: Link cards
             ExpressiveLinkCard(
                 iconRes = R.drawable.ic_github,
                 title = "GitHub",
@@ -255,7 +246,6 @@ private fun AboutUsScreen(
 
             Spacer(Modifier.height(24.dp))
 
-            // Fuck: Credits section
             Text(
                 text = "Special thanks",
                 style = MaterialTheme.typography.titleMedium.copy(
@@ -374,7 +364,6 @@ private fun ExpressiveLinkCard(
                 .padding(20.dp),
             verticalAlignment = Alignment.CenterVertically
         ) {
-            // Fuck: Icon in a circle
             Box(
                 modifier = Modifier
                     .size(48.dp)

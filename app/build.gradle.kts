@@ -29,6 +29,11 @@ android {
         }
     }
 
+    dependenciesInfo {
+        includeInApk = false
+        includeInBundle = false
+    }
+
     // Load signing credentials from local gitignored keystore.properties
     val keystoreProperties = Properties()
     val keystorePropertiesFile = rootProject.file("keystore.properties")

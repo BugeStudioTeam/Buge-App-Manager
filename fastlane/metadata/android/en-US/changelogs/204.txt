@@ -1,0 +1,7 @@
+**12.73.132**
+
+**Changed** 🔧
+- Transparent build (no impact on app usage)
+
+**Contributors of this version:**
+None

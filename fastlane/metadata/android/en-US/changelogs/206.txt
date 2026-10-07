@@ -1,0 +1,10 @@
+**12.73.134**
+
+**Fixes** 🛠
+- Completed all missing language files
+
+**Optimizations** ⚡
+- Improved code logic
+
+**Contributors of this version:**
+None

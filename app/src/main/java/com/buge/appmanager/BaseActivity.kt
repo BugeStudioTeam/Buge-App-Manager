@@ -28,11 +28,8 @@ abstract class BaseActivity : AppCompatActivity() {
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        // Fuck: Apply theme before super.onCreate
-        ThemeManager.applyColorTheme(this)
         
-        // Fuck: Dynamic color MUST be applied before super.onCreate and after theme
-        // so it can properly override the theme colors
+        ThemeManager.applyColorTheme(this)               
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S &&
             PreferencesManager.getDynamicColor(this)) {
             DynamicColors.applyToActivityIfAvailable(this)

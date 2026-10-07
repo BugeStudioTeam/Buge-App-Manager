@@ -102,7 +102,7 @@ class AboutUsActivity : BaseActivity() {
             val intent = Intent(Intent.ACTION_VIEW, Uri.parse(url))
             startActivity(intent)
         } catch (e: Exception) {
-            // Do nothing
+            // do nothing :/
         }
     }
 

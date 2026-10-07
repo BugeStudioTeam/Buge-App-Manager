@@ -2,13 +2,13 @@
 <!-- SPDX-License-Identifier: GPL-3.0-only -->
 <!-- Copyright (C) 2026 Buge Studio -->
 <resources>
-    <string name="app_name">Gestionnaire d\'applications Buge</string>
-    <string name="developer_name">Équipe Buge</string>
+    <string name="app_name">Buge App Manager</string>
+    <string name="developer_name">Buge Team</string>
 
     <!-- Navigation -->
     <string name="nav_apps">Applications</string>
     <string name="nav_activities">Activités</string>
-    <string name="nav_permissions">Permissions</string>
+    <string name="nav_permissions">Autorisations</string>
     <string name="nav_settings">Paramètres</string>
 
     <!-- Settings Groups -->
@@ -23,16 +23,16 @@
     <string name="pref_theme">Thème</string>
     <string name="pref_theme_light">Clair</string>
     <string name="pref_theme_dark">Sombre</string>
-    <string name="pref_theme_auto">Défaut du système</string>
+    <string name="pref_theme_auto">Par défaut du système</string>
     <string name="pref_language">Langue</string>
-    <string name="pref_language_auto">Défaut du système</string>
+    <string name="pref_language_auto">Par défaut du système</string>
     <string name="pref_default_page">Page par défaut</string>
-    <string name="pref_default_page_summary">Sélectionner la page à afficher au démarrage</string>
+    <string name="pref_default_page_summary">Sélectionnez la page à afficher au démarrage de l\'application</string>
     <string name="pref_show_system_apps">Afficher les applications système</string>
     <string name="pref_show_disabled_apps">Afficher les applications désactivées</string>
     <string name="pref_show_undeclared_activities">Afficher les activités non déclarées</string>
     <string name="pref_allow_system_ops">Autoriser les opérations sur les applications système</string>
-    <string name="pref_allow_system_ops_summary">Autoriser la modification des applications système (permissions, désactivation, désinstallation)</string>
+    <string name="pref_allow_system_ops_summary">Autoriser la modification des applications système (autorisations, désactivation, désinstallation)</string>
     <string name="pref_about">À propos</string>
     <string name="setting_saved">Paramètre enregistré</string>
     <string name="pref_auto_update">Mise à jour automatique</string>
@@ -44,18 +44,18 @@
 
     <!-- Shizuku Provider -->
     <string name="pref_shizuku_provider">Fournisseur Shizuku</string>
-    <string name="pref_shizuku_provider_summary">Personnaliser le nom du paquet du fournisseur Shizuku</string>
-    <string name="shizuku_provider_title">Nom du paquet du fournisseur Shizuku</string>
+    <string name="pref_shizuku_provider_summary">Personnaliser le nom du package du fournisseur Shizuku</string>
+    <string name="shizuku_provider_title">Nom du package du fournisseur Shizuku</string>
     <string name="shizuku_provider_default">moe.shizuku.privileged.api</string>
-    <string name="shizuku_provider_restore_default">Restaurer les paramètres par défaut</string>
+    <string name="shizuku_provider_restore_default">Restaurer par défaut</string>
 
     <!-- Log Settings -->
     <string name="pref_logging">Journalisation</string>
-    <string name="pref_logging_summary">Enregistrer les opérations et erreurs</string>
+    <string name="pref_logging_summary">Enregistrer les opérations utilisateur et les erreurs</string>
     <string name="log_activity_title">Journal des opérations</string>
     <string name="log_settings_title">Paramètres du journal</string>
     <string name="log_enable">Activer la journalisation</string>
-    <string name="log_enable_summary">Enregistrer toutes les opérations et erreurs</string>
+    <string name="log_enable_summary">Enregistrer toutes les opérations utilisateur et les erreurs système</string>
     <string name="log_empty">Aucun journal enregistré</string>
     <string name="log_copy">Copier</string>
     <string name="log_cleared">Journaux effacés</string>
@@ -64,26 +64,26 @@
     <!-- Default Page Dialog -->
     <string name="default_page_title">Page de démarrage par défaut</string>
     <string name="default_page_apps">Applications</string>
-    <string name="default_page_permissions">Permissions</string>
+    <string name="default_page_permissions">Autorisations</string>
     <string name="default_page_activities">Activités</string>
     <string name="default_page_settings">Paramètres</string>
 
     <!-- About Dialog -->
-    <string name="about_desc">Gestionnaire d\'applications Buge est un outil puissant de gestion d\'applications avec support Shizuku pour un contrôle avancé des permissions et des applications.</string>
+    <string name="about_desc">Buge App Manager est un puissant outil de gestion d\'applications avec le support de Shizuku pour le contrôle avancé des autorisations et des applications.</string>
 
     <!-- About Links -->
-    <string name="website">Site Web</string>
-    <string name="website_desc">Visitez notre site officiel</string>
+    <string name="website">Site web</string>
+    <string name="website_desc">Visitez notre site web officiel</string>
     <string name="github">GitHub</string>
     <string name="github_desc">Visitez notre dépôt GitHub</string>
     <string name="telegram">Telegram</string>
-    <string name="telegram_desc">Rejoignez notre chaîne Telegram</string>
+    <string name="telegram_desc">Rejoignez notre canal Telegram</string>
     <string name="activitymanager">ActivityManager</string>
     <string name="activitymanager_desc">Projet open-source — la méthode Shizuku pour lancer des activités non exportées</string>
     <string name="check_for_update">Vérifier les mises à jour</string>
     <string name="update_desc">Vérifier les nouvelles versions sur GitHub</string>
-    <string name="about_more">En savoir plus</string>
-    <string name="about_more_summary">Découvrez l\'équipe de développement et la vision du projet</string>
+    <string name="about_more">En savoir plus sur nous</string>
+    <string name="about_more_summary">En savoir plus sur l\'équipe de développement et la vision du projet</string>
     <string name="about">À propos</string>
     <string name="close">Fermer</string>
     <string name="open">Ouvrir</string>
@@ -91,15 +91,15 @@
     <!-- About Us Activity -->
     <string name="about_us">À propos de nous</string>
     <string name="about_us_title">Équipe Buge Studio</string>
-    <string name="about_us_description">L\'équipe Buge Studio est un groupe passionné de développeurs et de designers dédiés à la création d\'applications utilitaires innovantes et pratiques pour la plateforme Android. Nous nous concentrons sur la confidentialité des utilisateurs, le contrôle du système et l\'ouverture. Notre objectif est de fournir aux utilisateurs des outils transparents, efficaces et fiables. Buge App Manager est un projet open-source et notre première application majeure. Nous invitons tout le monde à participer à son amélioration et à son développement.</string>
+    <string name="about_us_description">L\'équipe Buge Studio est un groupe passionné de développeurs et de designers dédiés à la création d\'applications utilitaires innovantes et pratiques pour la plateforme Android. Nous nous concentrons sur la confidentialité des utilisateurs, le contrôle du système et l\'ouverture. Notre objectif est de fournir aux utilisateurs des outils transparents, efficaces et fiables. Buge App Manager est un projet open-source, et c\'est notre première application majeure. Nous invitons tout le monde à participer à son amélioration et à son développement ensemble.</string>
 
     <!-- GMS Disable Warning -->
     <string name="gms_disable_warning_title">Désactiver les services Google ?</string>
-    <string name="gms_disable_warning_message">La désactivation des services Google affectera les éléments suivants :\n\n• Le Google Play Store cessera de fonctionner\n• Les applications qui dépendent des services Google Play peuvent planter\n• Les notifications push des applications Google s\'arrêteront\n• Les services de localisation peuvent être affectés\n• Les achats intégrés ne fonctionneront pas\n\nÊtes-vous sûr de vouloir désactiver les services Google ?</string>
+    <string name="gms_disable_warning_message">La désactivation des services Google affectera les éléments suivants :\n\n• Google Play Store cessera de fonctionner\n• Les applications qui dépendent des services Google Play peuvent planter\n• Les notifications push des applications Google cesseront\n• Les services de localisation peuvent être affectés\n• Les achats intégrés ne fonctionneront pas\n\nÊtes-vous sûr de vouloir désactiver les services Google ?</string>
 
     <!-- System Operation Blocked -->
     <string name="system_op_blocked_title">Opération bloquée</string>
-    <string name="system_op_blocked_message">Les opérations sur les applications système sont actuellement désactivées.\n\nVous pouvez activer "Autoriser les opérations sur les applications système" dans les Paramètres pour effectuer cette action.</string>
+    <string name="system_op_blocked_message">Les opérations sur les applications système sont actuellement désactivées.\n\nVous pouvez activer « Autoriser les opérations sur les applications système » dans les paramètres pour effectuer cette action.</string>
 
     <!-- Restore -->
     <string name="pref_restore_apps">Restaurer les applications désinstallées</string>
@@ -113,7 +113,7 @@
 
     <!-- Shizuku -->
     <string name="shizuku_title">Autorisation Shizuku</string>
-    <string name="shizuku_desc">Shizuku est requis pour gérer les permissions des applications et effectuer des opérations avancées. Veuillez autoriser cette application dans Shizuku.</string>
+    <string name="shizuku_desc">Shizuku est requis pour gérer les autorisations des applications et effectuer des opérations avancées. Veuillez autoriser cette application dans Shizuku.</string>
     <string name="shizuku_status_ok">Autorisé et en cours d\'exécution</string>
     <string name="shizuku_status_no_auth">En cours d\'exécution mais non autorisé</string>
     <string name="shizuku_status_not_running">Non en cours d\'exécution</string>
@@ -132,10 +132,10 @@
     <string name="root_su_path_hint">ex. su, ksu, /system/bin/su</string>
     <string name="root_su_path_default">su</string>
     <string name="root_authorization_title">Autorisation Root</string>
-    <string name="root_authorization_desc">L\'accès Root est utilisé pour gérer les permissions des applications et effectuer des opérations avancées. Assurez-vous que votre appareil est rooté et que la commande su est correctement configurée.</string>
+    <string name="root_authorization_desc">L\'accès Root est utilisé pour gérer les autorisations des applications et effectuer des opérations avancées. Assurez-vous que votre appareil est rooté et que la commande su est correctement configurée.</string>
     <string name="root_status_ok">Root disponible</string>
     <string name="root_status_not_ok">Root non disponible</string>
-    <string name="error_no_privilege">Aucun backend de privilège n\'est disponible ou autorisé. Sélectionnez-en un dans les paramètres.</string>
+    <string name="error_no_privilege">Aucun backend de privilèges n\'est disponible ou autorisé. Sélectionnez-en un dans les paramètres.</string>
     <string name="request_auth">Autoriser</string>
     <string name="not_authorized">Non autorisé</string>
 
@@ -157,7 +157,7 @@
 
     <!-- App Detail -->
     <string name="title_app_detail">Détails de l\'application</string>
-    <string name="package_name">Nom du paquet</string>
+    <string name="package_name">Nom du package</string>
     <string name="version">Version</string>
     <string name="install_date">Date d\'installation</string>
     <string name="update_date">Dernière mise à jour</string>
@@ -166,13 +166,13 @@
     <string name="cache_size">Taille du cache</string>
     <string name="target_sdk">SDK cible</string>
     <string name="min_sdk">SDK minimum</string>
-    <string name="permissions_title">Permissions</string>
-    <string name="granted">Accordé</string>
-    <string name="denied">Refusé</string>
+    <string name="permissions_title">Autorisations</string>
+    <string name="granted">Accordée</string>
+    <string name="denied">Refusée</string>
     <string name="grant_permission">Accorder</string>
     <string name="revoke_permission">Révoquer</string>
     <string name="open_app">Ouvrir l\'application</string>
-    <string name="app_info">Informations sur l\'application</string>
+    <string name="app_info">Infos de l\'application</string>
     <string name="uninstall">Désinstaller</string>
     <string name="force_stop">Forcer l\'arrêt</string>
     <string name="clear_data">Effacer les données</string>
@@ -205,9 +205,9 @@
     <string name="clear_data_confirm">Effacer toutes les données de %s ? Cette action est irréversible.</string>
 
     <!-- Permissions List -->
-    <string name="title_permissions">Gestionnaire de permissions</string>
+    <string name="title_permissions">Gestionnaire d\'autorisations</string>
     <string name="perm_microphone">Microphone</string>
-    <string name="perm_camera">Caméra</string>
+    <string name="perm_camera">Appareil photo</string>
     <string name="perm_location">Localisation</string>
     <string name="perm_contacts">Contacts</string>
     <string name="perm_storage">Stockage</string>
@@ -217,12 +217,12 @@
     <string name="perm_calendar">Calendrier</string>
     <string name="perm_body_sensors">Capteurs corporels</string>
     <string name="perm_notifications">Notifications</string>
-    <string name="perm_overlay">Affichage par-dessus d\'autres applications</string>
+    <string name="perm_overlay">Superposition sur d\'autres applications</string>
     <string name="perm_install_unknown">Installer des applications inconnues</string>
-    <string name="batch_revoke">Révoquer la permission</string>
-    <string name="batch_grant">Accorder la permission</string>
-    <string name="confirm_revoke">Révoquer la permission de %d application(s) ?</string>
-    <string name="confirm_grant">Accorder la permission à %d application(s) ?</string>
+    <string name="batch_revoke">Révoquer l\'autorisation</string>
+    <string name="batch_grant">Accorder l\'autorisation</string>
+    <string name="confirm_revoke">Révoquer l\'autorisation de %d application(s) ?</string>
+    <string name="confirm_grant">Accorder l\'autorisation à %d application(s) ?</string>
     <string name="selected_count">%d sélectionné(s)</string>
     <string name="open_system_settings">Ouvrir les paramètres</string>
     <string name="perm_write_settings">Modifier les paramètres système</string>
@@ -241,24 +241,24 @@
     <string name="operation_success">Opération réussie</string>
     <string name="operation_failed">Échec de l\'opération : %s</string>
     <string name="error_no_shizuku">Shizuku n\'est pas disponible ou non autorisé</string>
-    <string name="error_system_ops_disabled">Les opérations sur les applications système sont désactivées. Activez "Autoriser les opérations sur les applications système" dans les Paramètres.</string>
+    <string name="error_system_ops_disabled">Les opérations sur les applications système sont désactivées. Activez « Autoriser les opérations sur les applications système » dans les paramètres.</string>
     <string name="language_changed_restart">Langue modifiée. Redémarrez l\'application pour appliquer les modifications.</string>
     <string name="restart">Redémarrer</string>
 
     <!-- Language names -->
-    <string name="pref_language_en">Anglais</string>
-    <string name="pref_language_zh">Chinois (simplifié)</string>
-    <string name="pref_language_ja">Japonais</string>
-    <string name="pref_language_ko">Coréen</string>
+    <string name="pref_language_en">English</string>
+    <string name="pref_language_zh">中文 (Simplified)</string>
+    <string name="pref_language_ja">日本語</string>
+    <string name="pref_language_ko">한국어</string>
     <string name="pref_language_fr">Français</string>
-    <string name="pref_language_de">Allemand</string>
-    <string name="pref_language_ru">Russe</string>
-    <string name="pref_language_ar">Arabe</string>
-    <string name="pref_language_pt">Portugais</string>
-    <string name="pref_language_es">Espagnol</string>
+    <string name="pref_language_de">Deutsch</string>
+    <string name="pref_language_ru">Русский</string>
+    <string name="pref_language_ar">العربية</string>
+    <string name="pref_language_pt">Português</string>
+    <string name="pref_language_es">Español</string>
     
     <string name="restart_required">Redémarrage requis</string>
-    <string name="restart_required_message">La page de démarrage par défaut a été modifiée. Redémarrez l\'application pour que la modification soit prise en compte.</string>
+    <string name="restart_required_message">La page de démarrage par défaut a été modifiée. Redémarrez l\'application pour que le changement prenne effet.</string>
     <string name="restart_now">Redémarrer maintenant</string>
     <string name="later">Plus tard</string>
     
@@ -269,8 +269,8 @@
     <string name="no_update_message">Vous utilisez déjà la dernière version.</string>
     <string name="update_check_failed">Échec de la vérification des mises à jour</string>
     <string name="update_check_failed_message">Échec de la vérification des mises à jour. Veuillez vérifier votre connexion Internet.</string>
-    <string name="checking_for_update">Recherche de mises à jour…</string>
-    <string name="please_wait">Veuillez patienter…</string>
+    <string name="checking_for_update">Vérification des mises à jour...</string>
+    <string name="please_wait">Veuillez patienter...</string>
     <string name="ok">OK</string>
     <string name="ignore">Ignorer</string>
     
@@ -278,9 +278,9 @@
     <string name="shortcut_app_manager_long">Ouvrir Buge App Manager</string>
     
     <string name="appearance_settings">Paramètres d\'apparence</string>
-    <string name="theme_mode">Mode thème</string>
-    <string name="color_theme">Couleur du thème</string>
-    <string name="color_default">Défaut (Bleu)</string>
+    <string name="theme_mode">Mode de thème</string>
+    <string name="color_theme">Thème de couleur</string>
+    <string name="color_default">Par défaut (Bleu)</string>
     <string name="color_red">Rouge</string>
     <string name="color_green">Vert</string>
     <string name="color_yellow">Jaune</string>
@@ -288,31 +288,31 @@
     <string name="more_options_summary">Personnaliser le thème et les couleurs</string>
     <string name="theme_change_restart_message">Le thème a été modifié. Redémarrez l\'application pour appliquer les modifications.</string>
     <string name="theme_group">Thème</string>
-    <string name="hide_nav_labels">Masquer les étiquettes de navigation</string>
+    <string name="hide_nav_labels">Masquer les libellés de navigation</string>
     <string name="hide_nav_labels_summary">Masquer les titres des éléments de navigation non sélectionnés, afficher uniquement celui sélectionné</string>
 
     <!-- Dynamic Color -->
     <string name="dynamic_color">Couleur dynamique</string>
-    <string name="dynamic_color_summary">Adapte automatiquement les couleurs du fond d\'écran (Android 12+)</string>
+    <string name="dynamic_color_summary">Adapter automatiquement les couleurs du fond d\'écran (Android 12+)</string>
     <string name="dynamic_color_unavailable">Nécessite Android 12 ou supérieur</string>
 
     <!-- Custom Labels -->
-    <string name="pref_custom_labels">Étiquettes personnalisées</string>
-    <string name="pref_custom_labels_summary">Créer et gérer des étiquettes d\'applications personnalisées</string>
-    <string name="title_custom_labels">Étiquettes personnalisées</string>
-    <string name="create_label">Créer une étiquette</string>
-    <string name="label_name">Nom de l\'étiquette</string>
-    <string name="label_name_hint">Saisir le nom de l\'étiquette</string>
-    <string name="create_new_label">Créer une nouvelle étiquette</string>
-    <string name="no_labels_created">Aucune étiquette créée</string>
-    <string name="tap_to_create">Appuyez sur + pour créer votre première étiquette</string>
-    <string name="delete_label_confirm">Supprimer "%s" ?</string>
-    <string name="delete_label">Supprimer l\'étiquette</string>
-    <string name="select_apps_for_label">Sélectionner les applications pour "%s"</string>
-    <string name="label_created">Étiquette créée</string>
-    <string name="label_updated">Étiquette mise à jour</string>
-    <string name="label_deleted">Étiquette supprimée</string>
-    <string name="filter_label">Étiquette : %s</string>
+    <string name="pref_custom_labels">Libellés personnalisés</string>
+    <string name="pref_custom_labels_summary">Créer et gérer des libellés d\'applications personnalisés</string>
+    <string name="title_custom_labels">Libellés personnalisés</string>
+    <string name="create_label">Créer un libellé</string>
+    <string name="label_name">Nom du libellé</string>
+    <string name="label_name_hint">Entrez le nom du libellé</string>
+    <string name="create_new_label">Créer un nouveau libellé</string>
+    <string name="no_labels_created">Aucun libellé créé</string>
+    <string name="tap_to_create">Appuyez sur + pour créer votre premier libellé</string>
+    <string name="delete_label_confirm">Supprimer « %s » ?</string>
+    <string name="delete_label">Supprimer le libellé</string>
+    <string name="select_apps_for_label">Sélectionner des applications pour « %s »</string>
+    <string name="label_created">Libellé créé</string>
+    <string name="label_updated">Libellé mis à jour</string>
+    <string name="label_deleted">Libellé supprimé</string>
+    <string name="filter_label">Libellé : %s</string>
 
     <!-- Update Options -->
     <string name="pref_update_options">Options de mise à jour</string>
@@ -321,38 +321,75 @@
     <string name="update_method_browser">Ouvrir dans le navigateur</string>
     <string name="update_method_silent">Installation silencieuse (Shizuku)</string>
     <string name="installer_name">Nom de l\'installateur</string>
-    <string name="installer_name_hint">Saisir le nom de l\'installateur (ex: BugeAppManager)</string>
-    <string name="update_downloading">Téléchargement de la mise à jour…</string>
+    <string name="installer_name_hint">Entrez le nom de l\'installateur</string>
+    <string name="update_downloading">Téléchargement de la mise à jour...</string>
     <string name="update_download_failed">Échec du téléchargement</string>
-    <string name="update_installing">Installation de la mise à jour…</string>
+    <string name="update_installing">Installation de la mise à jour...</string>
     <string name="update_install_success">Mise à jour installée avec succès</string>
     <string name="update_install_failed">Échec de l\'installation</string>
     <string name="update_already_latest">Vous utilisez déjà la dernière version</string>
-    <string name="checking_for_update_dialog">Vérification de la mise à jour…</string>
+    <string name="checking_for_update_dialog">Vérification des mises à jour...</string>
     <string name="update_download_complete">Téléchargement terminé</string>
     <string name="save">Enregistrer</string>
 
+    <!-- Backup -->
+    <string name="pref_backup">Sauvegarde</string>
+    <string name="pref_backup_summary">Sauvegarder les paramètres de l\'application, la liste des applications et restaurer</string>
+    <string name="title_backup">Sauvegarde</string>
+    <string name="backup_app_settings">Sauvegarder les paramètres de l\'application</string>
+    <string name="backup_app_settings_summary">Sauvegarder les paramètres de cette application dans un fichier</string>
+    <string name="backup_app_list">Sauvegarder la liste des applications</string>
+    <string name="backup_app_list_summary">Exporter la liste de toutes les applications installées</string>
+    <string name="import_app_settings">Importer les paramètres de l\'application</string>
+    <string name="import_app_settings_summary">Restaurer les paramètres à partir d\'un fichier de sauvegarde</string>
+    <string name="backup_auto_settings">Paramètres de sauvegarde</string>
+    <string name="backup_enable">Activer la sauvegarde</string>
+    <string name="backup_section">Sauvegarde</string>
+    <string name="backup_auto_section">Intervalle de sauvegarde automatique</string>
+    <string name="backup_location">Emplacement de sauvegarde</string>
+    <string name="backup_location_default">Documents</string>
+    <string name="backup_location_hint">Sélectionner le dossier de sauvegarde</string>
+    <string name="backup_success">Sauvegarde créée avec succès</string>
+    <string name="backup_failed">Échec de la sauvegarde</string>
+    <string name="import_success">Paramètres importés avec succès</string>
+    <string name="import_failed">Échec de l\'importation</string>
+    <string name="backup_auto_hours">%d heures</string>
+    <string name="backup_auto_disabled">Désactivé</string>
+    <string name="backup_auto_title">Intervalle de sauvegarde automatique</string>
+    <string name="backup_auto_summary">Sauvegarder automatiquement au lancement de l\'application</string>
+    <string name="backup_auto_hint">Entrez les heures (0 pour désactiver)</string>
+    <string name="other_languages">Autres langues</string>
+    <string name="other_languages_title">Langues de l\'application</string>
+    <string name="no_other_languages">Cette application n\'a pas d\'autres ressources linguistiques</string>
+    <string name="backup_auto_on_launch">Sauvegarde automatique au lancement</string>
+    <string name="backup_auto_on_launch_summary">Créer ou remplacer la sauvegarde à chaque démarrage de l\'application</string>
+    <string name="backup_content">Contenu de la sauvegarde</string>
+    <string name="backup_content_settings">Paramètres de l\'application</string>
+    <string name="backup_content_app_list">Applications installées</string>
+    <string name="backup_content_both">Paramètres et applications installées</string>
+    <string name="backup_select_location_first">Veuillez d\'abord sélectionner un emplacement de sauvegarde</string>
+
     <!-- Optional Permissions -->
-    <string name="pref_optional_permissions">Permissions optionnelles</string>
-    <string name="pref_optional_permissions_summary">Accorder des permissions optionnelles pour des fonctionnalités supplémentaires</string>
-    <string name="title_optional_permissions">Permissions optionnelles</string>
-    <string name="pref_storage_permission">Permission de stockage</string>
+    <string name="pref_optional_permissions">Autorisations optionnelles</string>
+    <string name="pref_optional_permissions_summary">Accorder des autorisations optionnelles pour des fonctionnalités supplémentaires</string>
+    <string name="title_optional_permissions">Autorisations optionnelles</string>
+    <string name="pref_storage_permission">Autorisation de stockage</string>
     <string name="pref_storage_permission_summary">Inclut READ_EXTERNAL_STORAGE et WRITE_EXTERNAL_STORAGE pour l\'exportation APK et les fonctions de stockage</string>
     <string name="storage_permission_required">Requis pour l\'exportation APK et les fonctions de stockage</string>
-    <string name="storage_permission_grant">Accorder la permission de stockage</string>
+    <string name="storage_permission_grant">Accorder l\'autorisation de stockage</string>
     <string name="perm_read_external_storage">Lire le stockage externe</string>
-    <string name="perm_read_external_storage_desc">Permet à l\'application de lire des fichiers du stockage externe pour l\'exportation et le partage d\'APK</string>
-    <string name="perm_write_external_storage">Écrire sur le stockage externe</string>
-    <string name="perm_write_external_storage_desc">Permet à l\'application d\'écrire des fichiers sur le stockage externe pour l\'exportation et le partage d\'APK</string>
+    <string name="perm_read_external_storage_desc">Permet à l\'application de lire des fichiers depuis le stockage externe pour l\'exportation et le partage d\'APK</string>
+    <string name="perm_write_external_storage">Écrire dans le stockage externe</string>
+    <string name="perm_write_external_storage_desc">Permet à l\'application d\'écrire des fichiers dans le stockage externe pour l\'exportation et le partage d\'APK</string>
     <string name="optional_perm_granted">Accordée</string>
     <string name="optional_perm_denied">Refusée</string>
     <string name="optional_perm_grant">Accorder</string>
 
     <!-- Signature Validation -->
     <string name="signature_warning_title">Avertissement de sécurité</string>
-    <string name="signature_warning_message">La vérification de l\'empreinte de signature a échoué !\n\nVous utilisez une version non officielle de cette application !\nNous ne pouvons pas confirmer que cette version est sûre ou fiable !\n\nL\'utilisation de versions non officielles peut vous exposer à des risques de sécurité,\nnotamment le vol de données, les atteintes à la vie privée et les logiciels malveillants.\n\nVeuillez télécharger la version officielle depuis nos plateformes de confiance ci-dessous.</string>
+    <string name="signature_warning_message">La vérification du hachage de signature a échoué !\n\nVous utilisez une version signée non officielle de cette application !\nNous ne pouvons pas confirmer si cette version est sûre ou digne de confiance !\n\nL\'utilisation de versions non officielles peut vous exposer à des risques de sécurité,\nnotamment le vol de données, les violations de la vie privée et les logiciels malveillants.\n\nVeuillez télécharger la version officielle depuis nos plateformes de confiance ci-dessous.</string>
     <string name="signature_warning_platforms_title">Plateformes de téléchargement de confiance</string>
-    <string name="signature_warning_sha256_label">Empreinte SHA-256 attendue</string>
+    <string name="signature_warning_sha256_label">SHA-256 de signature attendu</string>
     <string name="signature_warning_button_exit">Quitter l\'application</string>
     <string name="signature_warning_button_continue">Continuer quand même</string>
     <string name="signature_warning_github_url">https://github.com/BugeStudioTeam/Buge-App-Manager/releases</string>
@@ -362,11 +399,38 @@
     <string name="menu_favorite">Favori</string>
     <string name="menu_share_apk">Partager l\'APK</string>
     <string name="menu_export_apk">Exporter l\'APK</string>
-    <string name="menu_export_info">Exporter les infos</string>
+    <string name="menu_export_info">Exporter les infos de l\'application</string>
     <string name="menu_other_languages">Autres langues</string>
     <string name="menu_google_play">Voir sur Google Play Store</string>
     <string name="menu_f_droid">Voir sur F-Droid</string>
-    <string name="menu_grant_all_permissions">Accorder toutes les permissions</string>
-    <string name="menu_revoke_all_permissions">Révoquer toutes les permissions</string>
+    <string name="menu_grant_all_permissions">Accorder toutes les autorisations</string>
+    <string name="menu_revoke_all_permissions">Révoquer toutes les autorisations</string>
+    
+    <!-- Install Apps -->
+    <string name="pref_install_apps">Installer des applications</string>
+    <string name="pref_install_apps_summary">Installer des fichiers APK avec des options avancées</string>
+    <string name="title_install_apps">Installer des applications</string>
+    <string name="install_installer_name">Nom de l\'installateur</string>
+    <string name="install_installer_name_summary">Définir le nom du package de l\'installateur pour le flag -i</string>
+    <string name="install_allow_downgrade">Autoriser la rétrogradation</string>
+    <string name="install_allow_downgrade_summary">Autoriser l\'installation de versions plus anciennes sur des versions plus récentes</string>
+    <string name="install_allow_test_packages">Autoriser les packages de test</string>
+    <string name="install_allow_test_packages_summary">Autoriser l\'installation d\'APK de test uniquement</string>
+    <string name="install_allow_system_apps">Autoriser l\'installation d\'applications système</string>
+    <string name="install_allow_system_apps_summary">Autoriser l\'installation ou la mise à jour d\'applications système</string>
+    <string name="install_all_users">Installer pour tous les utilisateurs</string>
+    <string name="install_all_users_summary">Installer l\'APK pour chaque utilisateur de l\'appareil</string>
+    <string name="install_no_apks">Aucun fichier APK sélectionné</string>
+    <string name="install_add_apk">Ajouter un APK</string>
+    <string name="install_button">Installer</string>
+    <string name="install_installing">Installation de %1$s...</string>
+    <string name="install_success">Installé : %1$s</string>
+    <string name="install_failed">Échec : %1$s - %2$s</string>
+    <string name="install_complete">Installation terminée : %1$d réussie(s), %2$d échouée(s)</string>
+    <string name="install_remove">Supprimer</string>
+    <string name="install_apk_version">Version</string>
+    <string name="install_apk_package">Package</string>
+    <string name="install_apk_path">Chemin</string>
+    <string name="install_invalid_apk">Fichier APK invalide</string>
     
 </resources>

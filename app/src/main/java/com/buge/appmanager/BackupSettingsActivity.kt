@@ -118,7 +118,7 @@ class BackupSettingsActivity : BaseActivity() {
         }
 
         return listOf(
-            // Fuck: Manual Backup section
+            // fk bkup lol, give me a star plz if u like to
             BackupSettingItem(
                 title = getString(R.string.backup_section),
                 subtitle = "",
@@ -131,7 +131,7 @@ class BackupSettingsActivity : BaseActivity() {
                 type = BackupItemType.BACKUP
             ),
 
-            // Fuck: Auto Backup section
+            // fixed alto backup ---->  when u launch the app
             BackupSettingItem(
                 title = getString(R.string.backup_auto_section),
                 subtitle = "",
@@ -164,7 +164,7 @@ class BackupSettingsActivity : BaseActivity() {
     }
 
     private fun showIntervalDialog() {
-        // Fuck: Deprecated, kept for backward compat but not used
+        // fixed
     }
 
     private fun showContentDialog() {

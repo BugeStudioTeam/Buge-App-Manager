@@ -2,18 +2,18 @@
 <!-- SPDX-License-Identifier: GPL-3.0-only -->
 <!-- Copyright (C) 2026 Buge Studio -->
 <resources>
-    <string name="app_name">Buge앱 관리자</string>
-    <string name="developer_name">Buge팀</string>
+    <string name="app_name">Buge App Manager</string>
+    <string name="developer_name">Buge Team</string>
 
     <!-- Navigation -->
     <string name="nav_apps">앱</string>
-    <string name="nav_activities">활동</string>
+    <string name="nav_activities">액티비티</string>
     <string name="nav_permissions">권한</string>
     <string name="nav_settings">설정</string>
 
     <!-- Settings Groups -->
-    <string name="settings_group_authorization">승인</string>
-    <string name="settings_group_appearance">외관</string>
+    <string name="settings_group_authorization">권한 부여</string>
+    <string name="settings_group_appearance">모양</string>
     <string name="settings_group_apps">앱</string>
     <string name="settings_group_advanced">고급</string>
     <string name="settings_group_about">정보</string>
@@ -30,17 +30,17 @@
     <string name="pref_default_page_summary">앱 시작 시 표시할 페이지 선택</string>
     <string name="pref_show_system_apps">시스템 앱 표시</string>
     <string name="pref_show_disabled_apps">비활성화된 앱 표시</string>
-    <string name="pref_show_undeclared_activities">선언되지 않은 활동 표시</string>
+    <string name="pref_show_undeclared_activities">선언되지 않은 액티비티 표시</string>
     <string name="pref_allow_system_ops">시스템 앱 작업 허용</string>
     <string name="pref_allow_system_ops_summary">시스템 앱 수정 허용 (권한, 비활성화, 제거)</string>
     <string name="pref_about">정보</string>
-    <string name="setting_saved">설정이 저장되었습니다</string>
+    <string name="setting_saved">설정 저장됨</string>
     <string name="pref_auto_update">자동 업데이트</string>
 
     <!-- Apps Settings -->
     <string name="pref_google_services">Google 서비스</string>
-    <string name="pref_google_services_summary">Google 모바일 서비스 활성화/비활성화</string>
-    <string name="pref_google_services_disabled">이 기기에서는 Google 서비스를 사용할 수 없습니다</string>
+    <string name="pref_google_services_summary">Google 모바일 서비스 활성화 또는 비활성화</string>
+    <string name="pref_google_services_disabled">이 기기에서 Google 서비스를 사용할 수 없습니다</string>
 
     <!-- Shizuku Provider -->
     <string name="pref_shizuku_provider">Shizuku 제공자</string>
@@ -50,69 +50,69 @@
     <string name="shizuku_provider_restore_default">기본값 복원</string>
 
     <!-- Log Settings -->
-    <string name="pref_logging">로그 기록</string>
+    <string name="pref_logging">로깅</string>
     <string name="pref_logging_summary">사용자 작업 및 오류 기록</string>
     <string name="log_activity_title">작업 로그</string>
     <string name="log_settings_title">로그 설정</string>
-    <string name="log_enable">로그 기록 활성화</string>
+    <string name="log_enable">로깅 활성화</string>
     <string name="log_enable_summary">모든 사용자 작업 및 시스템 오류 기록</string>
     <string name="log_empty">아직 기록된 로그가 없습니다</string>
     <string name="log_copy">복사</string>
-    <string name="log_cleared">로그가 지워졌습니다</string>
-    <string name="log_copied">로그가 클립보드에 복사되었습니다</string>
+    <string name="log_cleared">로그 지워짐</string>
+    <string name="log_copied">로그가 클립보드에 복사됨</string>
 
     <!-- Default Page Dialog -->
     <string name="default_page_title">기본 시작 페이지</string>
     <string name="default_page_apps">앱</string>
     <string name="default_page_permissions">권한</string>
-    <string name="default_page_activities">활동</string>
+    <string name="default_page_activities">액티비티</string>
     <string name="default_page_settings">설정</string>
 
     <!-- About Dialog -->
-    <string name="about_desc">Buge앱 관리자는 Shizuku를 지원하는 강력한 앱 관리 도구로, 고급 권한 및 앱 제어 기능을 제공합니다.</string>
+    <string name="about_desc">Buge App Manager는 Shizuku를 지원하는 강력한 앱 관리 도구로, 고급 권한 및 앱 제어가 가능합니다.</string>
 
     <!-- About Links -->
     <string name="website">웹사이트</string>
     <string name="website_desc">공식 웹사이트 방문</string>
     <string name="github">GitHub</string>
     <string name="github_desc">GitHub 저장소 방문</string>
-    <string name="telegram">텔레그램</string>
-    <string name="telegram_desc">텔레그램 채널 참여</string>
+    <string name="telegram">Telegram</string>
+    <string name="telegram_desc">Telegram 채널 참여</string>
     <string name="activitymanager">ActivityManager</string>
-    <string name="activitymanager_desc">오픈소스 프로젝트 — Shizuku로 비공개 활동을 실행하는 방법</string>
+    <string name="activitymanager_desc">오픈 소스 프로젝트 — 내보내지 않은 액티비티를 시작하는 Shizuku 방법</string>
     <string name="check_for_update">업데이트 확인</string>
     <string name="update_desc">GitHub에서 새 버전 확인</string>
-    <string name="about_more">더 알아보기</string>
-    <string name="about_more_summary">개발팀과 프로젝트 비전 알아보기</string>
+    <string name="about_more">우리에 대해 더 보기</string>
+    <string name="about_more_summary">개발 팀과 프로젝트 비전에 대해 자세히 알아보기</string>
     <string name="about">정보</string>
     <string name="close">닫기</string>
     <string name="open">열기</string>
 
     <!-- About Us Activity -->
-    <string name="about_us">회사 소개</string>
+    <string name="about_us">우리에 대해</string>
     <string name="about_us_title">Buge Studio 팀</string>
-    <string name="about_us_description">Buge Studio 팀은 Android 플랫폼을 위한 혁신적이고 실용적인 유틸리티 애플리케이션을 만드는 데 전념하는 열정적인 개발자와 디자이너 그룹입니다. 우리는 사용자 프라이버시, 시스템 제어 및 개방성에 중점을 둡니다. 투명하고 효율적이며 신뢰할 수 있는 도구를 사용자에게 제공하는 것이 목표입니다. Buge앱 관리자는 오픈 소스 프로젝트이며, 우리의 첫 번째 주요 애플리케이션입니다. 모든 분들의 개선 및 개발 참여를 환영합니다.</string>
+    <string name="about_us_description">Buge Studio 팀은 Android 플랫폼을 위한 혁신적이고 실용적인 유틸리티 애플리케이션을 만드는 데 전념하는 열정적인 개발자와 디자이너 그룹입니다. 우리는 사용자 개인정보 보호, 시스템 제어 및 개방성에 중점을 둡니다. 우리의 목표는 사용자에게 투명하고 효율적이며 신뢰할 수 있는 도구를 제공하는 것입니다. Buge App Manager는 오픈 소스 프로젝트이며 우리의 첫 번째 주요 애플리케이션입니다. 모든 분들이 함께 개선 및 개발에 참여하시기를 환영합니다.</string>
 
     <!-- GMS Disable Warning -->
     <string name="gms_disable_warning_title">Google 서비스를 비활성화하시겠습니까?</string>
-    <string name="gms_disable_warning_message">Google 서비스를 비활성화하면 다음에 영향을 미칩니다:\n\n• Google Play 스토어가 작동을 멈춥니다\n• Google Play 서비스에 의존하는 앱이 충돌할 수 있습니다\n• Google 앱의 푸시 알림이 중지됩니다\n• 위치 서비스에 영향을 미칠 수 있습니다\n• 인앱 구매가 작동하지 않습니다\n\nGoogle 서비스를 비활성화하시겠습니까?</string>
+    <string name="gms_disable_warning_message">Google 서비스를 비활성화하면 다음에 영향을 미칩니다:\n\n• Google Play 스토어가 작동을 중지합니다\n• Google Play 서비스에 의존하는 앱이 충돌할 수 있습니다\n• Google 앱의 푸시 알림이 중지됩니다\n• 위치 서비스가 영향을 받을 수 있습니다\n• 인앱 구매가 작동하지 않습니다\n\nGoogle 서비스를 비활성화하시겠습니까?</string>
 
     <!-- System Operation Blocked -->
-    <string name="system_op_blocked_title">작업이 차단되었습니다</string>
+    <string name="system_op_blocked_title">작업 차단됨</string>
     <string name="system_op_blocked_message">시스템 앱 작업이 현재 비활성화되어 있습니다.\n\n이 작업을 수행하려면 설정에서 "시스템 앱 작업 허용"을 활성화하세요.</string>
 
     <!-- Restore -->
     <string name="pref_restore_apps">제거된 앱 복원</string>
-    <string name="pref_restore_apps_summary">이전에 제거된 시스템 앱을 확인하고 복원</string>
+    <string name="pref_restore_apps_summary">이전에 제거된 시스템 앱 보기 및 복원</string>
     <string name="title_restore_apps">앱 복원</string>
     <string name="restore">복원</string>
     <string name="no_uninstalled_apps">제거된 앱을 찾을 수 없습니다</string>
     <string name="restore_confirm">%s을(를) 복원하시겠습니까?</string>
-    <string name="restore_success">앱 복원 성공</string>
-    <string name="restore_failed">앱 복원 실패</string>
+    <string name="restore_success">앱이 성공적으로 복원되었습니다</string>
+    <string name="restore_failed">앱 복원에 실패했습니다</string>
 
     <!-- Shizuku -->
-    <string name="shizuku_title">Shizuku 승인</string>
+    <string name="shizuku_title">Shizuku 권한 부여</string>
     <string name="shizuku_desc">앱 권한을 관리하고 고급 작업을 수행하려면 Shizuku가 필요합니다. Shizuku에서 이 앱을 승인해 주세요.</string>
     <string name="shizuku_status_ok">승인됨 및 실행 중</string>
     <string name="shizuku_status_no_auth">실행 중이지만 승인되지 않음</string>
@@ -123,21 +123,21 @@
     <string name="shizuku_request_auth">승인 요청</string>
 
     <!-- Root / Authorization Method -->
-    <string name="pref_auth_mode">인증 방식</string>
-    <string name="auth_mode_title">인증 방식</string>
+    <string name="pref_auth_mode">승인 방법</string>
+    <string name="auth_mode_title">승인 방법</string>
     <string name="auth_mode_shizuku">Shizuku</string>
     <string name="auth_mode_root">Root (su)</string>
-    <string name="pref_root_su_path">su 명령어</string>
-    <string name="root_su_path_title">su 명령어</string>
+    <string name="pref_root_su_path">su 명령</string>
+    <string name="root_su_path_title">su 명령</string>
     <string name="root_su_path_hint">예: su, ksu, /system/bin/su</string>
     <string name="root_su_path_default">su</string>
-    <string name="root_authorization_title">Root 인증</string>
-    <string name="root_authorization_desc">Root 권한은 앱 권한 관리와 고급 작업을 수행하는 데 사용됩니다. 기기가 Root 상태이고 su 명령어가 올바르게 설정되어 있는지 확인하세요.</string>
+    <string name="root_authorization_title">Root 권한 부여</string>
+    <string name="root_authorization_desc">Root 액세스는 앱 권한을 관리하고 고급 작업을 수행하는 데 사용됩니다. 기기가 루팅되었고 su 명령이 올바르게 구성되었는지 확인하세요.</string>
     <string name="root_status_ok">Root 사용 가능</string>
     <string name="root_status_not_ok">Root 사용 불가</string>
-    <string name="error_no_privilege">사용 가능한 인증 방식이 없거나 인증되지 않았습니다. 설정에서 선택하세요.</string>
-    <string name="request_auth">인증</string>
-    <string name="not_authorized">인증되지 않음</string>
+    <string name="error_no_privilege">사용 가능하거나 승인된 권한 백엔드가 없습니다. 설정에서 하나를 선택하세요.</string>
+    <string name="request_auth">승인</string>
+    <string name="not_authorized">승인되지 않음</string>
 
     <!-- App List -->
     <string name="title_app_list">설치된 앱</string>
@@ -145,13 +145,13 @@
     <string name="filter_all">모든 앱</string>
     <string name="filter_user">사용자 앱</string>
     <string name="filter_system">시스템 앱</string>
-    <string name="filter_favorite">즐겨찾기 앱</string>
+    <string name="filter_favorite">즐겨찾는 앱</string>
     <string name="sort_name">이름</string>
     <string name="sort_size">크기</string>
     <string name="sort_install_date">설치 날짜</string>
-    <string name="apps_count">%d개의 앱</string>
-    <string name="loading_apps">앱 로드 중…</string>
-    <string name="refresh">새로고침</string>
+    <string name="apps_count">%d개 앱</string>
+    <string name="loading_apps">앱 로딩 중…</string>
+    <string name="refresh">새로 고침</string>
     <string name="no_apps_found">앱을 찾을 수 없습니다</string>
     <string name="share_apks">APK 공유</string>
 
@@ -167,16 +167,16 @@
     <string name="target_sdk">대상 SDK</string>
     <string name="min_sdk">최소 SDK</string>
     <string name="permissions_title">권한</string>
-    <string name="granted">허용됨</string>
+    <string name="granted">부여됨</string>
     <string name="denied">거부됨</string>
-    <string name="grant_permission">허용</string>
+    <string name="grant_permission">부여</string>
     <string name="revoke_permission">취소</string>
     <string name="open_app">앱 열기</string>
     <string name="app_info">앱 정보</string>
     <string name="uninstall">제거</string>
     <string name="force_stop">강제 종료</string>
-    <string name="clear_data">데이터 삭제</string>
-    <string name="clear_cache">캐시 삭제</string>
+    <string name="clear_data">데이터 지우기</string>
+    <string name="clear_cache">캐시 지우기</string>
     <string name="disable_app">앱 비활성화</string>
     <string name="enable_app">앱 활성화</string>
     <string name="freeze_app">앱 동결</string>
@@ -186,23 +186,23 @@
     <string name="storage_title">저장소</string>
     <string name="storage_app">앱</string>
     <string name="storage_data">데이터</string>
-    <string name="storage_total">전체</string>
+    <string name="storage_total">합계</string>
     <string name="storage_unknown">알 수 없음</string>
-    <string name="installer_app">설치자 앱</string>
+    <string name="installer_app">설치 프로그램 앱</string>
 
     <!-- App Detail Activity Strings -->
     <string name="removed_from_favorites">즐겨찾기에서 제거됨</string>
     <string name="added_to_favorites">즐겨찾기에 추가됨</string>
-    <string name="apk_path_not_found">APK 경로를 찾을 수 없음</string>
-    <string name="apk_file_not_exist">APK 파일이 존재하지 않음</string>
+    <string name="apk_path_not_found">APK 경로를 찾을 수 없습니다</string>
+    <string name="apk_file_not_exist">APK 파일이 존재하지 않습니다</string>
     <string name="apk_saved_to">APK 저장됨: %s</string>
     <string name="export_failed">내보내기 실패: %s</string>
-    <string name="cannot_open_google_play">Google Play를 열 수 없음</string>
-    <string name="cannot_open_fdroid">F-Droid를 열 수 없음</string>
-    <string name="cannot_launch_app">이 앱을 실행할 수 없음</string>
+    <string name="cannot_open_google_play">Google Play를 열 수 없습니다</string>
+    <string name="cannot_open_fdroid">F-Droid를 열 수 없습니다</string>
+    <string name="cannot_launch_app">이 앱을 실행할 수 없습니다</string>
     <string name="force_stop_confirm">%s을(를) 강제 종료하시겠습니까?</string>
     <string name="uninstall_confirm">%s을(를) 제거하시겠습니까?</string>
-    <string name="clear_data_confirm">%s의 모든 데이터를 삭제하시겠습니까? 이 작업은 되돌릴 수 없습니다.</string>
+    <string name="clear_data_confirm">%s의 모든 데이터를 지우시겠습니까? 이 작업은 되돌릴 수 없습니다.</string>
 
     <!-- Permissions List -->
     <string name="title_permissions">권한 관리자</string>
@@ -220,117 +220,154 @@
     <string name="perm_overlay">다른 앱 위에 표시</string>
     <string name="perm_install_unknown">알 수 없는 앱 설치</string>
     <string name="batch_revoke">권한 취소</string>
-    <string name="batch_grant">권한 허용</string>
-    <string name="confirm_revoke">%d개의 앱에서 권한을 취소하시겠습니까?</string>
-    <string name="confirm_grant">%d개의 앱에 권한을 허용하시겠습니까?</string>
+    <string name="batch_grant">권한 부여</string>
+    <string name="confirm_revoke">%d개 앱의 권한을 취소하시겠습니까?</string>
+    <string name="confirm_grant">%d개 앱에 권한을 부여하시겠습니까?</string>
     <string name="selected_count">%d개 선택됨</string>
-    <string name="open_system_settings">시스템 설정 열기</string>
+    <string name="open_system_settings">설정 열기</string>
     <string name="perm_write_settings">시스템 설정 수정</string>
 
     <!-- Activities -->
-    <string name="title_activities">활동 관리자</string>
-    <string name="title_activity_detail">활동 세부정보</string>
-    <string name="search_activity_hint">활동 검색…</string>
+    <string name="title_activities">액티비티 관리자</string>
+    <string name="title_activity_detail">액티비티 세부정보</string>
+    <string name="search_activity_hint">액티비티 검색…</string>
     <string name="launch">실행</string>
     <string name="back_to_apps">앱으로 돌아가기</string>
-    <string name="no_activities_found">활동을 찾을 수 없음</string>
+    <string name="no_activities_found">액티비티를 찾을 수 없습니다</string>
 
     <!-- Common -->
     <string name="confirm">확인</string>
     <string name="cancel">취소</string>
-    <string name="operation_success">작업이 성공했습니다</string>
+    <string name="operation_success">작업 성공</string>
     <string name="operation_failed">작업 실패: %s</string>
     <string name="error_no_shizuku">Shizuku를 사용할 수 없거나 승인되지 않았습니다</string>
-    <string name="error_system_ops_disabled">시스템 앱 작업이 비활성화되었습니다. 설정에서 "시스템 앱 작업 허용"을 활성화하세요.</string>
+    <string name="error_system_ops_disabled">시스템 앱 작업이 비활성화되어 있습니다. 설정에서 "시스템 앱 작업 허용"을 활성화하세요.</string>
     <string name="language_changed_restart">언어가 변경되었습니다. 변경 사항을 적용하려면 앱을 다시 시작하세요.</string>
     <string name="restart">다시 시작</string>
 
     <!-- Language names -->
-    <string name="pref_language_en">영어</string>
-    <string name="pref_language_zh">중국어 (간체)</string>
-    <string name="pref_language_ja">일본어</string>
+    <string name="pref_language_en">English</string>
+    <string name="pref_language_zh">中文 (Simplified)</string>
+    <string name="pref_language_ja">日本語</string>
     <string name="pref_language_ko">한국어</string>
-    <string name="pref_language_fr">프랑스어</string>
-    <string name="pref_language_de">독일어</string>
-    <string name="pref_language_ru">러시아어</string>
-    <string name="pref_language_ar">아랍어</string>
-    <string name="pref_language_pt">포르투갈어</string>
-    <string name="pref_language_es">스페인어</string>
+    <string name="pref_language_fr">Français</string>
+    <string name="pref_language_de">Deutsch</string>
+    <string name="pref_language_ru">Русский</string>
+    <string name="pref_language_ar">العربية</string>
+    <string name="pref_language_pt">Português</string>
+    <string name="pref_language_es">Español</string>
     
     <string name="restart_required">재시작 필요</string>
-    <string name="restart_required_message">기본 시작 페이지가 변경되었습니다. 변경 사항을 적용하려면 앱을 재시작하세요.</string>
-    <string name="restart_now">지금 재시작</string>
+    <string name="restart_required_message">기본 시작 페이지가 변경되었습니다. 변경 사항을 적용하려면 앱을 다시 시작하세요.</string>
+    <string name="restart_now">지금 다시 시작</string>
     <string name="later">나중에</string>
     
     <!-- Update Checker -->
     <string name="update_available">업데이트 사용 가능</string>
     <string name="download">다운로드</string>
     <string name="no_update_title">업데이트 없음</string>
-    <string name="no_update_message">최신 버전을 사용 중입니다.</string>
+    <string name="no_update_message">이미 최신 버전을 사용 중입니다.</string>
     <string name="update_check_failed">업데이트 확인 실패</string>
-    <string name="update_check_failed_message">업데이트 확인에 실패했습니다. 인터넷 연결을 확인하세요.</string>
-    <string name="checking_for_update">업데이트 확인 중…</string>
-    <string name="please_wait">잠시만 기다려주세요…</string>
+    <string name="update_check_failed_message">업데이트 확인에 실패했습니다. 인터넷 연결을 확인해 주세요.</string>
+    <string name="checking_for_update">업데이트 확인 중...</string>
+    <string name="please_wait">잠시 기다려 주세요...</string>
     <string name="ok">확인</string>
     <string name="ignore">무시</string>
     
     <!-- Shortcuts -->
-    <string name="shortcut_app_manager_long">Buge앱 관리자 열기</string>
+    <string name="shortcut_app_manager_long">Buge App Manager 열기</string>
     
-    <string name="appearance_settings">외관 설정</string>
+    <string name="appearance_settings">모양 설정</string>
     <string name="theme_mode">테마 모드</string>
-    <string name="color_theme">테마 색상</string>
+    <string name="color_theme">색상 테마</string>
     <string name="color_default">기본 (파란색)</string>
     <string name="color_red">빨간색</string>
-    <string name="color_green">초록색</string>
+    <string name="color_green">녹색</string>
     <string name="color_yellow">노란색</string>
-    <string name="more_options">추가 옵션</string>
+    <string name="more_options">더 많은 옵션</string>
     <string name="more_options_summary">테마 및 색상 사용자 지정</string>
-    <string name="theme_change_restart_message">테마가 변경되었습니다. 변경 사항을 적용하려면 앱을 재시작하세요.</string>
+    <string name="theme_change_restart_message">테마가 변경되었습니다. 변경 사항을 적용하려면 앱을 다시 시작하세요.</string>
     <string name="theme_group">테마</string>
     <string name="hide_nav_labels">탐색 레이블 숨기기</string>
     <string name="hide_nav_labels_summary">선택되지 않은 탐색 항목의 제목을 숨기고 선택된 항목만 표시</string>
 
     <!-- Dynamic Color -->
     <string name="dynamic_color">동적 색상</string>
-    <string name="dynamic_color_summary">벽지에서 색상 자동 적용 (Android 12+)</string>
+    <string name="dynamic_color_summary">배경화면에서 색상 자동 적용 (Android 12+)</string>
     <string name="dynamic_color_unavailable">Android 12 이상 필요</string>
 
     <!-- Custom Labels -->
-    <string name="pref_custom_labels">사용자 정의 레이블</string>
-    <string name="pref_custom_labels_summary">사용자 정의 앱 레이블 생성 및 관리</string>
-    <string name="title_custom_labels">사용자 정의 레이블</string>
+    <string name="pref_custom_labels">사용자 지정 레이블</string>
+    <string name="pref_custom_labels_summary">사용자 지정 앱 레이블 생성 및 관리</string>
+    <string name="title_custom_labels">사용자 지정 레이블</string>
     <string name="create_label">레이블 만들기</string>
     <string name="label_name">레이블 이름</string>
     <string name="label_name_hint">레이블 이름 입력</string>
     <string name="create_new_label">새 레이블 만들기</string>
     <string name="no_labels_created">아직 생성된 레이블이 없습니다</string>
-    <string name="tap_to_create">+를 탭하여 첫 번째 레이블 만들기</string>
-    <string name="delete_label_confirm">"%s"을(를) 삭제하시겠습니까？</string>
+    <string name="tap_to_create">+를 눌러 첫 번째 레이블을 만드세요</string>
+    <string name="delete_label_confirm">"%s"을(를) 삭제하시겠습니까?</string>
     <string name="delete_label">레이블 삭제</string>
     <string name="select_apps_for_label">"%s"에 대한 앱 선택</string>
-    <string name="label_created">레이블이 생성되었습니다</string>
-    <string name="label_updated">레이블이 업데이트되었습니다</string>
-    <string name="label_deleted">레이블이 삭제되었습니다</string>
-    <string name="filter_label">레이블：%s</string>
+    <string name="label_created">레이블 생성됨</string>
+    <string name="label_updated">레이블 업데이트됨</string>
+    <string name="label_deleted">레이블 삭제됨</string>
+    <string name="filter_label">레이블: %s</string>
 
     <!-- Update Options -->
     <string name="pref_update_options">업데이트 옵션</string>
     <string name="pref_update_options_summary">업데이트 다운로드 및 설치 방법 구성</string>
     <string name="title_update_options">업데이트 옵션</string>
     <string name="update_method_browser">브라우저에서 열기</string>
-    <string name="update_method_silent">자동 설치 (Shizuku)</string>
-    <string name="installer_name">설치자 이름</string>
-    <string name="installer_name_hint">설치자 이름 입력 (예: BugeAppManager)</string>
-    <string name="update_downloading">업데이트 다운로드 중…</string>
+    <string name="update_method_silent">무음 설치 (Shizuku)</string>
+    <string name="installer_name">설치 프로그램 이름</string>
+    <string name="installer_name_hint">설치 프로그램 이름 입력</string>
+    <string name="update_downloading">업데이트 다운로드 중...</string>
     <string name="update_download_failed">다운로드 실패</string>
-    <string name="update_installing">업데이트 설치 중…</string>
-    <string name="update_install_success">업데이트 설치 성공</string>
+    <string name="update_installing">업데이트 설치 중...</string>
+    <string name="update_install_success">업데이트가 성공적으로 설치되었습니다</string>
     <string name="update_install_failed">설치 실패</string>
-    <string name="update_already_latest">최신 버전입니다</string>
-    <string name="checking_for_update_dialog">업데이트 확인 중…</string>
+    <string name="update_already_latest">이미 최신 버전을 사용 중입니다</string>
+    <string name="checking_for_update_dialog">업데이트 확인 중...</string>
     <string name="update_download_complete">다운로드 완료</string>
     <string name="save">저장</string>
+
+    <!-- Backup -->
+    <string name="pref_backup">백업</string>
+    <string name="pref_backup_summary">앱 설정, 앱 목록 백업 및 복원</string>
+    <string name="title_backup">백업</string>
+    <string name="backup_app_settings">앱 설정 백업</string>
+    <string name="backup_app_settings_summary">이 앱의 설정을 파일로 백업</string>
+    <string name="backup_app_list">앱 목록 백업</string>
+    <string name="backup_app_list_summary">설치된 모든 앱 목록 내보내기</string>
+    <string name="import_app_settings">앱 설정 가져오기</string>
+    <string name="import_app_settings_summary">백업 파일에서 설정 복원</string>
+    <string name="backup_auto_settings">백업 설정</string>
+    <string name="backup_enable">백업 활성화</string>
+    <string name="backup_section">백업</string>
+    <string name="backup_auto_section">자동 백업 간격</string>
+    <string name="backup_location">백업 위치</string>
+    <string name="backup_location_default">문서</string>
+    <string name="backup_location_hint">백업 폴더 선택</string>
+    <string name="backup_success">백업이 성공적으로 생성되었습니다</string>
+    <string name="backup_failed">백업 실패</string>
+    <string name="import_success">설정을 성공적으로 가져왔습니다</string>
+    <string name="import_failed">가져오기 실패</string>
+    <string name="backup_auto_hours">%d시간</string>
+    <string name="backup_auto_disabled">비활성화됨</string>
+    <string name="backup_auto_title">자동 백업 간격</string>
+    <string name="backup_auto_summary">앱 시작 시 자동 백업</string>
+    <string name="backup_auto_hint">시간 입력 (0은 비활성화)</string>
+    <string name="other_languages">다른 언어</string>
+    <string name="other_languages_title">앱 언어</string>
+    <string name="no_other_languages">이 앱에는 다른 언어 리소스가 없습니다</string>
+    <string name="backup_auto_on_launch">시작 시 자동 백업</string>
+    <string name="backup_auto_on_launch_summary">앱이 시작될 때마다 백업 생성 또는 교체</string>
+    <string name="backup_content">백업 내용</string>
+    <string name="backup_content_settings">앱 설정</string>
+    <string name="backup_content_app_list">설치된 앱</string>
+    <string name="backup_content_both">설정 및 설치된 앱</string>
+    <string name="backup_select_location_first">먼저 백업 위치를 선택해 주세요</string>
 
     <!-- Optional Permissions -->
     <string name="pref_optional_permissions">선택적 권한</string>
@@ -338,23 +375,23 @@
     <string name="title_optional_permissions">선택적 권한</string>
     <string name="pref_storage_permission">저장소 권한</string>
     <string name="pref_storage_permission_summary">APK 내보내기 및 저장소 기능을 위한 READ_EXTERNAL_STORAGE 및 WRITE_EXTERNAL_STORAGE 포함</string>
-    <string name="storage_permission_required">APK 내보내기 및 저장소 기능에 필요</string>
+    <string name="storage_permission_required">APK 내보내기 및 저장소 기능에 필요합니다</string>
     <string name="storage_permission_grant">저장소 권한 부여</string>
     <string name="perm_read_external_storage">외부 저장소 읽기</string>
-    <string name="perm_read_external_storage_desc">APK 내보내기 및 공유를 위해 외부 저장소에서 파일 읽기 허용</string>
+    <string name="perm_read_external_storage_desc">APK 내보내기 및 공유를 위해 앱이 외부 저장소에서 파일을 읽도록 허용</string>
     <string name="perm_write_external_storage">외부 저장소 쓰기</string>
-    <string name="perm_write_external_storage_desc">APK 내보내기 및 공유를 위해 외부 저장소에 파일 쓰기 허용</string>
-    <string name="optional_perm_granted">허용됨</string>
+    <string name="perm_write_external_storage_desc">APK 내보내기 및 공유를 위해 앱이 외부 저장소에 파일을 쓰도록 허용</string>
+    <string name="optional_perm_granted">부여됨</string>
     <string name="optional_perm_denied">거부됨</string>
-    <string name="optional_perm_grant">허용</string>
+    <string name="optional_perm_grant">부여</string>
 
     <!-- Signature Validation -->
     <string name="signature_warning_title">보안 경고</string>
-    <string name="signature_warning_message">서명 해시 검증에 실패했습니다!\n\n비공식 서명 버전의 앱을 사용하고 있습니다!\n이 버전이 안전하고 신뢰할 수 있는지 확인할 수 없습니다!\n\n비공식 버전을 사용하면 데이터 도난, 개인 정보 유출, 악성 코드 등의 보안 위험에 노출될 수 있습니다.\n\n아래 신뢰할 수 있는 플랫폼에서 공식 버전을 다운로드하세요.</string>
+    <string name="signature_warning_message">서명 해시 검증에 실패했습니다!\n\n이 애플리케이션의 비공식 서명 버전을 사용 중입니다!\n이 버전이 안전하거나 신뢰할 수 있는지 확인할 수 없습니다!\n\n비공식 버전을 사용하면 보안 위험에 노출될 수 있습니다.\n데이터 도난, 개인정보 침해, 악성코드 등이 포함됩니다.\n\n아래 신뢰할 수 있는 플랫폼에서 공식 버전을 다운로드해 주세요.</string>
     <string name="signature_warning_platforms_title">신뢰할 수 있는 다운로드 플랫폼</string>
     <string name="signature_warning_sha256_label">예상 서명 SHA-256</string>
-    <string name="signature_warning_button_exit">앱 종료</string>
-    <string name="signature_warning_button_continue">계속</string>
+    <string name="signature_warning_button_exit">애플리케이션 종료</string>
+    <string name="signature_warning_button_continue">계속 진행</string>
     <string name="signature_warning_github_url">https://github.com/BugeStudioTeam/Buge-App-Manager/releases</string>
     <string name="signature_warning_fdroid_url">https://f-droid.org/packages/com.buge.appmanager/</string>
 
@@ -366,7 +403,34 @@
     <string name="menu_other_languages">다른 언어</string>
     <string name="menu_google_play">Google Play 스토어에서 보기</string>
     <string name="menu_f_droid">F-Droid에서 보기</string>
-    <string name="menu_grant_all_permissions">모든 권한 허용</string>
+    <string name="menu_grant_all_permissions">모든 권한 부여</string>
     <string name="menu_revoke_all_permissions">모든 권한 취소</string>
+    
+    <!-- Install Apps -->
+    <string name="pref_install_apps">앱 설치</string>
+    <string name="pref_install_apps_summary">고급 옵션으로 APK 파일 설치</string>
+    <string name="title_install_apps">앱 설치</string>
+    <string name="install_installer_name">설치 프로그램 이름</string>
+    <string name="install_installer_name_summary">-i 플래그에 대한 설치 프로그램 패키지 이름 설정</string>
+    <string name="install_allow_downgrade">다운그레이드 허용</string>
+    <string name="install_allow_downgrade_summary">최신 버전 위에 이전 버전 설치 허용</string>
+    <string name="install_allow_test_packages">테스트 패키지 허용</string>
+    <string name="install_allow_test_packages_summary">테스트 전용 APK 설치 허용</string>
+    <string name="install_allow_system_apps">시스템 앱 설치 허용</string>
+    <string name="install_allow_system_apps_summary">시스템 애플리케이션 설치 또는 업데이트 허용</string>
+    <string name="install_all_users">모든 사용자에게 설치</string>
+    <string name="install_all_users_summary">기기의 모든 사용자에게 APK 설치</string>
+    <string name="install_no_apks">선택된 APK 파일 없음</string>
+    <string name="install_add_apk">APK 추가</string>
+    <string name="install_button">설치</string>
+    <string name="install_installing">%1$s 설치 중...</string>
+    <string name="install_success">설치됨: %1$s</string>
+    <string name="install_failed">실패: %1$s - %2$s</string>
+    <string name="install_complete">설치 완료: %1$d 성공, %2$d 실패</string>
+    <string name="install_remove">제거</string>
+    <string name="install_apk_version">버전</string>
+    <string name="install_apk_package">패키지</string>
+    <string name="install_apk_path">경로</string>
+    <string name="install_invalid_apk">잘못된 APK 파일</string>
     
 </resources>

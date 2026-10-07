@@ -112,9 +112,9 @@ class OptionalPermissionsActivity : BaseActivity() {
 
     private suspend fun checkPermissionStatus(permission: String): Boolean {
         return try {
-            // Use dumpsys package to check if permission is granted
+            // use dumpsys package to check if permission is granted
             val result = ShizukuManager.executeCommand("dumpsys package ${packageName} | grep \"$permission\"")
-            // Check if permission is granted
+            // check if permission is granted
             result.output.contains("granted=true") || result.output.contains("$permission: granted=true")
         } catch (e: Exception) {
             false

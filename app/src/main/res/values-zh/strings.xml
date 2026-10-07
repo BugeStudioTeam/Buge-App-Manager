@@ -2,8 +2,8 @@
 <!-- SPDX-License-Identifier: GPL-3.0-only -->
 <!-- Copyright (C) 2026 Buge Studio -->
 <resources>
-    <string name="app_name">Buge应用管理器</string>
-    <string name="developer_name">Buge团队</string>
+    <string name="app_name">Buge 应用管理器</string>
+    <string name="developer_name">Buge 团队</string>
 
     <!-- Navigation -->
     <string name="nav_apps">应用</string>
@@ -25,36 +25,36 @@
     <string name="pref_theme_dark">深色</string>
     <string name="pref_theme_auto">跟随系统</string>
     <string name="pref_language">语言</string>
-    <string name="pref_language_auto">系统默认</string>
+    <string name="pref_language_auto">跟随系统</string>
     <string name="pref_default_page">默认页面</string>
     <string name="pref_default_page_summary">选择应用启动时显示的页面</string>
     <string name="pref_show_system_apps">显示系统应用</string>
-    <string name="pref_show_disabled_apps">显示已禁用的应用</string>
-    <string name="pref_show_undeclared_activities">显示未导出的活动</string>
+    <string name="pref_show_disabled_apps">显示已停用应用</string>
+    <string name="pref_show_undeclared_activities">显示未声明的活动</string>
     <string name="pref_allow_system_ops">允许系统应用操作</string>
-    <string name="pref_allow_system_ops_summary">允许修改系统应用（权限、禁用、卸载）</string>
+    <string name="pref_allow_system_ops_summary">允许修改系统应用（权限、停用、卸载）</string>
     <string name="pref_about">关于</string>
     <string name="setting_saved">设置已保存</string>
     <string name="pref_auto_update">自动更新</string>
 
     <!-- Apps Settings -->
-    <string name="pref_google_services">Google服务</string>
-    <string name="pref_google_services_summary">启用或禁用Google移动服务</string>
-    <string name="pref_google_services_disabled">此设备上不可用Google服务</string>
+    <string name="pref_google_services">Google 服务</string>
+    <string name="pref_google_services_summary">启用或停用 Google 移动服务</string>
+    <string name="pref_google_services_disabled">此设备不支持 Google 服务</string>
 
     <!-- Shizuku Provider -->
-    <string name="pref_shizuku_provider">Shizuku提供者</string>
-    <string name="pref_shizuku_provider_summary">自定义Shizuku提供者包名</string>
-    <string name="shizuku_provider_title">Shizuku提供者包名</string>
+    <string name="pref_shizuku_provider">Shizuku 提供程序</string>
+    <string name="pref_shizuku_provider_summary">自定义 Shizuku 提供程序包名</string>
+    <string name="shizuku_provider_title">Shizuku 提供程序包名</string>
     <string name="shizuku_provider_default">moe.shizuku.privileged.api</string>
     <string name="shizuku_provider_restore_default">恢复默认</string>
 
     <!-- Log Settings -->
-    <string name="pref_logging">日志记录</string>
+    <string name="pref_logging">日志</string>
     <string name="pref_logging_summary">记录用户操作和错误</string>
     <string name="log_activity_title">操作日志</string>
     <string name="log_settings_title">日志设置</string>
-    <string name="log_enable">启用日志记录</string>
+    <string name="log_enable">启用日志</string>
     <string name="log_enable_summary">记录所有用户操作和系统错误</string>
     <string name="log_empty">暂无日志记录</string>
     <string name="log_copy">复制</string>
@@ -62,26 +62,26 @@
     <string name="log_copied">日志已复制到剪贴板</string>
 
     <!-- Default Page Dialog -->
-    <string name="default_page_title">默认启动页面</string>
+    <string name="default_page_title">默认起始页</string>
     <string name="default_page_apps">应用</string>
     <string name="default_page_permissions">权限</string>
     <string name="default_page_activities">活动</string>
     <string name="default_page_settings">设置</string>
 
     <!-- About Dialog -->
-    <string name="about_desc">Buge应用管理器是一款强大的应用管理工具，支持Shizuku以实现高级权限和应用控制。</string>
+    <string name="about_desc">Buge 应用管理器是一款功能强大的应用管理工具，支持 Shizuku 以实现高级权限和应用控制。</string>
 
     <!-- About Links -->
-    <string name="website">官网</string>
+    <string name="website">网站</string>
     <string name="website_desc">访问我们的官方网站</string>
     <string name="github">GitHub</string>
-    <string name="github_desc">访问我们的GitHub仓库</string>
+    <string name="github_desc">访问我们的 GitHub 仓库</string>
     <string name="telegram">Telegram</string>
-    <string name="telegram_desc">加入我们的Telegram频道</string>
+    <string name="telegram_desc">加入我们的 Telegram 频道</string>
     <string name="activitymanager">ActivityManager</string>
-    <string name="activitymanager_desc">开源项目 — 通过Shizuku启动未导出活动的方法</string>
+    <string name="activitymanager_desc">开源项目 — 使用 Shizuku 方法启动未导出的活动</string>
     <string name="check_for_update">检查更新</string>
-    <string name="update_desc">在GitHub上检查新版本</string>
+    <string name="update_desc">在 GitHub 上检查新版本</string>
     <string name="about_more">了解更多关于我们</string>
     <string name="about_more_summary">了解开发团队和项目愿景</string>
     <string name="about">关于</string>
@@ -90,19 +90,19 @@
 
     <!-- About Us Activity -->
     <string name="about_us">关于我们</string>
-    <string name="about_us_title">Buge Studio团队</string>
-    <string name="about_us_description">Buge Studio团队是一群充满热情的开发者和设计师，致力于为Android平台创建创新实用的工具应用。我们专注于用户隐私、系统控制和开放性。我们的目标是为用户提供透明、高效、可靠的工具。Buge应用管理器是一个开源项目，也是我们的第一个主要应用。欢迎大家共同参与改进和开发。</string>
+    <string name="about_us_title">Buge Studio 团队</string>
+    <string name="about_us_description">Buge Studio 团队是一群充满激情的开发者和设计师，致力于为 Android 平台创建创新且实用的工具应用。我们专注于用户隐私、系统控制和开放性。我们的目标是为用户提供透明、高效、可靠的工具。Buge 应用管理器是一个开源项目，也是我们的第一个主要应用。我们欢迎所有人一起参与改进和开发。</string>
 
     <!-- GMS Disable Warning -->
-    <string name="gms_disable_warning_title">禁用Google服务？</string>
-    <string name="gms_disable_warning_message">禁用Google服务将影响以下功能：\n\n• Google Play商店将停止工作\n• 依赖Google Play服务的应用可能崩溃\n• Google应用的通知将停止\n• 位置服务可能受影响\n• 应用内购买将无法使用\n\n确定要禁用Google服务吗？</string>
+    <string name="gms_disable_warning_title">停用 Google 服务？</string>
+    <string name="gms_disable_warning_message">停用 Google 服务将影响以下内容：\n\n• Google Play 商店将停止工作\n• 依赖 Google Play 服务的应用可能会崩溃\n• Google 应用的推送通知将停止\n• 定位服务可能会受到影响\n• 应用内购买将无法使用\n\n确定要停用 Google 服务吗？</string>
 
     <!-- System Operation Blocked -->
     <string name="system_op_blocked_title">操作被阻止</string>
-    <string name="system_op_blocked_message">系统应用操作当前已禁用。\n\n您可以在设置中启用"允许系统应用操作"来执行此操作。</string>
+    <string name="system_op_blocked_message">系统应用操作当前已停用。\n\n您可以在设置中启用"允许系统应用操作"来执行此操作。</string>
 
     <!-- Restore -->
-    <string name="pref_restore_apps">恢复已卸载应用</string>
+    <string name="pref_restore_apps">恢复已卸载的应用</string>
     <string name="pref_restore_apps_summary">查看并恢复之前卸载的系统应用</string>
     <string name="title_restore_apps">恢复应用</string>
     <string name="restore">恢复</string>
@@ -112,10 +112,10 @@
     <string name="restore_failed">恢复应用失败</string>
 
     <!-- Shizuku -->
-    <string name="shizuku_title">Shizuku授权</string>
-    <string name="shizuku_desc">需要Shizuku来管理应用权限并执行高级操作。请在Shizuku中授权此应用。</string>
-    <string name="shizuku_status_ok">已授权且正在运行</string>
-    <string name="shizuku_status_no_auth">正在运行但未授权</string>
+    <string name="shizuku_title">Shizuku 授权</string>
+    <string name="shizuku_desc">管理应用权限和执行高级操作需要 Shizuku。请在 Shizuku 中授权此应用。</string>
+    <string name="shizuku_status_ok">已授权并运行中</string>
+    <string name="shizuku_status_no_auth">运行中但未授权</string>
     <string name="shizuku_status_not_running">未运行</string>
     <string name="shizuku_authorized">已授权</string>
     <string name="shizuku_not_authorized">未授权</string>
@@ -126,21 +126,21 @@
     <string name="pref_auth_mode">授权方式</string>
     <string name="auth_mode_title">授权方式</string>
     <string name="auth_mode_shizuku">Shizuku</string>
-    <string name="auth_mode_root">Root（su）</string>
+    <string name="auth_mode_root">Root (su)</string>
     <string name="pref_root_su_path">su 命令</string>
     <string name="root_su_path_title">su 命令</string>
-    <string name="root_su_path_hint">例如：su、ksu、/system/bin/su</string>
+    <string name="root_su_path_hint">例如 su、ksu、/system/bin/su</string>
     <string name="root_su_path_default">su</string>
     <string name="root_authorization_title">Root 授权</string>
-    <string name="root_authorization_desc">Root 权限用于管理应用权限并执行高级操作。请确保设备已获得 Root 权限，且 su 命令配置正确。</string>
+    <string name="root_authorization_desc">Root 访问用于管理应用权限和执行高级操作。请确保您的设备已 root 且 su 命令配置正确。</string>
     <string name="root_status_ok">Root 可用</string>
     <string name="root_status_not_ok">Root 不可用</string>
-    <string name="error_no_privilege">没有可用的授权方式或尚未授权。请在设置中选择授权方式。</string>
+    <string name="error_no_privilege">没有可用或已授权的权限后端。请在设置中选择一个。</string>
     <string name="request_auth">授权</string>
     <string name="not_authorized">未授权</string>
 
     <!-- App List -->
-    <string name="title_app_list">已安装应用</string>
+    <string name="title_app_list">已安装的应用</string>
     <string name="search_hint">搜索应用…</string>
     <string name="filter_all">所有应用</string>
     <string name="filter_user">用户应用</string>
@@ -149,11 +149,11 @@
     <string name="sort_name">名称</string>
     <string name="sort_size">大小</string>
     <string name="sort_install_date">安装日期</string>
-    <string name="apps_count">%d个应用</string>
+    <string name="apps_count">%d 个应用</string>
     <string name="loading_apps">正在加载应用…</string>
     <string name="refresh">刷新</string>
     <string name="no_apps_found">未找到应用</string>
-    <string name="share_apks">分享APK</string>
+    <string name="share_apks">分享 APK</string>
 
     <!-- App Detail -->
     <string name="title_app_detail">应用详情</string>
@@ -164,8 +164,8 @@
     <string name="app_size">应用大小</string>
     <string name="data_size">数据大小</string>
     <string name="cache_size">缓存大小</string>
-    <string name="target_sdk">目标SDK</string>
-    <string name="min_sdk">最小SDK</string>
+    <string name="target_sdk">目标 SDK</string>
+    <string name="min_sdk">最低 SDK</string>
     <string name="permissions_title">权限</string>
     <string name="granted">已授予</string>
     <string name="denied">已拒绝</string>
@@ -177,7 +177,7 @@
     <string name="force_stop">强制停止</string>
     <string name="clear_data">清除数据</string>
     <string name="clear_cache">清除缓存</string>
-    <string name="disable_app">禁用应用</string>
+    <string name="disable_app">停用应用</string>
     <string name="enable_app">启用应用</string>
     <string name="freeze_app">冻结应用</string>
     <string name="unfreeze_app">解冻应用</string>
@@ -188,43 +188,43 @@
     <string name="storage_data">数据</string>
     <string name="storage_total">总计</string>
     <string name="storage_unknown">未知</string>
-    <string name="installer_app">安装者应用</string>
+    <string name="installer_app">安装程序</string>
 
     <!-- App Detail Activity Strings -->
     <string name="removed_from_favorites">已从收藏中移除</string>
     <string name="added_to_favorites">已添加到收藏</string>
-    <string name="apk_path_not_found">未找到APK路径</string>
-    <string name="apk_file_not_exist">APK文件不存在</string>
-    <string name="apk_saved_to">APK已保存到：%s</string>
+    <string name="apk_path_not_found">未找到 APK 路径</string>
+    <string name="apk_file_not_exist">APK 文件不存在</string>
+    <string name="apk_saved_to">APK 已保存至：%s</string>
     <string name="export_failed">导出失败：%s</string>
-    <string name="cannot_open_google_play">无法打开Google Play</string>
-    <string name="cannot_open_fdroid">无法打开F-Droid</string>
+    <string name="cannot_open_google_play">无法打开 Google Play</string>
+    <string name="cannot_open_fdroid">无法打开 F-Droid</string>
     <string name="cannot_launch_app">无法启动此应用</string>
     <string name="force_stop_confirm">强制停止 %s？</string>
     <string name="uninstall_confirm">卸载 %s？</string>
-    <string name="clear_data_confirm">清除 %s 的所有数据？此操作不可撤销。</string>
+    <string name="clear_data_confirm">清除 %s 的所有数据？此操作无法撤销。</string>
 
     <!-- Permissions List -->
     <string name="title_permissions">权限管理器</string>
     <string name="perm_microphone">麦克风</string>
-    <string name="perm_camera">摄像头</string>
+    <string name="perm_camera">相机</string>
     <string name="perm_location">位置</string>
     <string name="perm_contacts">联系人</string>
     <string name="perm_storage">存储</string>
-    <string name="perm_manage_storage">所有文件访问</string>
+    <string name="perm_manage_storage">所有文件访问权限</string>
     <string name="perm_phone">电话</string>
     <string name="perm_sms">短信</string>
     <string name="perm_calendar">日历</string>
     <string name="perm_body_sensors">身体传感器</string>
     <string name="perm_notifications">通知</string>
-    <string name="perm_overlay">悬浮窗</string>
+    <string name="perm_overlay">在其他应用上层显示</string>
     <string name="perm_install_unknown">安装未知应用</string>
     <string name="batch_revoke">撤销权限</string>
     <string name="batch_grant">授予权限</string>
-    <string name="confirm_revoke">从%d个应用撤销权限？</string>
-    <string name="confirm_grant">向%d个应用授予权限？</string>
-    <string name="selected_count">已选择%d个</string>
-    <string name="open_system_settings">打开系统设置</string>
+    <string name="confirm_revoke">撤销 %d 个应用的权限？</string>
+    <string name="confirm_grant">授予 %d 个应用权限？</string>
+    <string name="selected_count">已选择 %d 个</string>
+    <string name="open_system_settings">打开设置</string>
     <string name="perm_write_settings">修改系统设置</string>
 
     <!-- Activities -->
@@ -232,7 +232,7 @@
     <string name="title_activity_detail">活动详情</string>
     <string name="search_activity_hint">搜索活动…</string>
     <string name="launch">启动</string>
-    <string name="back_to_apps">返回应用列表</string>
+    <string name="back_to_apps">返回应用</string>
     <string name="no_activities_found">未找到活动</string>
 
     <!-- Common -->
@@ -240,46 +240,46 @@
     <string name="cancel">取消</string>
     <string name="operation_success">操作成功</string>
     <string name="operation_failed">操作失败：%s</string>
-    <string name="error_no_shizuku">Shizuku不可用或未授权</string>
-    <string name="error_system_ops_disabled">系统应用操作已禁用。请在设置中启用"允许系统应用操作"。</string>
+    <string name="error_no_shizuku">Shizuku 不可用或未授权</string>
+    <string name="error_system_ops_disabled">系统应用操作已停用。请在设置中启用"允许系统应用操作"。</string>
     <string name="language_changed_restart">语言已更改。重启应用以应用更改。</string>
     <string name="restart">重启</string>
 
     <!-- Language names -->
-    <string name="pref_language_en">英语</string>
-    <string name="pref_language_zh">中文（简体）</string>
-    <string name="pref_language_ja">日语</string>
-    <string name="pref_language_ko">韩语</string>
-    <string name="pref_language_fr">法语</string>
-    <string name="pref_language_de">德语</string>
-    <string name="pref_language_ru">俄语</string>
-    <string name="pref_language_ar">阿拉伯语</string>
-    <string name="pref_language_pt">葡萄牙语</string>
-    <string name="pref_language_es">西班牙语</string>
+    <string name="pref_language_en">English</string>
+    <string name="pref_language_zh">中文 (简体)</string>
+    <string name="pref_language_ja">日本語</string>
+    <string name="pref_language_ko">한국어</string>
+    <string name="pref_language_fr">Français</string>
+    <string name="pref_language_de">Deutsch</string>
+    <string name="pref_language_ru">Русский</string>
+    <string name="pref_language_ar">العربية</string>
+    <string name="pref_language_pt">Português</string>
+    <string name="pref_language_es">Español</string>
     
     <string name="restart_required">需要重启</string>
-    <string name="restart_required_message">默认启动页面已更改。重启应用以使更改生效。</string>
+    <string name="restart_required_message">默认起始页已更改。重启应用以使更改生效。</string>
     <string name="restart_now">立即重启</string>
     <string name="later">稍后</string>
     
     <!-- Update Checker -->
-    <string name="update_available">发现更新</string>
+    <string name="update_available">有可用更新</string>
     <string name="download">下载</string>
-    <string name="no_update_title">已是最新版本</string>
-    <string name="no_update_message">您已在使用最新版本。</string>
-    <string name="update_check_failed">检查更新失败</string>
-    <string name="update_check_failed_message">检查更新失败。请检查网络连接。</string>
-    <string name="checking_for_update">正在检查更新…</string>
-    <string name="please_wait">请稍候…</string>
+    <string name="no_update_title">无可用更新</string>
+    <string name="no_update_message">您已经在使用最新版本。</string>
+    <string name="update_check_failed">更新检查失败</string>
+    <string name="update_check_failed_message">检查更新失败。请检查您的网络连接。</string>
+    <string name="checking_for_update">正在检查更新...</string>
+    <string name="please_wait">请稍候...</string>
     <string name="ok">确定</string>
     <string name="ignore">忽略</string>
     
     <!-- Shortcuts -->
-    <string name="shortcut_app_manager_long">打开Buge应用管理器</string>
+    <string name="shortcut_app_manager_long">打开 Buge 应用管理器</string>
     
     <string name="appearance_settings">外观设置</string>
     <string name="theme_mode">主题模式</string>
-    <string name="color_theme">主题色</string>
+    <string name="color_theme">颜色主题</string>
     <string name="color_default">默认（蓝色）</string>
     <string name="color_red">红色</string>
     <string name="color_green">绿色</string>
@@ -288,12 +288,12 @@
     <string name="more_options_summary">自定义主题和颜色</string>
     <string name="theme_change_restart_message">主题已更改。重启应用以应用更改。</string>
     <string name="theme_group">主题</string>
-    <string name="hide_nav_labels">隐藏导航栏标签</string>
-    <string name="hide_nav_labels_summary">未选中的导航项隐藏标题，仅显示选中的</string>
+    <string name="hide_nav_labels">隐藏导航标签</string>
+    <string name="hide_nav_labels_summary">隐藏未选中导航项的标题，仅显示选中的一项</string>
 
     <!-- Dynamic Color -->
-    <string name="dynamic_color">动态取色</string>
-    <string name="dynamic_color_summary">从壁纸自动适配颜色（Android 12+）</string>
+    <string name="dynamic_color">动态颜色</string>
+    <string name="dynamic_color_summary">自动从壁纸适配颜色（Android 12+）</string>
     <string name="dynamic_color_unavailable">需要 Android 12 或更高版本</string>
 
     <!-- Custom Labels -->
@@ -305,10 +305,10 @@
     <string name="label_name_hint">输入标签名称</string>
     <string name="create_new_label">创建新标签</string>
     <string name="no_labels_created">尚未创建标签</string>
-    <string name="tap_to_create">点击 + 创建你的第一个标签</string>
-    <string name="delete_label_confirm">删除 "%s"？</string>
+    <string name="tap_to_create">点击 + 创建您的第一个标签</string>
+    <string name="delete_label_confirm">删除"%s"？</string>
     <string name="delete_label">删除标签</string>
-    <string name="select_apps_for_label">为 "%s" 选择应用</string>
+    <string name="select_apps_for_label">为"%s"选择应用</string>
     <string name="label_created">标签已创建</string>
     <string name="label_updated">标签已更新</string>
     <string name="label_deleted">标签已删除</string>
@@ -319,42 +319,79 @@
     <string name="pref_update_options_summary">配置更新下载和安装方式</string>
     <string name="title_update_options">更新选项</string>
     <string name="update_method_browser">在浏览器中打开</string>
-    <string name="update_method_silent">静默安装 (Shizuku)</string>
-    <string name="installer_name">安装者名称</string>
-    <string name="installer_name_hint">输入安装者名称（例如 BugeAppManager）</string>
-    <string name="update_downloading">正在下载更新…</string>
+    <string name="update_method_silent">静默安装（Shizuku）</string>
+    <string name="installer_name">安装程序名称</string>
+    <string name="installer_name_hint">输入安装程序名称</string>
+    <string name="update_downloading">正在下载更新...</string>
     <string name="update_download_failed">下载失败</string>
-    <string name="update_installing">正在安装更新…</string>
+    <string name="update_installing">正在安装更新...</string>
     <string name="update_install_success">更新安装成功</string>
     <string name="update_install_failed">安装失败</string>
-    <string name="update_already_latest">您已在最新版本</string>
-    <string name="checking_for_update_dialog">正在检查更新…</string>
+    <string name="update_already_latest">您已经在使用最新版本</string>
+    <string name="checking_for_update_dialog">正在检查更新...</string>
     <string name="update_download_complete">下载完成</string>
     <string name="save">保存</string>
 
+    <!-- Backup -->
+    <string name="pref_backup">备份</string>
+    <string name="pref_backup_summary">备份应用设置、应用列表和恢复</string>
+    <string name="title_backup">备份</string>
+    <string name="backup_app_settings">备份应用设置</string>
+    <string name="backup_app_settings_summary">将此应用的设置备份到文件</string>
+    <string name="backup_app_list">备份应用列表</string>
+    <string name="backup_app_list_summary">导出所有已安装应用的列表</string>
+    <string name="import_app_settings">导入应用设置</string>
+    <string name="import_app_settings_summary">从备份文件恢复设置</string>
+    <string name="backup_auto_settings">备份设置</string>
+    <string name="backup_enable">启用备份</string>
+    <string name="backup_section">备份</string>
+    <string name="backup_auto_section">自动备份间隔</string>
+    <string name="backup_location">备份位置</string>
+    <string name="backup_location_default">文档</string>
+    <string name="backup_location_hint">选择备份文件夹</string>
+    <string name="backup_success">备份创建成功</string>
+    <string name="backup_failed">备份失败</string>
+    <string name="import_success">设置导入成功</string>
+    <string name="import_failed">导入失败</string>
+    <string name="backup_auto_hours">%d 小时</string>
+    <string name="backup_auto_disabled">已停用</string>
+    <string name="backup_auto_title">自动备份间隔</string>
+    <string name="backup_auto_summary">启动应用时自动备份</string>
+    <string name="backup_auto_hint">输入小时数（0 表示停用）</string>
+    <string name="other_languages">其他语言</string>
+    <string name="other_languages_title">应用语言</string>
+    <string name="no_other_languages">此应用没有其他语言资源</string>
+    <string name="backup_auto_on_launch">启动时自动备份</string>
+    <string name="backup_auto_on_launch_summary">每次应用启动时创建或替换备份</string>
+    <string name="backup_content">备份内容</string>
+    <string name="backup_content_settings">应用设置</string>
+    <string name="backup_content_app_list">已安装的应用</string>
+    <string name="backup_content_both">设置和已安装的应用</string>
+    <string name="backup_select_location_first">请先选择备份位置</string>
+
     <!-- Optional Permissions -->
     <string name="pref_optional_permissions">可选权限</string>
-    <string name="pref_optional_permissions_summary">为附加功能授予可选权限</string>
+    <string name="pref_optional_permissions_summary">授予可选权限以使用附加功能</string>
     <string name="title_optional_permissions">可选权限</string>
     <string name="pref_storage_permission">存储权限</string>
-    <string name="pref_storage_permission_summary">包含 READ_EXTERNAL_STORAGE 和 WRITE_EXTERNAL_STORAGE，用于 APK 导出和存储功能</string>
-    <string name="storage_permission_required">APK 导出和存储功能所需</string>
+    <string name="pref_storage_permission_summary">包括 READ_EXTERNAL_STORAGE 和 WRITE_EXTERNAL_STORAGE，用于 APK 导出和存储功能</string>
+    <string name="storage_permission_required">APK 导出和存储功能需要此权限</string>
     <string name="storage_permission_grant">授予存储权限</string>
     <string name="perm_read_external_storage">读取外部存储</string>
-    <string name="perm_read_external_storage_desc">允许应用从外部存储读取文件，用于 APK 导出和分享</string>
+    <string name="perm_read_external_storage_desc">允许应用从外部存储读取文件以进行 APK 导出和分享</string>
     <string name="perm_write_external_storage">写入外部存储</string>
-    <string name="perm_write_external_storage_desc">允许应用向外部存储写入文件，用于 APK 导出和分享</string>
+    <string name="perm_write_external_storage_desc">允许应用将文件写入外部存储以进行 APK 导出和分享</string>
     <string name="optional_perm_granted">已授予</string>
     <string name="optional_perm_denied">已拒绝</string>
     <string name="optional_perm_grant">授予</string>
 
     <!-- Signature Validation -->
     <string name="signature_warning_title">安全警告</string>
-    <string name="signature_warning_message">签名哈希验证失败！\n\n您正在使用非官方签名的应用版本！\n我们无法确认此版本是否安全可信！\n\n使用非官方版本可能会使您面临安全风险，\n包括数据盗窃、隐私泄露和恶意软件。\n\n请从我们下面的可信平台下载官方版本。</string>
+    <string name="signature_warning_message">签名哈希验证失败！\n\n您正在使用此应用的非官方签名版本！\n我们无法确认此版本是否安全或可信！\n\n使用非官方版本可能会使您面临安全风险，\n包括数据窃取、隐私泄露和恶意软件。\n\n请从下方我们信任的平台下载官方版本。</string>
     <string name="signature_warning_platforms_title">可信下载平台</string>
     <string name="signature_warning_sha256_label">预期签名 SHA-256</string>
     <string name="signature_warning_button_exit">退出应用</string>
-    <string name="signature_warning_button_continue">继续</string>
+    <string name="signature_warning_button_continue">仍然继续</string>
     <string name="signature_warning_github_url">https://github.com/BugeStudioTeam/Buge-App-Manager/releases</string>
     <string name="signature_warning_fdroid_url">https://f-droid.org/packages/com.buge.appmanager/</string>
 
@@ -368,5 +405,32 @@
     <string name="menu_f_droid">在 F-Droid 中查看</string>
     <string name="menu_grant_all_permissions">授予所有权限</string>
     <string name="menu_revoke_all_permissions">撤销所有权限</string>
+    
+    <!-- Install Apps -->
+    <string name="pref_install_apps">安装应用</string>
+    <string name="pref_install_apps_summary">使用高级选项安装 APK 文件</string>
+    <string name="title_install_apps">安装应用</string>
+    <string name="install_installer_name">安装程序名称</string>
+    <string name="install_installer_name_summary">设置 -i 标志的安装程序包名</string>
+    <string name="install_allow_downgrade">允许降级</string>
+    <string name="install_allow_downgrade_summary">允许在较新版本上安装较旧版本</string>
+    <string name="install_allow_test_packages">允许测试包</string>
+    <string name="install_allow_test_packages_summary">允许安装仅用于测试的 APK</string>
+    <string name="install_allow_system_apps">允许安装系统应用</string>
+    <string name="install_allow_system_apps_summary">允许安装或更新系统应用</string>
+    <string name="install_all_users">为所有用户安装</string>
+    <string name="install_all_users_summary">为设备上的每个用户安装 APK</string>
+    <string name="install_no_apks">未选择 APK 文件</string>
+    <string name="install_add_apk">添加 APK</string>
+    <string name="install_button">安装</string>
+    <string name="install_installing">正在安装 %1$s...</string>
+    <string name="install_success">已安装：%1$s</string>
+    <string name="install_failed">失败：%1$s - %2$s</string>
+    <string name="install_complete">安装完成：%1$d 成功，%2$d 失败</string>
+    <string name="install_remove">移除</string>
+    <string name="install_apk_version">版本</string>
+    <string name="install_apk_package">包名</string>
+    <string name="install_apk_path">路径</string>
+    <string name="install_invalid_apk">无效的 APK 文件</string>
     
 </resources>

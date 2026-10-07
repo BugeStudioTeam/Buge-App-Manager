@@ -42,7 +42,7 @@ class CustomLabelsActivity : BaseActivity() {
 
     override fun onResume() {
         super.onResume()
-        // Refresh labels when returning from detail activity
+        // refresh labels when returning from detail activity
         loadLabels()
     }
 

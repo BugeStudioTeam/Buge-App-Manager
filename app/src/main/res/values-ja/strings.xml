@@ -2,8 +2,8 @@
 <!-- SPDX-License-Identifier: GPL-3.0-only -->
 <!-- Copyright (C) 2026 Buge Studio -->
 <resources>
-    <string name="app_name">Bugeアプリマネージャー</string>
-    <string name="developer_name">Bugeチーム</string>
+    <string name="app_name">Buge App Manager</string>
+    <string name="developer_name">Buge Team</string>
 
     <!-- Navigation -->
     <string name="nav_apps">アプリ</string>
@@ -12,11 +12,11 @@
     <string name="nav_settings">設定</string>
 
     <!-- Settings Groups -->
-    <string name="settings_group_authorization">認可</string>
+    <string name="settings_group_authorization">認証</string>
     <string name="settings_group_appearance">外観</string>
     <string name="settings_group_apps">アプリ</string>
     <string name="settings_group_advanced">詳細</string>
-    <string name="settings_group_about">情報</string>
+    <string name="settings_group_about">アプリについて</string>
 
     <!-- Basic Settings -->
     <string name="title_settings">設定</string>
@@ -27,38 +27,38 @@
     <string name="pref_language">言語</string>
     <string name="pref_language_auto">システムデフォルト</string>
     <string name="pref_default_page">デフォルトページ</string>
-    <string name="pref_default_page_summary">起動時に表示するページを選択</string>
+    <string name="pref_default_page_summary">アプリ起動時に表示するページを選択</string>
     <string name="pref_show_system_apps">システムアプリを表示</string>
     <string name="pref_show_disabled_apps">無効なアプリを表示</string>
-    <string name="pref_show_undeclared_activities">未宣言のアクティビティを表示</string>
-    <string name="pref_allow_system_ops">システムアプリ操作を許可</string>
+    <string name="pref_show_undeclared_activities">宣言されていないアクティビティを表示</string>
+    <string name="pref_allow_system_ops">システムアプリの操作を許可</string>
     <string name="pref_allow_system_ops_summary">システムアプリの変更を許可（権限、無効化、アンインストール）</string>
-    <string name="pref_about">情報</string>
+    <string name="pref_about">アプリについて</string>
     <string name="setting_saved">設定を保存しました</string>
     <string name="pref_auto_update">自動更新</string>
 
     <!-- Apps Settings -->
-    <string name="pref_google_services">Googleサービス</string>
-    <string name="pref_google_services_summary">Googleモバイルサービスを有効/無効にする</string>
-    <string name="pref_google_services_disabled">このデバイスではGoogleサービスは利用できません</string>
+    <string name="pref_google_services">Google サービス</string>
+    <string name="pref_google_services_summary">Google モバイルサービスを有効または無効にする</string>
+    <string name="pref_google_services_disabled">このデバイスでは Google サービスを利用できません</string>
 
     <!-- Shizuku Provider -->
-    <string name="pref_shizuku_provider">Shizukuプロバイダー</string>
-    <string name="pref_shizuku_provider_summary">Shizukuプロバイダーのパッケージ名をカスタマイズ</string>
-    <string name="shizuku_provider_title">Shizukuプロバイダーのパッケージ名</string>
+    <string name="pref_shizuku_provider">Shizuku プロバイダー</string>
+    <string name="pref_shizuku_provider_summary">Shizuku プロバイダーのパッケージ名をカスタマイズ</string>
+    <string name="shizuku_provider_title">Shizuku プロバイダーのパッケージ名</string>
     <string name="shizuku_provider_default">moe.shizuku.privileged.api</string>
     <string name="shizuku_provider_restore_default">デフォルトに戻す</string>
 
     <!-- Log Settings -->
-    <string name="pref_logging">ログ記録</string>
+    <string name="pref_logging">ログ</string>
     <string name="pref_logging_summary">ユーザー操作とエラーを記録</string>
     <string name="log_activity_title">操作ログ</string>
     <string name="log_settings_title">ログ設定</string>
-    <string name="log_enable">ログ記録を有効にする</string>
+    <string name="log_enable">ログを有効にする</string>
     <string name="log_enable_summary">すべてのユーザー操作とシステムエラーを記録</string>
-    <string name="log_empty">ログはまだ記録されていません</string>
+    <string name="log_empty">まだログが記録されていません</string>
     <string name="log_copy">コピー</string>
-    <string name="log_cleared">ログをクリアしました</string>
+    <string name="log_cleared">ログを消去しました</string>
     <string name="log_copied">ログをクリップボードにコピーしました</string>
 
     <!-- Default Page Dialog -->
@@ -69,75 +69,75 @@
     <string name="default_page_settings">設定</string>
 
     <!-- About Dialog -->
-    <string name="about_desc">Bugeアプリマネージャーは、Shizukuをサポートする強力なアプリ管理ツールで、高度な権限とアプリ制御を実現します。</string>
+    <string name="about_desc">Buge App Manager は、Shizuku をサポートした強力なアプリ管理ツールで、高度な権限とアプリの制御が可能です。</string>
 
     <!-- About Links -->
     <string name="website">ウェブサイト</string>
-    <string name="website_desc">公式ウェブサイトにアクセス</string>
+    <string name="website_desc">公式ウェブサイトを訪問</string>
     <string name="github">GitHub</string>
-    <string name="github_desc">GitHubリポジトリにアクセス</string>
+    <string name="github_desc">GitHub リポジトリを訪問</string>
     <string name="telegram">Telegram</string>
-    <string name="telegram_desc">Telegramチャンネルに参加</string>
+    <string name="telegram_desc">Telegram チャンネルに参加</string>
     <string name="activitymanager">ActivityManager</string>
-    <string name="activitymanager_desc">オープンソースプロジェクト — Shizukuで非公開アクティビティを起動する方法</string>
+    <string name="activitymanager_desc">オープンソースプロジェクト — 非公開アクティビティを起動する Shizuku メソッド</string>
     <string name="check_for_update">アップデートを確認</string>
-    <string name="update_desc">GitHubで新バージョンを確認</string>
-    <string name="about_more">詳細を見る</string>
-    <string name="about_more_summary">開発チームとプロジェクトのビジョンについて</string>
-    <string name="about">情報</string>
+    <string name="update_desc">GitHub で新しいバージョンを確認</string>
+    <string name="about_more">私たちについてもっと見る</string>
+    <string name="about_more_summary">開発チームとプロジェクトのビジョンについて詳しく知る</string>
+    <string name="about">アプリについて</string>
     <string name="close">閉じる</string>
     <string name="open">開く</string>
 
     <!-- About Us Activity -->
     <string name="about_us">私たちについて</string>
-    <string name="about_us_title">Buge Studioチーム</string>
-    <string name="about_us_description">Buge Studioチームは、Androidプラットフォーム向けの革新的で実用的なユーティリティアプリケーションの作成に専念する情熱的な開発者とデザイナーのグループです。私たちはユーザーのプライバシー、システム制御、オープン性に焦点を当てています。透明性が高く、効率的で信頼性の高いツールをユーザーに提供することを目指しています。Bugeアプリマネージャーはオープンソースプロジェクトであり、私たちの最初の主要アプリケーションです。皆さんの改善と開発への参加を歓迎します。</string>
+    <string name="about_us_title">Buge Studio チーム</string>
+    <string name="about_us_description">Buge Studio チームは、Android プラットフォーム向けの革新的で実用的なユーティリティアプリケーションの作成に専念する、情熱的な開発者とデザイナーのグループです。私たちはユーザーのプライバシー、システム制御、オープン性に焦点を当てています。私たちの目標は、ユーザーに透明で効率的かつ信頼性の高いツールを提供することです。Buge App Manager はオープンソースプロジェクトであり、私たちの最初の主要なアプリケーションです。皆さんが一緒に改善と開発に参加することを歓迎します。</string>
 
     <!-- GMS Disable Warning -->
-    <string name="gms_disable_warning_title">Googleサービスを無効にしますか？</string>
-    <string name="gms_disable_warning_message">Googleサービスを無効にすると、以下に影響します：\n\n• Google Playストアが停止します\n• Google Playサービスに依存するアプリがクラッシュする可能性があります\n• Googleアプリからのプッシュ通知が停止します\n• 位置情報サービスに影響する可能性があります\n• アプリ内課金が機能しなくなります\n\nGoogleサービスを無効にしてもよろしいですか？</string>
+    <string name="gms_disable_warning_title">Google サービスを無効にしますか？</string>
+    <string name="gms_disable_warning_message">Google サービスを無効にすると、以下に影響します：\n\n• Google Play ストアが動作しなくなります\n• Google Play サービスに依存するアプリがクラッシュする可能性があります\n• Google アプリからのプッシュ通知が停止します\n• 位置情報サービスが影響を受ける可能性があります\n• アプリ内購入が機能しなくなります\n\nGoogle サービスを無効にしてもよろしいですか？</string>
 
     <!-- System Operation Blocked -->
     <string name="system_op_blocked_title">操作がブロックされました</string>
-    <string name="system_op_blocked_message">システムアプリ操作は現在無効になっています。\n\nこの操作を実行するには、設定で「システムアプリ操作を許可」を有効にしてください。</string>
+    <string name="system_op_blocked_message">システムアプリの操作は現在無効になっています。\n\nこの操作を実行するには、設定で「システムアプリの操作を許可」を有効にしてください。</string>
 
     <!-- Restore -->
-    <string name="pref_restore_apps">アンインストール済みアプリを復元</string>
-    <string name="pref_restore_apps_summary">以前にアンインストールしたシステムアプリを表示して復元</string>
+    <string name="pref_restore_apps">アンインストールしたアプリを復元</string>
+    <string name="pref_restore_apps_summary">以前にアンインストールしたシステムアプリを表示および復元</string>
     <string name="title_restore_apps">アプリを復元</string>
     <string name="restore">復元</string>
-    <string name="no_uninstalled_apps">アンインストール済みアプリは見つかりません</string>
+    <string name="no_uninstalled_apps">アンインストールされたアプリが見つかりません</string>
     <string name="restore_confirm">%s を復元しますか？</string>
-    <string name="restore_success">アプリの復元に成功しました</string>
+    <string name="restore_success">アプリを正常に復元しました</string>
     <string name="restore_failed">アプリの復元に失敗しました</string>
 
     <!-- Shizuku -->
-    <string name="shizuku_title">Shizuku認可</string>
-    <string name="shizuku_desc">アプリの権限を管理し、高度な操作を実行するにはShizukuが必要です。Shizukuでこのアプリを認可してください。</string>
-    <string name="shizuku_status_ok">認可済みで実行中</string>
-    <string name="shizuku_status_no_auth">実行中ですが認可されていません</string>
-    <string name="shizuku_status_not_running">実行していません</string>
-    <string name="shizuku_authorized">認可済み</string>
-    <string name="shizuku_not_authorized">未認可</string>
-    <string name="shizuku_not_running">実行していません</string>
-    <string name="shizuku_request_auth">認可をリクエスト</string>
+    <string name="shizuku_title">Shizuku 認証</string>
+    <string name="shizuku_desc">アプリの権限を管理し、高度な操作を実行するには Shizuku が必要です。Shizuku でこのアプリを認証してください。</string>
+    <string name="shizuku_status_ok">認証済みで実行中</string>
+    <string name="shizuku_status_no_auth">実行中ですが未認証</string>
+    <string name="shizuku_status_not_running">実行されていません</string>
+    <string name="shizuku_authorized">認証済み</string>
+    <string name="shizuku_not_authorized">未認証</string>
+    <string name="shizuku_not_running">実行されていません</string>
+    <string name="shizuku_request_auth">認証をリクエスト</string>
 
     <!-- Root / Authorization Method -->
-    <string name="pref_auth_mode">認可方式</string>
-    <string name="auth_mode_title">認可方式</string>
+    <string name="pref_auth_mode">認証方法</string>
+    <string name="auth_mode_title">認証方法</string>
     <string name="auth_mode_shizuku">Shizuku</string>
-    <string name="auth_mode_root">Root（su）</string>
+    <string name="auth_mode_root">Root (su)</string>
     <string name="pref_root_su_path">su コマンド</string>
     <string name="root_su_path_title">su コマンド</string>
     <string name="root_su_path_hint">例：su、ksu、/system/bin/su</string>
     <string name="root_su_path_default">su</string>
-    <string name="root_authorization_title">Root 認可</string>
-    <string name="root_authorization_desc">Root 権限はアプリの権限管理と高度な操作に使用されます。デバイスが Root 化されており、su コマンドが正しく設定されていることを確認してください。</string>
+    <string name="root_authorization_title">Root 認証</string>
+    <string name="root_authorization_desc">Root アクセスは、アプリの権限を管理し、高度な操作を実行するために使用されます。デバイスが root 化されており、su コマンドが正しく設定されていることを確認してください。</string>
     <string name="root_status_ok">Root 利用可能</string>
     <string name="root_status_not_ok">Root 利用不可</string>
-    <string name="error_no_privilege">利用可能な認可方式がないか、認可されていません。設定で選択してください。</string>
-    <string name="request_auth">認可</string>
-    <string name="not_authorized">未認可</string>
+    <string name="error_no_privilege">利用可能または認証された特権バックエンドがありません。設定で選択してください。</string>
+    <string name="request_auth">認証</string>
+    <string name="not_authorized">未認証</string>
 
     <!-- App List -->
     <string name="title_app_list">インストール済みアプリ</string>
@@ -149,34 +149,34 @@
     <string name="sort_name">名前</string>
     <string name="sort_size">サイズ</string>
     <string name="sort_install_date">インストール日</string>
-    <string name="apps_count">%d個のアプリ</string>
+    <string name="apps_count">%d 個のアプリ</string>
     <string name="loading_apps">アプリを読み込み中…</string>
     <string name="refresh">更新</string>
     <string name="no_apps_found">アプリが見つかりません</string>
-    <string name="share_apks">APKを共有</string>
+    <string name="share_apks">APK を共有</string>
 
     <!-- App Detail -->
     <string name="title_app_detail">アプリの詳細</string>
     <string name="package_name">パッケージ名</string>
     <string name="version">バージョン</string>
     <string name="install_date">インストール日</string>
-    <string name="update_date">最終更新</string>
+    <string name="update_date">最終更新日</string>
     <string name="app_size">アプリサイズ</string>
     <string name="data_size">データサイズ</string>
     <string name="cache_size">キャッシュサイズ</string>
-    <string name="target_sdk">ターゲットSDK</string>
-    <string name="min_sdk">最小SDK</string>
+    <string name="target_sdk">ターゲット SDK</string>
+    <string name="min_sdk">最小 SDK</string>
     <string name="permissions_title">権限</string>
-    <string name="granted">許可</string>
-    <string name="denied">拒否</string>
+    <string name="granted">許可済み</string>
+    <string name="denied">拒否済み</string>
     <string name="grant_permission">許可</string>
     <string name="revoke_permission">取り消し</string>
     <string name="open_app">アプリを開く</string>
     <string name="app_info">アプリ情報</string>
     <string name="uninstall">アンインストール</string>
     <string name="force_stop">強制停止</string>
-    <string name="clear_data">データをクリア</string>
-    <string name="clear_cache">キャッシュをクリア</string>
+    <string name="clear_data">データを消去</string>
+    <string name="clear_cache">キャッシュを消去</string>
     <string name="disable_app">アプリを無効化</string>
     <string name="enable_app">アプリを有効化</string>
     <string name="freeze_app">アプリを凍結</string>
@@ -193,16 +193,16 @@
     <!-- App Detail Activity Strings -->
     <string name="removed_from_favorites">お気に入りから削除しました</string>
     <string name="added_to_favorites">お気に入りに追加しました</string>
-    <string name="apk_path_not_found">APKパスが見つかりません</string>
-    <string name="apk_file_not_exist">APKファイルが存在しません</string>
-    <string name="apk_saved_to">APKを保存しました：%s</string>
-    <string name="export_failed">エクスポート失敗：%s</string>
-    <string name="cannot_open_google_play">Google Playを開けません</string>
-    <string name="cannot_open_fdroid">F-Droidを開けません</string>
+    <string name="apk_path_not_found">APK パスが見つかりません</string>
+    <string name="apk_file_not_exist">APK ファイルが存在しません</string>
+    <string name="apk_saved_to">APK を保存しました：%s</string>
+    <string name="export_failed">エクスポートに失敗しました：%s</string>
+    <string name="cannot_open_google_play">Google Play を開けません</string>
+    <string name="cannot_open_fdroid">F-Droid を開けません</string>
     <string name="cannot_launch_app">このアプリを起動できません</string>
     <string name="force_stop_confirm">%s を強制停止しますか？</string>
     <string name="uninstall_confirm">%s をアンインストールしますか？</string>
-    <string name="clear_data_confirm">%s のすべてのデータをクリアしますか？この操作は元に戻せません。</string>
+    <string name="clear_data_confirm">%s のすべてのデータを消去しますか？この操作は元に戻せません。</string>
 
     <!-- Permissions List -->
     <string name="title_permissions">権限マネージャー</string>
@@ -217,19 +217,19 @@
     <string name="perm_calendar">カレンダー</string>
     <string name="perm_body_sensors">身体センサー</string>
     <string name="perm_notifications">通知</string>
-    <string name="perm_overlay">他のアプリの上に表示</string>
-    <string name="perm_install_unknown">不明なアプリのインストール</string>
-    <string name="batch_revoke">権限を取り消し</string>
-    <string name="batch_grant">権限を許可</string>
-    <string name="confirm_revoke">%d個のアプリから権限を取り消しますか？</string>
-    <string name="confirm_grant">%d個のアプリに権限を許可しますか？</string>
-    <string name="selected_count">%d個選択</string>
-    <string name="open_system_settings">システム設定を開く</string>
-    <string name="perm_write_settings">システム設定の変更</string>
+    <string name="perm_overlay">他のアプリの上に重ねて表示</string>
+    <string name="perm_install_unknown">不明なアプリをインストール</string>
+    <string name="batch_revoke">権限を取り消す</string>
+    <string name="batch_grant">権限を許可する</string>
+    <string name="confirm_revoke">%d 個のアプリから権限を取り消しますか？</string>
+    <string name="confirm_grant">%d 個のアプリに権限を許可しますか？</string>
+    <string name="selected_count">%d 個選択中</string>
+    <string name="open_system_settings">設定を開く</string>
+    <string name="perm_write_settings">システム設定を変更</string>
 
     <!-- Activities -->
     <string name="title_activities">アクティビティマネージャー</string>
-    <string name="title_activity_detail">アクティビティ詳細</string>
+    <string name="title_activity_detail">アクティビティの詳細</string>
     <string name="search_activity_hint">アクティビティを検索…</string>
     <string name="launch">起動</string>
     <string name="back_to_apps">アプリに戻る</string>
@@ -239,26 +239,26 @@
     <string name="confirm">確認</string>
     <string name="cancel">キャンセル</string>
     <string name="operation_success">操作が成功しました</string>
-    <string name="operation_failed">操作が失敗しました：%s</string>
-    <string name="error_no_shizuku">Shizukuは利用できないか、認可されていません</string>
-    <string name="error_system_ops_disabled">システムアプリ操作は無効になっています。設定で「システムアプリ操作を許可」を有効にしてください。</string>
-    <string name="language_changed_restart">言語が変更されました。アプリを再起動して変更を適用してください。</string>
+    <string name="operation_failed">操作に失敗しました：%s</string>
+    <string name="error_no_shizuku">Shizuku が利用できないか、認証されていません</string>
+    <string name="error_system_ops_disabled">システムアプリの操作が無効になっています。設定で「システムアプリの操作を許可」を有効にしてください。</string>
+    <string name="language_changed_restart">言語が変更されました。変更を適用するにはアプリを再起動してください。</string>
     <string name="restart">再起動</string>
 
     <!-- Language names -->
-    <string name="pref_language_en">英語</string>
-    <string name="pref_language_zh">中国語（簡体字）</string>
+    <string name="pref_language_en">English</string>
+    <string name="pref_language_zh">中文 (Simplified)</string>
     <string name="pref_language_ja">日本語</string>
-    <string name="pref_language_ko">韓国語</string>
-    <string name="pref_language_fr">フランス語</string>
-    <string name="pref_language_de">ドイツ語</string>
-    <string name="pref_language_ru">ロシア語</string>
-    <string name="pref_language_ar">アラビア語</string>
-    <string name="pref_language_pt">ポルトガル語</string>
-    <string name="pref_language_es">スペイン語</string>
+    <string name="pref_language_ko">한국어</string>
+    <string name="pref_language_fr">Français</string>
+    <string name="pref_language_de">Deutsch</string>
+    <string name="pref_language_ru">Русский</string>
+    <string name="pref_language_ar">العربية</string>
+    <string name="pref_language_pt">Português</string>
+    <string name="pref_language_es">Español</string>
     
-    <string name="restart_required">再起動が必要</string>
-    <string name="restart_required_message">デフォルトの開始ページが変更されました。変更を適用するにはアプリを再起動してください。</string>
+    <string name="restart_required">再起動が必要です</string>
+    <string name="restart_required_message">デフォルトの開始ページが変更されました。変更を有効にするにはアプリを再起動してください。</string>
     <string name="restart_now">今すぐ再起動</string>
     <string name="later">後で</string>
     
@@ -266,49 +266,49 @@
     <string name="update_available">アップデートがあります</string>
     <string name="download">ダウンロード</string>
     <string name="no_update_title">アップデートはありません</string>
-    <string name="no_update_message">最新バージョンを使用しています。</string>
-    <string name="update_check_failed">アップデートの確認に失敗</string>
+    <string name="no_update_message">すでに最新バージョンを使用しています。</string>
+    <string name="update_check_failed">アップデートの確認に失敗しました</string>
     <string name="update_check_failed_message">アップデートの確認に失敗しました。インターネット接続を確認してください。</string>
-    <string name="checking_for_update">アップデートを確認中…</string>
-    <string name="please_wait">お待ちください…</string>
+    <string name="checking_for_update">アップデートを確認中...</string>
+    <string name="please_wait">お待ちください...</string>
     <string name="ok">OK</string>
     <string name="ignore">無視</string>
     
     <!-- Shortcuts -->
-    <string name="shortcut_app_manager_long">Bugeアプリマネージャーを開く</string>
+    <string name="shortcut_app_manager_long">Buge App Manager を開く</string>
     
     <string name="appearance_settings">外観設定</string>
     <string name="theme_mode">テーマモード</string>
-    <string name="color_theme">テーマカラー</string>
-    <string name="color_default">デフォルト（青）</string>
-    <string name="color_red">赤</string>
-    <string name="color_green">緑</string>
-    <string name="color_yellow">黄</string>
+    <string name="color_theme">カラーテーマ</string>
+    <string name="color_default">デフォルト（ブルー）</string>
+    <string name="color_red">レッド</string>
+    <string name="color_green">グリーン</string>
+    <string name="color_yellow">イエロー</string>
     <string name="more_options">その他のオプション</string>
     <string name="more_options_summary">テーマと色をカスタマイズ</string>
     <string name="theme_change_restart_message">テーマが変更されました。変更を適用するにはアプリを再起動してください。</string>
     <string name="theme_group">テーマ</string>
     <string name="hide_nav_labels">ナビゲーションラベルを非表示</string>
-    <string name="hide_nav_labels_summary">未選択のナビゲーション項目のタイトルを非表示にし、選択したものだけを表示</string>
+    <string name="hide_nav_labels_summary">選択されていないナビゲーション項目のタイトルを非表示にし、選択されているものだけを表示</string>
 
     <!-- Dynamic Color -->
-    <string name="dynamic_color">動的カラー</string>
-    <string name="dynamic_color_summary">壁紙から色を自動適応（Android 12+）</string>
+    <string name="dynamic_color">ダイナミックカラー</string>
+    <string name="dynamic_color_summary">壁紙から色を自動的に適用（Android 12+）</string>
     <string name="dynamic_color_unavailable">Android 12 以上が必要です</string>
 
     <!-- Custom Labels -->
     <string name="pref_custom_labels">カスタムラベル</string>
-    <string name="pref_custom_labels_summary">カスタムアプリラベルを作成・管理</string>
+    <string name="pref_custom_labels_summary">カスタムアプリラベルを作成および管理</string>
     <string name="title_custom_labels">カスタムラベル</string>
     <string name="create_label">ラベルを作成</string>
     <string name="label_name">ラベル名</string>
     <string name="label_name_hint">ラベル名を入力</string>
-    <string name="create_new_label">新規ラベル作成</string>
-    <string name="no_labels_created">ラベルはまだ作成されていません</string>
+    <string name="create_new_label">新しいラベルを作成</string>
+    <string name="no_labels_created">まだラベルが作成されていません</string>
     <string name="tap_to_create">+ をタップして最初のラベルを作成</string>
-    <string name="delete_label_confirm">"%s" を削除しますか？</string>
+    <string name="delete_label_confirm">「%s」を削除しますか？</string>
     <string name="delete_label">ラベルを削除</string>
-    <string name="select_apps_for_label">"%s" のアプリを選択</string>
+    <string name="select_apps_for_label">「%s」のアプリを選択</string>
     <string name="label_created">ラベルを作成しました</string>
     <string name="label_updated">ラベルを更新しました</string>
     <string name="label_deleted">ラベルを削除しました</string>
@@ -319,54 +319,118 @@
     <string name="pref_update_options_summary">アップデートのダウンロードとインストール方法を設定</string>
     <string name="title_update_options">アップデートオプション</string>
     <string name="update_method_browser">ブラウザで開く</string>
-    <string name="update_method_silent">サイレントインストール (Shizuku)</string>
+    <string name="update_method_silent">サイレントインストール（Shizuku）</string>
     <string name="installer_name">インストーラー名</string>
-    <string name="installer_name_hint">インストーラー名を入力（例：BugeAppManager）</string>
-    <string name="update_downloading">アップデートをダウンロード中…</string>
+    <string name="installer_name_hint">インストーラー名を入力</string>
+    <string name="update_downloading">アップデートをダウンロード中...</string>
     <string name="update_download_failed">ダウンロードに失敗しました</string>
-    <string name="update_installing">アップデートをインストール中…</string>
-    <string name="update_install_success">アップデートのインストールに成功しました</string>
+    <string name="update_installing">アップデートをインストール中...</string>
+    <string name="update_install_success">アップデートを正常にインストールしました</string>
     <string name="update_install_failed">インストールに失敗しました</string>
-    <string name="update_already_latest">既に最新バージョンです</string>
-    <string name="checking_for_update_dialog">アップデートを確認中…</string>
+    <string name="update_already_latest">すでに最新バージョンを使用しています</string>
+    <string name="checking_for_update_dialog">アップデートを確認中...</string>
     <string name="update_download_complete">ダウンロード完了</string>
     <string name="save">保存</string>
 
+    <!-- Backup -->
+    <string name="pref_backup">バックアップ</string>
+    <string name="pref_backup_summary">アプリ設定、アプリリストのバックアップと復元</string>
+    <string name="title_backup">バックアップ</string>
+    <string name="backup_app_settings">アプリ設定をバックアップ</string>
+    <string name="backup_app_settings_summary">このアプリの設定をファイルにバックアップ</string>
+    <string name="backup_app_list">アプリリストをバックアップ</string>
+    <string name="backup_app_list_summary">インストールされているすべてのアプリのリストをエクスポート</string>
+    <string name="import_app_settings">アプリ設定をインポート</string>
+    <string name="import_app_settings_summary">バックアップファイルから設定を復元</string>
+    <string name="backup_auto_settings">バックアップ設定</string>
+    <string name="backup_enable">バックアップを有効にする</string>
+    <string name="backup_section">バックアップ</string>
+    <string name="backup_auto_section">自動バックアップ間隔</string>
+    <string name="backup_location">バックアップ場所</string>
+    <string name="backup_location_default">ドキュメント</string>
+    <string name="backup_location_hint">バックアップフォルダを選択</string>
+    <string name="backup_success">バックアップを正常に作成しました</string>
+    <string name="backup_failed">バックアップに失敗しました</string>
+    <string name="import_success">設定を正常にインポートしました</string>
+    <string name="import_failed">インポートに失敗しました</string>
+    <string name="backup_auto_hours">%d 時間</string>
+    <string name="backup_auto_disabled">無効</string>
+    <string name="backup_auto_title">自動バックアップ間隔</string>
+    <string name="backup_auto_summary">アプリ起動時に自動バックアップ</string>
+    <string name="backup_auto_hint">時間を入力（0 で無効）</string>
+    <string name="other_languages">その他の言語</string>
+    <string name="other_languages_title">アプリの言語</string>
+    <string name="no_other_languages">このアプリには他の言語リソースがありません</string>
+    <string name="backup_auto_on_launch">起動時に自動バックアップ</string>
+    <string name="backup_auto_on_launch_summary">アプリが起動するたびにバックアップを作成または置換</string>
+    <string name="backup_content">バックアップ内容</string>
+    <string name="backup_content_settings">アプリ設定</string>
+    <string name="backup_content_app_list">インストール済みアプリ</string>
+    <string name="backup_content_both">設定とインストール済みアプリ</string>
+    <string name="backup_select_location_first">先にバックアップ場所を選択してください</string>
+
     <!-- Optional Permissions -->
-    <string name="pref_optional_permissions">オプション権限</string>
-    <string name="pref_optional_permissions_summary">追加機能のためのオプション権限を付与</string>
-    <string name="title_optional_permissions">オプション権限</string>
+    <string name="pref_optional_permissions">オプションの権限</string>
+    <string name="pref_optional_permissions_summary">追加機能のためにオプションの権限を許可</string>
+    <string name="title_optional_permissions">オプションの権限</string>
     <string name="pref_storage_permission">ストレージ権限</string>
-    <string name="pref_storage_permission_summary">APKエクスポートとストレージ機能のためのREAD_EXTERNAL_STORAGEとWRITE_EXTERNAL_STORAGEを含みます</string>
-    <string name="storage_permission_required">APKエクスポートとストレージ機能に必要</string>
-    <string name="storage_permission_grant">ストレージ権限を付与</string>
-    <string name="perm_read_external_storage">外部ストレージを読み取り</string>
-    <string name="perm_read_external_storage_desc">APKエクスポートと共有のために外部ストレージからファイルを読み取ることを許可</string>
-    <string name="perm_write_external_storage">外部ストレージに書き込み</string>
-    <string name="perm_write_external_storage_desc">APKエクスポートと共有のために外部ストレージにファイルを書き込むことを許可</string>
-    <string name="optional_perm_granted">付与済み</string>
-    <string name="optional_perm_denied">拒否</string>
-    <string name="optional_perm_grant">付与</string>
+    <string name="pref_storage_permission_summary">APK のエクスポートとストレージ機能のために READ_EXTERNAL_STORAGE と WRITE_EXTERNAL_STORAGE を含む</string>
+    <string name="storage_permission_required">APK のエクスポートとストレージ機能に必要です</string>
+    <string name="storage_permission_grant">ストレージ権限を許可</string>
+    <string name="perm_read_external_storage">外部ストレージの読み取り</string>
+    <string name="perm_read_external_storage_desc">APK のエクスポートと共有のために、アプリが外部ストレージからファイルを読み取ることを許可します</string>
+    <string name="perm_write_external_storage">外部ストレージへの書き込み</string>
+    <string name="perm_write_external_storage_desc">APK のエクスポートと共有のために、アプリが外部ストレージにファイルを書き込むことを許可します</string>
+    <string name="optional_perm_granted">許可済み</string>
+    <string name="optional_perm_denied">拒否済み</string>
+    <string name="optional_perm_grant">許可</string>
 
     <!-- Signature Validation -->
     <string name="signature_warning_title">セキュリティ警告</string>
-    <string name="signature_warning_message">署名ハッシュ検証に失敗しました！\n\n非公式署名バージョンのアプリを使用しています！\nこのバージョンが安全で信頼できるか確認できません！\n\n非公式バージョンを使用すると、データ盗難、プライバシー漏洩、マルウェアなどのセキュリティリスクにさらされる可能性があります。\n\n以下の信頼できるプラットフォームから公式バージョンをダウンロードしてください。</string>
+    <string name="signature_warning_message">署名ハッシュの検証に失敗しました！\n\nこのアプリケーションの非公式署名版を使用しています！\nこのバージョンが安全で信頼できるかどうかを確認できません！\n\n非公式版を使用すると、セキュリティリスクにさらされる可能性があります。\nデータ盗難、プライバシー侵害、マルウェアなどが含まれます。\n\n以下の信頼できるプラットフォームから公式版をダウンロードしてください。</string>
     <string name="signature_warning_platforms_title">信頼できるダウンロードプラットフォーム</string>
     <string name="signature_warning_sha256_label">期待される署名 SHA-256</string>
-    <string name="signature_warning_button_exit">アプリを終了</string>
-    <string name="signature_warning_button_continue">続行</string>
+    <string name="signature_warning_button_exit">アプリケーションを終了</string>
+    <string name="signature_warning_button_continue">そのまま続行</string>
     <string name="signature_warning_github_url">https://github.com/BugeStudioTeam/Buge-App-Manager/releases</string>
     <string name="signature_warning_fdroid_url">https://f-droid.org/packages/com.buge.appmanager/</string>
 
     <!-- App Detail Menu -->
     <string name="menu_favorite">お気に入り</string>
-    <string name="menu_share_apk">APKを共有</string>
-    <string name="menu_export_apk">APKをエクスポート</string>
+    <string name="menu_share_apk">APK を共有</string>
+    <string name="menu_export_apk">APK をエクスポート</string>
     <string name="menu_export_info">アプリ情報をエクスポート</string>
     <string name="menu_other_languages">その他の言語</string>
-    <string name="menu_google_play">Google Play Storeで表示</string>
-    <string name="menu_f_droid">F-Droidで表示</string>
+    <string name="menu_google_play">Google Play ストアで表示</string>
+    <string name="menu_f_droid">F-Droid で表示</string>
     <string name="menu_grant_all_permissions">すべての権限を許可</string>
-    <string name="menu_revoke_all_permissions">すべての権限を取り消し</string>
+    <string name="menu_revoke_all_permissions">すべての権限を取り消す</string>
+    
+    <!-- Install Apps -->
+    <string name="pref_install_apps">アプリをインストール</string>
+    <string name="pref_install_apps_summary">高度なオプションで APK ファイルをインストール</string>
+    <string name="title_install_apps">アプリをインストール</string>
+    <string name="install_installer_name">インストーラー名</string>
+    <string name="install_installer_name_summary">-i フラグのインストーラーパッケージ名を設定</string>
+    <string name="install_allow_downgrade">ダウングレードを許可</string>
+    <string name="install_allow_downgrade_summary">新しいバージョンに古いバージョンを上書きインストールすることを許可</string>
+    <string name="install_allow_test_packages">テストパッケージを許可</string>
+    <string name="install_allow_test_packages_summary">テスト専用 APK のインストールを許可</string>
+    <string name="install_allow_system_apps">システムアプリのインストールを許可</string>
+    <string name="install_allow_system_apps_summary">システムアプリケーションのインストールまたは更新を許可</string>
+    <string name="install_all_users">すべてのユーザーにインストール</string>
+    <string name="install_all_users_summary">デバイス上のすべてのユーザーに APK をインストール</string>
+    <string name="install_no_apks">APK ファイルが選択されていません</string>
+    <string name="install_add_apk">APK を追加</string>
+    <string name="install_button">インストール</string>
+    <string name="install_installing">%1$s をインストール中...</string>
+    <string name="install_success">インストール済み：%1$s</string>
+    <string name="install_failed">失敗：%1$s - %2$s</string>
+    <string name="install_complete">インストール完了：%1$d 成功、%2$d 失敗</string>
+    <string name="install_remove">削除</string>
+    <string name="install_apk_version">バージョン</string>
+    <string name="install_apk_package">パッケージ</string>
+    <string name="install_apk_path">パス</string>
+    <string name="install_invalid_apk">無効な APK ファイル</string>
     
 </resources>

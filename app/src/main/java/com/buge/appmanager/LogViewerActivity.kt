@@ -256,7 +256,7 @@ class LogViewerActivity : BaseActivity() {
                 logType.setTextColor(getTypeColor(entry.type))
                 logMessage.text = entry.message
 
-                // Fuck: Show logcat badge for logcat entries
+                // show logcat badge for logcat entries
                 if (entry.isLogcat) {
                     logcatBadge.visibility = View.VISIBLE
                     logcatBadge.text = "LOGCAT"

@@ -34,8 +34,6 @@ class ExpressiveSwitch @JvmOverloads constructor(
             interpolator = OvershootInterpolator()
             addUpdateListener { animation ->
                 val scale = animation.animatedValue as Float
-                // Note: MaterialSwitch doesn't directly expose thumb view
-                // This provides a bounce effect when toggling
             }
             start()
         }

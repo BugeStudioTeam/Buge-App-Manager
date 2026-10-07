@@ -567,7 +567,7 @@ class UpdateOptionsActivity : BaseActivity() {
             try {
                 it.dismiss()
             } catch (e: Exception) {
-                // Ignore
+                // ignore
             }
         }
         progressDialog = null
@@ -583,8 +583,7 @@ class UpdateOptionsActivity : BaseActivity() {
         }
     }
 
-    private fun handleDownloadComplete() {
-        // Handled by DownloadManager receiver - we use custom download, not DownloadManager
+    private fun handleDownloadComplete() {        
     }
 
     private fun cleanupTempFile() {

@@ -95,7 +95,7 @@ class AppearanceActivity : BaseActivity() {
         val statusText = binding.dynamicColorStatus
         val isDynamicColorEnabled = PreferencesManager.getDynamicColor(this)
 
-        // Fuck: Hide or show dynamic color based on Android version
+        //fk: hide or show dynamic color based on android ver
         if (isAndroid12Plus) {
             container.visibility = View.VISIBLE
             switch.isEnabled = true
@@ -111,12 +111,11 @@ class AppearanceActivity : BaseActivity() {
                 showDynamicColorRestartDialog(isChecked)
             }
         } else {
-            // Fuck: Hide dynamic color on Android 11 and below
+            // fkkkkkkkkkkk * 6: hode dyn color on a11 n below
             container.visibility = View.GONE
             switch.setOnCheckedChangeListener(null)
         }
 
-        // Fuck: Update color theme UI based on dynamic color state (only if Android 12+)
         updateColorThemeUI(isDynamicColorEnabled && isAndroid12Plus)
     }
 
@@ -214,8 +213,7 @@ class AppearanceActivity : BaseActivity() {
         sendBroadcast(intent)
     }
 
-    private fun selectColorTheme(theme: ThemeManager.ColorTheme) {
-        // Fuck: If dynamic color is enabled, disable it first (only on Android 12+)
+    private fun selectColorTheme(theme: ThemeManager.ColorTheme) {        
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S &&
             PreferencesManager.getDynamicColor(this)) {
             PreferencesManager.setDynamicColor(this, false)

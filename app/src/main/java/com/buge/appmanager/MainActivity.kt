@@ -72,13 +72,12 @@ class MainActivity : BaseActivity() {
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        // Fuck: Apply theme and dynamic color before super
         ThemeManager.applyColorTheme(this)
 
         val savedTheme = PreferencesManager.getThemeMode(this)
         AppCompatDelegate.setDefaultNightMode(savedTheme)
 
-        // Fuck: Apply dynamic color at activity level if enabled
+        // apply dynamic color at activity level if enabled
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S &&
             PreferencesManager.getDynamicColor(this)) {
             com.google.android.material.color.DynamicColors.applyToActivityIfAvailable(this)
@@ -109,7 +108,7 @@ class MainActivity : BaseActivity() {
             loadDefaultPage()
         }
 
-        // Fuck: Check signature after UI is ready
+        //check signature after UI is ready
         Handler(Looper.getMainLooper()).postDelayed({
             checkSignature()
         }, 300)
@@ -124,7 +123,6 @@ class MainActivity : BaseActivity() {
         }
         applyHideNavLabels()
 
-        // Fuck: Re-check signature on resume if not showing dialog and not checked yet
         if (!SignatureWarningDialog.isShowing()) {
             checkSignature()
         }
@@ -135,21 +133,19 @@ class MainActivity : BaseActivity() {
         try {
             unregisterReceiver(navLabelsReceiver)
         } catch (e: Exception) {
-            // Ignore
+            // ignore
         }
         Shizuku.removeRequestPermissionResultListener(requestPermissionResultListener)
     }
 
-    // ===================== Signature Validation =====================
-
     private var signatureCheckDone = false
 
     private fun checkSignature() {
-        // Fuck: Skip if already checked or dialog is showing
+        // skip if already checked or dialog is showing
         if (signatureCheckDone) return
         if (SignatureWarningDialog.isShowing()) return
 
-        // Skip signature check for debug builds (development convenience)
+        // skip signature check for debug builds (devment convenience)
         if (SignatureValidator.isDebugBuild(this)) {
             LogManager.debug(this, "Signature check skipped (debug build)")
             signatureCheckDone = true
@@ -166,9 +162,9 @@ class MainActivity : BaseActivity() {
                 "Got: ${SignatureValidator.getSignatureFingerprint(this)}"
             )
 
-            // Show warning dialog
+            // show warning dialog
             SignatureWarningDialog.show(this) {
-                // User clicked exit
+                // user clicked exit
                 finishAffinity()
             }
         } else {

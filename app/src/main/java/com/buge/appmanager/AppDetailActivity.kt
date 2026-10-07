@@ -168,8 +168,6 @@ class AppDetailActivity : BaseActivity() {
         }
     }
 
-    // ===================== Other Languages =====================
-
     private fun showOtherLanguages() {
         try {
             val appInfo = packageManager.getApplicationInfo(packageName, 0)
@@ -190,8 +188,7 @@ class AppDetailActivity : BaseActivity() {
                 while (entries.hasMoreElements()) {
                     val entry = entries.nextElement()
                     val name = entry.name
-                    if (name.startsWith("resources.arsc")) continue
-                    // Fuck: Match res/values-xx/ or res/values-xx-rYY/
+                    if (name.startsWith("resources.arsc")) continue          
                     val match = Regex("""res/values-([a-z]{2}(?:-r[A-Z]{2})?)/""").find(name)
                     if (match != null) {
                         locales.add(match.groupValues[1])
@@ -234,9 +231,7 @@ class AppDetailActivity : BaseActivity() {
             Snackbar.make(binding.root, "Failed to read languages: ${e.message}", Snackbar.LENGTH_LONG).show()
             LogManager.error(this, "Failed to read app languages", e.message)
         }
-    }
-
-    // ===================== Export App Info =====================
+    }  
 
     private fun exportAppInfo() {
         val app = viewModel.appInfo.value
@@ -416,8 +411,6 @@ class AppDetailActivity : BaseActivity() {
         }
     }
 
-    // ===================== Favorite =====================
-
     private fun toggleFavorite() {
         if (PreferencesManager.isFavoriteApp(this, packageName)) {
             PreferencesManager.removeFavoriteApp(this, packageName)
@@ -438,9 +431,7 @@ class AppDetailActivity : BaseActivity() {
         } else {
             favoriteMenuItem?.icon = ContextCompat.getDrawable(this, R.drawable.ic_favorite)
         }
-    }
-
-    // ===================== Export APK =====================
+    }    
 
     private fun exportApk() {
         try {
@@ -581,9 +572,7 @@ class AppDetailActivity : BaseActivity() {
                 Snackbar.make(binding.root, "Export failed: ${e.message}", Snackbar.LENGTH_LONG).show()
             }
         }
-    }
-
-    // ===================== Share APK =====================
+    }    
 
     private fun shareApk() {
         try {
@@ -820,11 +809,9 @@ class AppDetailActivity : BaseActivity() {
                 }
             }
         } catch (e: Exception) {
-            // Ignore cleanup errors
+            // ignore cleanup err
         }
     }
-
-    // ===================== Open in Stores =====================
 
     private fun openInGooglePlay() {
         try {
@@ -862,8 +849,6 @@ class AppDetailActivity : BaseActivity() {
             LogManager.error(this, "Failed to open F-Droid", e.message)
         }
     }
-
-    // ===================== Batch Permissions =====================
 
     private fun grantAllPermissions() {
         val permissions = viewModel.permissions.value ?: emptyList()
@@ -954,8 +939,6 @@ class AppDetailActivity : BaseActivity() {
             .setNegativeButton(R.string.cancel, null)
             .show()
     }
-
-    // ===================== Actions =====================
 
     private fun setupActions() {
         setupButtonAnimation(binding.btnOpen) {
@@ -1099,9 +1082,7 @@ class AppDetailActivity : BaseActivity() {
         )
         binding.permissionsRecycler.layoutManager = LinearLayoutManager(this)
         binding.permissionsRecycler.adapter = permAdapter
-    }
-
-    // ===================== Storage Helper =====================
+    }    
 
     private fun formatFileSize(size: Long): String {
         return when {
@@ -1111,8 +1092,6 @@ class AppDetailActivity : BaseActivity() {
             else -> String.format("%.2f GB", size / (1024.0 * 1024.0 * 1024.0))
         }
     }
-
-    // ===================== Observe ViewModel =====================
 
     private fun observeViewModel() {
         viewModel.appInfo.observe(this) { app ->

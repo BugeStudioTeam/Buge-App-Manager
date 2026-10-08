@@ -24,3 +24,5 @@ advanced features through Shizuku (https://shizuku.rikka.app/download/).
 </ul>
 
 Source code: https://github.com/BugeStudioTeam/Buge-App-Manager
+
+AntiFeatures: NonFreeNet

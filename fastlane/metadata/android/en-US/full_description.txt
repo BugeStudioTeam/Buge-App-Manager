@@ -20,6 +20,7 @@ advanced features through Shizuku (https://shizuku.rikka.app/download/).
     <li>No root required</li>
     <li>Some advanced operations require Shizuku</li>
     <li>Designed to be safe — but removing essential system apps may still cause issues after reboot</li>
+    <li>Automatically checks for app updates via the GitHub Releases API on startup (You can turn it off in Settings)</li>
 </ul>
 
 Source code: https://github.com/BugeStudioTeam/Buge-App-Manager

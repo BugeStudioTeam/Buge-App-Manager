@@ -10,7 +10,7 @@ All changes must be submitted to the `develop` branch.
 git checkout develop
 git pull origin develop
 git checkout -b feature/your-feature-name
-```bash
+```
 
 When done, open a Pull Request against `develop`.
 
@@ -34,7 +34,7 @@ When done, open a Pull Request against `develop`.
 
 ```bash
 type: short description
-```bash
+```
 
 Types: `feat` / `fix` / `docs` / `refactor` / `perf` / `test` / `chore`
 

@@ -97,7 +97,6 @@ class AppsAdapter(
         } else {
             super.onBindViewHolder(holder, position, payloads)
         }
-        // Always re-apply background on any bind
         applyItemBackground(holder, position)
         setupItemClickListeners(holder, position)
     }
@@ -118,7 +117,6 @@ class AppsAdapter(
     private fun setupItemClickListeners(holder: AppViewHolder, position: Int) {
         val item = getItem(position)
 
-        // Click listener
         holder.itemView.setOnClickListener {
             if (selectionMode) {
                 val newSelected = !item.isSelected
@@ -133,7 +131,6 @@ class AppsAdapter(
             }
         }
 
-        // Long press listener
         holder.itemView.setOnLongClickListener {
             if (!selectionMode) {
                 selectionMode = true
@@ -146,7 +143,6 @@ class AppsAdapter(
             true
         }
 
-        // Checkbox listener
         holder.checkbox.setOnClickListener {
             val newSelected = holder.checkbox.isChecked
             item.isSelected = newSelected
@@ -159,18 +155,10 @@ class AppsAdapter(
 
     override fun submitList(list: List<AppsItem>?) {
         super.submitList(list)
-        // Notify all items to update backgrounds when list changes
-        // This ensures corner radii are recalculated after filter/search
-        list?.let {
-            // Use post to ensure it runs after the list is fully submitted
-            // and notifyDataSetChanged to force refresh all item backgrounds
-            // This is a safe approach to recalculate corner radii
-        }
     }
 
     override fun onCurrentListChanged(previousList: MutableList<AppsItem>, currentList: MutableList<AppsItem>) {
         super.onCurrentListChanged(previousList, currentList)
-        // When list size changes, refresh all items to update corner radii
         if (previousList.size != currentList.size) {
             notifyItemRangeChanged(0, currentList.size, "background")
         }
@@ -205,7 +193,6 @@ class AppsAdapter(
                 systemAppBadge.visibility = View.GONE
             }
 
-            // Set initial state based on selectionMode
             if (selectionMode) {
                 checkbox.visibility = View.VISIBLE
                 checkbox.alpha = 1f
@@ -214,11 +201,13 @@ class AppsAdapter(
                 appIcon.translationX = 28f
                 textContainer.translationX = 28f
                 packageName.translationX = 28f
+                appVersion.translationX = 28f
             } else {
                 checkbox.visibility = View.GONE
                 appIcon.translationX = 0f
                 textContainer.translationX = 0f
                 packageName.translationX = 0f
+                appVersion.translationX = 0f
             }
             checkbox.isChecked = item.isSelected
         }
@@ -229,25 +218,31 @@ class AppsAdapter(
                 checkbox.alpha = 0f
                 checkbox.scaleX = 0.5f
                 checkbox.scaleY = 0.5f
-                
+
                 appIcon.animate()
                     .translationX(28f)
                     .setDuration(200)
                     .setInterpolator(AccelerateDecelerateInterpolator())
                     .start()
-                
+
                 textContainer.animate()
                     .translationX(28f)
                     .setDuration(200)
                     .setInterpolator(AccelerateDecelerateInterpolator())
                     .start()
-                
+
                 packageName.animate()
                     .translationX(28f)
                     .setDuration(200)
                     .setInterpolator(AccelerateDecelerateInterpolator())
                     .start()
-                
+
+                appVersion.animate()
+                    .translationX(28f)
+                    .setDuration(200)
+                    .setInterpolator(AccelerateDecelerateInterpolator())
+                    .start()
+
                 checkbox.animate()
                     .alpha(1f)
                     .scaleX(1f)
@@ -261,19 +256,25 @@ class AppsAdapter(
                     .setDuration(200)
                     .setInterpolator(AccelerateDecelerateInterpolator())
                     .start()
-                
+
                 textContainer.animate()
                     .translationX(0f)
                     .setDuration(200)
                     .setInterpolator(AccelerateDecelerateInterpolator())
                     .start()
-                
+
                 packageName.animate()
                     .translationX(0f)
                     .setDuration(200)
                     .setInterpolator(AccelerateDecelerateInterpolator())
                     .start()
-                
+
+                appVersion.animate()
+                    .translationX(0f)
+                    .setDuration(200)
+                    .setInterpolator(AccelerateDecelerateInterpolator())
+                    .start()
+
                 checkbox.animate()
                     .alpha(0f)
                     .scaleX(0.5f)

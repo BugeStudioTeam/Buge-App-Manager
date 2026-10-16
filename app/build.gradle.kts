@@ -8,13 +8,12 @@ import java.io.FileInputStream
 
 plugins {
     id("com.android.application")
-    id("org.jetbrains.kotlin.android")
     id("kotlin-parcelize")
 }
 
 android {
     namespace = "com.buge.appmanager"
-    compileSdk = 34
+    compileSdk = 37
 
     defaultConfig {
         applicationId = "com.buge.appmanager"
@@ -63,23 +62,25 @@ android {
             }
         }
     }
-    
+
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_17
         targetCompatibility = JavaVersion.VERSION_17
     }
-    
-    kotlinOptions {
-        jvmTarget = "17"
-    }
-    
+
     buildFeatures {
         viewBinding = true
     }
-    
+
     lint {
         checkReleaseBuilds = false
         abortOnError = false
+    }
+}
+
+kotlin {
+    compilerOptions {
+        jvmTarget.set(org.jetbrains.kotlin.gradle.dsl.JvmTarget.JVM_17)
     }
 }
 

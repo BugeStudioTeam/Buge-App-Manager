@@ -19,7 +19,7 @@ android {
     defaultConfig {
         applicationId = "com.buge.appmanager"
         minSdk = 26
-        targetSdk = 34
+        targetSdk = 37
         versionCode = 206
         versionName = "12.73.134"
 

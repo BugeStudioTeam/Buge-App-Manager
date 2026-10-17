@@ -1,0 +1,10 @@
+**12.73.136**
+
+**Fixes** 🛠
+- Fixed version number positioning issue
+
+**Optimizations** ⚡
+- Updated a large number of dependency library versions
+
+**Contributors of this version:**
+None

@@ -33,9 +33,6 @@ object BackupManager {
         .serializeNulls()
         .create()
 
-    /**
-     * Backup app settings to the given URI
-     */
     fun backupSettings(context: Context, uri: Uri): Boolean {
         return try {
             val settings = collectSettings(context)
@@ -67,9 +64,6 @@ object BackupManager {
         }
     }
 
-    /**
-     * Import app settings from the given URI
-     */
     fun importSettings(context: Context, uri: Uri): Boolean {
         return try {
             val json = context.contentResolver.openInputStream(uri)?.use { inputStream ->
@@ -90,9 +84,6 @@ object BackupManager {
         }
     }
 
-    /**
-     * Backup list of all installed apps
-     */
     fun backupAppList(context: Context, uri: Uri): Boolean {
         return try {
             val pm = context.packageManager
@@ -109,7 +100,12 @@ object BackupManager {
             val sorted = packages.sortedBy { it.packageName }
             for (pkg in sorted) {
                 val appName = try {
-                    pm.getApplicationLabel(pkg.applicationInfo).toString()
+                    val appInfo = pkg.applicationInfo
+                    if (appInfo != null) {
+                        pm.getApplicationLabel(appInfo).toString()
+                    } else {
+                        pkg.packageName
+                    }
                 } catch (e: Exception) {
                     pkg.packageName
                 }
@@ -130,9 +126,6 @@ object BackupManager {
         }
     }
 
-    /**
-     * Perform automatic backup using the configured location and content mode
-     */
     fun performAutoBackup(context: Context): Boolean {
         return try {
             val locationUri = PreferencesManager.getBackupLocation(context)
@@ -145,7 +138,6 @@ object BackupManager {
             val timestamp = SimpleDateFormat("yyyyMMdd_HHmmss", Locale.US).format(Date())
             val contentMode = PreferencesManager.getBackupContentMode(context)
 
-            // Fuck: Build document URI inside the tree
             val docUri = DocumentsContract.buildDocumentUriUsingTree(
                 locationDir,
                 DocumentsContract.getTreeDocumentId(locationDir) ?: return false
@@ -163,7 +155,6 @@ object BackupManager {
                     backupAppList(context, newDocUri)
                 }
                 PreferencesManager.BACKUP_CONTENT_BOTH -> {
-                    // Fuck: Backup settings first
                     val settingsFileName = "buge_auto_backup_$timestamp.json"
                     val settingsUri = DocumentsContract.createDocument(
                         context.contentResolver,
@@ -173,7 +164,6 @@ object BackupManager {
                     ) ?: return false
                     val settingsOk = backupSettings(context, settingsUri)
 
-                    // Fuck: Then backup app list
                     val appListFileName = "buge_auto_app_list_$timestamp.txt"
                     val appListUri = DocumentsContract.createDocument(
                         context.contentResolver,
@@ -186,7 +176,6 @@ object BackupManager {
                     settingsOk && appListOk
                 }
                 else -> {
-                    // Fuck: Default - backup settings only
                     val fileName = "buge_auto_backup_$timestamp.json"
                     val newDocUri = DocumentsContract.createDocument(
                         context.contentResolver,
@@ -203,9 +192,6 @@ object BackupManager {
         }
     }
 
-    /**
-     * Collect all app settings into a map
-     */
     private fun collectSettings(context: Context): Map<String, Any?> {
         return mapOf(
             "theme_mode" to PreferencesManager.getThemeMode(context),
@@ -233,9 +219,6 @@ object BackupManager {
         )
     }
 
-    /**
-     * Apply settings from a map
-     */
     private fun applySettings(context: Context, settings: Map<String, Any?>) {
         fun getInt(key: String, default: Int): Int {
             return (settings[key] as? Number)?.toInt() ?: default
@@ -249,7 +232,6 @@ object BackupManager {
             return settings[key] as? String ?: default
         }
 
-        // Fuck: Apply theme mode
         PreferencesManager.setThemeMode(context, getInt("theme_mode", AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM))
         LocaleManager.setLanguage(context, getString("language", ""))
         PreferencesManager.setDefaultPage(context, getString("default_page", "apps"))

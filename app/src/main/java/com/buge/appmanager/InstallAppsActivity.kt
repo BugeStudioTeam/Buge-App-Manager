@@ -161,7 +161,6 @@ class InstallAppsActivity : BaseActivity() {
                         val file = File(apkList[position].filePath)
                         if (file.exists()) file.delete()
                     } catch (e: Exception) {
-                        // ignore (idk why I always write ign when nothing here)
                     }
                     apkList.removeAt(position)
                     adapter.notifyItemRemoved(position)
@@ -199,13 +198,6 @@ class InstallAppsActivity : BaseActivity() {
         binding.btnInstall.alpha = if (isEmpty) 0.5f else 1f
     }
 
-    /**
-     * Fixed: Copy APK to external cache dir.
-     * Path: /sdcard/Android/data/com.buge.appmanager/cache/install_cache/
-     * Shell user (uid 2000) CAN read files in this location
-     * (unlike the app's private /data/user/0/... dir).
-     * FIXED BY GPT & GEMINI
-     */
     private suspend fun loadApkInfo(uri: Uri): ApkItem? = withContext(Dispatchers.IO) {
         try {
             val fileName = getFileNameFromUri(uri) ?: "unknown.apk"
@@ -224,14 +216,12 @@ class InstallAppsActivity : BaseActivity() {
             if (!tempFile.exists() || tempFile.length() == 0L) {
                 return@withContext null
             }
-            
+
             try {
                 tempFile.setReadable(true, false)
             } catch (e: Exception) {
-                // ignore
             }
 
-            // parse apk info
             val pm = packageManager
             val packageInfo = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
                 pm.getPackageArchiveInfo(tempFile.absolutePath, PackageManager.PackageInfoFlags.of(0))
@@ -245,14 +235,15 @@ class InstallAppsActivity : BaseActivity() {
                 return@withContext null
             }
 
-            packageInfo.applicationInfo?.let { appInfo ->
+            val appInfo = packageInfo.applicationInfo
+            if (appInfo != null) {
                 appInfo.sourceDir = tempFile.absolutePath
                 appInfo.publicSourceDir = tempFile.absolutePath
             }
 
             val appLabel = try {
-                if (packageInfo.applicationInfo != null) {
-                    pm.getApplicationLabel(packageInfo.applicationInfo).toString()
+                if (appInfo != null) {
+                    pm.getApplicationLabel(appInfo).toString()
                 } else {
                     packageInfo.packageName
                 }
@@ -340,17 +331,6 @@ class InstallAppsActivity : BaseActivity() {
         }
     }
 
-    /**
-     * Fixed: Install APK via shizuku.
-     * Flow:
-     *   1. Shell copies APK from external cache to /data/local/tmp
-     *   2. pm install from /data/local/tmp
-     *   3. Delete temp file
-     *
-     * External cache path (e.g. /storage/emulated/0/Android/data/com.buge.appmanager/cache/install_cache/)
-     * is readable by shell user (uid 2000) after setReadable(true, false).
-     * FIXED WITH GPT, CLAUDE & GEMINI
-     */
     private suspend fun installApk(
         apk: ApkItem,
         installerName: String,
@@ -361,7 +341,6 @@ class InstallAppsActivity : BaseActivity() {
     ): Boolean = withContext(Dispatchers.IO) {
         val tempPath = "/data/local/tmp/install_${System.currentTimeMillis()}.apk"
         try {
-            // copy apk to /data/local/tmp using cat
             val copyCmd = "cat \"${apk.filePath}\" > $tempPath"
             val copyResult = ShizukuManager.executeCommand(copyCmd)
             if (!copyResult.success) {
@@ -420,7 +399,6 @@ class InstallAppsActivity : BaseActivity() {
             try {
                 ShizukuManager.executeCommand("rm -f $tempPath")
             } catch (e2: Exception) {
-                // still ignore
             }
             LogManager.error(this@InstallAppsActivity, "Install exception", e.message)
             false
@@ -454,7 +432,6 @@ class InstallAppsActivity : BaseActivity() {
 
     override fun onDestroy() {
         super.onDestroy()
-        //cleanup cache on exit
         if (!isInstalling) {
             clearAllCacheFiles()
         }
@@ -501,11 +478,12 @@ class InstallAppsActivity : BaseActivity() {
                         @Suppress("DEPRECATION")
                         pm.getPackageArchiveInfo(item.filePath, 0)
                     }
-                    packageInfo?.applicationInfo?.let { appInfo ->
+                    val appInfo = packageInfo?.applicationInfo
+                    if (appInfo != null) {
                         appInfo.sourceDir = item.filePath
                         appInfo.publicSourceDir = item.filePath
                         appIcon.setImageDrawable(appInfo.loadIcon(pm))
-                    } ?: run {
+                    } else {
                         appIcon.setImageResource(android.R.drawable.sym_def_app_icon)
                     }
                 } catch (e: Exception) {

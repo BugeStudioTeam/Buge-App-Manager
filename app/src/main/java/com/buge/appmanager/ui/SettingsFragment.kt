@@ -21,6 +21,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.buge.appmanager.AboutUsActivity
 import com.buge.appmanager.AppearanceActivity
 import com.buge.appmanager.BackupActivity
+import com.buge.appmanager.BackupSettingsActivity
 import com.buge.appmanager.BaseActivity
 import com.buge.appmanager.CustomLabelsActivity
 import com.buge.appmanager.InstallAppsActivity
@@ -59,6 +60,13 @@ class SettingsFragment : Fragment() {
 
     private var allSettingItems: MutableList<SettingItem> = mutableListOf()
     private var currentQuery: String = ""
+
+    private data class SubPageEntry(
+        val title: String,
+        val subtitle: String,
+        val iconRes: Int,
+        val targetClass: Class<*>
+    )
 
     private val shizukuPermissionListener = Shizuku.OnRequestPermissionResultListener { _, grantResult ->
         if (grantResult == PackageManager.PERMISSION_GRANTED) {
@@ -110,6 +118,173 @@ class SettingsFragment : Fragment() {
         super.onDestroyView()
         Shizuku.removeRequestPermissionResultListener(shizukuPermissionListener)
         _binding = null
+    }
+
+    private fun buildSubPageEntries(): List<SubPageEntry> {
+        val list = mutableListOf<SubPageEntry>()
+
+        list.add(SubPageEntry(
+            getString(R.string.pref_theme),
+            getString(R.string.pref_theme) + " / " + getString(R.string.appearance_settings),
+            R.drawable.ic_theme,
+            AppearanceActivity::class.java
+        ))
+        list.add(SubPageEntry(
+            getString(R.string.pref_language),
+            getString(R.string.pref_language) + " / " + getString(R.string.appearance_settings),
+            R.drawable.ic_language,
+            AppearanceActivity::class.java
+        ))
+        list.add(SubPageEntry(
+            getString(R.string.pref_default_page),
+            getString(R.string.pref_default_page) + " / " + getString(R.string.appearance_settings),
+            R.drawable.ic_home_page,
+            AppearanceActivity::class.java
+        ))
+        list.add(SubPageEntry(
+            getString(R.string.dynamic_color),
+            getString(R.string.dynamic_color) + " / " + getString(R.string.appearance_settings),
+            R.drawable.ic_colorize,
+            AppearanceActivity::class.java
+        ))
+        list.add(SubPageEntry(
+            getString(R.string.hide_nav_labels),
+            getString(R.string.hide_nav_labels) + " / " + getString(R.string.appearance_settings),
+            R.drawable.ic_hidebar,
+            AppearanceActivity::class.java
+        ))
+        list.add(SubPageEntry(
+            getString(R.string.color_theme),
+            getString(R.string.color_theme) + " / " + getString(R.string.appearance_settings),
+            R.drawable.ic_color,
+            AppearanceActivity::class.java
+        ))
+
+        list.add(SubPageEntry(
+            getString(R.string.backup_app_settings),
+            getString(R.string.backup_app_settings) + " / " + getString(R.string.title_backup),
+            R.drawable.ic_settings,
+            BackupActivity::class.java
+        ))
+        list.add(SubPageEntry(
+            getString(R.string.backup_app_list),
+            getString(R.string.backup_app_list) + " / " + getString(R.string.title_backup),
+            R.drawable.ic_apps,
+            BackupActivity::class.java
+        ))
+        list.add(SubPageEntry(
+            getString(R.string.import_app_settings),
+            getString(R.string.import_app_settings) + " / " + getString(R.string.title_backup),
+            R.drawable.ic_import,
+            BackupActivity::class.java
+        ))
+        list.add(SubPageEntry(
+            getString(R.string.backup_auto_settings),
+            getString(R.string.backup_auto_settings) + " / " + getString(R.string.title_backup),
+            R.drawable.ic_backup,
+            BackupActivity::class.java
+        ))
+
+        list.add(SubPageEntry(
+            getString(R.string.backup_enable),
+            getString(R.string.backup_enable) + " / " + getString(R.string.backup_auto_settings),
+            R.drawable.ic_backup,
+            BackupSettingsActivity::class.java
+        ))
+        list.add(SubPageEntry(
+            getString(R.string.backup_auto_on_launch),
+            getString(R.string.backup_auto_on_launch) + " / " + getString(R.string.backup_auto_settings),
+            R.drawable.ic_autoupdate,
+            BackupSettingsActivity::class.java
+        ))
+        list.add(SubPageEntry(
+            getString(R.string.backup_content),
+            getString(R.string.backup_content) + " / " + getString(R.string.backup_auto_settings),
+            R.drawable.ic_settings,
+            BackupSettingsActivity::class.java
+        ))
+        list.add(SubPageEntry(
+            getString(R.string.backup_location),
+            getString(R.string.backup_location) + " / " + getString(R.string.backup_auto_settings),
+            R.drawable.ic_storage,
+            BackupSettingsActivity::class.java
+        ))
+
+        list.add(SubPageEntry(
+            getString(R.string.update_method_browser),
+            getString(R.string.update_method_browser) + " / " + getString(R.string.title_update_options),
+            R.drawable.ic_update,
+            UpdateOptionsActivity::class.java
+        ))
+        list.add(SubPageEntry(
+            getString(R.string.update_method_silent),
+            getString(R.string.update_method_silent) + " / " + getString(R.string.title_update_options),
+            R.drawable.ic_update,
+            UpdateOptionsActivity::class.java
+        ))
+        list.add(SubPageEntry(
+            getString(R.string.installer_name),
+            getString(R.string.installer_name) + " / " + getString(R.string.title_update_options),
+            R.drawable.ic_settings,
+            UpdateOptionsActivity::class.java
+        ))
+        list.add(SubPageEntry(
+            getString(R.string.check_for_update),
+            getString(R.string.check_for_update) + " / " + getString(R.string.title_update_options),
+            R.drawable.ic_update,
+            UpdateOptionsActivity::class.java
+        ))
+        list.add(SubPageEntry(
+            getString(R.string.save),
+            getString(R.string.save) + " / " + getString(R.string.title_update_options),
+            R.drawable.ic_check,
+            UpdateOptionsActivity::class.java
+        ))
+
+        list.add(SubPageEntry(
+            getString(R.string.install_installer_name),
+            getString(R.string.install_installer_name) + " / " + getString(R.string.title_install_apps),
+            R.drawable.ic_settings,
+            InstallAppsActivity::class.java
+        ))
+        list.add(SubPageEntry(
+            getString(R.string.install_allow_downgrade),
+            getString(R.string.install_allow_downgrade) + " / " + getString(R.string.title_install_apps),
+            R.drawable.ic_download,
+            InstallAppsActivity::class.java
+        ))
+        list.add(SubPageEntry(
+            getString(R.string.install_allow_test_packages),
+            getString(R.string.install_allow_test_packages) + " / " + getString(R.string.title_install_apps),
+            R.drawable.ic_download,
+            InstallAppsActivity::class.java
+        ))
+        list.add(SubPageEntry(
+            getString(R.string.install_allow_system_apps),
+            getString(R.string.install_allow_system_apps) + " / " + getString(R.string.title_install_apps),
+            R.drawable.ic_system_apps,
+            InstallAppsActivity::class.java
+        ))
+        list.add(SubPageEntry(
+            getString(R.string.install_all_users),
+            getString(R.string.install_all_users) + " / " + getString(R.string.title_install_apps),
+            R.drawable.ic_apps,
+            InstallAppsActivity::class.java
+        ))
+        list.add(SubPageEntry(
+            getString(R.string.install_add_apk),
+            getString(R.string.install_add_apk) + " / " + getString(R.string.title_install_apps),
+            R.drawable.ic_add,
+            InstallAppsActivity::class.java
+        ))
+        list.add(SubPageEntry(
+            getString(R.string.install_button),
+            getString(R.string.install_button) + " / " + getString(R.string.title_install_apps),
+            R.drawable.ic_download,
+            InstallAppsActivity::class.java
+        ))
+
+        return list
     }
 
     private fun setupSearch() {
@@ -174,6 +349,23 @@ class SettingsFragment : Fragment() {
                     else -> {}
                 }
             }
+
+            for (entry in buildSubPageEntries()) {
+                if (entry.title.lowercase(Locale.getDefault()).contains(query) ||
+                    entry.subtitle.lowercase(Locale.getDefault()).contains(query)
+                ) {
+                    result.add(
+                        SettingItem.Normal(
+                            entry.title,
+                            entry.subtitle,
+                            entry.iconRes,
+                            isSubPage = true,
+                            targetClass = entry.targetClass
+                        )
+                    )
+                }
+            }
+
             result
         }
 
@@ -214,6 +406,11 @@ class SettingsFragment : Fragment() {
         adapter = SettingsAdapter(
             items = items,
             onItemClick = { item ->
+                if (item is SettingItem.Normal && item.isSubPage && item.targetClass != null) {
+                    startActivity(Intent(requireContext(), item.targetClass))
+                    return@SettingsAdapter
+                }
+
                 saveScrollPosition()
                 when (item) {
                     is SettingItem.Normal -> {

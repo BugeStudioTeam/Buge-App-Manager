@@ -12,6 +12,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.activity.OnBackPressedCallback
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.core.content.ContextCompat
 import androidx.core.widget.addTextChangedListener
@@ -93,6 +94,7 @@ class SettingsFragment : Fragment() {
 
         Shizuku.addRequestPermissionResultListener(shizukuPermissionListener)
 
+        setupBackPressedCallback()
         setupSearch()
         setupRecyclerView()
         runSpringEnterAnimation()
@@ -118,6 +120,24 @@ class SettingsFragment : Fragment() {
         super.onDestroyView()
         Shizuku.removeRequestPermissionResultListener(shizukuPermissionListener)
         _binding = null
+    }
+
+    private fun setupBackPressedCallback() {
+        val callback = object : OnBackPressedCallback(true) {
+            override fun handleOnBackPressed() {
+                val searchText = binding.searchEditText.text.toString()
+                if (searchText.isNotEmpty()) {
+                    binding.searchEditText.setText("")
+                    currentQuery = ""
+                    binding.btnClearSearch.visibility = View.GONE
+                    applySearchFilter()
+                } else {
+                    isEnabled = false
+                    requireActivity().onBackPressedDispatcher.onBackPressed()
+                }
+            }
+        }
+        requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner, callback)
     }
 
     private fun buildSubPageEntries(): List<SubPageEntry> {

@@ -19,14 +19,7 @@ import com.google.android.material.materialswitch.MaterialSwitch
 
 sealed class SettingItem {
     data class Header(val title: String) : SettingItem()
-    data class Normal(
-        val title: String,
-        val subtitle: String,
-        val iconRes: Int,
-        val isClickable: Boolean = true,
-        val isSubPage: Boolean = false,
-        val targetClass: Class<*>? = null
-    ) : SettingItem()
+    data class Normal(val title: String, val subtitle: String, val iconRes: Int, val isClickable: Boolean = true) : SettingItem()
     data class SwitchItem(val title: String, val isChecked: Boolean, val iconRes: Int, val isEnabled: Boolean = true) : SettingItem()
     data class About(val version: String) : SettingItem()
     data class AboutMore(val title: String, val subtitle: String) : SettingItem()

@@ -12,17 +12,14 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
-import androidx.activity.OnBackPressedCallback
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.core.content.ContextCompat
-import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.buge.appmanager.AboutUsActivity
 import com.buge.appmanager.AppearanceActivity
 import com.buge.appmanager.BackupActivity
-import com.buge.appmanager.BackupSettingsActivity
 import com.buge.appmanager.BaseActivity
 import com.buge.appmanager.CustomLabelsActivity
 import com.buge.appmanager.InstallAppsActivity
@@ -59,16 +56,6 @@ class SettingsFragment : Fragment() {
     private var savedScrollPosition: Int = 0
     private var savedScrollOffset: Int = 0
 
-    private var allSettingItems: MutableList<SettingItem> = mutableListOf()
-    private var currentQuery: String = ""
-
-    private data class SubPageEntry(
-        val title: String,
-        val subtitle: String,
-        val iconRes: Int,
-        val targetClass: Class<*>
-    )
-
     private val shizukuPermissionListener = Shizuku.OnRequestPermissionResultListener { _, grantResult ->
         if (grantResult == PackageManager.PERMISSION_GRANTED) {
             updateShizukuStatus()
@@ -94,8 +81,6 @@ class SettingsFragment : Fragment() {
 
         Shizuku.addRequestPermissionResultListener(shizukuPermissionListener)
 
-        setupBackPressedCallback()
-        setupSearch()
         setupRecyclerView()
         runSpringEnterAnimation()
     }
@@ -122,283 +107,6 @@ class SettingsFragment : Fragment() {
         _binding = null
     }
 
-    private fun setupBackPressedCallback() {
-        val callback = object : OnBackPressedCallback(true) {
-            override fun handleOnBackPressed() {
-                val searchText = binding.searchEditText.text.toString()
-                if (searchText.isNotEmpty()) {
-                    binding.searchEditText.setText("")
-                    currentQuery = ""
-                    binding.btnClearSearch.visibility = View.GONE
-                    applySearchFilter()
-                } else {
-                    isEnabled = false
-                    requireActivity().onBackPressedDispatcher.onBackPressed()
-                }
-            }
-        }
-        requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner, callback)
-    }
-
-    private fun buildSubPageEntries(): List<SubPageEntry> {
-        val list = mutableListOf<SubPageEntry>()
-
-        list.add(SubPageEntry(
-            getString(R.string.pref_theme),
-            getString(R.string.pref_theme) + " / " + getString(R.string.appearance_settings),
-            R.drawable.ic_theme,
-            AppearanceActivity::class.java
-        ))
-        list.add(SubPageEntry(
-            getString(R.string.pref_language),
-            getString(R.string.pref_language) + " / " + getString(R.string.appearance_settings),
-            R.drawable.ic_language,
-            AppearanceActivity::class.java
-        ))
-        list.add(SubPageEntry(
-            getString(R.string.pref_default_page),
-            getString(R.string.pref_default_page) + " / " + getString(R.string.appearance_settings),
-            R.drawable.ic_home_page,
-            AppearanceActivity::class.java
-        ))
-        list.add(SubPageEntry(
-            getString(R.string.dynamic_color),
-            getString(R.string.dynamic_color) + " / " + getString(R.string.appearance_settings),
-            R.drawable.ic_colorize,
-            AppearanceActivity::class.java
-        ))
-        list.add(SubPageEntry(
-            getString(R.string.hide_nav_labels),
-            getString(R.string.hide_nav_labels) + " / " + getString(R.string.appearance_settings),
-            R.drawable.ic_hidebar,
-            AppearanceActivity::class.java
-        ))
-        list.add(SubPageEntry(
-            getString(R.string.color_theme),
-            getString(R.string.color_theme) + " / " + getString(R.string.appearance_settings),
-            R.drawable.ic_color,
-            AppearanceActivity::class.java
-        ))
-
-        list.add(SubPageEntry(
-            getString(R.string.backup_app_settings),
-            getString(R.string.backup_app_settings) + " / " + getString(R.string.title_backup),
-            R.drawable.ic_settings,
-            BackupActivity::class.java
-        ))
-        list.add(SubPageEntry(
-            getString(R.string.backup_app_list),
-            getString(R.string.backup_app_list) + " / " + getString(R.string.title_backup),
-            R.drawable.ic_apps,
-            BackupActivity::class.java
-        ))
-        list.add(SubPageEntry(
-            getString(R.string.import_app_settings),
-            getString(R.string.import_app_settings) + " / " + getString(R.string.title_backup),
-            R.drawable.ic_import,
-            BackupActivity::class.java
-        ))
-        list.add(SubPageEntry(
-            getString(R.string.backup_auto_settings),
-            getString(R.string.backup_auto_settings) + " / " + getString(R.string.title_backup),
-            R.drawable.ic_backup,
-            BackupActivity::class.java
-        ))
-
-        list.add(SubPageEntry(
-            getString(R.string.backup_enable),
-            getString(R.string.backup_enable) + " / " + getString(R.string.backup_auto_settings),
-            R.drawable.ic_backup,
-            BackupSettingsActivity::class.java
-        ))
-        list.add(SubPageEntry(
-            getString(R.string.backup_auto_on_launch),
-            getString(R.string.backup_auto_on_launch) + " / " + getString(R.string.backup_auto_settings),
-            R.drawable.ic_autoupdate,
-            BackupSettingsActivity::class.java
-        ))
-        list.add(SubPageEntry(
-            getString(R.string.backup_content),
-            getString(R.string.backup_content) + " / " + getString(R.string.backup_auto_settings),
-            R.drawable.ic_settings,
-            BackupSettingsActivity::class.java
-        ))
-        list.add(SubPageEntry(
-            getString(R.string.backup_location),
-            getString(R.string.backup_location) + " / " + getString(R.string.backup_auto_settings),
-            R.drawable.ic_storage,
-            BackupSettingsActivity::class.java
-        ))
-
-        list.add(SubPageEntry(
-            getString(R.string.update_method_browser),
-            getString(R.string.update_method_browser) + " / " + getString(R.string.title_update_options),
-            R.drawable.ic_update,
-            UpdateOptionsActivity::class.java
-        ))
-        list.add(SubPageEntry(
-            getString(R.string.update_method_silent),
-            getString(R.string.update_method_silent) + " / " + getString(R.string.title_update_options),
-            R.drawable.ic_update,
-            UpdateOptionsActivity::class.java
-        ))
-        list.add(SubPageEntry(
-            getString(R.string.installer_name),
-            getString(R.string.installer_name) + " / " + getString(R.string.title_update_options),
-            R.drawable.ic_settings,
-            UpdateOptionsActivity::class.java
-        ))
-        list.add(SubPageEntry(
-            getString(R.string.check_for_update),
-            getString(R.string.check_for_update) + " / " + getString(R.string.title_update_options),
-            R.drawable.ic_update,
-            UpdateOptionsActivity::class.java
-        ))
-        list.add(SubPageEntry(
-            getString(R.string.save),
-            getString(R.string.save) + " / " + getString(R.string.title_update_options),
-            R.drawable.ic_check,
-            UpdateOptionsActivity::class.java
-        ))
-
-        list.add(SubPageEntry(
-            getString(R.string.install_installer_name),
-            getString(R.string.install_installer_name) + " / " + getString(R.string.title_install_apps),
-            R.drawable.ic_settings,
-            InstallAppsActivity::class.java
-        ))
-        list.add(SubPageEntry(
-            getString(R.string.install_allow_downgrade),
-            getString(R.string.install_allow_downgrade) + " / " + getString(R.string.title_install_apps),
-            R.drawable.ic_download,
-            InstallAppsActivity::class.java
-        ))
-        list.add(SubPageEntry(
-            getString(R.string.install_allow_test_packages),
-            getString(R.string.install_allow_test_packages) + " / " + getString(R.string.title_install_apps),
-            R.drawable.ic_download,
-            InstallAppsActivity::class.java
-        ))
-        list.add(SubPageEntry(
-            getString(R.string.install_allow_system_apps),
-            getString(R.string.install_allow_system_apps) + " / " + getString(R.string.title_install_apps),
-            R.drawable.ic_system_apps,
-            InstallAppsActivity::class.java
-        ))
-        list.add(SubPageEntry(
-            getString(R.string.install_all_users),
-            getString(R.string.install_all_users) + " / " + getString(R.string.title_install_apps),
-            R.drawable.ic_apps,
-            InstallAppsActivity::class.java
-        ))
-        list.add(SubPageEntry(
-            getString(R.string.install_add_apk),
-            getString(R.string.install_add_apk) + " / " + getString(R.string.title_install_apps),
-            R.drawable.ic_add,
-            InstallAppsActivity::class.java
-        ))
-        list.add(SubPageEntry(
-            getString(R.string.install_button),
-            getString(R.string.install_button) + " / " + getString(R.string.title_install_apps),
-            R.drawable.ic_download,
-            InstallAppsActivity::class.java
-        ))
-
-        return list
-    }
-
-    private fun setupSearch() {
-        val searchEditText = binding.searchEditText
-        val btnClear = binding.btnClearSearch
-
-        searchEditText.addTextChangedListener { text ->
-            currentQuery = text?.toString()?.trim() ?: ""
-            btnClear.visibility = if (currentQuery.isNotEmpty()) View.VISIBLE else View.GONE
-            applySearchFilter()
-        }
-
-        btnClear.setOnClickListener {
-            searchEditText.setText("")
-            currentQuery = ""
-            searchEditText.requestFocus()
-            applySearchFilter()
-        }
-
-        searchEditText.setOnEditorActionListener { _, actionId, _ ->
-            if (actionId == android.view.inputmethod.EditorInfo.IME_ACTION_SEARCH) {
-                val imm = requireContext().getSystemService(android.content.Context.INPUT_METHOD_SERVICE) as android.view.inputmethod.InputMethodManager
-                imm.hideSoftInputFromWindow(searchEditText.windowToken, 0)
-                searchEditText.clearFocus()
-                true
-            } else {
-                false
-            }
-        }
-    }
-
-    private fun applySearchFilter() {
-        if (!::adapter.isInitialized) return
-
-        val filtered: MutableList<SettingItem> = if (currentQuery.isEmpty()) {
-            allSettingItems.toMutableList()
-        } else {
-            val query = currentQuery.lowercase(Locale.getDefault())
-            val result = mutableListOf<SettingItem>()
-
-            for (item in allSettingItems) {
-                when (item) {
-                    is SettingItem.Normal -> {
-                        if (item.title.lowercase(Locale.getDefault()).contains(query) ||
-                            item.subtitle.lowercase(Locale.getDefault()).contains(query)
-                        ) {
-                            result.add(item)
-                        }
-                    }
-                    is SettingItem.SwitchItem -> {
-                        if (item.title.lowercase(Locale.getDefault()).contains(query)) {
-                            result.add(item)
-                        }
-                    }
-                    is SettingItem.AboutMore -> {
-                        if (item.title.lowercase(Locale.getDefault()).contains(query) ||
-                            item.subtitle.lowercase(Locale.getDefault()).contains(query)
-                        ) {
-                            result.add(item)
-                        }
-                    }
-                    else -> {}
-                }
-            }
-
-            for (entry in buildSubPageEntries()) {
-                if (entry.title.lowercase(Locale.getDefault()).contains(query) ||
-                    entry.subtitle.lowercase(Locale.getDefault()).contains(query)
-                ) {
-                    result.add(
-                        SettingItem.Normal(
-                            entry.title,
-                            entry.subtitle,
-                            entry.iconRes,
-                            isSubPage = true,
-                            targetClass = entry.targetClass
-                        )
-                    )
-                }
-            }
-
-            result
-        }
-
-        adapter.items.clear()
-        adapter.items.addAll(filtered)
-        adapter.notifyDataSetChanged()
-
-        binding.recyclerView.post {
-            binding.recyclerView.scrollToPosition(0)
-            updateShizukuStatus()
-        }
-    }
-
     private fun saveScrollPosition() {
         val layoutManager = binding.recyclerView.layoutManager as? LinearLayoutManager
         layoutManager?.let {
@@ -409,7 +117,6 @@ class SettingsFragment : Fragment() {
     }
 
     private fun restoreScrollPosition() {
-        if (currentQuery.isNotEmpty()) return
         if (savedScrollPosition > 0) {
             binding.recyclerView.post {
                 val layoutManager = binding.recyclerView.layoutManager as? LinearLayoutManager
@@ -420,17 +127,10 @@ class SettingsFragment : Fragment() {
 
     private fun setupRecyclerView() {
         if (!isAdded || view == null) return
-        allSettingItems = buildSettingItems()
-        val items = allSettingItems.toMutableList()
-
+        val items = buildSettingItems()
         adapter = SettingsAdapter(
             items = items,
             onItemClick = { item ->
-                if (item is SettingItem.Normal && item.isSubPage && item.targetClass != null) {
-                    startActivity(Intent(requireContext(), item.targetClass))
-                    return@SettingsAdapter
-                }
-
                 saveScrollPosition()
                 when (item) {
                     is SettingItem.Normal -> {
@@ -533,7 +233,8 @@ class SettingsFragment : Fragment() {
 
     private fun refreshGoogleServiceStatus() {
         if (!::adapter.isInitialized) return
-        val items = allSettingItems
+        val items = adapter.items
+        if (items.isEmpty()) return
 
         val gmsAvailable = isGmsAvailable()
         val gmsEnabled = if (gmsAvailable) checkGmsStatus() else false
@@ -542,17 +243,8 @@ class SettingsFragment : Fragment() {
             val item = items[i]
             if (item is SettingItem.SwitchItem &&
                 item.title == getString(R.string.pref_google_services)) {
-                items[i] = item.copy(isChecked = gmsEnabled, isEnabled = gmsAvailable)
-                break
-            }
-        }
-
-        val adapterItems = adapter.items
-        for (i in adapterItems.indices) {
-            val item = adapterItems[i]
-            if (item is SettingItem.SwitchItem &&
-                item.title == getString(R.string.pref_google_services)) {
-                adapterItems[i] = item.copy(isChecked = gmsEnabled, isEnabled = gmsAvailable)
+                val newItem = item.copy(isChecked = gmsEnabled, isEnabled = gmsAvailable)
+                items[i] = newItem
                 adapter.notifyItemChanged(i)
                 break
             }
@@ -568,7 +260,8 @@ class SettingsFragment : Fragment() {
             val item = items[i]
             if (item is SettingItem.SwitchItem &&
                 item.title == getString(R.string.pref_google_services)) {
-                items[i] = item.copy(isChecked = enable)
+                val newItem = item.copy(isChecked = enable)
+                items[i] = newItem
                 adapter.notifyItemChanged(i)
                 break
             }
@@ -668,8 +361,10 @@ class SettingsFragment : Fragment() {
 
     private fun rebuildSettingItems() {
         if (!::adapter.isInitialized) return
-        allSettingItems = buildSettingItems()
-        applySearchFilter()
+        val newItems = buildSettingItems()
+        adapter.items.clear()
+        adapter.items.addAll(newItems)
+        adapter.notifyDataSetChanged()
         binding.recyclerView.post { updateShizukuStatus() }
     }
 
@@ -858,6 +553,7 @@ class SettingsFragment : Fragment() {
         val gmsEnabled = if (gmsAvailable) checkGmsStatus() else false
 
         return mutableListOf(
+            // Fuck: Authorization Group
             SettingItem.Header(getString(R.string.settings_group_authorization)),
             SettingItem.Shizuku,
             SettingItem.Normal(
@@ -871,12 +567,14 @@ class SettingsFragment : Fragment() {
                 R.drawable.ic_security
             ),
 
+            // Fuck: Appearance Group
             SettingItem.Header(getString(R.string.settings_group_appearance)),
             SettingItem.Normal(getString(R.string.pref_theme), themeText, R.drawable.ic_theme),
             SettingItem.Normal(getString(R.string.pref_language), languageText, R.drawable.ic_language),
             SettingItem.Normal(getString(R.string.pref_default_page), defaultPageText, R.drawable.ic_home_page),
             SettingItem.Normal(getString(R.string.more_options), getString(R.string.more_options_summary), R.drawable.ic_palette),
 
+            // Fuck: Apps Group
             SettingItem.Header(getString(R.string.settings_group_apps)),
             SettingItem.SwitchItem(
                 getString(R.string.pref_google_services),
@@ -920,6 +618,7 @@ class SettingsFragment : Fragment() {
                 R.drawable.ic_backup
             ),
 
+            // Fuck: Advanced Group
             SettingItem.Header(getString(R.string.settings_group_advanced)),
             SettingItem.Normal(
                 getString(R.string.pref_shizuku_provider),
@@ -936,6 +635,7 @@ class SettingsFragment : Fragment() {
             SettingItem.SwitchItem(getString(R.string.pref_show_undeclared_activities), showUndeclared, R.drawable.ic_undeclared),
             SettingItem.Normal(getString(R.string.pref_logging), getString(R.string.pref_logging_summary), R.drawable.ic_log),
 
+            // Fuck: About Group
             SettingItem.Header(getString(R.string.settings_group_about)),
             SettingItem.About(getVersionName()),
             SettingItem.AboutMore(getString(R.string.about_more), getString(R.string.about_more_summary))
@@ -1046,6 +746,7 @@ class SettingsFragment : Fragment() {
                 }
             }
         } catch (e: Exception) {
+            // Ignore update errors to avoid crash
         }
     }
 

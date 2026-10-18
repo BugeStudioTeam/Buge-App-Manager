@@ -1,0 +1,10 @@
+**12.74.136**
+
+**Added** ✨
+- Added settings search functionality
+
+**Optimizations** ⚡
+- Improved search entries
+
+**Contributors of this version:**
+None

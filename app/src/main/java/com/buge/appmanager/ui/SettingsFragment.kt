@@ -14,6 +14,7 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.core.content.ContextCompat
+import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -56,6 +57,9 @@ class SettingsFragment : Fragment() {
     private var savedScrollPosition: Int = 0
     private var savedScrollOffset: Int = 0
 
+    private var allSettingItems: MutableList<SettingItem> = mutableListOf()
+    private var currentQuery: String = ""
+
     private val shizukuPermissionListener = Shizuku.OnRequestPermissionResultListener { _, grantResult ->
         if (grantResult == PackageManager.PERMISSION_GRANTED) {
             updateShizukuStatus()
@@ -81,6 +85,7 @@ class SettingsFragment : Fragment() {
 
         Shizuku.addRequestPermissionResultListener(shizukuPermissionListener)
 
+        setupSearch()
         setupRecyclerView()
         runSpringEnterAnimation()
     }
@@ -107,6 +112,81 @@ class SettingsFragment : Fragment() {
         _binding = null
     }
 
+    private fun setupSearch() {
+        val searchEditText = binding.searchEditText
+        val btnClear = binding.btnClearSearch
+
+        searchEditText.addTextChangedListener { text ->
+            currentQuery = text?.toString()?.trim() ?: ""
+            btnClear.visibility = if (currentQuery.isNotEmpty()) View.VISIBLE else View.GONE
+            applySearchFilter()
+        }
+
+        btnClear.setOnClickListener {
+            searchEditText.setText("")
+            currentQuery = ""
+            searchEditText.requestFocus()
+            applySearchFilter()
+        }
+
+        searchEditText.setOnEditorActionListener { _, actionId, _ ->
+            if (actionId == android.view.inputmethod.EditorInfo.IME_ACTION_SEARCH) {
+                val imm = requireContext().getSystemService(android.content.Context.INPUT_METHOD_SERVICE) as android.view.inputmethod.InputMethodManager
+                imm.hideSoftInputFromWindow(searchEditText.windowToken, 0)
+                searchEditText.clearFocus()
+                true
+            } else {
+                false
+            }
+        }
+    }
+
+    private fun applySearchFilter() {
+        if (!::adapter.isInitialized) return
+
+        val filtered: MutableList<SettingItem> = if (currentQuery.isEmpty()) {
+            allSettingItems.toMutableList()
+        } else {
+            val query = currentQuery.lowercase(Locale.getDefault())
+            val result = mutableListOf<SettingItem>()
+
+            for (item in allSettingItems) {
+                when (item) {
+                    is SettingItem.Normal -> {
+                        if (item.title.lowercase(Locale.getDefault()).contains(query) ||
+                            item.subtitle.lowercase(Locale.getDefault()).contains(query)
+                        ) {
+                            result.add(item)
+                        }
+                    }
+                    is SettingItem.SwitchItem -> {
+                        if (item.title.lowercase(Locale.getDefault()).contains(query)) {
+                            result.add(item)
+                        }
+                    }
+                    is SettingItem.AboutMore -> {
+                        if (item.title.lowercase(Locale.getDefault()).contains(query) ||
+                            item.subtitle.lowercase(Locale.getDefault()).contains(query)
+                        ) {
+                            result.add(item)
+                        }
+                    }
+                    else -> {}
+                }
+            }
+            result
+        }
+
+        adapter.items.clear()
+        adapter.items.addAll(filtered)
+        adapter.notifyDataSetChanged()
+
+        binding.recyclerView.post {
+            binding.recyclerView.scrollToPosition(0)
+            updateShizukuStatus()
+        }
+    }
+
     private fun saveScrollPosition() {
         val layoutManager = binding.recyclerView.layoutManager as? LinearLayoutManager
         layoutManager?.let {
@@ -117,6 +197,7 @@ class SettingsFragment : Fragment() {
     }
 
     private fun restoreScrollPosition() {
+        if (currentQuery.isNotEmpty()) return
         if (savedScrollPosition > 0) {
             binding.recyclerView.post {
                 val layoutManager = binding.recyclerView.layoutManager as? LinearLayoutManager
@@ -127,7 +208,9 @@ class SettingsFragment : Fragment() {
 
     private fun setupRecyclerView() {
         if (!isAdded || view == null) return
-        val items = buildSettingItems()
+        allSettingItems = buildSettingItems()
+        val items = allSettingItems.toMutableList()
+
         adapter = SettingsAdapter(
             items = items,
             onItemClick = { item ->
@@ -233,8 +316,7 @@ class SettingsFragment : Fragment() {
 
     private fun refreshGoogleServiceStatus() {
         if (!::adapter.isInitialized) return
-        val items = adapter.items
-        if (items.isEmpty()) return
+        val items = allSettingItems
 
         val gmsAvailable = isGmsAvailable()
         val gmsEnabled = if (gmsAvailable) checkGmsStatus() else false
@@ -243,8 +325,17 @@ class SettingsFragment : Fragment() {
             val item = items[i]
             if (item is SettingItem.SwitchItem &&
                 item.title == getString(R.string.pref_google_services)) {
-                val newItem = item.copy(isChecked = gmsEnabled, isEnabled = gmsAvailable)
-                items[i] = newItem
+                items[i] = item.copy(isChecked = gmsEnabled, isEnabled = gmsAvailable)
+                break
+            }
+        }
+
+        val adapterItems = adapter.items
+        for (i in adapterItems.indices) {
+            val item = adapterItems[i]
+            if (item is SettingItem.SwitchItem &&
+                item.title == getString(R.string.pref_google_services)) {
+                adapterItems[i] = item.copy(isChecked = gmsEnabled, isEnabled = gmsAvailable)
                 adapter.notifyItemChanged(i)
                 break
             }
@@ -260,8 +351,7 @@ class SettingsFragment : Fragment() {
             val item = items[i]
             if (item is SettingItem.SwitchItem &&
                 item.title == getString(R.string.pref_google_services)) {
-                val newItem = item.copy(isChecked = enable)
-                items[i] = newItem
+                items[i] = item.copy(isChecked = enable)
                 adapter.notifyItemChanged(i)
                 break
             }
@@ -361,10 +451,8 @@ class SettingsFragment : Fragment() {
 
     private fun rebuildSettingItems() {
         if (!::adapter.isInitialized) return
-        val newItems = buildSettingItems()
-        adapter.items.clear()
-        adapter.items.addAll(newItems)
-        adapter.notifyDataSetChanged()
+        allSettingItems = buildSettingItems()
+        applySearchFilter()
         binding.recyclerView.post { updateShizukuStatus() }
     }
 
@@ -553,7 +641,6 @@ class SettingsFragment : Fragment() {
         val gmsEnabled = if (gmsAvailable) checkGmsStatus() else false
 
         return mutableListOf(
-            // Fuck: Authorization Group
             SettingItem.Header(getString(R.string.settings_group_authorization)),
             SettingItem.Shizuku,
             SettingItem.Normal(
@@ -567,14 +654,12 @@ class SettingsFragment : Fragment() {
                 R.drawable.ic_security
             ),
 
-            // Fuck: Appearance Group
             SettingItem.Header(getString(R.string.settings_group_appearance)),
             SettingItem.Normal(getString(R.string.pref_theme), themeText, R.drawable.ic_theme),
             SettingItem.Normal(getString(R.string.pref_language), languageText, R.drawable.ic_language),
             SettingItem.Normal(getString(R.string.pref_default_page), defaultPageText, R.drawable.ic_home_page),
             SettingItem.Normal(getString(R.string.more_options), getString(R.string.more_options_summary), R.drawable.ic_palette),
 
-            // Fuck: Apps Group
             SettingItem.Header(getString(R.string.settings_group_apps)),
             SettingItem.SwitchItem(
                 getString(R.string.pref_google_services),
@@ -618,7 +703,6 @@ class SettingsFragment : Fragment() {
                 R.drawable.ic_backup
             ),
 
-            // Fuck: Advanced Group
             SettingItem.Header(getString(R.string.settings_group_advanced)),
             SettingItem.Normal(
                 getString(R.string.pref_shizuku_provider),
@@ -635,7 +719,6 @@ class SettingsFragment : Fragment() {
             SettingItem.SwitchItem(getString(R.string.pref_show_undeclared_activities), showUndeclared, R.drawable.ic_undeclared),
             SettingItem.Normal(getString(R.string.pref_logging), getString(R.string.pref_logging_summary), R.drawable.ic_log),
 
-            // Fuck: About Group
             SettingItem.Header(getString(R.string.settings_group_about)),
             SettingItem.About(getVersionName()),
             SettingItem.AboutMore(getString(R.string.about_more), getString(R.string.about_more_summary))
@@ -746,7 +829,6 @@ class SettingsFragment : Fragment() {
                 }
             }
         } catch (e: Exception) {
-            // Ignore update errors to avoid crash
         }
     }
 

@@ -12,8 +12,6 @@
     <string name="nav_settings">Settings</string>
 
     <!-- Settings Groups -->
-    <string name="search_settings_hint">Search settings…</string>
-    <string name="no_settings_found">No settings found</string>
     <string name="settings_group_authorization">Authorization</string>
     <string name="settings_group_appearance">Appearance</string>
     <string name="settings_group_apps">Apps</string>

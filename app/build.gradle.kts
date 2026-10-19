@@ -13,7 +13,7 @@ plugins {
 
 android {
     namespace = "com.buge.appmanager"
-    compileSdk = 37
+    compileSdk = 36
 
     defaultConfig {
         applicationId = "com.buge.appmanager"

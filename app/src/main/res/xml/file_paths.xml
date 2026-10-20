@@ -14,4 +14,10 @@
     <external-cache-path
         name="external_cache"
         path="apk_cache/" />
+    <external-cache-path
+        name="external_cache_root"
+        path="." />
+    <cache-path
+        name="cache_root"
+        path="." />
 </paths>

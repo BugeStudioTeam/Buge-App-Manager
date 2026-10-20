@@ -77,7 +77,6 @@ class AppsFragment : Fragment() {
     private var progressDialog: AlertDialog? = null
     private var isShareCancelled = false
 
-    // Fuck: Save scroll position
     private var savedScrollPosition: Int = 0
     private var savedScrollOffset: Int = 0
     private var isRestoringScroll = false
@@ -102,7 +101,6 @@ class AppsFragment : Fragment() {
         setupToolbarMenu()
         observeViewModel()
 
-        // Fuck: Restore state when fragment is recreated
         restoreState()
 
         binding.swipeRefresh.setOnRefreshListener {
@@ -117,15 +115,12 @@ class AppsFragment : Fragment() {
             fontApplied = true
         }
         setupLabelChips()
-        // Fuck: Refresh apps when returning to fragment
         viewModel.loadApps()
-        // Fuck: Restore scroll position after refresh
         restoreScrollPosition()
     }
 
     override fun onPause() {
         super.onPause()
-        // Fuck: Save scroll position before leaving
         saveScrollPosition()
     }
 
@@ -176,7 +171,6 @@ class AppsFragment : Fragment() {
                 }
             }
         } catch (e: Exception) {
-            // Ignore cleanup errors
         }
     }
 
@@ -184,7 +178,6 @@ class AppsFragment : Fragment() {
         try {
             progressDialog?.dismiss()
         } catch (e: Exception) {
-            // Ignore
         }
         progressDialog = null
     }
@@ -211,7 +204,6 @@ class AppsFragment : Fragment() {
                     return
                 }
 
-                // Fuck: If a label is selected, deselect it and go back to All
                 if (selectedLabelId != null) {
                     isUpdatingChips = true
                     for (i in 0 until binding.labelChipGroup.childCount) {
@@ -260,7 +252,6 @@ class AppsFragment : Fragment() {
         val btnClear = binding.btnClearSearch
 
         searchEditText.addTextChangedListener { text ->
-            // Fuck: Exit selection mode when user starts typing
             if (adapter.isInSelectionMode()) {
                 adapter.clearSelection()
                 adapter.setSelectionMode(false)
@@ -273,7 +264,6 @@ class AppsFragment : Fragment() {
         }
 
         btnClear.setOnClickListener {
-            // Fuck: Exit selection mode when clearing search
             if (adapter.isInSelectionMode()) {
                 adapter.clearSelection()
                 adapter.setSelectionMode(false)
@@ -303,7 +293,6 @@ class AppsFragment : Fragment() {
         binding.filterChipGroup.setOnCheckedStateChangeListener { _, checkedIds ->
             if (isUpdatingChips) return@setOnCheckedStateChangeListener
 
-            // Fuck: If a built-in filter is selected, clear label selection
             if (checkedIds.isNotEmpty()) {
                 isUpdatingChips = true
                 for (i in 0 until binding.labelChipGroup.childCount) {
@@ -336,7 +325,6 @@ class AppsFragment : Fragment() {
         val chipGroup = binding.labelChipGroup
         chipGroup.removeAllViews()
 
-        // Fuck: Disable ChipGroup's automatic selection management
         chipGroup.isSelectionRequired = false
         chipGroup.isSingleSelection = false
 
@@ -363,13 +351,11 @@ class AppsFragment : Fragment() {
 
                     val currentId = selectedLabelId
 
-                    // Fuck: Already selected, do nothing
                     if (currentId == label.id) {
                         chip.isChecked = true
                         return@setOnClickListener
                     }
 
-                    // Fuck: Select this label, deselect all others
                     isUpdatingChips = true
 
                     for (i in 0 until chipGroup.childCount) {
@@ -403,8 +389,6 @@ class AppsFragment : Fragment() {
             val filteredApps = allApps.filter { label.appPackages.contains(it.packageName) }
             val items = filteredApps.map { AppsItem(it) }
             adapter.submitList(items)
-            // Fuck: Scroll to top after label filter only if user explicitly clicked label
-            // Don't scroll to top when restoring state
             if (!isRestoringScroll) {
                 binding.recyclerView.scrollToPosition(0)
             }
@@ -436,7 +420,6 @@ class AppsFragment : Fragment() {
 
         val items = finalList.map { AppsItem(it) }
         adapter.submitList(items)
-        // Fuck: Scroll to top after filtering only if user initiated filter change
         if (!isRestoringScroll) {
             binding.recyclerView.scrollToPosition(0)
         }
@@ -554,8 +537,6 @@ class AppsFragment : Fragment() {
             }
         }
     }
-
-    // ===================== Batch Share APKs =====================
 
     private fun batchShareApks(apps: List<AppInfo>) {
         if (!checkShizuku()) return
@@ -833,6 +814,12 @@ class AppsFragment : Fragment() {
 
     private fun shareZipFile(zipFile: File, appCount: Int) {
         try {
+            if (!zipFile.exists() || zipFile.length() == 0L) {
+                SnackbarHelper.showSnackbar(binding.root, "Share failed: file is empty")
+                cleanupTempFiles()
+                return
+            }
+
             val apkUri = FileProvider.getUriForFile(
                 requireContext(),
                 "com.buge.appmanager.fileprovider",
@@ -843,14 +830,19 @@ class AppsFragment : Fragment() {
                 type = "application/zip"
                 putExtra(Intent.EXTRA_STREAM, apkUri)
                 putExtra(Intent.EXTRA_SUBJECT, "${appCount} APKs")
+                putExtra(Intent.EXTRA_TEXT, "${appCount} APKs shared from Buge App Manager")
                 addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
+                addFlags(Intent.FLAG_GRANT_WRITE_URI_PERMISSION)
                 addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                clipData = android.content.ClipData.newRawUri("APK Zip", apkUri)
             }
 
             val chooserIntent = Intent.createChooser(
                 shareIntent,
                 "Share ${appCount} APKs"
             )
+            chooserIntent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
+            chooserIntent.addFlags(Intent.FLAG_GRANT_WRITE_URI_PERMISSION)
             chooserIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
 
             startActivity(chooserIntent)
@@ -1064,7 +1056,6 @@ class AppsFragment : Fragment() {
                     else -> AppSortOrder.NAME
                 }
                 viewModel.setSort(sort)
-                // Fuck: Scroll to top after sorting
                 binding.recyclerView.post {
                     binding.recyclerView.scrollToPosition(0)
                 }
@@ -1082,13 +1073,11 @@ class AppsFragment : Fragment() {
             } else {
                 applyFilter(currentFilter)
             }
-            // Fuck: Only scroll to top if this is a fresh load (not restore)
             if (!isRestoringScroll) {
                 binding.recyclerView.post {
                     binding.recyclerView.scrollToPosition(0)
                 }
             } else {
-                // Fuck: Restore scroll position after data loaded
                 restoreScrollPosition()
             }
             binding.loadingOverlay.visibility = View.GONE
@@ -1108,16 +1097,11 @@ class AppsFragment : Fragment() {
         }
     }
 
-    // Fuck: Restore state when fragment is recreated
     private fun restoreState() {
-        // The viewModel already loads sort from preferences
-        // Just ensure filter is reset to ALL
         currentFilter = AppFilter.ALL
         searchQuery = ""
-        // Clear any label selection
         selectedLabelId = null
         binding.searchEditText.setText("")
-        // Reset chips
         isUpdatingChips = true
         for (i in 0 until binding.filterChipGroup.childCount) {
             val chip = binding.filterChipGroup.getChildAt(i) as? Chip
@@ -1130,7 +1114,6 @@ class AppsFragment : Fragment() {
             chip?.isChecked = false
         }
         isUpdatingChips = false
-        // Fuck: Restore saved scroll position
         isRestoringScroll = true
     }
 
@@ -1139,7 +1122,6 @@ class AppsFragment : Fragment() {
             adapter.toggleSelection(app.packageName)
             return
         }
-        // Fuck: Save scroll position before opening detail
         saveScrollPosition()
         val intent = Intent(requireContext(), AppDetailActivity::class.java).apply {
             putExtra(AppDetailActivity.EXTRA_PACKAGE_NAME, app.packageName)

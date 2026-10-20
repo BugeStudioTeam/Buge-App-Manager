@@ -188,7 +188,7 @@ class AppDetailActivity : BaseActivity() {
                 while (entries.hasMoreElements()) {
                     val entry = entries.nextElement()
                     val name = entry.name
-                    if (name.startsWith("resources.arsc")) continue          
+                    if (name.startsWith("resources.arsc")) continue
                     val match = Regex("""res/values-([a-z]{2}(?:-r[A-Z]{2})?)/""").find(name)
                     if (match != null) {
                         locales.add(match.groupValues[1])
@@ -231,7 +231,7 @@ class AppDetailActivity : BaseActivity() {
             Snackbar.make(binding.root, "Failed to read languages: ${e.message}", Snackbar.LENGTH_LONG).show()
             LogManager.error(this, "Failed to read app languages", e.message)
         }
-    }  
+    }
 
     private fun exportAppInfo() {
         val app = viewModel.appInfo.value
@@ -431,7 +431,7 @@ class AppDetailActivity : BaseActivity() {
         } else {
             favoriteMenuItem?.icon = ContextCompat.getDrawable(this, R.drawable.ic_favorite)
         }
-    }    
+    }
 
     private fun exportApk() {
         try {
@@ -572,7 +572,7 @@ class AppDetailActivity : BaseActivity() {
                 Snackbar.make(binding.root, "Export failed: ${e.message}", Snackbar.LENGTH_LONG).show()
             }
         }
-    }    
+    }
 
     private fun shareApk() {
         try {
@@ -654,14 +654,20 @@ class AppDetailActivity : BaseActivity() {
             val shareIntent = Intent(Intent.ACTION_SEND).apply {
                 type = "application/vnd.android.package-archive"
                 putExtra(Intent.EXTRA_STREAM, apkUri)
+                putExtra(Intent.EXTRA_SUBJECT, appName)
+                putExtra(Intent.EXTRA_TEXT, "$appName shared from Buge App Manager")
                 addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
+                addFlags(Intent.FLAG_GRANT_WRITE_URI_PERMISSION)
                 addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                clipData = android.content.ClipData.newRawUri(appName, apkUri)
             }
 
             val chooserIntent = Intent.createChooser(
                 shareIntent,
                 "Share APK: $appName"
             )
+            chooserIntent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
+            chooserIntent.addFlags(Intent.FLAG_GRANT_WRITE_URI_PERMISSION)
             chooserIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
 
             startActivity(chooserIntent)
@@ -756,14 +762,19 @@ class AppDetailActivity : BaseActivity() {
                     type = "application/zip"
                     putExtra(Intent.EXTRA_STREAM, apkUri)
                     putExtra(Intent.EXTRA_SUBJECT, "APK: $appName (split)")
+                    putExtra(Intent.EXTRA_TEXT, "$appName (split) shared from Buge App Manager")
                     addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
+                    addFlags(Intent.FLAG_GRANT_WRITE_URI_PERMISSION)
                     addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                    clipData = android.content.ClipData.newRawUri(appName, apkUri)
                 }
 
                 val chooserIntent = Intent.createChooser(
                     shareIntent,
                     "Share APK: $appName (split)"
                 )
+                chooserIntent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
+                chooserIntent.addFlags(Intent.FLAG_GRANT_WRITE_URI_PERMISSION)
                 chooserIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
 
                 startActivity(chooserIntent)
@@ -809,7 +820,6 @@ class AppDetailActivity : BaseActivity() {
                 }
             }
         } catch (e: Exception) {
-            // ignore cleanup err
         }
     }
 
@@ -1082,7 +1092,7 @@ class AppDetailActivity : BaseActivity() {
         )
         binding.permissionsRecycler.layoutManager = LinearLayoutManager(this)
         binding.permissionsRecycler.adapter = permAdapter
-    }    
+    }
 
     private fun formatFileSize(size: Long): String {
         return when {

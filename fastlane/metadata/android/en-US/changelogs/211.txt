@@ -1,0 +1,11 @@
+**12.75.137**
+
+**Added** ✨
+- Added welcome screen (PR #48)
+- Added auto-update optimization for F-Droid listing (PR #48)
+
+**Fixes** 🛠
+- Fixed WhatsApp failing to share APK files properly (reported by @ablese)
+
+**Contributors of this version:**
+- @ablese

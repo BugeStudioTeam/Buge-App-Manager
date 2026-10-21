@@ -63,6 +63,8 @@
                 android:layout_weight="1"
                 android:layout_marginEnd="8dp"
                 android:text="@string/welcome_back"
+                android:gravity="center"
+                android:textAlignment="center"
                 android:visibility="invisible" />
 
             <com.google.android.material.button.MaterialButton
@@ -71,7 +73,9 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:layout_marginStart="8dp"
-                android:text="@string/welcome_next" />
+                android:text="@string/welcome_next"
+                android:gravity="center"
+                android:textAlignment="center" />
 
         </LinearLayout>
 

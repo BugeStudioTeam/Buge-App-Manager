@@ -72,18 +72,6 @@ class MainActivity : BaseActivity() {
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        if (!PreferencesManager.isWelcomeCompleted(this)) {
-            val welcomeIntent = Intent(this, WelcomeActivity::class.java)
-            welcomeIntent.addFlags(
-                Intent.FLAG_ACTIVITY_CLEAR_TOP or
-                Intent.FLAG_ACTIVITY_NEW_TASK or
-                Intent.FLAG_ACTIVITY_CLEAR_TASK
-            )
-            startActivity(welcomeIntent)
-            finish()
-            return
-        }
-
         ThemeManager.applyColorTheme(this)
 
         val savedTheme = PreferencesManager.getThemeMode(this)
@@ -95,6 +83,18 @@ class MainActivity : BaseActivity() {
         }
 
         super.onCreate(savedInstanceState)
+
+        if (!PreferencesManager.isWelcomeCompleted(this)) {
+            val welcomeIntent = Intent(this, WelcomeActivity::class.java)
+            welcomeIntent.addFlags(
+                Intent.FLAG_ACTIVITY_CLEAR_TOP or
+                Intent.FLAG_ACTIVITY_NEW_TASK or
+                Intent.FLAG_ACTIVITY_CLEAR_TASK
+            )
+            startActivity(welcomeIntent)
+            finish()
+            return
+        }
 
         LogManager.init(this)
 
@@ -128,10 +128,12 @@ class MainActivity : BaseActivity() {
 
     override fun onResume() {
         super.onResume()
-        if (currentFragment is ActivitiesFragment) {
-            (currentFragment as? ActivitiesFragment)?.refresh()
+        if (::binding.isInitialized) {
+            if (currentFragment is ActivitiesFragment) {
+                (currentFragment as? ActivitiesFragment)?.refresh()
+            }
+            applyHideNavLabels()
         }
-        applyHideNavLabels()
 
         if (!SignatureWarningDialog.isShowing()) {
             checkSignature()
@@ -298,6 +300,7 @@ class MainActivity : BaseActivity() {
     }
 
     private fun applyHideNavLabels() {
+        if (!::binding.isInitialized) return
         val hideLabels = PreferencesManager.getHideNavLabels(this)
 
         binding.bottomNav.labelVisibilityMode = if (hideLabels) {

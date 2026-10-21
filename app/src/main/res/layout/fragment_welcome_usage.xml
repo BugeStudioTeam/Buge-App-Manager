@@ -11,28 +11,32 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:padding="24dp">
+        android:padding="16dp">
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginBottom="8dp"
             android:text="@string/welcome_usage_title"
-            android:textAppearance="?attr/textAppearanceHeadlineSmall"
-            android:textStyle="bold" />
+            android:textAppearance="?attr/textAppearanceTitleMedium"
+            android:textColor="?attr/colorPrimary" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginBottom="16dp"
             android:text="@string/welcome_usage_subtitle"
-            android:textAppearance="?attr/textAppearanceBodyMedium"
-            android:alpha="0.7" />
+            android:textAppearance="?attr/textAppearanceBodySmall"
+            android:alpha="0.6" />
 
         <FrameLayout
             android:id="@+id/theme_item"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="24dp"
+            android:layout_marginHorizontal="16dp"
+            android:layout_marginBottom="2dp"
             android:background="@drawable/bg_setting_item_top"
             android:clickable="true"
             android:focusable="true">
@@ -42,7 +46,8 @@
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
                 android:gravity="center_vertical"
-                android:padding="16dp">
+                android:paddingHorizontal="16dp"
+                android:paddingVertical="16dp">
 
                 <ImageView
                     android:layout_width="24dp"
@@ -85,6 +90,7 @@
             android:id="@+id/language_item"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginHorizontal="16dp"
             android:layout_marginBottom="2dp"
             android:background="@drawable/bg_setting_item_middle"
             android:clickable="true"
@@ -95,7 +101,8 @@
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
                 android:gravity="center_vertical"
-                android:padding="16dp">
+                android:paddingHorizontal="16dp"
+                android:paddingVertical="16dp">
 
                 <ImageView
                     android:layout_width="24dp"
@@ -138,6 +145,8 @@
             android:id="@+id/default_page_item"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginHorizontal="16dp"
+            android:layout_marginBottom="16dp"
             android:background="@drawable/bg_setting_item_bottom"
             android:clickable="true"
             android:focusable="true">
@@ -147,7 +156,8 @@
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
                 android:gravity="center_vertical"
-                android:padding="16dp">
+                android:paddingHorizontal="16dp"
+                android:paddingVertical="16dp">
 
                 <ImageView
                     android:layout_width="24dp"

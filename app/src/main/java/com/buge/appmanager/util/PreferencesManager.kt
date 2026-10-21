@@ -40,12 +40,13 @@ object PreferencesManager {
     private const val INSTALL_ALLOW_TEST_KEY = "install_allow_test"
     private const val INSTALL_ALLOW_SYSTEM_KEY = "install_allow_system"
     private const val INSTALL_ALL_USERS_KEY = "install_all_users"
+    private const val WELCOME_COMPLETED_KEY = "welcome_completed"
+    private const val APP_SOURCE_KEY = "app_source"
 
     const val AUTH_MODE_SHIZUKU = "shizuku"
     const val AUTH_MODE_ROOT = "root"
     const val DEFAULT_SU_PATH = "su"
 
-    // Fuck: Backup content mode constants
     const val BACKUP_CONTENT_SETTINGS = "settings"
     const val BACKUP_CONTENT_APP_LIST = "app_list"
     const val BACKUP_CONTENT_BOTH = "both"
@@ -255,7 +256,6 @@ object PreferencesManager {
         editor.apply()
     }
 
-    // Fuck: Backup settings
     fun setBackupEnabled(context: Context, enabled: Boolean) {
         getPreferences(context).edit().putBoolean(BACKUP_ENABLED_KEY, enabled).apply()
     }
@@ -280,7 +280,6 @@ object PreferencesManager {
         return getPreferences(context).getString(BACKUP_LOCATION_KEY, "") ?: ""
     }
 
-    // Fuck: Auto backup on app launch
     fun setAutoBackupOnLaunch(context: Context, enabled: Boolean) {
         getPreferences(context).edit().putBoolean(AUTO_BACKUP_ON_LAUNCH_KEY, enabled).apply()
     }
@@ -289,7 +288,6 @@ object PreferencesManager {
         return getPreferences(context).getBoolean(AUTO_BACKUP_ON_LAUNCH_KEY, false)
     }
 
-    // Fuck: Backup content mode (settings / app_list / both)
     fun setBackupContentMode(context: Context, mode: String) {
         getPreferences(context).edit().putString(BACKUP_CONTENT_MODE_KEY, mode).apply()
     }
@@ -298,7 +296,6 @@ object PreferencesManager {
         return getPreferences(context).getString(BACKUP_CONTENT_MODE_KEY, BACKUP_CONTENT_SETTINGS) ?: BACKUP_CONTENT_SETTINGS
     }
 
-    // Fuck: Install options
     fun setInstallInstallerName(context: Context, name: String) {
         getPreferences(context).edit().putString(INSTALL_INSTALLER_NAME_KEY, name).apply()
     }
@@ -337,5 +334,21 @@ object PreferencesManager {
 
     fun getInstallAllUsers(context: Context): Boolean {
         return getPreferences(context).getBoolean(INSTALL_ALL_USERS_KEY, false)
+    }
+
+    fun setWelcomeCompleted(context: Context, completed: Boolean) {
+        getPreferences(context).edit().putBoolean(WELCOME_COMPLETED_KEY, completed).apply()
+    }
+
+    fun isWelcomeCompleted(context: Context): Boolean {
+        return getPreferences(context).getBoolean(WELCOME_COMPLETED_KEY, false)
+    }
+
+    fun setAppSource(context: Context, source: String) {
+        getPreferences(context).edit().putString(APP_SOURCE_KEY, source).apply()
+    }
+
+    fun getAppSource(context: Context): String {
+        return getPreferences(context).getString(APP_SOURCE_KEY, "GitHub") ?: "GitHub"
     }
 }

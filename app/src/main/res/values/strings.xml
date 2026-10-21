@@ -435,4 +435,45 @@
     <string name="install_apk_path">Path</string>
     <string name="install_invalid_apk">Invalid APK file</string>
     
+    <!-- Welcome / Onboarding -->
+    <string name="welcome_title">Welcome</string>
+    <string name="welcome_subtitle">Let\'s set up Buge App Manager in a few quick steps.</string>
+    <string name="welcome_get_started">Get Started</string>
+    <string name="welcome_next">Next</string>
+    <string name="welcome_back">Back</string>
+    <string name="welcome_finish">Start Using</string>
+    <string name="welcome_skip">Skip</string>
+
+    <string name="welcome_source_title">Where did you get this app?</string>
+    <string name="welcome_source_subtitle">This helps us configure updates correctly.</string>
+    <string name="welcome_source_github">GitHub</string>
+    <string name="welcome_source_fdroid">F-Droid</string>
+    <string name="welcome_source_other">Other</string>
+
+    <string name="welcome_update_title">Auto Update</string>
+    <string name="welcome_update_subtitle">Automatically check for new versions on app start.</string>
+    <string name="welcome_update_enabled">Auto update enabled</string>
+    <string name="welcome_update_disabled">Auto update disabled</string>
+
+    <string name="welcome_usage_title">General Preferences</string>
+    <string name="welcome_usage_subtitle">Pick a theme, language and default page.</string>
+
+    <string name="welcome_appearance_title">Appearance</string>
+    <string name="welcome_appearance_subtitle">Customize colors and navigation.</string>
+
+    <string name="welcome_ready_title">You\'re all set</string>
+    <string name="welcome_ready_subtitle">Start managing your apps with Buge App Manager.</string>
+    
+    <string name="welcome_summary_title">Summary</string>
+    <string name="welcome_summary_source">Source</string>
+    <string name="welcome_summary_auto_update">Auto Update</string>
+    <string name="welcome_summary_theme">Theme</string>
+    <string name="welcome_summary_language">Language</string>
+    <string name="welcome_summary_default_page">Default Page</string>
+    <string name="welcome_summary_dynamic_color">Dynamic Color</string>
+    <string name="welcome_summary_hide_nav_labels">Hide Nav Labels</string>
+    <string name="welcome_summary_color_theme">Color Theme</string>
+    <string name="welcome_summary_on">On</string>
+    <string name="welcome_summary_off">Off</string>
+    
 </resources>

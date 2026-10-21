@@ -77,13 +77,24 @@ class MainActivity : BaseActivity() {
         val savedTheme = PreferencesManager.getThemeMode(this)
         AppCompatDelegate.setDefaultNightMode(savedTheme)
 
-        // apply dynamic color at activity level if enabled
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S &&
             PreferencesManager.getDynamicColor(this)) {
             com.google.android.material.color.DynamicColors.applyToActivityIfAvailable(this)
         }
 
         super.onCreate(savedInstanceState)
+
+        if (!PreferencesManager.isWelcomeCompleted(this)) {
+            val welcomeIntent = Intent(this, WelcomeActivity::class.java)
+            welcomeIntent.addFlags(
+                Intent.FLAG_ACTIVITY_CLEAR_TOP or
+                Intent.FLAG_ACTIVITY_NEW_TASK or
+                Intent.FLAG_ACTIVITY_CLEAR_TASK
+            )
+            startActivity(welcomeIntent)
+            finish()
+            return
+        }
 
         LogManager.init(this)
 
@@ -108,7 +119,6 @@ class MainActivity : BaseActivity() {
             loadDefaultPage()
         }
 
-        //check signature after UI is ready
         Handler(Looper.getMainLooper()).postDelayed({
             checkSignature()
         }, 300)
@@ -118,10 +128,12 @@ class MainActivity : BaseActivity() {
 
     override fun onResume() {
         super.onResume()
-        if (currentFragment is ActivitiesFragment) {
-            (currentFragment as? ActivitiesFragment)?.refresh()
+        if (::binding.isInitialized) {
+            if (currentFragment is ActivitiesFragment) {
+                (currentFragment as? ActivitiesFragment)?.refresh()
+            }
+            applyHideNavLabels()
         }
-        applyHideNavLabels()
 
         if (!SignatureWarningDialog.isShowing()) {
             checkSignature()
@@ -133,7 +145,6 @@ class MainActivity : BaseActivity() {
         try {
             unregisterReceiver(navLabelsReceiver)
         } catch (e: Exception) {
-            // ignore
         }
         Shizuku.removeRequestPermissionResultListener(requestPermissionResultListener)
     }
@@ -141,11 +152,9 @@ class MainActivity : BaseActivity() {
     private var signatureCheckDone = false
 
     private fun checkSignature() {
-        // skip if already checked or dialog is showing
         if (signatureCheckDone) return
         if (SignatureWarningDialog.isShowing()) return
 
-        // skip signature check for debug builds (devment convenience)
         if (SignatureValidator.isDebugBuild(this)) {
             LogManager.debug(this, "Signature check skipped (debug build)")
             signatureCheckDone = true
@@ -162,9 +171,7 @@ class MainActivity : BaseActivity() {
                 "Got: ${SignatureValidator.getSignatureFingerprint(this)}"
             )
 
-            // show warning dialog
             SignatureWarningDialog.show(this) {
-                // user clicked exit
                 finishAffinity()
             }
         } else {
@@ -293,6 +300,7 @@ class MainActivity : BaseActivity() {
     }
 
     private fun applyHideNavLabels() {
+        if (!::binding.isInitialized) return
         val hideLabels = PreferencesManager.getHideNavLabels(this)
 
         binding.bottomNav.labelVisibilityMode = if (hideLabels) {

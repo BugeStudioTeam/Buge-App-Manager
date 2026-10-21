@@ -16,7 +16,6 @@ class WelcomeUpdateFragment : Fragment() {
     private lateinit var switch: MaterialSwitch
     private lateinit var statusText: TextView
     private var userTouched = false
-    private var lastSource: String = ""
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -27,12 +26,7 @@ class WelcomeUpdateFragment : Fragment() {
         switch = view.findViewById(R.id.auto_update_switch)
         statusText = view.findViewById(R.id.auto_update_status)
 
-        lastSource = (activity as? WelcomeActivity)?.getSelectedSource() ?: "GitHub"
-        val defaultEnabled = lastSource != "F-Droid"
-
-        switch.isChecked = defaultEnabled
-        updateStatus(defaultEnabled)
-        (activity as? WelcomeActivity)?.onAutoUpdateChanged(defaultEnabled)
+        applySourceDefault()
 
         switch.setOnCheckedChangeListener { _, isChecked ->
             userTouched = true
@@ -45,15 +39,24 @@ class WelcomeUpdateFragment : Fragment() {
 
     override fun onResume() {
         super.onResume()
-        val currentSource = (activity as? WelcomeActivity)?.getSelectedSource() ?: "GitHub"
-        if (currentSource != lastSource) {
-            lastSource = currentSource
-            if (!userTouched) {
-                val defaultEnabled = currentSource != "F-Droid"
-                switch.isChecked = defaultEnabled
-                updateStatus(defaultEnabled)
-                (activity as? WelcomeActivity)?.onAutoUpdateChanged(defaultEnabled)
-            }
+        if (!userTouched) {
+            applySourceDefault()
+        }
+    }
+
+    private fun applySourceDefault() {
+        val source = (activity as? WelcomeActivity)?.getSelectedSource() ?: "GitHub"
+        val defaultEnabled = source != "F-Droid"
+
+        switch.setOnCheckedChangeListener(null)
+        switch.isChecked = defaultEnabled
+        updateStatus(defaultEnabled)
+        (activity as? WelcomeActivity)?.onAutoUpdateChanged(defaultEnabled)
+
+        switch.setOnCheckedChangeListener { _, isChecked ->
+            userTouched = true
+            updateStatus(isChecked)
+            (activity as? WelcomeActivity)?.onAutoUpdateChanged(isChecked)
         }
     }
 

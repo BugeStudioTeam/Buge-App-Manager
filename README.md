@@ -131,7 +131,9 @@ Follow this step-by-step guide to manage the same permission type across multipl
     alt="Get it on GitHub"
     height="80">](https://github.com/BugeStudioTeam/Buge-App-Manager/releases)[<img src="https://raw.githubusercontent.com/BugeStudioTeam/Buge-App-Manager/refs/heads/main/images/README/Release/get-it-on-telegram.svg"
  alt="Get it on Telegram"
- height="80">](https://t.me/bugestudio)
+ height="80">](https://t.me/bugestudio)[<img src="https://raw.githubusercontent.com/BugeStudioTeam/Buge-App-Manager/refs/heads/main/images/README/Release/get-it-on-fdroid.svg"
+    alt="Get it on F-Droid"
+    height="80">](https://f-droid.org/packages/com.buge.appmanager/)
  
 ---
 

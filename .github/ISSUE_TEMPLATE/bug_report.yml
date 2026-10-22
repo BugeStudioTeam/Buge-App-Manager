@@ -17,7 +17,7 @@ body:
       label: "Checklist"
       description: "Please confirm before submitting"
       options:
-        - label: "Buge App Manager is downloaded from official channels (GitHub Releases)"
+        - label: "Buge App Manager is downloaded from official channels (GitHub Releases or F-Droid)"
           required: true
         - label: "I have searched existing Issues and confirmed this is not a duplicate"
           required: true

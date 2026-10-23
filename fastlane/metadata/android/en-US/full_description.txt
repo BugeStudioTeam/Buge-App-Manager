@@ -21,6 +21,5 @@ advanced features through Shizuku (https://shizuku.rikka.app/download/).
     <li>Some advanced operations require Shizuku</li>
     <li>Designed to be safe — but removing essential system apps may still cause issues after reboot</li>
 </ul>
-    <li>This app can update itself outside of F-Droid: when a new version is available, tapping "Download" opens the APK in your browser, and with Shizuku installed it can install over the F-Droid build (same signature). Automatic update checks are enabled by default and can be turned off in Settings.</li>
 
 Source code: https://github.com/BugeStudioTeam/Buge-App-Manager

@@ -11,6 +11,7 @@ import android.content.Context
 import android.content.pm.PackageManager
 import android.os.IBinder
 import android.util.Log
+import com.buge.appmanager.shizuku.ShizukuResult
 import com.buge.appmanager.util.AppGlobals
 import com.buge.appmanager.util.PreferencesManager
 import com.rosan.dhizuku.api.Dhizuku
@@ -18,6 +19,9 @@ import com.rosan.dhizuku.api.DhizukuBinderWrapper
 import com.rosan.dhizuku.api.DhizukuRequestPermissionListener
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
+import java.util.concurrent.CountDownLatch
+import java.util.concurrent.Executors
+import java.util.concurrent.TimeUnit
 
 object DhizukuManager {
     private const val TAG = "DhizukuManager"
@@ -184,6 +188,65 @@ object DhizukuManager {
         } catch (e: Exception) {
             Log.e(TAG, "setPermissionState failed: ${e.message}", e)
             false
+        }
+    }
+
+    fun clearAppUserData(packageName: String): ShizukuResult {
+        return try {
+            val dpm = getWrappedDevicePolicyManager()
+                ?: return ShizukuResult(false, "", "Wrapped DPM is null")
+            val admin = getOwnerComponent()
+                ?: return ShizukuResult(false, "", "Owner component is null")
+            val latch = CountDownLatch(1)
+            var ok = false
+            val executor = Executors.newSingleThreadExecutor()
+            try {
+                val method = DevicePolicyManager::class.java.getMethod(
+                    "clearApplicationUserData",
+                    ComponentName::class.java,
+                    String::class.java,
+                    java.util.concurrent.Executor::class.java,
+                    DevicePolicyManager.OnClearApplicationUserDataListener::class.java
+                )
+                val listener =
+                    object : DevicePolicyManager.OnClearApplicationUserDataListener {
+                        override fun onApplicationUserDataCleared(
+                            pkg: String, succeeded: Boolean
+                        ) {
+                            ok = succeeded
+                            latch.countDown()
+                        }
+                    }
+                method.invoke(dpm, admin, packageName, executor, listener)
+                latch.await(10, TimeUnit.SECONDS)
+            } finally {
+                executor.shutdown()
+            }
+            if (ok) ShizukuResult(true, "", "")
+            else ShizukuResult(false, "", "clearApplicationUserData failed")
+        } catch (e: Exception) {
+            Log.e(TAG, "clearAppUserData failed: ${e.message}", e)
+            ShizukuResult(false, "", "Exception: ${e.message ?: "Unknown error"}")
+        }
+    }
+
+    fun setPackagesSuspended(
+        packages: List<String>, suspended: Boolean
+    ): ShizukuResult {
+        return try {
+            val dpm = getWrappedDevicePolicyManager()
+                ?: return ShizukuResult(false, "", "Wrapped DPM is null")
+            val admin = getOwnerComponent()
+                ?: return ShizukuResult(false, "", "Owner component is null")
+            val failed = dpm.setPackagesSuspended(admin, packages.toTypedArray(), suspended)
+            if (failed.isEmpty()) {
+                ShizukuResult(true, "", "")
+            } else {
+                ShizukuResult(false, "", "Failed packages: $failed")
+            }
+        } catch (e: Exception) {
+            Log.e(TAG, "setPackagesSuspended failed: ${e.message}", e)
+            ShizukuResult(false, "", "Exception: ${e.message ?: "Unknown error"}")
         }
     }
 

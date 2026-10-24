@@ -9,7 +9,6 @@ import android.content.Intent
 import android.content.ServiceConnection
 import android.content.pm.PackageManager
 import android.os.IBinder
-import android.os.RemoteException
 import android.util.Log
 import com.buge.appmanager.util.AppGlobals
 import com.buge.appmanager.util.PreferencesManager
@@ -95,7 +94,7 @@ object DhizukuManager {
                 return
             }
 
-            Dhizuku.requestPermission(object : DhizukuRequestPermissionListener {
+            Dhizuku.requestPermission(object : DhizukuRequestPermissionListener() {
                 override fun onRequestPermission(grantResult: Int) {
                     if (grantResult == PackageManager.PERMISSION_GRANTED) {
                         Log.d(TAG, "Dhizuku permission granted via API")

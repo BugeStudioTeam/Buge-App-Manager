@@ -82,6 +82,12 @@ class SettingsFragment : Fragment() {
         }
     }
 
+    private val dhizukuConnectionListener = {
+        if (isAdded && view != null) {
+            binding.root.post { updateShizukuStatus() }
+        }
+    }
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -94,6 +100,7 @@ class SettingsFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         Shizuku.addRequestPermissionResultListener(shizukuPermissionListener)
+        DhizukuManager.addConnectionListener(dhizukuConnectionListener)
 
         setupBackPressedCallback()
         setupSearch()
@@ -120,6 +127,7 @@ class SettingsFragment : Fragment() {
     override fun onDestroyView() {
         super.onDestroyView()
         Shizuku.removeRequestPermissionResultListener(shizukuPermissionListener)
+        DhizukuManager.removeConnectionListener(dhizukuConnectionListener)
         _binding = null
     }
 

@@ -32,21 +32,41 @@ object DhizukuManager {
     private var serviceConnection: ServiceConnection? = null
     private var initialized = false
 
-    fun init(context: Context) {
-        if (initialized) return
-        try {
-            Dhizuku.init(context)
-            initialized = true
-            Log.d(TAG, "Dhizuku initialized")
+    private val connectionListeners = mutableListOf<() -> Unit>()
+
+    fun addConnectionListener(listener: () -> Unit) {
+        if (!connectionListeners.contains(listener)) {
+            connectionListeners.add(listener)
+        }
+    }
+
+    fun removeConnectionListener(listener: () -> Unit) {
+        connectionListeners.remove(listener)
+    }
+
+    private fun notifyConnected() {
+        connectionListeners.forEach { it.invoke() }
+    }
+
+    fun init(context: Context): Boolean {
+        if (initialized) return true
+        return try {
+            val success = Dhizuku.init(context)
+            initialized = success
+            Log.d(TAG, "Dhizuku initialized, result: $success")
+            success
         } catch (e: Exception) {
             Log.e(TAG, "Dhizuku init failed: ${e.message}", e)
+            false
         }
     }
 
     fun isPermissionGranted(): Boolean {
         return try {
             if (!initialized) {
-                init(AppGlobals.applicationContext)
+                if (!init(AppGlobals.applicationContext)) {
+                    return false
+                }
             }
             Dhizuku.isPermissionGranted()
         } catch (e: Exception) {
@@ -131,6 +151,7 @@ object DhizukuManager {
                         bound = true
                         Log.d(TAG, "Dhizuku service connected")
                         if (continuation.isActive) continuation.resume(true)
+                        notifyConnected()
                     } catch (e: Exception) {
                         Log.e(TAG, "Failed to bind Dhizuku service: ${e.message}", e)
                         bound = false
@@ -250,6 +271,7 @@ object DhizukuManager {
                         boundService = serviceInstance
                         bound = true
                         Log.d(TAG, "Dhizuku service connected (async)")
+                        notifyConnected()
                     } catch (e: Exception) {
                         Log.e(TAG, "Failed to bind Dhizuku service (async): ${e.message}", e)
                     }

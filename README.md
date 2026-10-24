@@ -18,7 +18,7 @@
 
 ---
 
-## 📸 Screenshots
+## Screenshots
 
 <div style="overflow-x: auto; white-space: nowrap; padding: 10px 0;">
 
@@ -30,9 +30,9 @@
 
 </div>
 
-## ✨ Features
+## Features
 
-### 🚀 Core Capabilities
+### Core Capabilities
 
 | Feature                             | Description                                                                      |
 | ----------------------------------- | -------------------------------------------------------------------------------- |
@@ -41,7 +41,7 @@
 | **App Management**                  | Browse and manage both user-installed and system applications with ease          |
 | **Material Design 3 Expressive UI** | Clean, system-themed interface that follows the latest Android design guidelines |
 
-### 📱 Apps Manager
+### Apps Manager
 
 - Manage any apps, **including system apps**
 
@@ -49,26 +49,26 @@
 
 - Allow **restoring uninstalled system apps**
 
-### 🔐 Permission Manager
+### Permission Manager
 
 - View and modify app permissions by **category**
 - Supported categories include: Microphone, Camera, Location access, Notifications, Phone & Contacts, Storage and other
 - Filter permissions by **granted** or **denied** status
 - Batch permission operations for multiple apps
 
-### 🧩 Activities Launcher
+### Activities Launcher
 
 - Browse and **launch** any activity
 - View unexported activities
 
-### 🛡️ Privacy & Security
+### Privacy & Security
 
 - Quickly identify which apps have access to sensitive permissions
 - Optimize your device's security posture with clear permission insights
 
 ---
 
-## 📋 Requirements
+## Requirements
 
 | Requirement | Minimum Version                       |
 | ----------- | ------------------------------------- |
@@ -82,7 +82,7 @@ Choose between **Shizuku** or **ROOT** authorization.
 
 ---
 
-## 🌐 Supported languages
+## Supported languages
 
 - English - en
 
@@ -112,7 +112,7 @@ Choose between **Shizuku** or **ROOT** authorization.
 
 ---
 
-## 📦 Installation
+## Installation
 
 [<img src="https://raw.githubusercontent.com/BugeStudioTeam/Buge-App-Manager/refs/heads/main/images/README/Release/get-it-on-github.svg"
     alt="Get it on GitHub"
@@ -124,7 +124,7 @@ Choose between **Shizuku** or **ROOT** authorization.
  
 ---
 
-## ⭐ Star History
+## Star History
 
 <a href="https://www.star-history.com/?repos=BugeStudioTeam%2FBuge-App-Manager&type=date&legend=top-left">
  <picture>
@@ -136,6 +136,6 @@ Choose between **Shizuku** or **ROOT** authorization.
 
 ---
 
-## 📄 License
+## License
 
 This project is licensed under the **GNU General Public License v3.0**.

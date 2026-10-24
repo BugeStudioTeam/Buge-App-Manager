@@ -44,6 +44,7 @@ object PreferencesManager {
     private const val APP_SOURCE_KEY = "app_source"
 
     const val AUTH_MODE_SHIZUKU = "shizuku"
+    const val AUTH_MODE_DHIZUKU = "dhizuku"
     const val AUTH_MODE_ROOT = "root"
     const val DEFAULT_SU_PATH = "su"
 

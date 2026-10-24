@@ -33,6 +33,7 @@ import com.buge.appmanager.R
 import com.buge.appmanager.RestoreAppsActivity
 import com.buge.appmanager.UpdateOptionsActivity
 import com.buge.appmanager.databinding.FragmentSettingsBinding
+import com.buge.appmanager.dhizuku.DhizukuManager
 import com.buge.appmanager.shizuku.ShizukuManager
 import com.buge.appmanager.util.FontOverrideHelper
 import com.buge.appmanager.util.LocaleManager
@@ -610,22 +611,30 @@ class SettingsFragment : Fragment() {
         saveScrollPosition()
         val options = arrayOf(
             getString(R.string.auth_mode_shizuku),
+            getString(R.string.auth_mode_dhizuku),
             getString(R.string.auth_mode_root)
         )
         val currentMode = PreferencesManager.getAuthMode(requireContext())
-        val currentIndex = if (currentMode == PreferencesManager.AUTH_MODE_ROOT) 1 else 0
+        val currentIndex = when (currentMode) {
+            PreferencesManager.AUTH_MODE_DHIZUKU -> 1
+            PreferencesManager.AUTH_MODE_ROOT -> 2
+            else -> 0
+        }
 
         MaterialAlertDialogBuilder(requireContext())
             .setTitle(R.string.auth_mode_title)
             .setSingleChoiceItems(options, currentIndex) { dialog, which ->
-                val newMode = if (which == 1) {
-                    PreferencesManager.AUTH_MODE_ROOT
-                } else {
-                    PreferencesManager.AUTH_MODE_SHIZUKU
+                val newMode = when (which) {
+                    1 -> PreferencesManager.AUTH_MODE_DHIZUKU
+                    2 -> PreferencesManager.AUTH_MODE_ROOT
+                    else -> PreferencesManager.AUTH_MODE_SHIZUKU
                 }
                 PreferencesManager.setAuthMode(requireContext(), newMode)
                 dialog.dismiss()
                 LogManager.info(requireContext(), "Authorization method changed", newMode)
+                if (newMode == PreferencesManager.AUTH_MODE_DHIZUKU) {
+                    ShizukuManager.ensureDhizukuBound()
+                }
                 rebuildSettingItems()
             }
             .show()
@@ -847,10 +856,10 @@ class SettingsFragment : Fragment() {
         }
 
         val authMode = PreferencesManager.getAuthMode(requireContext())
-        val authModeText = if (authMode == PreferencesManager.AUTH_MODE_ROOT) {
-            getString(R.string.auth_mode_root)
-        } else {
-            getString(R.string.auth_mode_shizuku)
+        val authModeText = when (authMode) {
+            PreferencesManager.AUTH_MODE_DHIZUKU -> getString(R.string.auth_mode_dhizuku)
+            PreferencesManager.AUTH_MODE_ROOT -> getString(R.string.auth_mode_root)
+            else -> getString(R.string.auth_mode_shizuku)
         }
         val rootSuPath = PreferencesManager.getRootSuPath(requireContext())
 
@@ -954,7 +963,9 @@ class SettingsFragment : Fragment() {
     private fun updateShizukuStatus() {
         if (!isAdded || view == null) return
         try {
-            val isRootMode = PreferencesManager.getAuthMode(requireContext()) == PreferencesManager.AUTH_MODE_ROOT
+            val authMode = PreferencesManager.getAuthMode(requireContext())
+            val isRootMode = authMode == PreferencesManager.AUTH_MODE_ROOT
+            val isDhizukuMode = authMode == PreferencesManager.AUTH_MODE_DHIZUKU
 
             val statusText: String
             val iconRes: Int
@@ -983,6 +994,36 @@ class SettingsFragment : Fragment() {
                 }
                 titleText = getString(R.string.root_authorization_title)
                 descText = getString(R.string.root_authorization_desc)
+            } else if (isDhizukuMode) {
+                val isAvailable = ShizukuManager.isDhizukuAvailable()
+                val hasPermission = DhizukuManager.hasDhizukuPermission()
+                val isAuthorized = ShizukuManager.isDhizukuAuthorized()
+
+                when {
+                    isAvailable && hasPermission && isAuthorized -> {
+                        statusText = getString(R.string.dhizuku_status_ok)
+                        iconRes = R.drawable.ic_shield
+                        buttonEnabled = false
+                        buttonText = getString(R.string.shizuku_authorized)
+                        statusColor = ContextCompat.getColor(requireContext(), R.color.color_granted)
+                    }
+                    isAvailable && !hasPermission -> {
+                        statusText = getString(R.string.dhizuku_status_no_auth)
+                        iconRes = R.drawable.ic_shield_badge_x
+                        buttonEnabled = true
+                        buttonText = getString(R.string.dhizuku_request_auth)
+                        statusColor = ContextCompat.getColor(requireContext(), com.google.android.material.R.color.design_default_color_error)
+                    }
+                    else -> {
+                        statusText = getString(R.string.dhizuku_status_not_installed)
+                        iconRes = R.drawable.ic_shield_badge_x
+                        buttonEnabled = true
+                        buttonText = getString(R.string.dhizuku_install)
+                        statusColor = ContextCompat.getColor(requireContext(), com.google.android.material.R.color.design_default_color_error)
+                    }
+                }
+                titleText = getString(R.string.dhizuku_title)
+                descText = getString(R.string.dhizuku_desc)
             } else {
                 val isAvailable = ShizukuManager.isShizukuAvailable()
                 val hasPermission = ShizukuManager.hasShizukuPermission()
@@ -1034,12 +1075,32 @@ class SettingsFragment : Fragment() {
                     requestButton?.isEnabled = buttonEnabled
                     requestButton?.text = buttonText
                     requestButton?.setOnClickListener {
-                        if (isRootMode) {
-                            SnackbarHelper.showSnackbar(binding.root, getString(R.string.root_authorization_desc))
-                        } else if (!ShizukuManager.isShizukuAvailable()) {
-                            showShizukuGuideDialog()
-                        } else {
-                            ShizukuManager.requestShizukuPermission()
+                        when {
+                            isRootMode -> {
+                                SnackbarHelper.showSnackbar(binding.root, getString(R.string.root_authorization_desc))
+                            }
+                            isDhizukuMode -> {
+                                if (!ShizukuManager.isDhizukuAvailable()) {
+                                    try {
+                                        val intent = Intent(Intent.ACTION_VIEW, Uri.parse("https://github.com/iamr0s/Dhizuku"))
+                                        startActivity(intent)
+                                    } catch (e: Exception) {
+                                        SnackbarHelper.showSnackbar(binding.root, "Cannot open browser")
+                                    }
+                                } else if (!DhizukuManager.hasDhizukuPermission()) {
+                                    DhizukuManager.requestDhizukuPermission()
+                                } else {
+                                    ShizukuManager.ensureDhizukuBound()
+                                    binding.root.postDelayed({ updateShizukuStatus() }, 500)
+                                }
+                            }
+                            else -> {
+                                if (!ShizukuManager.isShizukuAvailable()) {
+                                    showShizukuGuideDialog()
+                                } else {
+                                    ShizukuManager.requestShizukuPermission()
+                                }
+                            }
                         }
                     }
                     break

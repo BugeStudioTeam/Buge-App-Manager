@@ -99,6 +99,7 @@ dependencies {
     implementation("com.google.android.material:material:1.14.0")
     implementation("dev.rikka.shizuku:api:13.1.5")
     implementation("dev.rikka.shizuku:provider:13.1.5")
+    implementation("com.github.iamr0s:Dhizuku-API:2.5.4")
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.7.3")
     implementation("com.github.bumptech.glide:glide:5.0.5")
     implementation("androidx.dynamicanimation:dynamicanimation:1.1.0")

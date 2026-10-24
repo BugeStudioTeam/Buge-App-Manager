@@ -5,6 +5,7 @@ package com.buge.appmanager.dhizuku
 
 import android.annotation.SuppressLint
 import android.app.admin.DevicePolicyManager
+import android.app.admin.IDevicePolicyManager
 import android.content.ComponentName
 import android.content.Context
 import android.content.pm.PackageManager
@@ -133,9 +134,7 @@ object DhizukuManager {
             }
             val oldBinder = oldInterface as IBinder
             val newBinder = Dhizuku.binderWrapper(oldBinder)
-            val newInterface = Class.forName("android.app.admin.IDevicePolicyManager\$Stub")
-                .getMethod("asInterface", IBinder::class.java)
-                .invoke(null, newBinder)
+            val newInterface = IDevicePolicyManager.Stub.asInterface(newBinder)
             field.set(manager, newInterface)
 
             cachedDpm = manager

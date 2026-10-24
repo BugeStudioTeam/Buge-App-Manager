@@ -231,7 +231,8 @@ object ShizukuManager {
         }
 
         if (isDhizukuMode()) {
-            return executeCommand("dpm set-permission-grant-state --user 0 $packageName $permission grant")
+            val opName = permission.substringAfterLast(".")
+            return executeCommand("appops set $packageName $opName allow")
         }
 
         return when (permission) {
@@ -259,7 +260,8 @@ object ShizukuManager {
         }
 
         if (isDhizukuMode()) {
-            return executeCommand("dpm set-permission-grant-state --user 0 $packageName $permission deny")
+            val opName = permission.substringAfterLast(".")
+            return executeCommand("appops set $packageName $opName ignore")
         }
 
         return when (permission) {

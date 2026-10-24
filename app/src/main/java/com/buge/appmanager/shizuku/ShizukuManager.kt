@@ -150,7 +150,7 @@ object ShizukuManager {
     fun ensureDhizukuBound() {
         try {
             if (isDhizukuMode()) {
-                DhizukuManager.ensureBound(AppGlobals.applicationContext)
+                DhizukuManager.init(AppGlobals.applicationContext)
             }
         } catch (e: Exception) {
             Log.w(TAG, "ensureDhizukuBound error: ${e.message}")
@@ -166,16 +166,7 @@ object ShizukuManager {
     }
 
     private suspend fun executeViaDhizuku(command: String): ShizukuResult = withContext(Dispatchers.IO) {
-        if (!DhizukuManager.isPermissionGranted()) {
-            return@withContext ShizukuResult(false, "", "Dhizuku permission not granted")
-        }
         try {
-            if (!DhizukuManager.isDhizukuRunning()) {
-                val bound = DhizukuManager.bindService()
-                if (!bound) {
-                    return@withContext ShizukuResult(false, "", "Failed to bind Dhizuku service")
-                }
-            }
             val result = DhizukuManager.executeCommand(command)
             ShizukuResult(result.success, result.output, result.error)
         } catch (e: Exception) {

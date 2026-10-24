@@ -3,6 +3,7 @@
 
 package com.buge.appmanager.dhizuku
 
+import android.annotation.SuppressLint
 import android.app.admin.DevicePolicyManager
 import android.content.ComponentName
 import android.content.Context
@@ -10,17 +11,18 @@ import android.content.pm.PackageManager
 import android.os.IBinder
 import android.util.Log
 import com.buge.appmanager.util.AppGlobals
-import com.buge.appmanager.util.PreferencesManager
 import com.rosan.dhizuku.api.Dhizuku
+import com.rosan.dhizuku.api.DhizukuBinderWrapper
 import com.rosan.dhizuku.api.DhizukuRequestPermissionListener
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.withContext
 
 object DhizukuManager {
     private const val TAG = "DhizukuManager"
 
     private val connectionListeners = mutableListOf<() -> Unit>()
     private var initialized = false
+
+    @Volatile
+    private var cachedDpm: DevicePolicyManager? = null
 
     fun addConnectionListener(listener: () -> Unit) {
         if (!connectionListeners.contains(listener)) {
@@ -73,6 +75,7 @@ object DhizukuManager {
             init(context)
             if (Dhizuku.isPermissionGranted()) {
                 Log.d(TAG, "Dhizuku permission already granted")
+                invalidateDpm()
                 notifyConnected()
                 return
             }
@@ -81,6 +84,7 @@ object DhizukuManager {
                 override fun onRequestPermission(grantResult: Int) {
                     if (grantResult == PackageManager.PERMISSION_GRANTED) {
                         Log.d(TAG, "Dhizuku permission granted via API")
+                        invalidateDpm()
                         notifyConnected()
                     } else {
                         Log.w(TAG, "Dhizuku permission denied via API")
@@ -92,86 +96,70 @@ object DhizukuManager {
         }
     }
 
-    fun setPermissionState(packageName: String, permission: String, grant: Boolean): Boolean {
+    fun invalidateDpm() {
+        cachedDpm = null
+    }
+
+    @SuppressLint("PrivateApi")
+    fun getWrappedDevicePolicyManager(): DevicePolicyManager? {
+        cachedDpm?.let { return it }
         return try {
-            val binder: IBinder = try {
-                val method = Dhizuku::class.java.getMethod("getBinderWrapper")
-                method.invoke(null) as IBinder
-            } catch (e: Exception) {
-                null
-            } ?: run {
-                Log.w(TAG, "Dhizuku binder wrapper is null")
-                return false
+            if (!isPermissionGranted()) {
+                return null
             }
 
-            val iDpmClass = Class.forName("android.app.admin.IDevicePolicyManager")
-            val stubClass = Class.forName("android.app.admin.IDevicePolicyManager\$Stub")
-            val asInterfaceMethod = stubClass.getMethod("asInterface", IBinder::class.java)
-            val dpmBinder = asInterfaceMethod.invoke(null, binder)
-
-            val dpmClass = DevicePolicyManager::class.java
-            val contextClass = Context::class.java
-            val constructor = dpmClass.getDeclaredConstructor(contextClass, iDpmClass)
-            constructor.isAccessible = true
-            val dpm = constructor.newInstance(AppGlobals.applicationContext, dpmBinder)
-
+            val context = AppGlobals.applicationContext
             val ownerComponent = Dhizuku.getOwnerComponent() ?: run {
                 Log.w(TAG, "Owner component is null")
-                return false
+                return null
             }
 
-            val state = if (grant) {
-                1 // PERMISSION_GRANT_STATE_GRANTED
-            } else {
-                0 // PERMISSION_GRANT_STATE_DEFAULT
-            }
-
-            val setPermissionMethod = dpmClass.getMethod(
-                "setPermissionGrantState",
-                ComponentName::class.java,
-                String::class.java,
-                String::class.java,
-                Int::class.javaPrimitiveType
+            val ownerContext = context.createPackageContext(
+                ownerComponent.packageName,
+                Context.CONTEXT_IGNORE_SECURITY
             )
+            val manager = ownerContext.getSystemService(Context.DEVICE_POLICY_SERVICE)
+                as DevicePolicyManager
 
-            val result = setPermissionMethod.invoke(dpm, ownerComponent, packageName, permission, state) as? Boolean ?: false
-            Log.d(TAG, "setPermissionGrantState result: $result")
-            result
+            val field = manager.javaClass.getDeclaredField("mService")
+            field.isAccessible = true
+            val oldInterface = field.get(manager)
+            if (oldInterface is DhizukuBinderWrapper) {
+                cachedDpm = manager
+                return manager
+            }
+            val oldBinder = (oldInterface as IBinder)
+            val newBinder = Dhizuku.binderWrapper(oldBinder)
+            val newInterface = Class.forName("android.app.admin.IDevicePolicyManager\$Stub")
+                .getMethod("asInterface", IBinder::class.java)
+                .invoke(null, newBinder)
+            field.set(manager, newInterface)
+
+            cachedDpm = manager
+            Log.d(TAG, "Wrapped DevicePolicyManager acquired")
+            manager
         } catch (e: Exception) {
-            Log.e(TAG, "setPermissionState failed: ${e.message}", e)
-            false
+            Log.e(TAG, "getWrappedDevicePolicyManager failed: ${e.message}", e)
+            null
         }
     }
 
-    suspend fun executeCommand(command: String): DhizukuResult = withContext(Dispatchers.IO) {
-        try {
-            if (!isPermissionGranted()) {
-                return@withContext DhizukuResult(false, "", "Dhizuku permission not granted")
-            }
-
-            val process = Dhizuku.newProcess(arrayOf("sh", "-c", command), null, null)
-                ?: return@withContext DhizukuResult(false, "", "Failed to create Dhizuku process")
-
-            val output = process.inputStream.bufferedReader().use { it.readText() }
-            val error = process.errorStream.bufferedReader().use { it.readText() }
-            val exitCode = process.waitFor()
-
-            if (exitCode == 0) {
-                DhizukuResult(true, output.trim(), "")
-            } else {
-                DhizukuResult(false, output.trim(), error.trim().ifEmpty { "Exit code: $exitCode" })
-            }
+    fun getOwnerComponent(): ComponentName? {
+        return try {
+            Dhizuku.getOwnerComponent()
         } catch (e: Exception) {
-            Log.e(TAG, "Dhizuku command execution failed: ${e.message}", e)
-            DhizukuResult(false, "", "Exception: ${e.message ?: "Unknown error"}")
+            Log.e(TAG, "Failed to get owner component: ${e.message}", e)
+            null
         }
     }
 
     fun getAuthModeLabel(): String {
         return try {
-            when (PreferencesManager.getAuthMode(AppGlobals.applicationContext)) {
-                PreferencesManager.AUTH_MODE_DHIZUKU -> "Dhizuku"
-                PreferencesManager.AUTH_MODE_ROOT -> "Root"
+            when (com.buge.appmanager.util.PreferencesManager.getAuthMode(
+                AppGlobals.applicationContext
+            )) {
+                com.buge.appmanager.util.PreferencesManager.AUTH_MODE_DHIZUKU -> "Dhizuku"
+                com.buge.appmanager.util.PreferencesManager.AUTH_MODE_ROOT -> "Root"
                 else -> "Shizuku"
             }
         } catch (e: Exception) {
@@ -179,9 +167,3 @@ object DhizukuManager {
         }
     }
 }
-
-data class DhizukuResult(
-    val success: Boolean,
-    val output: String,
-    val error: String
-)

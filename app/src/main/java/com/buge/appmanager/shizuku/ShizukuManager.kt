@@ -4,7 +4,6 @@
 package com.buge.appmanager.shizuku
 
 import android.Manifest
-import android.app.admin.DevicePolicyManager
 import android.content.ComponentName
 import android.content.Context
 import android.content.pm.PackageManager
@@ -168,21 +167,8 @@ object ShizukuManager {
 
     private suspend fun executeViaDhizukuShell(command: String): ShizukuResult =
         withContext(Dispatchers.IO) {
-            try {
-                val process = Dhizuku.newProcess(arrayOf("sh", "-c", command), null, null)
-                    ?: return@withContext ShizukuResult(false, "", "Failed to create Dhizuku process")
-                val output = process.inputStream.bufferedReader().use { it.readText() }
-                val error = process.errorStream.bufferedReader().use { it.readText() }
-                val exitCode = process.waitFor()
-                if (exitCode == 0) {
-                    ShizukuResult(true, output.trim(), "")
-                } else {
-                    ShizukuResult(false, output.trim(), error.trim().ifEmpty { "Exit code: $exitCode" })
-                }
-            } catch (e: Exception) {
-                Log.e(TAG, "Dhizuku shell failed: ${e.message}", e)
-                ShizukuResult(false, "", "Exception: ${e.message ?: "Unknown error"}")
-            }
+            val result = DhizukuManager.executeCommand(command)
+            ShizukuResult(result.success, result.output, result.error)
         }
 
     private suspend fun executeViaShizuku(command: String): ShizukuResult = withContext(Dispatchers.IO) {
@@ -235,34 +221,6 @@ object ShizukuManager {
         result
     }
 
-    private fun setPermissionViaDhizuku(
-        packageName: String, permission: String, grant: Boolean
-    ): ShizukuResult {
-        return try {
-            val dpm = DhizukuManager.getWrappedDevicePolicyManager()
-                ?: return ShizukuResult(false, "", "Failed to get wrapped DevicePolicyManager")
-            val admin = DhizukuManager.getOwnerComponent()
-                ?: return ShizukuResult(false, "", "Failed to get owner component")
-
-            val state = if (grant) {
-                DevicePolicyManager.PERMISSION_GRANT_STATE_GRANTED
-            } else {
-                DevicePolicyManager.PERMISSION_GRANT_STATE_DENIED
-            }
-
-            val result = dpm.setPermissionGrantState(admin, packageName, permission, state)
-            Log.d(TAG, "setPermissionGrantState($packageName, $permission, $state) = $result")
-            if (result) {
-                ShizukuResult(true, "", "")
-            } else {
-                ShizukuResult(false, "", "setPermissionGrantState returned false")
-            }
-        } catch (e: Exception) {
-            Log.e(TAG, "setPermissionViaDhizuku failed: ${e.message}", e)
-            ShizukuResult(false, "", "Exception: ${e.message ?: "Unknown error"}")
-        }
-    }
-
     suspend fun grantPermission(packageName: String, permission: String): ShizukuResult {
         if (!isSafeShellArg(packageName, "packageName")) {
             return ShizukuResult(false, "", "Unsafe package name")
@@ -270,7 +228,9 @@ object ShizukuManager {
 
         if (isDhizukuMode()) {
             return withContext(Dispatchers.IO) {
-                setPermissionViaDhizuku(packageName, permission, true)
+                val success = DhizukuManager.setPermissionState(packageName, permission, true)
+                if (success) ShizukuResult(true, "", "")
+                else ShizukuResult(false, "", "Dhizuku setPermissionGrantState failed")
             }
         }
 
@@ -300,7 +260,9 @@ object ShizukuManager {
 
         if (isDhizukuMode()) {
             return withContext(Dispatchers.IO) {
-                setPermissionViaDhizuku(packageName, permission, false)
+                val success = DhizukuManager.setPermissionState(packageName, permission, false)
+                if (success) ShizukuResult(true, "", "")
+                else ShizukuResult(false, "", "Dhizuku setPermissionGrantState failed")
             }
         }
 

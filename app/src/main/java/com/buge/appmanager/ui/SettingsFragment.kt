@@ -633,7 +633,7 @@ class SettingsFragment : Fragment() {
                 dialog.dismiss()
                 LogManager.info(requireContext(), "Authorization method changed", newMode)
                 if (newMode == PreferencesManager.AUTH_MODE_DHIZUKU) {
-                    ShizukuManager.ensureDhizukuBound()
+                    DhizukuManager.initDhizuku()
                 }
                 rebuildSettingItems()
             }
@@ -995,10 +995,9 @@ class SettingsFragment : Fragment() {
                 titleText = getString(R.string.root_authorization_title)
                 descText = getString(R.string.root_authorization_desc)
             } else if (isDhizukuMode) {
-                val hasPermission = DhizukuManager.hasDhizukuPermission()
                 val isAuthorized = ShizukuManager.isDhizukuAuthorized()
 
-                if (hasPermission && isAuthorized) {
+                if (isAuthorized) {
                     statusText = getString(R.string.dhizuku_status_ok)
                     iconRes = R.drawable.ic_shield
                     buttonEnabled = false
@@ -1069,11 +1068,17 @@ class SettingsFragment : Fragment() {
                                 SnackbarHelper.showSnackbar(binding.root, getString(R.string.root_authorization_desc))
                             }
                             isDhizukuMode -> {
-                                if (!DhizukuManager.hasDhizukuPermission()) {
-                                    DhizukuManager.requestDhizukuPermission()
-                                } else {
-                                    ShizukuManager.ensureDhizukuBound()
-                                    binding.root.postDelayed({ updateShizukuStatus() }, 500)
+                                DhizukuManager.requestDhizukuPermission { granted ->
+                                    binding.root.post {
+                                        updateShizukuStatus()
+                                        if (granted) {
+                                            SnackbarHelper.showSnackbar(binding.root, getString(R.string.shizuku_authorized))
+                                            LogManager.info(requireContext(), "Dhizuku authorized")
+                                        } else {
+                                            SnackbarHelper.showSnackbar(binding.root, getString(R.string.shizuku_not_authorized))
+                                            LogManager.warning(requireContext(), "Dhizuku authorization failed")
+                                        }
+                                    }
                                 }
                             }
                             else -> {

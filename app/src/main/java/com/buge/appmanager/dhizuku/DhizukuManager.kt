@@ -12,11 +12,10 @@ import android.os.IBinder
 import android.util.Log
 import com.buge.appmanager.util.AppGlobals
 import com.buge.appmanager.util.PreferencesManager
-import com.iamr0s.dhizuku.Dhizuku
-import com.iamr0s.dhizuku.DhizukuRequestPermissionListener
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.suspendCancellableCoroutine
 import kotlinx.coroutines.withContext
+import java.lang.reflect.Proxy
 import kotlin.coroutines.resume
 
 object DhizukuManager {
@@ -26,7 +25,8 @@ object DhizukuManager {
     private const val DHIZUKU_SERVICE = "com.iamr0s.Dhizuku.server.DhizukuService"
     private const val DHIZUKU_PERMISSION = "com.iamr0s.Dhizuku.permission.DHIZUKU_PERMISSION"
 
-    private const val REQUEST_CODE_AUTHORIZATION = 2001
+    private const val DHIZUKU_CLASS = "com.iamr0s.dhizuku.Dhizuku"
+    private const val LISTENER_CLASS = "com.iamr0s.dhizuku.DhizukuRequestPermissionListener"
 
     private var boundService: Any? = null
     private var bound = false
@@ -37,7 +37,9 @@ object DhizukuManager {
     fun init(context: Context) {
         if (initialized) return
         try {
-            Dhizuku.init(context)
+            val clazz = Class.forName(DHIZUKU_CLASS)
+            val method = clazz.getMethod("init", Context::class.java)
+            method.invoke(null, context)
             initialized = true
             Log.d(TAG, "Dhizuku initialized")
         } catch (e: Exception) {
@@ -50,7 +52,9 @@ object DhizukuManager {
             if (!initialized) {
                 init(AppGlobals.applicationContext)
             }
-            Dhizuku.isPermissionGranted()
+            val clazz = Class.forName(DHIZUKU_CLASS)
+            val method = clazz.getMethod("isPermissionGranted")
+            method.invoke(null) as? Boolean ?: false
         } catch (e: Exception) {
             Log.w(TAG, "isPermissionGranted failed: ${e.message}")
             false
@@ -95,8 +99,17 @@ object DhizukuManager {
                 bindServiceAsync(context)
                 return
             }
-            Dhizuku.requestPermission(object : DhizukuRequestPermissionListener {
-                override fun onRequestPermission(grantResult: Int) {
+
+            val clazz = Class.forName(DHIZUKU_CLASS)
+            val listenerClass = Class.forName(LISTENER_CLASS)
+            val requestMethod = clazz.getMethod("requestPermission", listenerClass)
+
+            val listener = Proxy.newProxyInstance(
+                listenerClass.classLoader,
+                arrayOf(listenerClass)
+            ) { _, method, args ->
+                if (method.name == "onRequestPermission") {
+                    val grantResult = args?.getOrNull(0) as? Int ?: PackageManager.PERMISSION_DENIED
                     if (grantResult == PackageManager.PERMISSION_GRANTED) {
                         Log.d(TAG, "Dhizuku permission granted via API")
                         bindServiceAsync(context)
@@ -104,7 +117,10 @@ object DhizukuManager {
                         Log.w(TAG, "Dhizuku permission denied via API")
                     }
                 }
-            })
+                null
+            }
+
+            requestMethod.invoke(null, listener)
         } catch (e: Exception) {
             Log.e(TAG, "requestDhizukuPermission failed: ${e.message}", e)
         }

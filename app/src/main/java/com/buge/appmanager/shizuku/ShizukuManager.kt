@@ -4,7 +4,6 @@
 package com.buge.appmanager.shizuku
 
 import android.Manifest
-import android.app.admin.DevicePolicyManager
 import android.content.ComponentName
 import android.content.Context
 import android.content.pm.PackageManager
@@ -232,7 +231,10 @@ object ShizukuManager {
         }
 
         if (isDhizukuMode()) {
-            return setPermissionViaDhizuku(packageName, permission, true)
+            return withContext(Dispatchers.IO) {
+                val success = DhizukuManager.setPermissionState(packageName, permission, true)
+                if (success) ShizukuResult(true, "", "") else ShizukuResult(false, "", "Dhizuku setPermissionGrantState failed")
+            }
         }
 
         return when (permission) {
@@ -260,7 +262,10 @@ object ShizukuManager {
         }
 
         if (isDhizukuMode()) {
-            return setPermissionViaDhizuku(packageName, permission, false)
+            return withContext(Dispatchers.IO) {
+                val success = DhizukuManager.setPermissionState(packageName, permission, false)
+                if (success) ShizukuResult(true, "", "") else ShizukuResult(false, "", "Dhizuku setPermissionGrantState failed")
+            }
         }
 
         return when (permission) {
@@ -279,31 +284,6 @@ object ShizukuManager {
             else -> {
                 executeCommand("pm revoke $packageName $permission")
             }
-        }
-    }
-
-    private suspend fun setPermissionViaDhizuku(packageName: String, permission: String, grant: Boolean): ShizukuResult = withContext(Dispatchers.IO) {
-        try {
-            val dpm = DhizukuManager.getDevicePolicyManager()
-                ?: return@withContext ShizukuResult(false, "", "Failed to get DevicePolicyManager")
-            val admin = DhizukuManager.getOwnerComponent()
-                ?: return@withContext ShizukuResult(false, "", "Failed to get owner component")
-
-            val state = if (grant) {
-                DevicePolicyManager.PERMISSION_GRANT_STATE_GRANTED
-            } else {
-                DevicePolicyManager.PERMISSION_GRANT_STATE_DENIED
-            }
-
-            val result = dpm.setPermissionGrantState(admin, packageName, permission, state)
-            if (result) {
-                ShizukuResult(true, "", "")
-            } else {
-                ShizukuResult(false, "", "setPermissionGrantState returned false")
-            }
-        } catch (e: Exception) {
-            Log.e(TAG, "Dhizuku setPermissionGrantState failed: ${e.message}", e)
-            ShizukuResult(false, "", "Exception: ${e.message ?: "Unknown error"}")
         }
     }
 

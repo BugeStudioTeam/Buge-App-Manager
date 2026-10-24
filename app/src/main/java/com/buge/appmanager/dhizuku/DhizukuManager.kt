@@ -4,7 +4,6 @@
 package com.buge.appmanager.dhizuku
 
 import android.app.admin.DevicePolicyManager
-import android.app.admin.IDevicePolicyManager
 import android.content.ComponentName
 import android.content.Context
 import android.content.pm.PackageManager
@@ -93,37 +92,54 @@ object DhizukuManager {
         }
     }
 
-    fun getDevicePolicyManager(): DevicePolicyManager? {
+    fun setPermissionState(packageName: String, permission: String, grant: Boolean): Boolean {
         return try {
-            val binder: IBinder? = try {
+            val binder: IBinder = try {
                 val method = Dhizuku::class.java.getMethod("getBinderWrapper")
-                method.invoke(null) as? IBinder
+                method.invoke(null) as IBinder
             } catch (e: Exception) {
                 null
-            }
-
-            if (binder == null) {
+            } ?: run {
                 Log.w(TAG, "Dhizuku binder wrapper is null")
-                return null
+                return false
             }
 
-            val dpmBinder = IDevicePolicyManager.Stub.asInterface(binder)
-            val dpmClass = DevicePolicyManager::class.java
-            val constructor = dpmClass.getDeclaredConstructor(Context::class.java, IDevicePolicyManager::class.java)
-            constructor.isAccessible = true
-            constructor.newInstance(AppGlobals.applicationContext, dpmBinder) as DevicePolicyManager
-        } catch (e: Exception) {
-            Log.e(TAG, "Failed to get DevicePolicyManager: ${e.message}", e)
-            null
-        }
-    }
+            val iDpmClass = Class.forName("android.app.admin.IDevicePolicyManager")
+            val stubClass = Class.forName("android.app.admin.IDevicePolicyManager\$Stub")
+            val asInterfaceMethod = stubClass.getMethod("asInterface", IBinder::class.java)
+            val dpmBinder = asInterfaceMethod.invoke(null, binder)
 
-    fun getOwnerComponent(): ComponentName? {
-        return try {
-            Dhizuku.getOwnerComponent()
+            val dpmClass = DevicePolicyManager::class.java
+            val contextClass = Context::class.java
+            val constructor = dpmClass.getDeclaredConstructor(contextClass, iDpmClass)
+            constructor.isAccessible = true
+            val dpm = constructor.newInstance(AppGlobals.applicationContext, dpmBinder)
+
+            val ownerComponent = Dhizuku.getOwnerComponent() ?: run {
+                Log.w(TAG, "Owner component is null")
+                return false
+            }
+
+            val state = if (grant) {
+                1 // PERMISSION_GRANT_STATE_GRANTED
+            } else {
+                2 // PERMISSION_GRANT_STATE_DENIED
+            }
+
+            val setPermissionMethod = dpmClass.getMethod(
+                "setPermissionGrantState",
+                ComponentName::class.java,
+                String::class.java,
+                String::class.java,
+                Int::class.javaPrimitiveType
+            )
+
+            val result = setPermissionMethod.invoke(dpm, ownerComponent, packageName, permission, state) as? Boolean ?: false
+            Log.d(TAG, "setPermissionGrantState result: $result")
+            result
         } catch (e: Exception) {
-            Log.e(TAG, "Failed to get owner component: ${e.message}", e)
-            null
+            Log.e(TAG, "setPermissionState failed: ${e.message}", e)
+            false
         }
     }
 

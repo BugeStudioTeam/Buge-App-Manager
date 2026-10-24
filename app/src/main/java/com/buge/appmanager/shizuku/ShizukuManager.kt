@@ -229,6 +229,11 @@ object ShizukuManager {
         if (!isSafeShellArg(packageName, "packageName")) {
             return ShizukuResult(false, "", "Unsafe package name")
         }
+
+        if (isDhizukuMode()) {
+            return executeCommand("dpm set-permission-grant-state $packageName $permission granted")
+        }
+
         return when (permission) {
             "android.permission.WRITE_SETTINGS" -> {
                 executeCommand("appops set $packageName WRITE_SETTINGS allow")
@@ -252,6 +257,11 @@ object ShizukuManager {
         if (!isSafeShellArg(packageName, "packageName")) {
             return ShizukuResult(false, "", "Unsafe package name")
         }
+
+        if (isDhizukuMode()) {
+            return executeCommand("dpm set-permission-grant-state $packageName $permission denied")
+        }
+
         return when (permission) {
             "android.permission.WRITE_SETTINGS" -> {
                 executeCommand("appops set $packageName WRITE_SETTINGS deny")

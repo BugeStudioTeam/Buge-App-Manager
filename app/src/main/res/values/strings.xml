@@ -124,6 +124,16 @@
     <string name="shizuku_not_running">Not Running</string>
     <string name="shizuku_request_auth">Request Authorization</string>
 
+    <!-- Dhizuku -->
+    <string name="auth_mode_dhizuku">Dhizuku</string>
+    <string name="dhizuku_title">Dhizuku Authorization</string>
+    <string name="dhizuku_desc">Dhizuku is an alternative privilege backend based on Device Owner. It can manage app permissions and perform advanced operations without Shizuku or Root. Please authorize this app in Dhizuku.</string>
+    <string name="dhizuku_status_ok">Authorized and running</string>
+    <string name="dhizuku_status_no_auth">Running but not authorized</string>
+    <string name="dhizuku_status_not_installed">Dhizuku not installed</string>
+    <string name="dhizuku_request_auth">Request Authorization</string>
+    <string name="dhizuku_install">Install Dhizuku</string>
+
     <!-- Root / Authorization Method -->
     <string name="pref_auth_mode">Authorization Method</string>
     <string name="auth_mode_title">Authorization Method</string>

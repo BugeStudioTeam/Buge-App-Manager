@@ -10,6 +10,7 @@ import android.content.pm.PackageManager
 import android.provider.Settings
 import android.util.Log
 import android.view.KeyEvent
+import com.buge.appmanager.dhizuku.DhizukuManager
 import com.buge.appmanager.root.RootManager
 import com.buge.appmanager.util.AppGlobals
 import com.buge.appmanager.util.PreferencesManager
@@ -29,15 +30,8 @@ object ShizukuManager {
     private const val KEY_VOICE_INTERACTION = "voice_interaction_service"
     private const val ASSIST_LAUNCH_WINDOW_MS = 2000L
 
-    // Security: Shell metacharacters that enable command injection.
-    // Any string interpolated into a shell command must pass this check.
     private val SHELL_METACHARS = Regex("""[;|&`$()><\n\r\t'"]""")
 
-    /**
-     * Validates a string is safe for interpolation into a shell command.
-     * Package names from Android PackageManager are safe by design,
-     * but this provides defense-in-depth against future injection risks.
-     */
     private fun isSafeShellArg(arg: String, label: String): Boolean {
         return if (SHELL_METACHARS.containsMatchIn(arg)) {
             Log.w(TAG, "Rejected unsafe $label containing shell metacharacters")
@@ -79,14 +73,27 @@ object ShizukuManager {
         }
     }
 
-    /**
-     * Whether the selected privilege backend is root (as opposed to Shizuku).
-     * Public so UI layers can decide whether shell-only operations (such as
-     * launching a non-exported activity) are permitted.
-     */
     fun isRootMode(): Boolean {
         return try {
             PreferencesManager.getAuthMode(AppGlobals.applicationContext) == PreferencesManager.AUTH_MODE_ROOT
+        } catch (e: Exception) {
+            Log.w(TAG, "Error reading auth mode: ${e.message}")
+            false
+        }
+    }
+
+    fun isDhizukuMode(): Boolean {
+        return try {
+            PreferencesManager.getAuthMode(AppGlobals.applicationContext) == PreferencesManager.AUTH_MODE_DHIZUKU
+        } catch (e: Exception) {
+            Log.w(TAG, "Error reading auth mode: ${e.message}")
+            false
+        }
+    }
+
+    fun isShizukuMode(): Boolean {
+        return try {
+            PreferencesManager.getAuthMode(AppGlobals.applicationContext) == PreferencesManager.AUTH_MODE_SHIZUKU
         } catch (e: Exception) {
             Log.w(TAG, "Error reading auth mode: ${e.message}")
             false
@@ -110,33 +117,59 @@ object ShizukuManager {
         }
     }
 
-    /**
-     * Whether the currently selected privilege backend (Shizuku or root)
-     * is available and authorized.
-     */
+    fun isDhizukuAuthorized(): Boolean {
+        return try {
+            DhizukuManager.isDhizukuAuthorized()
+        } catch (e: Exception) {
+            Log.w(TAG, "Error checking Dhizuku authorization: ${e.message}")
+            false
+        }
+    }
+
     fun isAuthorized(): Boolean {
-        return if (isRootMode()) {
-            isRootAvailable()
-        } else {
-            isShizukuAvailable() && hasShizukuPermission()
+        return when {
+            isRootMode() -> isRootAvailable()
+            isDhizukuMode() -> isDhizukuAuthorized()
+            else -> isShizukuAvailable() && hasShizukuPermission()
         }
     }
 
     fun requestAuthorization() {
-        if (isRootMode()) {
-            // Root has no per-app authorization flow; the su manager may
-            // prompt on first command execution. Re-check current status.
-        } else {
-            requestShizukuPermission()
+        when {
+            isRootMode() -> {
+            }
+            isDhizukuMode() -> {
+                DhizukuManager.requestDhizukuPermission()
+            }
+            else -> {
+                requestShizukuPermission()
+            }
+        }
+    }
+
+    fun ensureDhizukuBound() {
+        try {
+            if (isDhizukuMode()) {
+                DhizukuManager.init(AppGlobals.applicationContext)
+            }
+        } catch (e: Exception) {
+            Log.w(TAG, "ensureDhizukuBound error: ${e.message}")
         }
     }
 
     suspend fun executeCommand(command: String): ShizukuResult {
-        if (isRootMode()) {
-            return RootManager.executeCommand(command, getRootSuPath())
+        return when {
+            isRootMode() -> RootManager.executeCommand(command, getRootSuPath())
+            isDhizukuMode() -> executeViaDhizukuShell(command)
+            else -> executeViaShizuku(command)
         }
-        return executeViaShizuku(command)
     }
+
+    private suspend fun executeViaDhizukuShell(command: String): ShizukuResult =
+        withContext(Dispatchers.IO) {
+            val result = DhizukuManager.executeCommand(command)
+            ShizukuResult(result.success, result.output, result.error)
+        }
 
     private suspend fun executeViaShizuku(command: String): ShizukuResult = withContext(Dispatchers.IO) {
         if (!isShizukuAvailable()) {
@@ -161,7 +194,7 @@ object ShizukuManager {
             val output = BufferedReader(InputStreamReader(process.inputStream)).use { it.readText() }
             val error = BufferedReader(InputStreamReader(process.errorStream)).use { it.readText() }
             val exitCode = process.waitFor()
-            
+
             if (exitCode == 0) {
                 ShizukuResult(true, output.trim(), "")
             } else {
@@ -192,6 +225,15 @@ object ShizukuManager {
         if (!isSafeShellArg(packageName, "packageName")) {
             return ShizukuResult(false, "", "Unsafe package name")
         }
+
+        if (isDhizukuMode()) {
+            return withContext(Dispatchers.IO) {
+                val success = DhizukuManager.setPermissionState(packageName, permission, true)
+                if (success) ShizukuResult(true, "", "")
+                else ShizukuResult(false, "", "Dhizuku setPermissionGrantState failed")
+            }
+        }
+
         return when (permission) {
             "android.permission.WRITE_SETTINGS" -> {
                 executeCommand("appops set $packageName WRITE_SETTINGS allow")
@@ -215,6 +257,15 @@ object ShizukuManager {
         if (!isSafeShellArg(packageName, "packageName")) {
             return ShizukuResult(false, "", "Unsafe package name")
         }
+
+        if (isDhizukuMode()) {
+            return withContext(Dispatchers.IO) {
+                val success = DhizukuManager.setPermissionState(packageName, permission, false)
+                if (success) ShizukuResult(true, "", "")
+                else ShizukuResult(false, "", "Dhizuku setPermissionGrantState failed")
+            }
+        }
+
         return when (permission) {
             "android.permission.WRITE_SETTINGS" -> {
                 executeCommand("appops set $packageName WRITE_SETTINGS deny")

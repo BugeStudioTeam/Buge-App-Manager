@@ -6,9 +6,11 @@ package com.buge.appmanager.util
 import android.app.Application
 import android.content.Context
 import android.graphics.Typeface
+import android.os.Build
 import androidx.core.content.res.ResourcesCompat
 import com.buge.appmanager.R
 import com.buge.appmanager.shizuku.ShizukuManager
+import org.lsposed.hiddenapibypass.HiddenApiBypass
 
 class AppGlobals : Application() {
 
@@ -43,11 +45,15 @@ class AppGlobals : Application() {
     override fun onCreate() {
         super.onCreate()
         _applicationContext = applicationContext
+        
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
+            HiddenApiBypass.setHiddenApiExemptions("")
+        }
+
         preloadTypefaces()
         ShizukuManager.restoreAssistantBackup()
         LogManager.init(this)
 
-        // Fuck: Auto backup on launch if enabled
         if (PreferencesManager.getBackupEnabled(this) &&
             PreferencesManager.getAutoBackupOnLaunch(this)) {
             Thread {

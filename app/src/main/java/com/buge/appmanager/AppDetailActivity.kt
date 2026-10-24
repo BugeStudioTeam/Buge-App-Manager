@@ -977,9 +977,10 @@ class AppDetailActivity : BaseActivity() {
                 showSystemOpBlockedDialog()
                 return@setupButtonAnimation
             }
+            val appName = app.appName.ifEmpty { binding.appName.text.toString() }
             MaterialAlertDialogBuilder(this)
                 .setTitle(R.string.force_stop)
-                .setMessage("Force stop ${binding.appName.text}?")
+                .setMessage(getString(R.string.force_stop_confirm, appName))
                 .setPositiveButton(R.string.confirm) { _, _ ->
                     viewModel.forceStop()
                     LogManager.info(this, "Force stop executed", "Package: $packageName")

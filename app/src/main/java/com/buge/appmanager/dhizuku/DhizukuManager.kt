@@ -4,13 +4,23 @@
 package com.buge.appmanager.dhizuku
 
 import android.annotation.SuppressLint
+import android.app.PendingIntent
 import android.app.admin.DevicePolicyManager
 import android.app.admin.IDevicePolicyManager
+import android.content.BroadcastReceiver
 import android.content.ComponentName
 import android.content.Context
+import android.content.Intent
+import android.content.IntentFilter
+import android.content.pm.IPackageDataObserver
+import android.content.pm.PackageInstaller
 import android.content.pm.PackageManager
+import android.os.Build
 import android.os.IBinder
+import android.os.Process
+import android.os.UserHandle
 import android.util.Log
+import androidx.core.content.ContextCompat
 import com.buge.appmanager.shizuku.ShizukuResult
 import com.buge.appmanager.util.AppGlobals
 import com.buge.appmanager.util.PreferencesManager
@@ -20,11 +30,11 @@ import com.rosan.dhizuku.api.DhizukuRequestPermissionListener
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import java.util.concurrent.CountDownLatch
-import java.util.concurrent.Executors
 import java.util.concurrent.TimeUnit
 
 object DhizukuManager {
     private const val TAG = "DhizukuManager"
+    private const val PACKAGE_UNINSTALLED_ACTION = "com.buge.appmanager.action.PACKAGE_UNINSTALLED"
 
     private val connectionListeners = mutableListOf<() -> Unit>()
     private var initialized = false
@@ -191,38 +201,67 @@ object DhizukuManager {
         }
     }
 
+    @SuppressLint("PrivateApi")
     fun clearAppUserData(packageName: String): ShizukuResult {
         return try {
-            val dpm = getWrappedDevicePolicyManager()
-                ?: return ShizukuResult(false, "", "Wrapped DPM is null")
-            val admin = getOwnerComponent()
-                ?: return ShizukuResult(false, "", "Owner component is null")
-            val latch = CountDownLatch(1)
-            var ok = false
-            val executor = Executors.newSingleThreadExecutor()
-            try {
-                val method = DevicePolicyManager::class.java.getMethod(
-                    "clearApplicationUserData",
-                    ComponentName::class.java,
-                    String::class.java,
-                    java.util.concurrent.Executor::class.java,
-                    DevicePolicyManager.OnClearApplicationUserDataListener::class.java
-                )
-                val listener =
-                    object : DevicePolicyManager.OnClearApplicationUserDataListener {
-                        override fun onApplicationUserDataCleared(
-                            pkg: String, succeeded: Boolean
-                        ) {
-                            ok = succeeded
-                            latch.countDown()
-                        }
-                    }
-                method.invoke(dpm, admin, packageName, executor, listener)
-                latch.await(10, TimeUnit.SECONDS)
-            } finally {
-                executor.shutdown()
+            if (!isPermissionGranted()) {
+                return ShizukuResult(false, "", "Dhizuku permission not granted")
             }
-            if (ok) ShizukuResult(true, "", "")
+
+            val context = AppGlobals.applicationContext
+            val ownerComponent = getOwnerComponent()
+                ?: return ShizukuResult(false, "", "Owner component is null")
+            val ownerContext = context.createPackageContext(
+                ownerComponent.packageName,
+                Context.CONTEXT_IGNORE_SECURITY
+            )
+
+            val activityManager = ownerContext.getSystemService(Context.ACTIVITY_SERVICE)
+            val field = activityManager.javaClass.getDeclaredField("mRemote")
+            field.isAccessible = true
+            val oldInterface = field.get(activityManager)
+
+            val oldBinder = oldInterface.javaClass.getMethod("asBinder")
+                .invoke(oldInterface) as IBinder
+            val newBinder = Dhizuku.binderWrapper(oldBinder)
+
+            val stubClass = Class.forName("android.app.IActivityManager\$Stub")
+            val newInterface = stubClass.getMethod("asInterface", IBinder::class.java)
+                .invoke(null, newBinder)
+
+            field.set(activityManager, newInterface)
+
+            val clearMethod = activityManager.javaClass.getMethod(
+                "clearApplicationUserData",
+                String::class.java,
+                IPackageDataObserver::class.java,
+                Int::class.javaPrimitiveType
+            )
+
+            val latch = CountDownLatch(1)
+            var success = false
+
+            val observerClass = Class.forName("android.content.pm.IPackageDataObserver\$Stub")
+            val observer = java.lang.reflect.Proxy.newProxyInstance(
+                observerClass.classLoader,
+                arrayOf(observerClass)
+            ) { _, method, args ->
+                if (method.name == "onRemoveCompleted") {
+                    success = args?.getOrNull(1) as? Boolean ?: false
+                    latch.countDown()
+                }
+                null
+            }
+
+            clearMethod.invoke(
+                activityManager,
+                packageName,
+                observer,
+                UserHandle.getUserId(Process.myUid())
+            )
+            latch.await(10, TimeUnit.SECONDS)
+
+            if (success) ShizukuResult(true, "", "")
             else ShizukuResult(false, "", "clearApplicationUserData failed")
         } catch (e: Exception) {
             Log.e(TAG, "clearAppUserData failed: ${e.message}", e)
@@ -230,22 +269,225 @@ object DhizukuManager {
         }
     }
 
-    fun setPackagesSuspended(
-        packages: List<String>, suspended: Boolean
-    ): ShizukuResult {
+    @SuppressLint("PrivateApi")
+    fun uninstallApp(packageName: String): ShizukuResult {
         return try {
-            val dpm = getWrappedDevicePolicyManager()
-                ?: return ShizukuResult(false, "", "Wrapped DPM is null")
-            val admin = getOwnerComponent()
+            if (!isPermissionGranted()) {
+                return ShizukuResult(false, "", "Dhizuku permission not granted")
+            }
+
+            val context = AppGlobals.applicationContext
+            val ownerComponent = getOwnerComponent()
                 ?: return ShizukuResult(false, "", "Owner component is null")
-            val failed = dpm.setPackagesSuspended(admin, packages.toTypedArray(), suspended)
-            if (failed.isEmpty()) {
+            val ownerContext = context.createPackageContext(
+                ownerComponent.packageName,
+                Context.CONTEXT_IGNORE_SECURITY
+            )
+            val packageManager = ownerContext.packageManager
+
+            val installer = packageManager.packageInstaller
+            val field = installer.javaClass.getDeclaredField("mInstaller")
+            field.isAccessible = true
+            val oldInterface = field.get(installer)
+
+            val oldBinder = oldInterface.javaClass.getMethod("asBinder")
+                .invoke(oldInterface) as IBinder
+            val newBinder = Dhizuku.binderWrapper(oldBinder)
+
+            val stubClass = Class.forName("android.content.pm.IPackageInstaller\$Stub")
+            val newInterface = stubClass.getMethod("asInterface", IBinder::class.java)
+                .invoke(null, newBinder)
+
+            field.set(installer, newInterface)
+
+            val latch = CountDownLatch(1)
+            var errorMsg: String? = null
+            var pendingIntent: PendingIntent? = null
+
+            val receiver = object : BroadcastReceiver() {
+                override fun onReceive(c: Context, intent: Intent) {
+                    val status = intent.getIntExtra(PackageInstaller.EXTRA_STATUS, -1)
+                    if (status == PackageInstaller.STATUS_PENDING_USER_ACTION) {
+                        val confirm = if (Build.VERSION.SDK_INT >= 33) {
+                            intent.getParcelableExtra(Intent.EXTRA_INTENT, Intent::class.java)
+                        } else {
+                            @Suppress("DEPRECATION")
+                            intent.getParcelableExtra(Intent.EXTRA_INTENT)
+                        }
+                        confirm?.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                        if (confirm != null) {
+                            try {
+                                context.startActivity(confirm)
+                            } catch (e: Exception) {
+                                errorMsg = e.message
+                                latch.countDown()
+                            }
+                        } else {
+                            errorMsg = "Pending user action intent missing"
+                            latch.countDown()
+                        }
+                    } else {
+                        if (status != PackageInstaller.STATUS_SUCCESS) {
+                            errorMsg = intent.getStringExtra(PackageInstaller.EXTRA_STATUS_MESSAGE)
+                                ?: "Unknown uninstall error"
+                        }
+                        latch.countDown()
+                    }
+                }
+            }
+
+            ContextCompat.registerReceiver(
+                context,
+                receiver,
+                IntentFilter(PACKAGE_UNINSTALLED_ACTION),
+                ContextCompat.RECEIVER_NOT_EXPORTED
+            )
+
+            val broadcastIntent = Intent(PACKAGE_UNINSTALLED_ACTION)
+                .setPackage(context.packageName)
+
+            val flags = if (Build.VERSION.SDK_INT >= 34) {
+                PendingIntent.FLAG_ALLOW_UNSAFE_IMPLICIT_INTENT or PendingIntent.FLAG_MUTABLE
+            } else {
+                PendingIntent.FLAG_MUTABLE
+            }
+            pendingIntent = PendingIntent.getBroadcast(context, 0, broadcastIntent, flags)
+
+            val uninstallMethod = installer.javaClass.getMethod(
+                "uninstall",
+                String::class.java,
+                android.content.IntentSender::class.java,
+                Int::class.javaPrimitiveType
+            )
+            uninstallMethod.invoke(
+                installer,
+                packageName,
+                pendingIntent.intentSender,
+                UserHandle.getUserId(Process.myUid())
+            )
+
+            latch.await(30, TimeUnit.SECONDS)
+
+            try {
+                context.unregisterReceiver(receiver)
+            } catch (e: Exception) {
+            }
+
+            if (errorMsg == null) {
                 ShizukuResult(true, "", "")
             } else {
-                ShizukuResult(false, "", "Failed packages: $failed")
+                ShizukuResult(false, "", errorMsg!!)
             }
         } catch (e: Exception) {
-            Log.e(TAG, "setPackagesSuspended failed: ${e.message}", e)
+            Log.e(TAG, "uninstallApp failed: ${e.message}", e)
+            ShizukuResult(false, "", "Exception: ${e.message ?: "Unknown error"}")
+        }
+    }
+
+    @SuppressLint("PrivateApi")
+    fun forceStopApp(packageName: String): ShizukuResult {
+        return try {
+            if (!isPermissionGranted()) {
+                return ShizukuResult(false, "", "Dhizuku permission not granted")
+            }
+
+            val context = AppGlobals.applicationContext
+            val ownerComponent = getOwnerComponent()
+                ?: return ShizukuResult(false, "", "Owner component is null")
+            val ownerContext = context.createPackageContext(
+                ownerComponent.packageName,
+                Context.CONTEXT_IGNORE_SECURITY
+            )
+
+            val activityManager = ownerContext.getSystemService(Context.ACTIVITY_SERVICE)
+            val field = activityManager.javaClass.getDeclaredField("mRemote")
+            field.isAccessible = true
+            val oldInterface = field.get(activityManager)
+
+            val oldBinder = oldInterface.javaClass.getMethod("asBinder")
+                .invoke(oldInterface) as IBinder
+            val newBinder = Dhizuku.binderWrapper(oldBinder)
+
+            val stubClass = Class.forName("android.app.IActivityManager\$Stub")
+            val newInterface = stubClass.getMethod("asInterface", IBinder::class.java)
+                .invoke(null, newBinder)
+
+            field.set(activityManager, newInterface)
+
+            val forceStopMethod = activityManager.javaClass.getMethod(
+                "forceStopPackage",
+                String::class.java,
+                Int::class.javaPrimitiveType
+            )
+            forceStopMethod.invoke(
+                activityManager,
+                packageName,
+                UserHandle.getUserId(Process.myUid())
+            )
+            ShizukuResult(true, "", "")
+        } catch (e: Exception) {
+            Log.e(TAG, "forceStopApp failed: ${e.message}", e)
+            ShizukuResult(false, "", "Exception: ${e.message ?: "Unknown error"}")
+        }
+    }
+
+    @SuppressLint("PrivateApi")
+    fun setApplicationEnabled(
+        packageName: String, enabled: Boolean
+    ): ShizukuResult {
+        return try {
+            if (!isPermissionGranted()) {
+                return ShizukuResult(false, "", "Dhizuku permission not granted")
+            }
+
+            val context = AppGlobals.applicationContext
+            val ownerComponent = getOwnerComponent()
+                ?: return ShizukuResult(false, "", "Owner component is null")
+            val ownerContext = context.createPackageContext(
+                ownerComponent.packageName,
+                Context.CONTEXT_IGNORE_SECURITY
+            )
+            val packageManager = ownerContext.packageManager
+
+            val field = packageManager.javaClass.getDeclaredField("mPM")
+            field.isAccessible = true
+            val oldInterface = field.get(packageManager)
+
+            val oldBinder = oldInterface.javaClass.getMethod("asBinder")
+                .invoke(oldInterface) as IBinder
+            val newBinder = Dhizuku.binderWrapper(oldBinder)
+
+            val stubClass = Class.forName("android.content.pm.IPackageManager\$Stub")
+            val newInterface = stubClass.getMethod("asInterface", IBinder::class.java)
+                .invoke(null, newBinder)
+
+            field.set(packageManager, newInterface)
+
+            val newState = if (enabled) {
+                PackageManager.COMPONENT_ENABLED_STATE_ENABLED
+            } else {
+                PackageManager.COMPONENT_ENABLED_STATE_DISABLED_USER
+            }
+
+            val setEnabledMethod = packageManager.javaClass.getMethod(
+                "setApplicationEnabledSetting",
+                String::class.java,
+                Int::class.javaPrimitiveType,
+                Int::class.javaPrimitiveType,
+                Int::class.javaPrimitiveType,
+                String::class.java
+            )
+            setEnabledMethod.invoke(
+                packageManager,
+                packageName,
+                newState,
+                0,
+                UserHandle.getUserId(Process.myUid()),
+                null
+            )
+            ShizukuResult(true, "", "")
+        } catch (e: Exception) {
+            Log.e(TAG, "setApplicationEnabled failed: ${e.message}", e)
             ShizukuResult(false, "", "Exception: ${e.message ?: "Unknown error"}")
         }
     }

@@ -160,8 +160,9 @@ object ShizukuManager {
     suspend fun executeCommand(command: String): ShizukuResult {
         return when {
             isRootMode() -> RootManager.executeCommand(command, getRootSuPath())
-            isDhizukuMode() -> DhizukuManager.executeCommand(command).let {
-                ShizukuResult(it.success, it.output, it.error)
+            isDhizukuMode() -> {
+                val result = DhizukuManager.executeCommand(command)
+                ShizukuResult(result.success, result.output, result.error)
             }
             else -> executeViaShizuku(command)
         }
@@ -375,10 +376,9 @@ object ShizukuManager {
         }
 
         if (isDhizukuMode()) {
-            return ShizukuResult(
-                false, "",
-                "Force stop is not supported via Dhizuku. Switch to Shizuku or Root."
-            )
+            return withContext(Dispatchers.IO) {
+                DhizukuManager.forceStopApp(packageName)
+            }
         }
 
         return executeCommand("am force-stop $packageName")
@@ -405,7 +405,7 @@ object ShizukuManager {
 
         if (isDhizukuMode()) {
             return withContext(Dispatchers.IO) {
-                DhizukuManager.setPackagesSuspended(listOf(packageName), true)
+                DhizukuManager.setApplicationEnabled(packageName, false)
             }
         }
 
@@ -419,7 +419,7 @@ object ShizukuManager {
 
         if (isDhizukuMode()) {
             return withContext(Dispatchers.IO) {
-                DhizukuManager.setPackagesSuspended(listOf(packageName), false)
+                DhizukuManager.setApplicationEnabled(packageName, true)
             }
         }
 
@@ -432,10 +432,9 @@ object ShizukuManager {
         }
 
         if (isDhizukuMode()) {
-            return ShizukuResult(
-                false, "",
-                "Uninstall is not supported via Dhizuku. Switch to Shizuku or Root."
-            )
+            return withContext(Dispatchers.IO) {
+                DhizukuManager.uninstallApp(packageName)
+            }
         }
 
         return executeCommand("pm uninstall --user 0 $packageName")

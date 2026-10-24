@@ -139,9 +139,7 @@ object ShizukuManager {
             isRootMode() -> {
             }
             isDhizukuMode() -> {
-                DhizukuManager.requestDhizukuPermission { granted ->
-                    Log.d(TAG, "Dhizuku authorization result: $granted")
-                }
+                DhizukuManager.requestDhizukuPermission()
             }
             else -> {
                 requestShizukuPermission()
@@ -168,10 +166,16 @@ object ShizukuManager {
     }
 
     private suspend fun executeViaDhizuku(command: String): ShizukuResult = withContext(Dispatchers.IO) {
-        if (!DhizukuManager.isDhizukuAuthorized()) {
+        if (!DhizukuManager.isPermissionGranted()) {
             return@withContext ShizukuResult(false, "", "Dhizuku permission not granted")
         }
         try {
+            if (!DhizukuManager.isDhizukuRunning()) {
+                val bound = DhizukuManager.bindService()
+                if (!bound) {
+                    return@withContext ShizukuResult(false, "", "Failed to bind Dhizuku service")
+                }
+            }
             val result = DhizukuManager.executeCommand(command)
             ShizukuResult(result.success, result.output, result.error)
         } catch (e: Exception) {

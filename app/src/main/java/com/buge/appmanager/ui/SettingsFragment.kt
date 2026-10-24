@@ -633,7 +633,8 @@ class SettingsFragment : Fragment() {
                 dialog.dismiss()
                 LogManager.info(requireContext(), "Authorization method changed", newMode)
                 if (newMode == PreferencesManager.AUTH_MODE_DHIZUKU) {
-                    DhizukuManager.initDhizuku()
+                    DhizukuManager.init(requireContext())
+                    ShizukuManager.ensureDhizukuBound()
                 }
                 rebuildSettingItems()
             }
@@ -995,9 +996,10 @@ class SettingsFragment : Fragment() {
                 titleText = getString(R.string.root_authorization_title)
                 descText = getString(R.string.root_authorization_desc)
             } else if (isDhizukuMode) {
+                val hasPermission = DhizukuManager.isPermissionGranted()
                 val isAuthorized = ShizukuManager.isDhizukuAuthorized()
 
-                if (isAuthorized) {
+                if (hasPermission && isAuthorized) {
                     statusText = getString(R.string.dhizuku_status_ok)
                     iconRes = R.drawable.ic_shield
                     buttonEnabled = false
@@ -1068,18 +1070,8 @@ class SettingsFragment : Fragment() {
                                 SnackbarHelper.showSnackbar(binding.root, getString(R.string.root_authorization_desc))
                             }
                             isDhizukuMode -> {
-                                DhizukuManager.requestDhizukuPermission { granted ->
-                                    binding.root.post {
-                                        updateShizukuStatus()
-                                        if (granted) {
-                                            SnackbarHelper.showSnackbar(binding.root, getString(R.string.shizuku_authorized))
-                                            LogManager.info(requireContext(), "Dhizuku authorized")
-                                        } else {
-                                            SnackbarHelper.showSnackbar(binding.root, getString(R.string.shizuku_not_authorized))
-                                            LogManager.warning(requireContext(), "Dhizuku authorization failed")
-                                        }
-                                    }
-                                }
+                                DhizukuManager.requestDhizukuPermission()
+                                binding.root.postDelayed({ updateShizukuStatus() }, 800)
                             }
                             else -> {
                                 if (!ShizukuManager.isShizukuAvailable()) {

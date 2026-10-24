@@ -123,7 +123,7 @@ object DhizukuManager {
             val state = if (grant) {
                 1 // PERMISSION_GRANT_STATE_GRANTED
             } else {
-                2 // PERMISSION_GRANT_STATE_DENIED
+                0 // PERMISSION_GRANT_STATE_DEFAULT
             }
 
             val setPermissionMethod = dpmClass.getMethod(

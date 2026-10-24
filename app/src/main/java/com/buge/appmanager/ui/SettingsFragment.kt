@@ -995,32 +995,21 @@ class SettingsFragment : Fragment() {
                 titleText = getString(R.string.root_authorization_title)
                 descText = getString(R.string.root_authorization_desc)
             } else if (isDhizukuMode) {
-                val isAvailable = ShizukuManager.isDhizukuAvailable()
                 val hasPermission = DhizukuManager.hasDhizukuPermission()
                 val isAuthorized = ShizukuManager.isDhizukuAuthorized()
 
-                when {
-                    isAvailable && hasPermission && isAuthorized -> {
-                        statusText = getString(R.string.dhizuku_status_ok)
-                        iconRes = R.drawable.ic_shield
-                        buttonEnabled = false
-                        buttonText = getString(R.string.shizuku_authorized)
-                        statusColor = ContextCompat.getColor(requireContext(), R.color.color_granted)
-                    }
-                    isAvailable && !hasPermission -> {
-                        statusText = getString(R.string.dhizuku_status_no_auth)
-                        iconRes = R.drawable.ic_shield_badge_x
-                        buttonEnabled = true
-                        buttonText = getString(R.string.dhizuku_request_auth)
-                        statusColor = ContextCompat.getColor(requireContext(), com.google.android.material.R.color.design_default_color_error)
-                    }
-                    else -> {
-                        statusText = getString(R.string.dhizuku_status_not_installed)
-                        iconRes = R.drawable.ic_shield_badge_x
-                        buttonEnabled = true
-                        buttonText = getString(R.string.dhizuku_install)
-                        statusColor = ContextCompat.getColor(requireContext(), com.google.android.material.R.color.design_default_color_error)
-                    }
+                if (hasPermission && isAuthorized) {
+                    statusText = getString(R.string.dhizuku_status_ok)
+                    iconRes = R.drawable.ic_shield
+                    buttonEnabled = false
+                    buttonText = getString(R.string.shizuku_authorized)
+                    statusColor = ContextCompat.getColor(requireContext(), R.color.color_granted)
+                } else {
+                    statusText = getString(R.string.dhizuku_status_no_auth)
+                    iconRes = R.drawable.ic_shield_badge_x
+                    buttonEnabled = true
+                    buttonText = getString(R.string.dhizuku_request_auth)
+                    statusColor = ContextCompat.getColor(requireContext(), com.google.android.material.R.color.design_default_color_error)
                 }
                 titleText = getString(R.string.dhizuku_title)
                 descText = getString(R.string.dhizuku_desc)
@@ -1080,14 +1069,7 @@ class SettingsFragment : Fragment() {
                                 SnackbarHelper.showSnackbar(binding.root, getString(R.string.root_authorization_desc))
                             }
                             isDhizukuMode -> {
-                                if (!ShizukuManager.isDhizukuAvailable()) {
-                                    try {
-                                        val intent = Intent(Intent.ACTION_VIEW, Uri.parse("https://github.com/iamr0s/Dhizuku"))
-                                        startActivity(intent)
-                                    } catch (e: Exception) {
-                                        SnackbarHelper.showSnackbar(binding.root, "Cannot open browser")
-                                    }
-                                } else if (!DhizukuManager.hasDhizukuPermission()) {
+                                if (!DhizukuManager.hasDhizukuPermission()) {
                                     DhizukuManager.requestDhizukuPermission()
                                 } else {
                                     ShizukuManager.ensureDhizukuBound()

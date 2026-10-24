@@ -36,17 +36,6 @@ object DhizukuManager {
 
     private var serviceConnection: ServiceConnection? = null
 
-    fun isDhizukuAvailable(): Boolean {
-        return try {
-            val context = AppGlobals.applicationContext
-            context.packageManager.getPackageInfo(DHIZUKU_PACKAGE, 0)
-            true
-        } catch (e: Exception) {
-            Log.w(TAG, "Dhizuku not installed: ${e.message}")
-            false
-        }
-    }
-
     fun isDhizukuRunning(): Boolean {
         return try {
             bound && boundService != null
@@ -67,7 +56,6 @@ object DhizukuManager {
 
     fun isDhizukuAuthorized(): Boolean {
         return try {
-            if (!isDhizukuAvailable()) return false
             if (!hasDhizukuPermission()) return false
             val service = boundService
             if (service == null) return false

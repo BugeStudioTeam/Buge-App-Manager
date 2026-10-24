@@ -117,15 +117,6 @@ object ShizukuManager {
         }
     }
 
-    fun isDhizukuAvailable(): Boolean {
-        return try {
-            DhizukuManager.isDhizukuAvailable()
-        } catch (e: Exception) {
-            Log.w(TAG, "Error checking Dhizuku availability: ${e.message}")
-            false
-        }
-    }
-
     fun isDhizukuAuthorized(): Boolean {
         return try {
             DhizukuManager.isDhizukuAuthorized()
@@ -175,9 +166,6 @@ object ShizukuManager {
     }
 
     private suspend fun executeViaDhizuku(command: String): ShizukuResult = withContext(Dispatchers.IO) {
-        if (!DhizukuManager.isDhizukuAvailable()) {
-            return@withContext ShizukuResult(false, "", "Dhizuku is not installed")
-        }
         if (!DhizukuManager.hasDhizukuPermission()) {
             return@withContext ShizukuResult(false, "", "Dhizuku permission not granted")
         }

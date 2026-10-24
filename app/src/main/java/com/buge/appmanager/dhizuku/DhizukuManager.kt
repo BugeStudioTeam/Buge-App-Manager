@@ -128,11 +128,15 @@ object DhizukuManager {
             val field = manager.javaClass.getDeclaredField("mService")
             field.isAccessible = true
             val oldInterface = field.get(manager)
+
             if (oldInterface is DhizukuBinderWrapper) {
                 cachedDpm = manager
                 return manager
             }
-            val oldBinder = oldInterface as IBinder
+
+            val asBinderMethod = oldInterface.javaClass.getMethod("asBinder")
+            val oldBinder = asBinderMethod.invoke(oldInterface) as IBinder
+
             val newBinder = Dhizuku.binderWrapper(oldBinder)
             val newInterface = IDevicePolicyManager.Stub.asInterface(newBinder)
             field.set(manager, newInterface)

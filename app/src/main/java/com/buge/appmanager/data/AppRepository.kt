@@ -30,10 +30,9 @@ class AppRepository(private val context: Context) {
     companion object {
         private const val TAG = "AppRepository"
 
-        // Fuck: Cache for app sizes to avoid repeated expensive Shizuku calls
         private var sizeCache: MutableMap<String, Long> = mutableMapOf()
         private var cacheTimestamp: Long = 0
-        private val CACHE_TTL_MS = 5000L // 5 seconds cache TTL
+        private val CACHE_TTL_MS = 5000L
 
         val PERMISSION_MICROPHONE = listOf(
             "android.permission.RECORD_AUDIO"
@@ -133,6 +132,13 @@ class AppRepository(private val context: Context) {
         val APPOP_ONLY_PERMISSIONS = setOf(
             "android.permission.MANAGE_EXTERNAL_STORAGE"
         )
+
+        val DHIZUKU_UNSUPPORTED_PERMISSIONS = setOf(
+            "android.permission.SYSTEM_ALERT_WINDOW",
+            "android.permission.REQUEST_INSTALL_PACKAGES",
+            "android.permission.WRITE_SETTINGS",
+            "android.permission.MANAGE_EXTERNAL_STORAGE"
+        )
     }
 
     private fun getSpecialPermissionStatus(packageName: String, permission: String): Boolean? {
@@ -183,13 +189,11 @@ class AppRepository(private val context: Context) {
         }
     }
 
-    // Fuck: Get app storage size with timeout and parallel execution
     private suspend fun getAppTotalSize(packageName: String): Long = withContext(Dispatchers.IO) {
         try {
-            withTimeout(3000L) { // Fuck: 3 second timeout per app
+            withTimeout(3000L) {
                 var totalSize = 0L
 
-                // Fuck: Get APK size (fast, no Shizuku needed)
                 try {
                     val appInfo = pm.getApplicationInfo(packageName, 0)
                     val apkFile = File(appInfo.sourceDir)
@@ -197,10 +201,8 @@ class AppRepository(private val context: Context) {
                         totalSize += apkFile.length()
                     }
                 } catch (e: Exception) {
-                    // Ignore
                 }
 
-                // Fuck: Get data size via Shizuku du command (fast with timeout)
                 try {
                     val result = ShizukuManager.executeCommand("du -s /data/data/$packageName 2>/dev/null | cut -f1")
                     if (result.success && result.output.isNotEmpty()) {
@@ -210,13 +212,11 @@ class AppRepository(private val context: Context) {
                         }
                     }
                 } catch (e: Exception) {
-                    // Ignore
                 }
 
                 totalSize
             }
         } catch (e: TimeoutCancellationException) {
-            // Fuck: Timeout, return APK size only
             Log.w(TAG, "Timeout getting size for $packageName, using APK size only")
             try {
                 val appInfo = pm.getApplicationInfo(packageName, 0)
@@ -234,27 +234,22 @@ class AppRepository(private val context: Context) {
         }
     }
 
-    // Fuck: Batch get sizes with parallel execution
     private suspend fun getAppSizesBatch(apps: List<AppInfo>): Map<String, Long> = withContext(Dispatchers.IO) {
         if (apps.isEmpty()) return@withContext emptyMap()
 
-        // Fuck: Check cache first
         val now = System.currentTimeMillis()
         if (now - cacheTimestamp < CACHE_TTL_MS && sizeCache.isNotEmpty()) {
-            // Fuck: Only return cached sizes for apps that exist in cache
             val result = mutableMapOf<String, Long>()
             for (app in apps) {
                 sizeCache[app.packageName]?.let {
                     result[app.packageName] = it
                 }
             }
-            // Fuck: If all apps are cached, return immediately
             if (result.size == apps.size) {
                 return@withContext result
             }
         }
 
-        // Fuck: Get sizes in parallel with timeout
         val deferred = apps.map { app ->
             async {
                 val size = getAppTotalSize(app.packageName)
@@ -265,18 +260,15 @@ class AppRepository(private val context: Context) {
         try {
             val results = deferred.awaitAll()
             val resultMap = results.toMap()
-            // Fuck: Update cache
             sizeCache.putAll(resultMap)
             cacheTimestamp = System.currentTimeMillis()
             resultMap
         } catch (e: Exception) {
             Log.w(TAG, "Batch size fetch failed: ${e.message}")
-            // Fuck: Return whatever we have in cache
             sizeCache.filterKeys { pk -> apps.any { it.packageName == pk } }
         }
     }
 
-    // Fuck: Clear size cache when needed
     fun clearSizeCache() {
         sizeCache.clear()
         cacheTimestamp = 0
@@ -377,12 +369,10 @@ class AppRepository(private val context: Context) {
                 }.toMutableList()
             }
 
-            // Fuck: Apply sorting - optimized for SIZE
             apps = when (sortOrder) {
                 AppSortOrder.NAME -> apps.sortedBy { it.appName.lowercase() }.toMutableList()
                 AppSortOrder.INSTALL_DATE -> apps.sortedByDescending { it.installTime }.toMutableList()
                 AppSortOrder.SIZE -> {
-                    // Fuck: Get sizes in parallel with cache
                     val sizeMap = getAppSizesBatch(apps)
                     apps.sortedByDescending { sizeMap[it.packageName] ?: 0L }.toMutableList()
                 }
@@ -411,14 +401,19 @@ class AppRepository(private val context: Context) {
 
             val permissions = mutableListOf<PermissionInfo>()
 
-            // Check which AppOps permissions are declared in manifest
             val hasWriteSettingsInManifest = requestedPermissions.contains("android.permission.WRITE_SETTINGS")
             val hasOverlayInManifest = requestedPermissions.contains("android.permission.SYSTEM_ALERT_WINDOW")
             val hasInstallUnknownInManifest = requestedPermissions.contains("android.permission.REQUEST_INSTALL_PACKAGES")
             val hasManageStorageInManifest = requestedPermissions.contains("android.permission.MANAGE_EXTERNAL_STORAGE")
 
+            val isDhizuku = ShizukuManager.isDhizukuMode()
+
             for (index in requestedPermissions.indices) {
                 val permName = requestedPermissions[index]
+
+                if (isDhizuku && permName in DHIZUKU_UNSUPPORTED_PERMISSIONS) {
+                    continue
+                }
 
                 val isGranted = when {
                     permName == "android.permission.MANAGE_EXTERNAL_STORAGE" -> {
@@ -460,8 +455,7 @@ class AppRepository(private val context: Context) {
                 )
             }
 
-            // Add WRITE_SETTINGS only if declared in manifest
-            if (hasWriteSettingsInManifest) {
+            if (hasWriteSettingsInManifest && !isDhizuku) {
                 val writeSettingsStatus = ShizukuManager.getWriteSettingsStatus(packageName)
                 permissions.add(
                     PermissionInfo(
@@ -473,8 +467,7 @@ class AppRepository(private val context: Context) {
                 )
             }
 
-            // Add SYSTEM_ALERT_WINDOW only if declared in manifest AND not already added in loop
-            if (hasOverlayInManifest && !permissions.any { it.name == "android.permission.SYSTEM_ALERT_WINDOW" }) {
+            if (hasOverlayInManifest && !isDhizuku && !permissions.any { it.name == "android.permission.SYSTEM_ALERT_WINDOW" }) {
                 val overlayStatus = ShizukuManager.getOverlayStatus(packageName)
                 permissions.add(
                     PermissionInfo(
@@ -486,8 +479,7 @@ class AppRepository(private val context: Context) {
                 )
             }
 
-            // Add REQUEST_INSTALL_PACKAGES only if declared in manifest AND not already added in loop
-            if (hasInstallUnknownInManifest && !permissions.any { it.name == "android.permission.REQUEST_INSTALL_PACKAGES" }) {
+            if (hasInstallUnknownInManifest && !isDhizuku && !permissions.any { it.name == "android.permission.REQUEST_INSTALL_PACKAGES" }) {
                 val installStatus = ShizukuManager.getInstallUnknownAppsStatus(packageName)
                 permissions.add(
                     PermissionInfo(
@@ -583,14 +575,24 @@ class AppRepository(private val context: Context) {
         showSystemApps: Boolean = false
     ): List<Pair<AppInfo, Map<String, Boolean>>> = withContext(Dispatchers.IO) {
         try {
+            val isDhizuku = ShizukuManager.isDhizukuMode()
+            val filteredPermissions = if (isDhizuku) {
+                permissions.filter { it !in DHIZUKU_UNSUPPORTED_PERMISSIONS }
+            } else {
+                permissions
+            }
+
+            if (filteredPermissions.isEmpty()) {
+                return@withContext emptyList()
+            }
+
             val allApps = getInstalledApps(showSystemApps = showSystemApps)
             val result = mutableListOf<Pair<AppInfo, Map<String, Boolean>>>()
 
             for (app in allApps) {
                 val appPermMap = mutableMapOf<String, Boolean>()
 
-                for (targetPerm in permissions) {
-                    // Check if app has this permission in its manifest
+                for (targetPerm in filteredPermissions) {
                     val hasInManifest = hasPermissionInManifest(app.packageName, targetPerm)
 
                     if (hasInManifest) {

@@ -3,8 +3,12 @@
 
 package com.buge.appmanager.dhizuku
 
+import android.app.admin.DevicePolicyManager
+import android.app.admin.IDevicePolicyManager
+import android.content.ComponentName
 import android.content.Context
 import android.content.pm.PackageManager
+import android.os.IBinder
 import android.util.Log
 import com.buge.appmanager.util.AppGlobals
 import com.buge.appmanager.util.PreferencesManager
@@ -86,6 +90,40 @@ object DhizukuManager {
             })
         } catch (e: Exception) {
             Log.e(TAG, "requestDhizukuPermission failed: ${e.message}", e)
+        }
+    }
+
+    fun getDevicePolicyManager(): DevicePolicyManager? {
+        return try {
+            val binder: IBinder? = try {
+                val method = Dhizuku::class.java.getMethod("getBinderWrapper")
+                method.invoke(null) as? IBinder
+            } catch (e: Exception) {
+                null
+            }
+
+            if (binder == null) {
+                Log.w(TAG, "Dhizuku binder wrapper is null")
+                return null
+            }
+
+            val dpmBinder = IDevicePolicyManager.Stub.asInterface(binder)
+            val dpmClass = DevicePolicyManager::class.java
+            val constructor = dpmClass.getDeclaredConstructor(Context::class.java, IDevicePolicyManager::class.java)
+            constructor.isAccessible = true
+            constructor.newInstance(AppGlobals.applicationContext, dpmBinder) as DevicePolicyManager
+        } catch (e: Exception) {
+            Log.e(TAG, "Failed to get DevicePolicyManager: ${e.message}", e)
+            null
+        }
+    }
+
+    fun getOwnerComponent(): ComponentName? {
+        return try {
+            Dhizuku.getOwnerComponent()
+        } catch (e: Exception) {
+            Log.e(TAG, "Failed to get owner component: ${e.message}", e)
+            null
         }
     }
 

@@ -231,7 +231,7 @@ object ShizukuManager {
         }
 
         if (isDhizukuMode()) {
-            return executeCommand("dpm set-permission-grant-state $packageName $permission granted")
+            return executeCommand("dpm set-permission-grant-state --user 0 $packageName $permission grant")
         }
 
         return when (permission) {
@@ -259,7 +259,7 @@ object ShizukuManager {
         }
 
         if (isDhizukuMode()) {
-            return executeCommand("dpm set-permission-grant-state $packageName $permission denied")
+            return executeCommand("dpm set-permission-grant-state --user 0 $packageName $permission deny")
         }
 
         return when (permission) {

@@ -1004,10 +1004,9 @@ class SettingsFragment : Fragment() {
                 titleText = getString(R.string.root_authorization_title)
                 descText = getString(R.string.root_authorization_desc)
             } else if (isDhizukuMode) {
-                val hasPermission = DhizukuManager.isPermissionGranted()
                 val isAuthorized = ShizukuManager.isDhizukuAuthorized()
 
-                if (hasPermission && isAuthorized) {
+                if (isAuthorized) {
                     statusText = getString(R.string.dhizuku_status_ok)
                     iconRes = R.drawable.ic_shield
                     buttonEnabled = false

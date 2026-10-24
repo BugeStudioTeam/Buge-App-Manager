@@ -95,9 +95,7 @@ object DhizukuManager {
 
     fun isDhizukuAuthorized(): Boolean {
         return try {
-            if (!isPermissionGranted()) return false
-            val service = boundService ?: return false
-            invokeStaticInt("getVersion").let { it > 0 }
+            isPermissionGranted()
         } catch (e: Exception) {
             Log.w(TAG, "Error checking Dhizuku authorization: ${e.message}")
             false
@@ -210,6 +208,12 @@ object DhizukuManager {
 
     suspend fun executeCommand(command: String): DhizukuResult = withContext(Dispatchers.IO) {
         try {
+            if (boundService == null) {
+                val bindSuccess = bindService()
+                if (!bindSuccess) {
+                    return@withContext DhizukuResult(false, "", "Failed to bind Dhizuku service")
+                }
+            }
             val service = boundService
             if (service == null) {
                 return@withContext DhizukuResult(false, "", "Dhizuku service is not bound")

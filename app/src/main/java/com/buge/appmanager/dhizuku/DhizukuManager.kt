@@ -13,8 +13,8 @@ import android.os.RemoteException
 import android.util.Log
 import com.buge.appmanager.util.AppGlobals
 import com.buge.appmanager.util.PreferencesManager
-import com.iamr0s.dhizuku.Dhizuku
-import com.iamr0s.dhizuku.DhizukuRequestPermissionListener
+import com.rosan.dhizuku.api.Dhizuku
+import com.rosan.dhizuku.api.DhizukuRequestPermissionListener
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.suspendCancellableCoroutine
 import kotlinx.coroutines.withContext

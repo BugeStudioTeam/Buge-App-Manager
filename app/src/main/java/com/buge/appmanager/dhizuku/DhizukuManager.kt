@@ -12,13 +12,11 @@ import android.content.ComponentName
 import android.content.Context
 import android.content.Intent
 import android.content.IntentFilter
-import android.content.pm.IPackageDataObserver
 import android.content.pm.PackageInstaller
 import android.content.pm.PackageManager
 import android.os.Build
 import android.os.IBinder
 import android.os.Process
-import android.os.UserHandle
 import android.util.Log
 import androidx.core.content.ContextCompat
 import com.buge.appmanager.shizuku.ShizukuResult
@@ -41,6 +39,9 @@ object DhizukuManager {
 
     @Volatile
     private var cachedDpm: DevicePolicyManager? = null
+
+    private val currentUserId: Int
+        get() = Process.myUid() / 100000
 
     fun addConnectionListener(listener: () -> Unit) {
         if (!connectionListeners.contains(listener)) {
@@ -231,20 +232,22 @@ object DhizukuManager {
 
             field.set(activityManager, newInterface)
 
+            val observerInterface =
+                Class.forName("android.content.pm.IPackageDataObserver")
+
             val clearMethod = activityManager.javaClass.getMethod(
                 "clearApplicationUserData",
                 String::class.java,
-                IPackageDataObserver::class.java,
+                observerInterface,
                 Int::class.javaPrimitiveType
             )
 
             val latch = CountDownLatch(1)
             var success = false
 
-            val observerClass = Class.forName("android.content.pm.IPackageDataObserver\$Stub")
             val observer = java.lang.reflect.Proxy.newProxyInstance(
-                observerClass.classLoader,
-                arrayOf(observerClass)
+                observerInterface.classLoader,
+                arrayOf(observerInterface)
             ) { _, method, args ->
                 if (method.name == "onRemoveCompleted") {
                     success = args?.getOrNull(1) as? Boolean ?: false
@@ -257,7 +260,7 @@ object DhizukuManager {
                 activityManager,
                 packageName,
                 observer,
-                UserHandle.getUserId(Process.myUid())
+                currentUserId
             )
             latch.await(10, TimeUnit.SECONDS)
 
@@ -363,7 +366,7 @@ object DhizukuManager {
                 installer,
                 packageName,
                 pendingIntent.intentSender,
-                UserHandle.getUserId(Process.myUid())
+                currentUserId
             )
 
             latch.await(30, TimeUnit.SECONDS)
@@ -422,7 +425,7 @@ object DhizukuManager {
             forceStopMethod.invoke(
                 activityManager,
                 packageName,
-                UserHandle.getUserId(Process.myUid())
+                currentUserId
             )
             ShizukuResult(true, "", "")
         } catch (e: Exception) {
@@ -482,7 +485,7 @@ object DhizukuManager {
                 packageName,
                 newState,
                 0,
-                UserHandle.getUserId(Process.myUid()),
+                currentUserId,
                 null
             )
             ShizukuResult(true, "", "")

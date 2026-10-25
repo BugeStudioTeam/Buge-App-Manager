@@ -1,0 +1,490 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- SPDX-License-Identifier: GPL-3.0-only -->
+<!-- Copyright (C) 2026 Buge Studio -->
+<resources>
+    <string name="app_name">Buge App Manager</string>
+    <string name="developer_name">Команда Buge</string>
+
+    <!-- Navigation -->
+    <string name="nav_apps">Застосунки</string>
+    <string name="nav_activities">Активності</string>
+    <string name="nav_permissions">Дозволи</string>
+    <string name="nav_settings">Налаштування</string>
+
+    <!-- Settings Groups -->
+    <string name="search_settings_hint">Пошук налаштувань…</string>
+    <string name="no_settings_found">Налаштувань не знайдено</string>
+    <string name="settings_group_authorization">Авторизація</string>
+    <string name="settings_group_appearance">Зовнішній вигляд</string>
+    <string name="settings_group_apps">Застосунки</string>
+    <string name="settings_group_advanced">Розширені</string>
+    <string name="settings_group_about">Про програму</string>
+
+    <!-- Basic Settings -->
+    <string name="title_settings">Налаштування</string>
+    <string name="pref_theme">Тема</string>
+    <string name="pref_theme_light">Світла</string>
+    <string name="pref_theme_dark">Темна</string>
+    <string name="pref_theme_auto">Системна за замовчуванням</string>
+    <string name="pref_language">Мова</string>
+    <string name="pref_language_auto">Системна за замовчуванням</string>
+    <string name="pref_default_page">Сторінка за замовчуванням</string>
+    <string name="pref_default_page_summary">Оберіть сторінку, яка відображатиметься під час запуску програми</string>
+    <string name="pref_show_system_apps">Показувати системні застосунки</string>
+    <string name="pref_show_disabled_apps">Показувати вимкнені застосунки</string>
+    <string name="pref_show_undeclared_activities">Показувати незадекларовані активності</string>
+    <string name="pref_allow_system_ops">Дозволити операції з системними застосунками</string>
+    <string name="pref_allow_system_ops_summary">Дозволити зміну системних застосунків (дозволи, вимкнення, видалення)</string>
+    <string name="pref_about">Про програму</string>
+    <string name="setting_saved">Налаштування збережено</string>
+    <string name="pref_auto_update">Автооновлення</string>
+
+    <!-- Apps Settings -->
+    <string name="pref_google_services">Сервіси Google</string>
+    <string name="pref_google_services_summary">Увімкнути або вимкнути Google Mobile Services</string>
+    <string name="pref_google_services_disabled">Сервіси Google недоступні на цьому пристрої</string>
+
+    <!-- Shizuku Provider -->
+    <string name="pref_shizuku_provider">Провайдер Shizuku</string>
+    <string name="pref_shizuku_provider_summary">Налаштувати ім’я пакета провайдера Shizuku</string>
+    <string name="shizuku_provider_title">Ім’я пакета провайдера Shizuku</string>
+    <string name="shizuku_provider_default">moe.shizuku.privileged.api</string>
+    <string name="shizuku_provider_restore_default">Відновити за замовчуванням</string>
+
+    <!-- Log Settings -->
+    <string name="pref_logging">Журналювання</string>
+    <string name="pref_logging_summary">Записувати дії користувача та помилки</string>
+    <string name="log_activity_title">Журнал операцій</string>
+    <string name="log_settings_title">Налаштування журналу</string>
+    <string name="log_enable">Увімкнути журналювання</string>
+    <string name="log_enable_summary">Записувати всі дії користувача та системні помилки</string>
+    <string name="log_empty">Журнали ще не записані</string>
+    <string name="log_copy">Копіювати</string>
+    <string name="log_cleared">Журнали очищено</string>
+    <string name="log_copied">Журнали скопійовано до буфера обміну</string>
+
+    <!-- Default Page Dialog -->
+    <string name="default_page_title">Сторінка запуску за замовчуванням</string>
+    <string name="default_page_apps">Застосунки</string>
+    <string name="default_page_permissions">Дозволи</string>
+    <string name="default_page_activities">Активності</string>
+    <string name="default_page_settings">Налаштування</string>
+
+    <!-- About Dialog -->
+    <string name="about_desc">Buge App Manager — потужний інструмент керування застосунками з підтримкою Shizuku для розширеного керування дозволами та застосунками.</string>
+
+    <!-- About Links -->
+    <string name="website">Вебсайт</string>
+    <string name="website_desc">Відвідайте наш офіційний вебсайт</string>
+    <string name="github">GitHub</string>
+    <string name="github_desc">Відвідайте наш репозиторій на GitHub</string>
+    <string name="telegram">Telegram</string>
+    <string name="telegram_desc">Приєднуйтесь до нашого каналу в Telegram</string>
+    <string name="activitymanager">ActivityManager</string>
+    <string name="activitymanager_desc">Проєкт з відкритим кодом — метод Shizuku для запуску неекспортованих активностей</string>
+    <string name="check_for_update">Перевірити оновлення</string>
+    <string name="update_desc">Перевірити нові версії на GitHub</string>
+    <string name="about_more">Показати більше про нас</string>
+    <string name="about_more_summary">Дізнайтеся більше про команду розробників і бачення проєкту</string>
+    <string name="about">Про програму</string>
+    <string name="close">Закрити</string>
+    <string name="open">Відкрити</string>
+
+    <!-- About Us Activity -->
+    <string name="about_us">Про нас</string>
+    <string name="about_us_title">Команда Buge Studio</string>
+    <string name="about_us_description">Команда Buge Studio — це захоплена група розробників і дизайнерів, які створюють інноваційні та практичні утиліти для платформи Android. Ми зосереджуємося на конфіденційності користувачів, контролі системи та відкритості. Наша мета — надати користувачам прозорі, ефективні та надійні інструменти. Buge App Manager — це проєкт з відкритим кодом і наше перше велике застосування. Ми запрошуємо всіх долучатися до його покращення та розвитку.</string>
+
+    <!-- GMS Disable Warning -->
+    <string name="gms_disable_warning_title">Вимкнути сервіси Google?</string>
+    <string name="gms_disable_warning_message">Вимкнення сервісів Google вплине на таке:\n\n• Google Play Store перестане працювати\n• Застосунки, що залежать від Google Play Services, можуть аварійно завершуватися\n• Push-сповіщення від застосунків Google припиняться\n• Служби визначення місцезнаходження можуть бути порушені\n• Внутрішні покупки не працюватимуть\n\nВи впевнені, що хочете вимкнути сервіси Google?</string>
+
+    <!-- System Operation Blocked -->
+    <string name="system_op_blocked_title">Операцію заблоковано</string>
+    <string name="system_op_blocked_message">Операції з системними застосунками наразі вимкнені.\n\nВи можете увімкнути «Дозволити операції з системними застосунками» в Налаштуваннях, щоб виконати цю дію.</string>
+
+    <!-- Restore -->
+    <string name="pref_restore_apps">Відновити видалені застосунки</string>
+    <string name="pref_restore_apps_summary">Переглянути та відновити раніше видалені системні застосунки</string>
+    <string name="title_restore_apps">Відновити застосунки</string>
+    <string name="restore">Відновити</string>
+    <string name="no_uninstalled_apps">Видалених застосунків не знайдено</string>
+    <string name="restore_confirm">Відновити %s?</string>
+    <string name="restore_success">Застосунок успішно відновлено</string>
+    <string name="restore_failed">Не вдалося відновити застосунок</string>
+
+    <!-- Shizuku -->
+    <string name="shizuku_title">Авторизація Shizuku</string>
+    <string name="shizuku_desc">Для керування дозволами застосунків і виконання розширених операцій потрібен Shizuku. Будь ласка, авторизуйте цей застосунок у Shizuku.</string>
+    <string name="shizuku_status_ok">Авторизовано та працює</string>
+    <string name="shizuku_status_no_auth">Працює, але не авторизовано</string>
+    <string name="shizuku_status_not_running">Не запущено</string>
+    <string name="shizuku_authorized">Авторизовано</string>
+    <string name="shizuku_not_authorized">Не авторизовано</string>
+    <string name="shizuku_not_running">Не запущено</string>
+    <string name="shizuku_request_auth">Запитати авторизацію</string>
+
+    <!-- Dhizuku -->
+    <string name="auth_mode_dhizuku">Dhizuku</string>
+    <string name="dhizuku_title">Авторизація Dhizuku</string>
+    <string name="dhizuku_desc">Dhizuku — альтернативний привілейований бекенд на основі Device Owner. Він дозволяє керувати дозволами застосунків і виконувати розширені операції без Shizuku або Root. Будь ласка, авторизуйте цей застосунок у Dhizuku.</string>
+    <string name="dhizuku_status_ok">Авторизовано та працює</string>
+    <string name="dhizuku_status_no_auth">Працює, але не авторизовано</string>
+    <string name="dhizuku_status_not_installed">Dhizuku не встановлено</string>
+    <string name="dhizuku_request_auth">Запитати авторизацію</string>
+    <string name="dhizuku_install">Встановити Dhizuku</string>
+    <string name="dhizuku_unsupported_permission">Цей дозвіл не можна керувати в режимі Dhizuku. Перейдіть на Shizuku або Root.</string>
+
+    <!-- Root / Authorization Method -->
+    <string name="pref_auth_mode">Метод авторизації</string>
+    <string name="auth_mode_title">Метод авторизації</string>
+    <string name="auth_mode_shizuku">Shizuku</string>
+    <string name="auth_mode_root">Root (su)</string>
+    <string name="pref_root_su_path">Команда su</string>
+    <string name="root_su_path_title">Команда su</string>
+    <string name="root_su_path_hint">напр. su, ksu, /system/bin/su</string>
+    <string name="root_su_path_default">su</string>
+    <string name="root_authorization_title">Авторизація Root</string>
+    <string name="root_authorization_desc">Доступ Root використовується для керування дозволами застосунків і виконання розширених операцій. Переконайтеся, що ваш пристрій має root-доступ, а команда su налаштована правильно.</string>
+    <string name="root_status_ok">Root доступний</string>
+    <string name="root_status_not_ok">Root недоступний</string>
+    <string name="error_no_privilege">Немає доступного або авторизованого привілейованого бекенду. Оберіть один у Налаштуваннях.</string>
+    <string name="request_auth">Авторизувати</string>
+    <string name="not_authorized">Не авторизовано</string>
+
+    <!-- App List -->
+    <string name="title_app_list">Встановлені застосунки</string>
+    <string name="search_hint">Пошук застосунків…</string>
+    <string name="filter_all">Усі застосунки</string>
+    <string name="filter_user">Користувацькі застосунки</string>
+    <string name="filter_system">Системні застосунки</string>
+    <string name="filter_favorite">Обрані застосунки</string>
+    <string name="sort_name">Назва</string>
+    <string name="sort_size">Розмір</string>
+    <string name="sort_install_date">Дата встановлення</string>
+    <string name="apps_count">%d застосунків</string>
+    <string name="loading_apps">Завантаження застосунків…</string>
+    <string name="refresh">Оновити</string>
+    <string name="no_apps_found">Застосунків не знайдено</string>
+    <string name="share_apks">Поділитися APK</string>
+
+    <!-- App Detail -->
+    <string name="title_app_detail">Деталі застосунку</string>
+    <string name="package_name">Ім’я пакета</string>
+    <string name="version">Версія</string>
+    <string name="install_date">Дата встановлення</string>
+    <string name="update_date">Останнє оновлення</string>
+    <string name="app_size">Розмір застосунку</string>
+    <string name="data_size">Розмір даних</string>
+    <string name="cache_size">Розмір кешу</string>
+    <string name="target_sdk">Цільовий SDK</string>
+    <string name="min_sdk">Мін. SDK</string>
+    <string name="permissions_title">Дозволи</string>
+    <string name="granted">Надано</string>
+    <string name="denied">Відхилено</string>
+    <string name="grant_permission">Надати</string>
+    <string name="revoke_permission">Відкликати</string>
+    <string name="open_app">Відкрити застосунок</string>
+    <string name="app_info">Інформація про застосунок</string>
+    <string name="uninstall">Видалити</string>
+    <string name="force_stop">Примусово зупинити</string>
+    <string name="clear_data">Очистити дані</string>
+    <string name="clear_cache">Очистити кеш</string>
+    <string name="disable_app">Вимкнути застосунок</string>
+    <string name="enable_app">Увімкнути застосунок</string>
+    <string name="freeze_app">Заморозити застосунок</string>
+    <string name="unfreeze_app">Розморозити застосунок</string>
+
+    <!-- Storage -->
+    <string name="storage_title">Сховище</string>
+    <string name="storage_app">Застосунок</string>
+    <string name="storage_data">Дані</string>
+    <string name="storage_total">Загалом</string>
+    <string name="storage_unknown">Невідомо</string>
+    <string name="installer_app">Установник</string>
+
+    <!-- App Detail Activity Strings -->
+    <string name="removed_from_favorites">Видалено з обраного</string>
+    <string name="added_to_favorites">Додано до обраного</string>
+    <string name="apk_path_not_found">Шлях до APK не знайдено</string>
+    <string name="apk_file_not_exist">Файл APK не існує</string>
+    <string name="apk_saved_to">APK збережено до: %s</string>
+    <string name="export_failed">Помилка експорту: %s</string>
+    <string name="cannot_open_google_play">Не вдалося відкрити Google Play</string>
+    <string name="cannot_open_fdroid">Не вдалося відкрити F-Droid</string>
+    <string name="cannot_launch_app">Не вдалося запустити цей застосунок</string>
+    <string name="force_stop_confirm">Примусово зупинити %s?</string>
+    <string name="uninstall_confirm">Видалити %s?</string>
+    <string name="clear_data_confirm">Очистити всі дані %s? Цю дію неможливо скасувати.</string>
+
+    <!-- Permissions List -->
+    <string name="title_permissions">Менеджер дозволів</string>
+    <string name="perm_microphone">Мікрофон</string>
+    <string name="perm_camera">Камера</string>
+    <string name="perm_location">Місцезнаходження</string>
+    <string name="perm_contacts">Контакти</string>
+    <string name="perm_storage">Сховище</string>
+    <string name="perm_manage_storage">Доступ до всіх файлів</string>
+    <string name="perm_phone">Телефон</string>
+    <string name="perm_sms">SMS</string>
+    <string name="perm_calendar">Календар</string>
+    <string name="perm_body_sensors">Датчики тіла</string>
+    <string name="perm_notifications">Сповіщення</string>
+    <string name="perm_overlay">Відображення поверх інших застосунків</string>
+    <string name="perm_install_unknown">Встановлення невідомих застосунків</string>
+    <string name="batch_revoke">Відкликати дозвіл</string>
+    <string name="batch_grant">Надати дозвіл</string>
+    <string name="confirm_revoke">Відкликати дозвіл у %d застосунків?</string>
+    <string name="confirm_grant">Надати дозвіл %d застосункам?</string>
+    <string name="selected_count">Вибрано: %d</string>
+    <string name="open_system_settings">Відкрити налаштування</string>
+    <string name="perm_write_settings">Зміна системних налаштувань</string>
+
+    <!-- Activities -->
+    <string name="title_activities">Менеджер активностей</string>
+    <string name="title_activity_detail">Деталі активності</string>
+    <string name="search_activity_hint">Пошук активностей…</string>
+    <string name="launch">Запустити</string>
+    <string name="back_to_apps">Назад до застосунків</string>
+    <string name="no_activities_found">Активностей не знайдено</string>
+
+    <!-- Common -->
+    <string name="confirm">Підтвердити</string>
+    <string name="cancel">Скасувати</string>
+    <string name="operation_success">Операцію виконано успішно</string>
+    <string name="operation_failed">Помилка операції: %s</string>
+    <string name="error_no_shizuku">Shizuku недоступний або не авторизований</string>
+    <string name="error_system_ops_disabled">Операції з системними застосунками вимкнені. Увімкніть «Дозволити операції з системними застосунками» в Налаштуваннях.</string>
+    <string name="language_changed_restart">Мову змінено. Перезапустіть застосунок, щоб застосувати зміни.</string>
+    <string name="restart">Перезапустити</string>
+
+    <!-- Language names -->
+    <string name="pref_language_en">English</string>
+    <string name="pref_language_zh">中文 (Simplified)</string>
+    <string name="pref_language_ja">日本語</string>
+    <string name="pref_language_ko">한국어</string>
+    <string name="pref_language_fr">Français</string>
+    <string name="pref_language_de">Deutsch</string>
+    <string name="pref_language_ru">Русский</string>
+    <string name="pref_language_ar">العربية</string>
+    <string name="pref_language_pt">Português</string>
+    <string name="pref_language_es">Español</string>
+    
+    <string name="restart_required">Потрібен перезапуск</string>
+    <string name="restart_required_message">Сторінку запуску за замовчуванням змінено. Перезапустіть застосунок, щоб зміни набули чинності.</string>
+    <string name="restart_now">Перезапустити зараз</string>
+    <string name="later">Пізніше</string>
+    
+    <!-- Update Checker -->
+    <string name="update_available">Доступне оновлення</string>
+    <string name="download">Завантажити</string>
+    <string name="no_update_title">Оновлень немає</string>
+    <string name="no_update_message">Ви вже використовуєте найновішу версію.</string>
+    <string name="update_check_failed">Помилка перевірки оновлень</string>
+    <string name="update_check_failed_message">Не вдалося перевірити оновлення. Будь ласка, перевірте підключення до інтернету.</string>
+    <string name="checking_for_update">Перевірка оновлень...</string>
+    <string name="please_wait">Будь ласка, зачекайте...</string>
+    <string name="ok">OK</string>
+    <string name="ignore">Ігнорувати</string>
+    
+    <!-- Shortcuts -->
+    <string name="shortcut_app_manager_long">Відкрити Buge App Manager</string>
+    
+    <string name="appearance_settings">Налаштування зовнішнього вигляду</string>
+    <string name="theme_mode">Режим теми</string>
+    <string name="color_theme">Кольорова тема</string>
+    <string name="color_default">За замовчуванням (Синя)</string>
+    <string name="color_red">Червона</string>
+    <string name="color_green">Зелена</string>
+    <string name="color_yellow">Жовта</string>
+    <string name="more_options">Додаткові параметри</string>
+    <string name="more_options_summary">Налаштувати тему та кольори</string>
+    <string name="theme_change_restart_message">Тему змінено. Перезапустіть застосунок, щоб застосувати зміни.</string>
+    <string name="theme_group">Тема</string>
+    <string name="hide_nav_labels">Приховати підписи навігації</string>
+    <string name="hide_nav_labels_summary">Приховати заголовки невибраних елементів навігації, показувати лише вибраний</string>
+
+    <!-- Dynamic Color -->
+    <string name="dynamic_color">Динамічний колір</string>
+    <string name="dynamic_color_summary">Автоматично адаптувати кольори з шпалер (Android 12+)</string>
+    <string name="dynamic_color_unavailable">Потрібен Android 12 або новіший</string>
+
+    <!-- Custom Labels -->
+    <string name="pref_custom_labels">Користувацькі мітки</string>
+    <string name="pref_custom_labels_summary">Створення та керування користувацькими мітками застосунків</string>
+    <string name="title_custom_labels">Користувацькі мітки</string>
+    <string name="create_label">Створити мітку</string>
+    <string name="label_name">Назва мітки</string>
+    <string name="label_name_hint">Введіть назву мітки</string>
+    <string name="create_new_label">Створити нову мітку</string>
+    <string name="no_labels_created">Мітки ще не створені</string>
+    <string name="tap_to_create">Натисніть +, щоб створити першу мітку</string>
+    <string name="delete_label_confirm">Видалити «%s»?</string>
+    <string name="delete_label">Видалити мітку</string>
+    <string name="select_apps_for_label">Вибрати застосунки для «%s»</string>
+    <string name="label_created">Мітку створено</string>
+    <string name="label_updated">Мітку оновлено</string>
+    <string name="label_deleted">Мітку видалено</string>
+    <string name="filter_label">Мітка: %s</string>
+
+    <!-- Update Options -->
+    <string name="pref_update_options">Параметри оновлення</string>
+    <string name="pref_update_options_summary">Налаштувати спосіб завантаження та встановлення оновлень</string>
+    <string name="title_update_options">Параметри оновлення</string>
+    <string name="update_method_browser">Відкрити в браузері</string>
+    <string name="update_method_silent">Тиха установка (Shizuku)</string>
+    <string name="installer_name">Ім’я установника</string>
+    <string name="installer_name_hint">Введіть ім’я установника</string>
+    <string name="update_downloading">Завантаження оновлення...</string>
+    <string name="update_download_failed">Помилка завантаження</string>
+    <string name="update_installing">Встановлення оновлення...</string>
+    <string name="update_install_success">Оновлення успішно встановлено</string>
+    <string name="update_install_failed">Помилка встановлення</string>
+    <string name="update_already_latest">Ви вже використовуєте найновішу версію</string>
+    <string name="checking_for_update_dialog">Перевірка оновлень...</string>
+    <string name="update_download_complete">Завантаження завершено</string>
+    <string name="save">Зберегти</string>
+
+    <!-- Backup -->
+    <string name="pref_backup">Резервне копіювання</string>
+    <string name="pref_backup_summary">Резервне копіювання налаштувань застосунку, списку застосунків і відновлення</string>
+    <string name="title_backup">Резервне копіювання</string>
+    <string name="backup_app_settings">Резервне копіювання налаштувань застосунку</string>
+    <string name="backup_app_settings_summary">Зберегти налаштування цього застосунку у файл</string>
+    <string name="backup_app_list">Резервне копіювання списку застосунків</string>
+    <string name="backup_app_list_summary">Експортувати список усіх встановлених застосунків</string>
+    <string name="import_app_settings">Імпорт налаштувань застосунку</string>
+    <string name="import_app_settings_summary">Відновити налаштування з файлу резервної копії</string>
+    <string name="backup_auto_settings">Налаштування резервного копіювання</string>
+    <string name="backup_enable">Увімкнути резервне копіювання</string>
+    <string name="backup_section">Резервне копіювання</string>
+    <string name="backup_auto_section">Інтервал автоматичного резервного копіювання</string>
+    <string name="backup_location">Місце резервного копіювання</string>
+    <string name="backup_location_default">Документи</string>
+    <string name="backup_location_hint">Обрати папку для резервних копій</string>
+    <string name="backup_success">Резервну копію успішно створено</string>
+    <string name="backup_failed">Помилка резервного копіювання</string>
+    <string name="import_success">Налаштування успішно імпортовано</string>
+    <string name="import_failed">Помилка імпорту</string>
+    <string name="backup_auto_hours">%d годин</string>
+    <string name="backup_auto_disabled">Вимкнено</string>
+    <string name="backup_auto_title">Інтервал автоматичного резервного копіювання</string>
+    <string name="backup_auto_summary">Автоматично створювати резервну копію під час запуску застосунку</string>
+    <string name="backup_auto_hint">Введіть години (0 для вимкнення)</string>
+    <string name="other_languages">Інші мови</string>
+    <string name="other_languages_title">Мови застосунку</string>
+    <string name="no_other_languages">Цей застосунок не має інших мовних ресурсів</string>
+    <string name="backup_auto_on_launch">Автоматичне резервне копіювання під час запуску</string>
+    <string name="backup_auto_on_launch_summary">Створювати або замінювати резервну копію під час кожного запуску застосунку</string>
+    <string name="backup_content">Вміст резервної копії</string>
+    <string name="backup_content_settings">Налаштування застосунку</string>
+    <string name="backup_content_app_list">Встановлені застосунки</string>
+    <string name="backup_content_both">Налаштування та встановлені застосунки</string>
+    <string name="backup_select_location_first">Будь ласка, спочатку оберіть місце для резервної копії</string>
+
+    <!-- Optional Permissions -->
+    <string name="pref_optional_permissions">Додаткові дозволи</string>
+    <string name="pref_optional_permissions_summary">Надати додаткові дозволи для додаткових функцій</string>
+    <string name="title_optional_permissions">Додаткові дозволи</string>
+    <string name="pref_storage_permission">Дозвіл на сховище</string>
+    <string name="pref_storage_permission_summary">Включає READ_EXTERNAL_STORAGE та WRITE_EXTERNAL_STORAGE для експорту APK і функцій сховища</string>
+    <string name="storage_permission_required">Потрібен для експорту APK і функцій сховища</string>
+    <string name="storage_permission_grant">Надати дозвіл на сховище</string>
+    <string name="perm_read_external_storage">Читання зовнішнього сховища</string>
+    <string name="perm_read_external_storage_desc">Дозволяє застосунку читати файли із зовнішнього сховища для експорту та обміну APK</string>
+    <string name="perm_write_external_storage">Запис у зовнішнє сховище</string>
+    <string name="perm_write_external_storage_desc">Дозволяє застосунку записувати файли у зовнішнє сховище для експорту та обміну APK</string>
+    <string name="optional_perm_granted">Надано</string>
+    <string name="optional_perm_denied">Відхилено</string>
+    <string name="optional_perm_grant">Надати</string>
+
+    <!-- Signature Validation -->
+    <string name="signature_warning_title">Попередження безпеки</string>
+    <string name="signature_warning_message">Перевірка хешу підпису не вдалася!\n\nВи використовуєте неофіційно підписану версію цього застосунку!\nМи не можемо підтвердити, чи є ця версія безпечною та надійною!\n\nВикористання неофіційних версій може наражати вас на ризики безпеки,\nвключаючи крадіжку даних, порушення конфіденційності та шкідливе ПЗ.\n\nБудь ласка, завантажте офіційну версію з наших довірених платформ нижче.</string>
+    <string name="signature_warning_platforms_title">Довірені платформи для завантаження</string>
+    <string name="signature_warning_sha256_label">Очікуваний SHA-256 підпису</string>
+    <string name="signature_warning_button_exit">Вийти з застосунку</string>
+    <string name="signature_warning_button_continue">Все одно продовжити</string>
+    <string name="signature_warning_github_url">https://github.com/BugeStudioTeam/Buge-App-Manager/releases</string>
+    <string name="signature_warning_fdroid_url">https://f-droid.org/packages/com.buge.appmanager/</string>
+
+    <!-- App Detail Menu -->
+    <string name="menu_favorite">Обране</string>
+    <string name="menu_share_apk">Поділитися APK</string>
+    <string name="menu_export_apk">Експортувати APK</string>
+    <string name="menu_export_info">Експортувати інформацію про застосунок</string>
+    <string name="menu_other_languages">Інші мови</string>
+    <string name="menu_google_play">Переглянути в Google Play Store</string>
+    <string name="menu_f_droid">Переглянути на F-Droid</string>
+    <string name="menu_grant_all_permissions">Надати всі дозволи</string>
+    <string name="menu_revoke_all_permissions">Відкликати всі дозволи</string>
+    
+    <!-- Install Apps -->
+    <string name="pref_install_apps">Встановлення застосунків</string>
+    <string name="pref_install_apps_summary">Встановлення APK-файлів з розширеними параметрами</string>
+    <string name="title_install_apps">Встановлення застосунків</string>
+    <string name="install_installer_name">Ім’я установника</string>
+    <string name="install_installer_name_summary">Встановити ім’я пакета установника для прапорця -i</string>
+    <string name="install_allow_downgrade">Дозволити пониження версії</string>
+    <string name="install_allow_downgrade_summary">Дозволити встановлення старіших версій поверх новіших</string>
+    <string name="install_allow_test_packages">Дозволити тестові пакети</string>
+    <string name="install_allow_test_packages_summary">Дозволити встановлення APK лише для тестування</string>
+    <string name="install_allow_system_apps">Дозволити встановлення системних застосунків</string>
+    <string name="install_allow_system_apps_summary">Дозволити встановлення або оновлення системних застосунків</string>
+    <string name="install_all_users">Встановити для всіх користувачів</string>
+    <string name="install_all_users_summary">Встановити APK для кожного користувача на пристрої</string>
+    <string name="install_no_apks">APK-файли не вибрано</string>
+    <string name="install_add_apk">Додати APK</string>
+    <string name="install_button">Встановити</string>
+    <string name="install_installing">Встановлення %1$s...</string>
+    <string name="install_success">Встановлено: %1$s</string>
+    <string name="install_failed">Помилка: %1$s - %2$s</string>
+    <string name="install_complete">Встановлення завершено: %1$d успішно, %2$d з помилкою</string>
+    <string name="install_remove">Видалити</string>
+    <string name="install_apk_version">Версія</string>
+    <string name="install_apk_package">Пакет</string>
+    <string name="install_apk_path">Шлях</string>
+    <string name="install_invalid_apk">Недійсний APK-файл</string>
+    
+    <!-- Welcome / Onboarding -->
+    <string name="welcome_title">Ласкаво просимо</string>
+    <string name="welcome_subtitle">Давайте налаштуємо Buge App Manager за кілька простих кроків.</string>
+    <string name="welcome_get_started">Почати</string>
+    <string name="welcome_next">Далі</string>
+    <string name="welcome_back">Назад</string>
+    <string name="welcome_finish">Почати користування</string>
+    <string name="welcome_skip">Пропустити</string>
+
+    <string name="welcome_source_title">Звідки ви отримали цей застосунок?</string>
+    <string name="welcome_source_subtitle">Це допоможе нам правильно налаштувати оновлення.</string>
+    <string name="welcome_source_github">GitHub</string>
+    <string name="welcome_source_fdroid">F-Droid</string>
+    <string name="welcome_source_other">Інше</string>
+
+    <string name="welcome_update_title">Автооновлення</string>
+    <string name="welcome_update_subtitle">Автоматично перевіряти нові версії під час запуску застосунку.</string>
+    <string name="welcome_update_enabled">Автооновлення увімкнено</string>
+    <string name="welcome_update_disabled">Автооновлення вимкнено</string>
+
+    <string name="welcome_usage_title">Загальні налаштування</string>
+    <string name="welcome_usage_subtitle">Оберіть тему, мову та сторінку за замовчуванням.</string>
+
+    <string name="welcome_appearance_title">Зовнішній вигляд</string>
+    <string name="welcome_appearance_subtitle">Налаштуйте кольори та навігацію.</string>
+
+    <string name="welcome_ready_title">Усе готово</string>
+    <string name="welcome_ready_subtitle">Почніть керувати своїми застосунками з Buge App Manager.</string>
+    
+    <string name="welcome_summary_title">Підсумок</string>
+    <string name="welcome_summary_source">Джерело</string>
+    <string name="welcome_summary_auto_update">Автооновлення</string>
+    <string name="welcome_summary_theme">Тема</string>
+    <string name="welcome_summary_language">Мова</string>
+    <string name="welcome_summary_default_page">Сторінка за замовчуванням</string>
+    <string name="welcome_summary_dynamic_color">Динамічний колір</string>
+    <string name="welcome_summary_hide_nav_labels">Приховати підписи навігації</string>
+    <string name="welcome_summary_color_theme">Кольорова тема</string>
+    <string name="welcome_summary_on">Увімк.</string>
+    <string name="welcome_summary_off">Вимк.</string>
+    
+</resources>

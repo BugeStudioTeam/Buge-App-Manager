@@ -4,7 +4,7 @@
 
 ## Related Issue
 
-<!-- Fixes # (link the related issue number, or delete this section) -->
+<!-- Fixes # (link the related issue number, or fill in N) -->
 
 ## Type of Change
 
@@ -26,10 +26,10 @@
 
 | Item | Info |
 |---|---|
-| Android version | <!-- Your device version, like this: 16 (36) --> |
-| Device / model | <!-- Your device model, like this: pixel 9 pro --> |
-| Authorization method | <!-- Shizuku / Dhizuku / ROOT --> |
-| Apps tested | <!-- Y/N --> |
+| Android version |  | <!-- Your device version, like this: 16 (36) -->
+| Device / model |  | <!-- Your device model, like this: pixel 9 pro -->
+| Authorization method |  | <!-- Shizuku / Dhizuku / ROOT -->
+| Apps tested |  | <!-- Y/N -->
 
 ## Checklist
 

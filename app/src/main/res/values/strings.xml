@@ -194,6 +194,8 @@
     <string name="enable_app">Enable App</string>
     <string name="freeze_app">Freeze App</string>
     <string name="unfreeze_app">Unfreeze App</string>
+    <string name="disable_app_confirm">Disable %s? The app will no longer be available to the user until it is re-enabled.</string>
+    <string name="enable_app_confirm">Enable %s? The app will become available to the user again.</string>
 
     <!-- Storage -->
     <string name="storage_title">Storage</string>

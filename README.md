@@ -94,7 +94,7 @@ Choose between **Shizuku**, **Dhizuku** or **ROOT** authorization.
 
 - Русский - ru
 
-- Ukraine - uk
+- Українська - uk
 
 - Português - pt
 

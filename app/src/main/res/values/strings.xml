@@ -133,6 +133,7 @@
     <string name="dhizuku_status_not_installed">Dhizuku not installed</string>
     <string name="dhizuku_request_auth">Request Authorization</string>
     <string name="dhizuku_install">Install Dhizuku</string>
+    <string name="dhizuku_unsupported_permission">This permission cannot be managed in Dhizuku mode. Switch to Shizuku or Root.</string>
 
     <!-- Root / Authorization Method -->
     <string name="pref_auth_mode">Authorization Method</string>

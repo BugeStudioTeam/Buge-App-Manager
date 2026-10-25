@@ -22,6 +22,7 @@ import androidx.core.content.FileProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.buge.appmanager.adapter.PermissionDetailAdapter
+import com.buge.appmanager.data.AppRepository
 import com.buge.appmanager.databinding.ActivityAppDetailBinding
 import com.buge.appmanager.model.PermissionInfo
 import com.buge.appmanager.shizuku.ShizukuManager
@@ -862,9 +863,13 @@ class AppDetailActivity : BaseActivity() {
 
     private fun grantAllPermissions() {
         val permissions = viewModel.permissions.value ?: emptyList()
-        val dangerousPermissions = permissions.filter { it.isDangerous && !it.isGranted }
+        val targetPermissions = if (ShizukuManager.isDhizukuMode()) {
+            permissions.filter { it.isDangerous && !it.isGranted && it.name !in AppRepository.DHIZUKU_UNSUPPORTED_PERMISSIONS }
+        } else {
+            permissions.filter { it.isDangerous && !it.isGranted }
+        }
 
-        if (dangerousPermissions.isEmpty()) {
+        if (targetPermissions.isEmpty()) {
             Snackbar.make(binding.root, "All dangerous permissions are already granted", Snackbar.LENGTH_SHORT).show()
             return
         }
@@ -877,12 +882,12 @@ class AppDetailActivity : BaseActivity() {
 
         MaterialAlertDialogBuilder(this)
             .setTitle("Grant All Permissions")
-            .setMessage("Grant ${dangerousPermissions.size} dangerous permission(s) to ${app?.appName ?: packageName}?")
+            .setMessage("Grant ${targetPermissions.size} dangerous permission(s) to ${app?.appName ?: packageName}?")
             .setPositiveButton(R.string.confirm) { _, _ ->
                 lifecycleScope.launch {
                     var successCount = 0
                     var failCount = 0
-                    for (perm in dangerousPermissions) {
+                    for (perm in targetPermissions) {
                         val result = ShizukuManager.grantPermission(packageName, perm.name)
                         if (result.success) {
                             successCount++
@@ -907,9 +912,13 @@ class AppDetailActivity : BaseActivity() {
 
     private fun revokeAllPermissions() {
         val permissions = viewModel.permissions.value ?: emptyList()
-        val dangerousPermissions = permissions.filter { it.isDangerous && it.isGranted }
+        val targetPermissions = if (ShizukuManager.isDhizukuMode()) {
+            permissions.filter { it.isDangerous && it.isGranted && it.name !in AppRepository.DHIZUKU_UNSUPPORTED_PERMISSIONS }
+        } else {
+            permissions.filter { it.isDangerous && it.isGranted }
+        }
 
-        if (dangerousPermissions.isEmpty()) {
+        if (targetPermissions.isEmpty()) {
             Snackbar.make(binding.root, "No granted dangerous permissions to revoke", Snackbar.LENGTH_SHORT).show()
             return
         }
@@ -922,12 +931,12 @@ class AppDetailActivity : BaseActivity() {
 
         MaterialAlertDialogBuilder(this)
             .setTitle("Revoke All Permissions")
-            .setMessage("Revoke ${dangerousPermissions.size} dangerous permission(s) from ${app?.appName ?: packageName}?")
+            .setMessage("Revoke ${targetPermissions.size} dangerous permission(s) from ${app?.appName ?: packageName}?")
             .setPositiveButton(R.string.confirm) { _, _ ->
                 lifecycleScope.launch {
                     var successCount = 0
                     var failCount = 0
-                    for (perm in dangerousPermissions) {
+                    for (perm in targetPermissions) {
                         val result = ShizukuManager.revokePermission(packageName, perm.name)
                         if (result.success) {
                             successCount++
@@ -1055,6 +1064,11 @@ class AppDetailActivity : BaseActivity() {
     private fun handlePermissionToggle(perm: PermissionInfo) {
         if (!checkShizuku()) return
 
+        if (ShizukuManager.isDhizukuMode() && perm.name in AppRepository.DHIZUKU_UNSUPPORTED_PERMISSIONS) {
+            Snackbar.make(binding.root, getString(R.string.dhizuku_unsupported_permission), Snackbar.LENGTH_LONG).show()
+            return
+        }
+
         val app = viewModel.appInfo.value
         if (app != null && !SystemOpChecker.canOperate(this, app.isSystemApp)) {
             showSystemOpBlockedDialog()
@@ -1150,11 +1164,17 @@ class AppDetailActivity : BaseActivity() {
         }
 
         viewModel.permissions.observe(this) { perms ->
-            if (perms.isNotEmpty()) {
-                permAdapter.submitList(perms)
-                binding.permCount.text = "${perms.count { it.isGranted }}/${perms.size}"
+            val filtered = if (ShizukuManager.isDhizukuMode()) {
+                perms.filter { it.name !in AppRepository.DHIZUKU_UNSUPPORTED_PERMISSIONS }
             } else {
-                viewModel.loadApp(packageName)
+                perms
+            }
+            if (filtered.isNotEmpty()) {
+                permAdapter.submitList(filtered)
+                binding.permCount.text = "${filtered.count { it.isGranted }}/${filtered.size}"
+            } else {
+                permAdapter.submitList(emptyList())
+                binding.permCount.text = "0/0"
             }
         }
 

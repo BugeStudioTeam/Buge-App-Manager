@@ -160,16 +160,13 @@ object ShizukuManager {
     suspend fun executeCommand(command: String): ShizukuResult {
         return when {
             isRootMode() -> RootManager.executeCommand(command, getRootSuPath())
-            isDhizukuMode() -> executeViaDhizukuShell(command)
+            isDhizukuMode() -> {
+                val result = DhizukuManager.executeCommand(command)
+                ShizukuResult(result.success, result.output, result.error)
+            }
             else -> executeViaShizuku(command)
         }
     }
-
-    private suspend fun executeViaDhizukuShell(command: String): ShizukuResult =
-        withContext(Dispatchers.IO) {
-            val result = DhizukuManager.executeCommand(command)
-            ShizukuResult(result.success, result.output, result.error)
-        }
 
     private suspend fun executeViaShizuku(command: String): ShizukuResult = withContext(Dispatchers.IO) {
         if (!isShizukuAvailable()) {
@@ -377,6 +374,13 @@ object ShizukuManager {
         if (!isSafeShellArg(packageName, "packageName")) {
             return ShizukuResult(false, "", "Unsafe package name")
         }
+
+        if (isDhizukuMode()) {
+            return withContext(Dispatchers.IO) {
+                DhizukuManager.forceStopApp(packageName)
+            }
+        }
+
         return executeCommand("am force-stop $packageName")
     }
 
@@ -384,6 +388,13 @@ object ShizukuManager {
         if (!isSafeShellArg(packageName, "packageName")) {
             return ShizukuResult(false, "", "Unsafe package name")
         }
+
+        if (isDhizukuMode()) {
+            return withContext(Dispatchers.IO) {
+                DhizukuManager.clearAppUserData(packageName)
+            }
+        }
+
         return executeCommand("pm clear $packageName")
     }
 
@@ -391,6 +402,13 @@ object ShizukuManager {
         if (!isSafeShellArg(packageName, "packageName")) {
             return ShizukuResult(false, "", "Unsafe package name")
         }
+
+        if (isDhizukuMode()) {
+            return withContext(Dispatchers.IO) {
+                DhizukuManager.setApplicationEnabled(packageName, false)
+            }
+        }
+
         return executeCommand("pm disable-user --user 0 $packageName")
     }
 
@@ -398,6 +416,13 @@ object ShizukuManager {
         if (!isSafeShellArg(packageName, "packageName")) {
             return ShizukuResult(false, "", "Unsafe package name")
         }
+
+        if (isDhizukuMode()) {
+            return withContext(Dispatchers.IO) {
+                DhizukuManager.setApplicationEnabled(packageName, true)
+            }
+        }
+
         return executeCommand("pm enable $packageName")
     }
 
@@ -405,6 +430,13 @@ object ShizukuManager {
         if (!isSafeShellArg(packageName, "packageName")) {
             return ShizukuResult(false, "", "Unsafe package name")
         }
+
+        if (isDhizukuMode()) {
+            return withContext(Dispatchers.IO) {
+                DhizukuManager.uninstallApp(packageName)
+            }
+        }
+
         return executeCommand("pm uninstall --user 0 $packageName")
     }
 

@@ -2,7 +2,7 @@
 <!-- SPDX-License-Identifier: GPL-3.0-only -->
 <!-- Copyright (C) 2026 Buge Studio -->
 <resources>
-    <string name="app_name">Buge 应用管理器</string>
+    <string name="app_name">Buge App Manager</string>
     <string name="developer_name">Buge 团队</string>
 
     <!-- Navigation -->

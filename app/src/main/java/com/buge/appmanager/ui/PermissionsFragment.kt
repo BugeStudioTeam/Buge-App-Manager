@@ -25,6 +25,7 @@ import com.buge.appmanager.util.PreferencesManager
 import com.buge.appmanager.util.SnackbarHelper
 import com.buge.appmanager.viewmodel.PermissionsViewModel
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import com.google.android.material.chip.Chip
 
 class PermissionsFragment : Fragment() {
     private var _binding: FragmentPermissionsBinding? = null
@@ -34,6 +35,13 @@ class PermissionsFragment : Fragment() {
     private var currentPermissions: List<String> = AppRepository.PERMISSION_MICROPHONE
     private var currentPermissionLabel: String = ""
     private var fontApplied = false
+
+    private val dhizukuHiddenPermissionIds = setOf(
+        R.id.chip_overlay,
+        R.id.chip_install_unknown,
+        R.id.chip_write_settings,
+        R.id.chip_manage_storage
+    )
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -46,6 +54,8 @@ class PermissionsFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         currentPermissionLabel = getString(R.string.perm_microphone)
+
+        updateDhizukuChipVisibility()
 
         setupBackPressedCallback()
         setupRecyclerView()
@@ -61,11 +71,32 @@ class PermissionsFragment : Fragment() {
             FontOverrideHelper.applyToActivity(activity as BaseActivity)
             fontApplied = true
         }
+        updateDhizukuChipVisibility()
     }
 
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
+    }
+
+    private fun updateDhizukuChipVisibility() {
+        if (!isAdded || view == null) return
+        val isDhizuku = ShizukuManager.isDhizukuMode()
+
+        for (chipId in dhizukuHiddenPermissionIds) {
+            val chip = binding.permissionChipGroup.findViewById<Chip>(chipId)
+            chip?.visibility = if (isDhizuku) View.GONE else View.VISIBLE
+        }
+
+        if (isDhizuku) {
+            val checkedId = binding.permissionChipGroup.checkedChipId
+            if (checkedId in dhizukuHiddenPermissionIds) {
+                val defaultChip = binding.permissionChipGroup.findViewById<Chip>(R.id.chip_mic)
+                defaultChip?.isChecked = true
+                currentPermissions = AppRepository.PERMISSION_MICROPHONE
+                currentPermissionLabel = getString(R.string.perm_microphone)
+            }
+        }
     }
 
     private fun setupBackPressedCallback() {
@@ -107,15 +138,39 @@ class PermissionsFragment : Fragment() {
                 checkedIds.contains(R.id.chip_location) -> Pair(AppRepository.PERMISSION_LOCATION, getString(R.string.perm_location))
                 checkedIds.contains(R.id.chip_contacts) -> Pair(AppRepository.PERMISSION_CONTACTS, getString(R.string.perm_contacts))
                 checkedIds.contains(R.id.chip_storage) -> Pair(AppRepository.PERMISSION_STORAGE, getString(R.string.perm_storage))
-                checkedIds.contains(R.id.chip_manage_storage) -> Pair(AppRepository.PERMISSION_MANAGE_STORAGE, getString(R.string.perm_manage_storage))
+                checkedIds.contains(R.id.chip_manage_storage) -> {
+                    if (ShizukuManager.isDhizukuMode()) {
+                        Pair(AppRepository.PERMISSION_MICROPHONE, getString(R.string.perm_microphone))
+                    } else {
+                        Pair(AppRepository.PERMISSION_MANAGE_STORAGE, getString(R.string.perm_manage_storage))
+                    }
+                }
                 checkedIds.contains(R.id.chip_phone) -> Pair(AppRepository.PERMISSION_PHONE, getString(R.string.perm_phone))
                 checkedIds.contains(R.id.chip_sms) -> Pair(AppRepository.PERMISSION_SMS, getString(R.string.perm_sms))
                 checkedIds.contains(R.id.chip_calendar) -> Pair(AppRepository.PERMISSION_CALENDAR, getString(R.string.perm_calendar))
                 checkedIds.contains(R.id.chip_sensors) -> Pair(AppRepository.PERMISSION_SENSORS, getString(R.string.perm_body_sensors))
                 checkedIds.contains(R.id.chip_notifications) -> Pair(AppRepository.PERMISSION_NOTIFICATIONS, getString(R.string.perm_notifications))
-                checkedIds.contains(R.id.chip_overlay) -> Pair(AppRepository.PERMISSION_OVERLAY, getString(R.string.perm_overlay))
-                checkedIds.contains(R.id.chip_install_unknown) -> Pair(AppRepository.PERMISSION_INSTALL_UNKNOWN_APPS, getString(R.string.perm_install_unknown))
-                checkedIds.contains(R.id.chip_write_settings) -> Pair(listOf("android.permission.WRITE_SETTINGS"), getString(R.string.perm_write_settings))
+                checkedIds.contains(R.id.chip_overlay) -> {
+                    if (ShizukuManager.isDhizukuMode()) {
+                        Pair(AppRepository.PERMISSION_MICROPHONE, getString(R.string.perm_microphone))
+                    } else {
+                        Pair(AppRepository.PERMISSION_OVERLAY, getString(R.string.perm_overlay))
+                    }
+                }
+                checkedIds.contains(R.id.chip_install_unknown) -> {
+                    if (ShizukuManager.isDhizukuMode()) {
+                        Pair(AppRepository.PERMISSION_MICROPHONE, getString(R.string.perm_microphone))
+                    } else {
+                        Pair(AppRepository.PERMISSION_INSTALL_UNKNOWN_APPS, getString(R.string.perm_install_unknown))
+                    }
+                }
+                checkedIds.contains(R.id.chip_write_settings) -> {
+                    if (ShizukuManager.isDhizukuMode()) {
+                        Pair(AppRepository.PERMISSION_MICROPHONE, getString(R.string.perm_microphone))
+                    } else {
+                        Pair(listOf("android.permission.WRITE_SETTINGS"), getString(R.string.perm_write_settings))
+                    }
+                }
                 else -> Pair(AppRepository.PERMISSION_MICROPHONE, getString(R.string.perm_microphone))
             }
             currentPermissions = permissions
@@ -130,7 +185,6 @@ class PermissionsFragment : Fragment() {
     private fun setupBatchActions() {
         if (!isAdded || view == null) return
 
-        // Select all button
         binding.btnSelectAll.setOnClickListener {
             val itemCount = adapter.itemCount
             if (itemCount > 0) {
@@ -138,7 +192,6 @@ class PermissionsFragment : Fragment() {
             }
         }
 
-        // Clear selection button
         binding.btnClearSelection.setOnClickListener {
             adapter.clearSelection()
             adapter.setSelectionMode(false)
@@ -224,6 +277,11 @@ class PermissionsFragment : Fragment() {
             return
         }
 
+        if (ShizukuManager.isDhizukuMode() && permission in AppRepository.DHIZUKU_UNSUPPORTED_PERMISSIONS) {
+            SnackbarHelper.showSnackbar(binding.root, getString(R.string.dhizuku_unsupported_permission))
+            return
+        }
+
         val actionLabel = if (isGranted) getString(R.string.revoke_permission) else getString(R.string.grant_permission)
         MaterialAlertDialogBuilder(requireContext())
             .setTitle(actionLabel)
@@ -275,7 +333,6 @@ class PermissionsFragment : Fragment() {
             adapter.submitList(items)
             binding.toolbar.subtitle = getString(R.string.apps_count, items.size)
 
-            // Show empty state if no apps
             val isEmpty = items.isEmpty()
             binding.emptyState.visibility = if (isEmpty) View.VISIBLE else View.GONE
             binding.recyclerView.visibility = if (isEmpty) View.GONE else View.VISIBLE

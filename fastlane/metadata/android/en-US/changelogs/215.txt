@@ -1,0 +1,17 @@
+**13.76.139**
+
+**Milestone Update** 🎉
+
+**Added** ✨
+- Added Dhizuku support (proposed by @AmakerGame) — new milestone (currently in testing phase; full functionality and unique new features not yet implemented)
+- Added warning dialog for Force Stop (issue #51 by @Pinocchio714)
+
+**Optimizations** ⚡
+- Fully optimized project structure
+
+**Fixes** 🛠
+- Fixed various errors and bugs
+
+**Contributors of this version:**
+- @AmakerGame
+- @Pinocchio714

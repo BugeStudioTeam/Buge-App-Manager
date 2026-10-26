@@ -1042,12 +1042,27 @@ class AppDetailActivity : BaseActivity() {
                 showSystemOpBlockedDialog()
                 return@setupButtonAnimation
             }
+            val appName = app.appName.ifEmpty { binding.appName.text.toString() }
             if (app.isEnabled) {
-                viewModel.disableApp()
-                LogManager.info(this, "App disabled", "Package: $packageName")
+                MaterialAlertDialogBuilder(this)
+                    .setTitle(R.string.disable_app)
+                    .setMessage(getString(R.string.disable_app_confirm, appName))
+                    .setPositiveButton(R.string.confirm) { _, _ ->
+                        viewModel.disableApp()
+                        LogManager.info(this, "App disabled", "Package: $packageName")
+                    }
+                    .setNegativeButton(R.string.cancel, null)
+                    .show()
             } else {
-                viewModel.enableApp()
-                LogManager.info(this, "App enabled", "Package: $packageName")
+                MaterialAlertDialogBuilder(this)
+                    .setTitle(R.string.enable_app)
+                    .setMessage(getString(R.string.enable_app_confirm, appName))
+                    .setPositiveButton(R.string.confirm) { _, _ ->
+                        viewModel.enableApp()
+                        LogManager.info(this, "App enabled", "Package: $packageName")
+                    }
+                    .setNegativeButton(R.string.cancel, null)
+                    .show()
             }
         }
     }

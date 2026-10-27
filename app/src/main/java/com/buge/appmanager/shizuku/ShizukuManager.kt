@@ -203,37 +203,19 @@ object ShizukuManager {
         }
     }
 
-    private fun runtimePermissionToAppOps(permission: String): String? {
-        return when (permission) {
-            "android.permission.RECORD_AUDIO" -> "RECORD_AUDIO"
-            "android.permission.CAMERA" -> "CAMERA"
-            "android.permission.ACCESS_FINE_LOCATION" -> "FINE_LOCATION"
-            "android.permission.ACCESS_COARSE_LOCATION" -> "COARSE_LOCATION"
-            "android.permission.ACCESS_BACKGROUND_LOCATION" -> "ACCESS_BACKGROUND_LOCATION"
-            "android.permission.READ_CONTACTS" -> "READ_CONTACTS"
-            "android.permission.WRITE_CONTACTS" -> "WRITE_CONTACTS"
-            "android.permission.GET_ACCOUNTS" -> "GET_ACCOUNTS"
-            "android.permission.READ_EXTERNAL_STORAGE" -> "READ_EXTERNAL_STORAGE"
-            "android.permission.WRITE_EXTERNAL_STORAGE" -> "WRITE_EXTERNAL_STORAGE"
-            "android.permission.READ_CALL_LOG" -> "READ_CALL_LOG"
-            "android.permission.WRITE_CALL_LOG" -> "WRITE_CALL_LOG"
-            "android.permission.CALL_PHONE" -> "CALL_PHONE"
-            "android.permission.READ_PHONE_STATE" -> "READ_PHONE_STATE"
-            "android.permission.SEND_SMS" -> "SEND_SMS"
-            "android.permission.RECEIVE_SMS" -> "RECEIVE_SMS"
-            "android.permission.READ_SMS" -> "READ_SMS"
-            "android.permission.READ_CALENDAR" -> "READ_CALENDAR"
-            "android.permission.WRITE_CALENDAR" -> "WRITE_CALENDAR"
-            "android.permission.BODY_SENSORS" -> "BODY_SENSORS"
-            "android.permission.ACTIVITY_RECOGNITION" -> "ACTIVITY_RECOGNITION"
-            "android.permission.BLUETOOTH_SCAN" -> "BLUETOOTH_SCAN"
-            "android.permission.BLUETOOTH_CONNECT" -> "BLUETOOTH_CONNECT"
-            "android.permission.POST_NOTIFICATIONS" -> "POST_NOTIFICATION"
-            "android.permission.READ_MEDIA_IMAGES" -> "READ_MEDIA_IMAGES"
-            "android.permission.READ_MEDIA_VIDEO" -> "READ_MEDIA_VIDEO"
-            "android.permission.READ_MEDIA_AUDIO" -> "READ_MEDIA_AUDIO"
-            else -> null
+    suspend fun getAllWriteSettingsStatus(): Map<String, Boolean> = withContext(Dispatchers.IO) {
+        val result = mutableMapOf<String, Boolean>()
+        val packagesResult = executeCommand("pm list packages | cut -d':' -f2")
+        if (packagesResult.success) {
+            val packages = packagesResult.output.lines().filter { it.isNotEmpty() }
+            for (pkg in packages) {
+                val status = getWriteSettingsStatus(pkg)
+                if (status != null) {
+                    result[pkg] = status
+                }
+            }
         }
+        result
     }
 
     suspend fun grantPermission(packageName: String, permission: String): ShizukuResult {
@@ -263,21 +245,7 @@ object ShizukuManager {
                 grantManageExternalStorage(packageName)
             }
             else -> {
-                val pmResult = executeCommand("pm grant --user 0 $packageName $permission")
-                if (pmResult.success) {
-                    return pmResult
-                }
-                val op = runtimePermissionToAppOps(permission)
-                if (op != null) {
-                    val appOpsResult = executeCommand("appops set --uid $packageName $op allow")
-                    if (appOpsResult.success) {
-                        appOpsResult
-                    } else {
-                        pmResult
-                    }
-                } else {
-                    pmResult
-                }
+                executeCommand("pm grant $packageName $permission")
             }
         }
     }
@@ -309,21 +277,7 @@ object ShizukuManager {
                 revokeManageExternalStorage(packageName)
             }
             else -> {
-                val pmResult = executeCommand("pm revoke --user 0 $packageName $permission")
-                if (pmResult.success) {
-                    return pmResult
-                }
-                val op = runtimePermissionToAppOps(permission)
-                if (op != null) {
-                    val appOpsResult = executeCommand("appops set --uid $packageName $op ignore")
-                    if (appOpsResult.success) {
-                        appOpsResult
-                    } else {
-                        pmResult
-                    }
-                } else {
-                    pmResult
-                }
+                executeCommand("pm revoke $packageName $permission")
             }
         }
     }

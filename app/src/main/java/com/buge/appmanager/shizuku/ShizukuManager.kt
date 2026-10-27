@@ -203,6 +203,14 @@ object ShizukuManager {
         }
     }
 
+    private suspend fun resetPolicyFixedPermission(packageName: String, permission: String) {
+        try {
+            executeCommand("dpm set-permission-grant-state $packageName $permission default")
+        } catch (e: Exception) {
+            Log.w(TAG, "resetPolicyFixedPermission failed: ${e.message}")
+        }
+    }
+
     suspend fun getAllWriteSettingsStatus(): Map<String, Boolean> = withContext(Dispatchers.IO) {
         val result = mutableMapOf<String, Boolean>()
         val packagesResult = executeCommand("pm list packages | cut -d':' -f2")
@@ -230,6 +238,8 @@ object ShizukuManager {
                 else ShizukuResult(false, "", "Dhizuku setPermissionGrantState failed")
             }
         }
+
+        resetPolicyFixedPermission(packageName, permission)
 
         return when (permission) {
             "android.permission.WRITE_SETTINGS" -> {
@@ -262,6 +272,8 @@ object ShizukuManager {
                 else ShizukuResult(false, "", "Dhizuku setPermissionGrantState failed")
             }
         }
+
+        resetPolicyFixedPermission(packageName, permission)
 
         return when (permission) {
             "android.permission.WRITE_SETTINGS" -> {

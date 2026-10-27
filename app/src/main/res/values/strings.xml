@@ -160,6 +160,7 @@
     <string name="filter_all">All Apps</string>
     <string name="filter_user">User Apps</string>
     <string name="filter_system">System Apps</string>
+    <string name="filter_disabled">Disabled Apps</string>
     <string name="filter_favorite">Favorite Apps</string>
     <string name="sort_name">Name</string>
     <string name="sort_size">Size</string>

@@ -14,10 +14,12 @@ import androidx.viewpager2.adapter.FragmentStateAdapter
 import androidx.viewpager2.widget.ViewPager2
 import com.buge.appmanager.databinding.ActivityWelcomeBinding
 import com.buge.appmanager.ui.welcome.WelcomeAppearanceFragment
+import com.buge.appmanager.ui.welcome.WelcomeAuthFragment
 import com.buge.appmanager.ui.welcome.WelcomeIntroFragment
 import com.buge.appmanager.ui.welcome.WelcomeReadyFragment
 import com.buge.appmanager.ui.welcome.WelcomeSourceFragment
 import com.buge.appmanager.ui.welcome.WelcomeUpdateFragment
+import com.buge.appmanager.ui.welcome.WelcomeUpdateOptionsFragment
 import com.buge.appmanager.ui.welcome.WelcomeUsageFragment
 import com.buge.appmanager.util.LocaleManager
 import com.buge.appmanager.util.LogManager
@@ -168,15 +170,17 @@ class WelcomeActivity : BaseActivity() {
     }
 
     inner class WelcomePagerAdapter(activity: FragmentActivity) : FragmentStateAdapter(activity) {
-        override fun getItemCount(): Int = 6
+        override fun getItemCount(): Int = 8
 
         override fun createFragment(position: Int): Fragment {
             return when (position) {
                 0 -> WelcomeIntroFragment()
                 1 -> WelcomeSourceFragment()
                 2 -> WelcomeUpdateFragment()
-                3 -> WelcomeUsageFragment()
-                4 -> WelcomeAppearanceFragment()
+                3 -> WelcomeUpdateOptionsFragment()
+                4 -> WelcomeUsageFragment()
+                5 -> WelcomeAppearanceFragment()
+                6 -> WelcomeAuthFragment()
                 else -> WelcomeReadyFragment()
             }
         }

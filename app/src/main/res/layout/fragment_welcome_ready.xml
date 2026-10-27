@@ -13,13 +13,12 @@
         android:padding="24dp">
 
         <ImageView
-            android:layout_width="80dp"
-            android:layout_height="80dp"
+            android:layout_width="120dp"
+            android:layout_height="120dp"
             android:layout_gravity="center_horizontal"
             android:layout_marginTop="24dp"
-            android:src="@drawable/ic_check"
-            android:background="@drawable/circle_green"
-            android:padding="16dp" />
+            android:src="@drawable/ic_all_set"
+            android:contentDescription="@string/welcome_ready_title" />
 
         <TextView
             android:layout_width="wrap_content"

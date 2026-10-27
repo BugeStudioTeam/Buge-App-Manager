@@ -356,6 +356,7 @@ class AppRepository(private val context: Context) {
                 AppFilter.USER -> apps.filter { !it.isSystemApp }.toMutableList()
                 AppFilter.SYSTEM -> apps.filter { it.isSystemApp }.toMutableList()
                 AppFilter.FAVORITE -> apps.filter { PreferencesManager.isFavoriteApp(context, it.packageName) }.toMutableList()
+                AppFilter.DISABLED -> apps.filter { !it.isEnabled }.toMutableList()
             }
 
             if (!showDisabledApps) {

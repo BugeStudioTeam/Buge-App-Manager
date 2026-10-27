@@ -1,1 +1,1 @@
-An application management tool that obtains adb shell privileges via the Shizuku
+A powerful app manager for efficiently managing various apps and permissions

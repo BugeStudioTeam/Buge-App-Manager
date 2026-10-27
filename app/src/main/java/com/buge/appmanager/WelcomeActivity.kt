@@ -4,29 +4,25 @@
 package com.buge.appmanager
 
 import android.content.Intent
-import android.graphics.Color
 import android.os.Build
 import android.os.Bundle
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
-import android.widget.FrameLayout
-import android.widget.ImageView
-import android.widget.RadioButton
-import android.widget.TextView
 import androidx.appcompat.app.AppCompatDelegate
-import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
 import androidx.viewpager2.adapter.FragmentStateAdapter
 import androidx.viewpager2.widget.ViewPager2
 import com.buge.appmanager.databinding.ActivityWelcomeBinding
+import com.buge.appmanager.ui.welcome.WelcomeAppearanceFragment
+import com.buge.appmanager.ui.welcome.WelcomeIntroFragment
+import com.buge.appmanager.ui.welcome.WelcomeReadyFragment
+import com.buge.appmanager.ui.welcome.WelcomeSourceFragment
+import com.buge.appmanager.ui.welcome.WelcomeUpdateFragment
+import com.buge.appmanager.ui.welcome.WelcomeUsageFragment
 import com.buge.appmanager.util.LocaleManager
 import com.buge.appmanager.util.LogManager
 import com.buge.appmanager.util.PreferencesManager
 import com.buge.appmanager.util.ThemeManager
-import com.google.android.material.card.MaterialCardView
-import com.google.android.material.materialswitch.MaterialSwitch
 
 class WelcomeActivity : BaseActivity() {
 

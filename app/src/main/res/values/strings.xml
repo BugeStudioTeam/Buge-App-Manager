@@ -79,6 +79,8 @@
     <string name="github">GitHub</string>
     <string name="github_desc">Visit our GitHub repository</string>
     <string name="telegram">Telegram</string>
+    <string name="fdroid">F-Droid</string>
+    <string name="fdroid_desc">View this app on F-Droid</string>
     <string name="telegram_desc">Join our Telegram channel</string>
     <string name="activitymanager">ActivityManager</string>
     <string name="activitymanager_desc">Open-source project — the Shizuku method for launching non-exported activities</string>

@@ -39,6 +39,7 @@ import com.buge.appmanager.util.FontOverrideHelper
 import com.buge.appmanager.util.LogManager
 import com.buge.appmanager.util.PreferencesManager
 import com.buge.appmanager.util.SnackbarHelper
+import com.buge.appmanager.util.SystemOpChecker
 import com.buge.appmanager.viewmodel.AppsViewModel
 import com.google.android.material.chip.Chip
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
@@ -477,14 +478,26 @@ class AppsFragment : Fragment() {
                 return@setOnClickListener
             }
 
-            MaterialAlertDialogBuilder(requireContext())
-                .setTitle(R.string.uninstall)
-                .setMessage("Uninstall ${selected.size} selected app(s)?")
-                .setPositiveButton(R.string.confirm) { _, _ ->
-                    batchUninstall(selected)
-                }
-                .setNegativeButton(R.string.cancel, null)
-                .show()
+            val packages = selected.map { it.packageName }
+            val operation = getString(R.string.dangerous_operation_uninstall)
+            val proceed = {
+                MaterialAlertDialogBuilder(requireContext())
+                    .setTitle(R.string.uninstall)
+                    .setMessage("Uninstall ${selected.size} selected app(s)?")
+                    .setPositiveButton(R.string.confirm) { _, _ ->
+                        batchUninstall(selected)
+                    }
+                    .setNegativeButton(R.string.cancel, null)
+                    .show()
+            }
+            val handled = SystemOpChecker.checkDangerousPackages(
+                requireContext(),
+                packages,
+                operation
+            ) { proceed() }
+            if (!handled) {
+                proceed()
+            }
         }
 
         binding.btnBatchDisable.setOnClickListener {
@@ -504,14 +517,26 @@ class AppsFragment : Fragment() {
                 return@setOnClickListener
             }
 
-            MaterialAlertDialogBuilder(requireContext())
-                .setTitle(R.string.disable_app)
-                .setMessage("Disable ${toDisable.size} selected app(s)?")
-                .setPositiveButton(R.string.confirm) { _, _ ->
-                    batchDisable(toDisable)
-                }
-                .setNegativeButton(R.string.cancel, null)
-                .show()
+            val packages = toDisable.map { it.packageName }
+            val operation = getString(R.string.dangerous_operation_disable)
+            val proceed = {
+                MaterialAlertDialogBuilder(requireContext())
+                    .setTitle(R.string.disable_app)
+                    .setMessage("Disable ${toDisable.size} selected app(s)?")
+                    .setPositiveButton(R.string.confirm) { _, _ ->
+                        batchDisable(toDisable)
+                    }
+                    .setNegativeButton(R.string.cancel, null)
+                    .show()
+            }
+            val handled = SystemOpChecker.checkDangerousPackages(
+                requireContext(),
+                packages,
+                operation
+            ) { proceed() }
+            if (!handled) {
+                proceed()
+            }
         }
 
         binding.btnBatchEnable.setOnClickListener {

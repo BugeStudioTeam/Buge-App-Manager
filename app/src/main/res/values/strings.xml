@@ -199,6 +199,16 @@
     <string name="unfreeze_app">Unfreeze App</string>
     <string name="disable_app_confirm">Disable %s? The app will no longer be available to the user until it is re-enabled.</string>
     <string name="enable_app_confirm">Enable %s? The app will become available to the user again.</string>
+    <string name="pref_dangerous_packages_warning">Dangerous Operation Warning</string>
+    <string name="dangerous_package_warning_title">Very Dangerous Operation</string>
+    <string name="dangerous_package_warning_message">You are about to perform a dangerous operation on a protected package.\n\nApp: %1$s\nPackage: %2$s\nOperation: %3$s\n\nModifying or removing this package may break your device, cause boot loops, or make core system functions unusable. This action is extremely dangerous.\n\nProceed anyway?</string>
+    <string name="dangerous_package_warning_message_batch">You are about to perform a dangerous operation on %1$d protected package(s).\n\nOperation: %2$s\n\nProtected packages included:\n%3$s\n\nModifying or removing these packages may break your device, cause boot loops, or make core system functions unusable. This action is extremely dangerous.\n\nProceed anyway?</string>
+    <string name="dangerous_package_warning_continue">Proceed Anyway</string>
+    <string name="dangerous_operation_uninstall">Uninstall</string>
+    <string name="dangerous_operation_disable">Disable</string>
+    <string name="dangerous_operation_enable">Enable</string>
+    <string name="dangerous_operation_clear_data">Clear data</string>
+    <string name="dangerous_operation_force_stop">Force stop</string>
 
     <!-- Storage -->
     <string name="storage_title">Storage</string>

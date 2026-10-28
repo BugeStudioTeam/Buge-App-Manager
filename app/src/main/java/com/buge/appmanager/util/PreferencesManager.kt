@@ -42,6 +42,7 @@ object PreferencesManager {
     private const val INSTALL_ALL_USERS_KEY = "install_all_users"
     private const val WELCOME_COMPLETED_KEY = "welcome_completed"
     private const val APP_SOURCE_KEY = "app_source"
+    private const val DANGEROUS_PACKAGES_WARNING_KEY = "dangerous_packages_warning"
 
     const val AUTH_MODE_SHIZUKU = "shizuku"
     const val AUTH_MODE_DHIZUKU = "dhizuku"
@@ -351,5 +352,13 @@ object PreferencesManager {
 
     fun getAppSource(context: Context): String {
         return getPreferences(context).getString(APP_SOURCE_KEY, "GitHub") ?: "GitHub"
+    }
+
+    fun setDangerousPackagesWarning(context: Context, enabled: Boolean) {
+        getPreferences(context).edit().putBoolean(DANGEROUS_PACKAGES_WARNING_KEY, enabled).apply()
+    }
+
+    fun getDangerousPackagesWarning(context: Context): Boolean {
+        return getPreferences(context).getBoolean(DANGEROUS_PACKAGES_WARNING_KEY, false)
     }
 }

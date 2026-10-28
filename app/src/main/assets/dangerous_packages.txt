@@ -1,0 +1,22 @@
+# SPDX-License-Identifier: GPL-3.0-only
+# Copyright (C) 2026 Buge Studio
+# One package name per line. Lines starting with # are ignored.
+com.android.systemui
+com.android.settings
+com.android.phone
+com.android.shell
+com.android.packageinstaller
+com.google.android.packageinstaller
+com.android.permissioncontroller
+com.google.android.permissioncontroller
+com.android.providers.settings
+com.android.providers.telephony
+com.android.providers.contacts
+com.android.providers.media
+com.android.providers.downloads
+com.android.server.telecom
+com.android.bluetooth
+com.android.nfc
+com.android.certinstaller
+com.android.keychain
+android

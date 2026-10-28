@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: GPL-3.0-only
 // Copyright (C) 2026 Buge Studio
 
-package com.buge.appmanager
+package com.buge.appmanager.ui.welcome
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -9,6 +9,8 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import androidx.fragment.app.Fragment
+import com.buge.appmanager.R
+import com.buge.appmanager.WelcomeActivity
 import com.buge.appmanager.util.ThemeManager
 import com.google.android.material.materialswitch.MaterialSwitch
 

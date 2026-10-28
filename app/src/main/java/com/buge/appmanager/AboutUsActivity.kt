@@ -20,6 +20,7 @@ class AboutUsActivity : BaseActivity() {
     private lateinit var cardTelegram: LinearLayout
     private lateinit var cardWebsite: LinearLayout
     private lateinit var cardActivityManager: LinearLayout
+    private lateinit var cardFdroid: LinearLayout
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -38,6 +39,7 @@ class AboutUsActivity : BaseActivity() {
         cardTelegram = findViewById(R.id.card_telegram)
         cardWebsite = findViewById(R.id.card_website)
         cardActivityManager = findViewById(R.id.card_activitymanager)
+        cardFdroid = findViewById(R.id.card_fdroid)
     }
 
     private fun setupToolbar() {
@@ -68,6 +70,9 @@ class AboutUsActivity : BaseActivity() {
         }
         setupCardClickListener(cardActivityManager) {
             openUrl("https://github.com/sdex/ActivityManager")
+        }
+        setupCardClickListener(cardFdroid) {
+            openUrl("https://f-droid.org/packages/com.buge.appmanager/")
         }
     }
 
@@ -102,7 +107,6 @@ class AboutUsActivity : BaseActivity() {
             val intent = Intent(Intent.ACTION_VIEW, Uri.parse(url))
             startActivity(intent)
         } catch (e: Exception) {
-            // do nothing :/
         }
     }
 

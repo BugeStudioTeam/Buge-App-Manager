@@ -43,7 +43,7 @@ data class AppStorageInfo(
 )
 
 enum class AppFilter {
-    ALL, USER, SYSTEM, FAVORITE
+    ALL, USER, SYSTEM, FAVORITE, DISABLED
 }
 
 enum class AppSortOrder {

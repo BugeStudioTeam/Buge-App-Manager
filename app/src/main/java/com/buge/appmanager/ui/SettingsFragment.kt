@@ -1294,6 +1294,7 @@ class SettingsFragment : Fragment() {
         val view = LayoutInflater.from(requireContext()).inflate(R.layout.dialog_about, null)
         val websiteItem = view.findViewById<View>(R.id.website_item)
         val githubItem = view.findViewById<View>(R.id.github_item)
+        val fdroidItem = view.findViewById<View>(R.id.fdroid_item)
         val telegramItem = view.findViewById<View>(R.id.telegram_item)
         val updateItem = view.findViewById<View>(R.id.update_item)
 
@@ -1313,6 +1314,13 @@ class SettingsFragment : Fragment() {
         githubItem.setOnClickListener {
             val intent = Intent(Intent.ACTION_VIEW).apply {
                 data = Uri.parse("https://github.com/BugeStudioTeam/Buge-App-Manager")
+            }
+            startActivity(intent)
+        }
+
+        fdroidItem.setOnClickListener {
+            val intent = Intent(Intent.ACTION_VIEW).apply {
+                data = Uri.parse("https://f-droid.org/packages/com.buge.appmanager/")
             }
             startActivity(intent)
         }

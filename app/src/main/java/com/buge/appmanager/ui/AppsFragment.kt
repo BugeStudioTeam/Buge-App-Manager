@@ -114,6 +114,7 @@ class AppsFragment : Fragment() {
             FontOverrideHelper.applyToActivity(activity as BaseActivity)
             fontApplied = true
         }
+        updateDisabledChipVisibility()
         setupLabelChips()
         viewModel.loadApps()
         restoreScrollPosition()
@@ -306,6 +307,7 @@ class AppsFragment : Fragment() {
             val filter = when {
                 checkedIds.contains(R.id.chip_user) -> AppFilter.USER
                 checkedIds.contains(R.id.chip_system) -> AppFilter.SYSTEM
+                checkedIds.contains(R.id.chip_disabled) -> AppFilter.DISABLED
                 checkedIds.contains(R.id.chip_favorite) -> AppFilter.FAVORITE
                 else -> AppFilter.ALL
             }
@@ -317,6 +319,25 @@ class AppsFragment : Fragment() {
             binding.searchEditText.setText("")
             searchQuery = ""
             applyFilter(filter)
+        }
+
+        updateDisabledChipVisibility()
+    }
+
+    private fun updateDisabledChipVisibility() {
+        if (!isAdded || view == null) return
+        val chip = binding.filterChipGroup.findViewById<Chip>(R.id.chip_disabled) ?: return
+        val showDisabled = PreferencesManager.getShowDisabledApps(requireContext())
+        chip.visibility = if (showDisabled) View.VISIBLE else View.GONE
+
+        if (!showDisabled && chip.isChecked) {
+            isUpdatingChips = true
+            chip.isChecked = false
+            val allChip = binding.filterChipGroup.findViewById<Chip>(R.id.chip_all)
+            allChip?.isChecked = true
+            currentFilter = AppFilter.ALL
+            isUpdatingChips = false
+            applyFilter(currentFilter)
         }
     }
 
@@ -406,6 +427,7 @@ class AppsFragment : Fragment() {
             AppFilter.ALL -> allApps
             AppFilter.USER -> allApps.filter { !it.isSystemApp }
             AppFilter.SYSTEM -> allApps.filter { it.isSystemApp }
+            AppFilter.DISABLED -> allApps.filter { !it.isEnabled }
             AppFilter.FAVORITE -> allApps.filter { PreferencesManager.isFavoriteApp(requireContext(), it.packageName) }
         }
 
@@ -1115,6 +1137,7 @@ class AppsFragment : Fragment() {
         }
         isUpdatingChips = false
         isRestoringScroll = true
+        updateDisabledChipVisibility()
     }
 
     private fun openAppDetail(app: AppInfo) {

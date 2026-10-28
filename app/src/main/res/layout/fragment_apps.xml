@@ -21,7 +21,6 @@
             app:layout_scrollFlags="scroll|enterAlways|snap"
             app:menu="@menu/menu_apps" />
 
-        <!-- Fuck: Search bar as pill shape -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -130,6 +129,14 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="@string/filter_system" />
+
+                    <com.google.android.material.chip.Chip
+                        android:id="@+id/chip_disabled"
+                        style="@style/Widget.Material3.Chip.Filter"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/filter_disabled"
+                        android:visibility="gone" />
 
                     <com.google.android.material.chip.Chip
                         android:id="@+id/chip_favorite"
@@ -307,7 +314,6 @@
 
     </LinearLayout>
 
-    <!-- Loading Overlay -->
     <FrameLayout
         android:id="@+id/loading_overlay"
         android:layout_width="match_parent"
@@ -329,7 +335,6 @@
 
     </FrameLayout>
 
-    <!-- Empty State -->
     <LinearLayout
         android:id="@+id/empty_state"
         android:layout_width="match_parent"

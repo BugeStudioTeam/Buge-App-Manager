@@ -987,15 +987,34 @@ class AppDetailActivity : BaseActivity() {
                 return@setupButtonAnimation
             }
             val appName = app.appName.ifEmpty { binding.appName.text.toString() }
-            MaterialAlertDialogBuilder(this)
-                .setTitle(R.string.force_stop)
-                .setMessage(getString(R.string.force_stop_confirm, appName))
-                .setPositiveButton(R.string.confirm) { _, _ ->
-                    viewModel.forceStop()
-                    LogManager.info(this, "Force stop executed", "Package: $packageName")
+            SystemOpChecker.checkDangerousPackage(
+                this,
+                packageName,
+                appName,
+                getString(R.string.dangerous_operation_force_stop)
+            ) {
+                MaterialAlertDialogBuilder(this)
+                    .setTitle(R.string.force_stop)
+                    .setMessage(getString(R.string.force_stop_confirm, appName))
+                    .setPositiveButton(R.string.confirm) { _, _ ->
+                        viewModel.forceStop()
+                        LogManager.info(this, "Force stop executed", "Package: $packageName")
+                    }
+                    .setNegativeButton(R.string.cancel, null)
+                    .show()
+            }.let { handled ->
+                if (!handled) {
+                    MaterialAlertDialogBuilder(this)
+                        .setTitle(R.string.force_stop)
+                        .setMessage(getString(R.string.force_stop_confirm, appName))
+                        .setPositiveButton(R.string.confirm) { _, _ ->
+                            viewModel.forceStop()
+                            LogManager.info(this, "Force stop executed", "Package: $packageName")
+                        }
+                        .setNegativeButton(R.string.cancel, null)
+                        .show()
                 }
-                .setNegativeButton(R.string.cancel, null)
-                .show()
+            }
         }
 
         setupButtonAnimation(binding.btnUninstall) {
@@ -1005,16 +1024,37 @@ class AppDetailActivity : BaseActivity() {
                 showSystemOpBlockedDialog()
                 return@setupButtonAnimation
             }
-            MaterialAlertDialogBuilder(this)
-                .setTitle(R.string.uninstall)
-                .setMessage("Uninstall ${binding.appName.text}?")
-                .setPositiveButton(R.string.confirm) { _, _ ->
-                    viewModel.uninstallApp()
-                    LogManager.info(this, "Uninstall initiated", "Package: $packageName")
-                    finish()
+            val appName = app.appName.ifEmpty { binding.appName.text.toString() }
+            SystemOpChecker.checkDangerousPackage(
+                this,
+                packageName,
+                appName,
+                getString(R.string.dangerous_operation_uninstall)
+            ) {
+                MaterialAlertDialogBuilder(this)
+                    .setTitle(R.string.uninstall)
+                    .setMessage("Uninstall ${binding.appName.text}?")
+                    .setPositiveButton(R.string.confirm) { _, _ ->
+                        viewModel.uninstallApp()
+                        LogManager.info(this, "Uninstall initiated", "Package: $packageName")
+                        finish()
+                    }
+                    .setNegativeButton(R.string.cancel, null)
+                    .show()
+            }.let { handled ->
+                if (!handled) {
+                    MaterialAlertDialogBuilder(this)
+                        .setTitle(R.string.uninstall)
+                        .setMessage("Uninstall ${binding.appName.text}?")
+                        .setPositiveButton(R.string.confirm) { _, _ ->
+                            viewModel.uninstallApp()
+                            LogManager.info(this, "Uninstall initiated", "Package: $packageName")
+                            finish()
+                        }
+                        .setNegativeButton(R.string.cancel, null)
+                        .show()
                 }
-                .setNegativeButton(R.string.cancel, null)
-                .show()
+            }
         }
 
         setupButtonAnimation(binding.btnClearData) {
@@ -1024,15 +1064,35 @@ class AppDetailActivity : BaseActivity() {
                 showSystemOpBlockedDialog()
                 return@setupButtonAnimation
             }
-            MaterialAlertDialogBuilder(this)
-                .setTitle(R.string.clear_data)
-                .setMessage("Clear all data for ${binding.appName.text}? This cannot be undone.")
-                .setPositiveButton(R.string.confirm) { _, _ ->
-                    viewModel.clearData()
-                    LogManager.info(this, "Clear data executed", "Package: $packageName")
+            val appName = app.appName.ifEmpty { binding.appName.text.toString() }
+            SystemOpChecker.checkDangerousPackage(
+                this,
+                packageName,
+                appName,
+                getString(R.string.dangerous_operation_clear_data)
+            ) {
+                MaterialAlertDialogBuilder(this)
+                    .setTitle(R.string.clear_data)
+                    .setMessage("Clear all data for ${binding.appName.text}? This cannot be undone.")
+                    .setPositiveButton(R.string.confirm) { _, _ ->
+                        viewModel.clearData()
+                        LogManager.info(this, "Clear data executed", "Package: $packageName")
+                    }
+                    .setNegativeButton(R.string.cancel, null)
+                    .show()
+            }.let { handled ->
+                if (!handled) {
+                    MaterialAlertDialogBuilder(this)
+                        .setTitle(R.string.clear_data)
+                        .setMessage("Clear all data for ${binding.appName.text}? This cannot be undone.")
+                        .setPositiveButton(R.string.confirm) { _, _ ->
+                            viewModel.clearData()
+                            LogManager.info(this, "Clear data executed", "Package: $packageName")
+                        }
+                        .setNegativeButton(R.string.cancel, null)
+                        .show()
                 }
-                .setNegativeButton(R.string.cancel, null)
-                .show()
+            }
         }
 
         setupButtonAnimation(binding.btnDisableEnable) {
@@ -1043,27 +1103,47 @@ class AppDetailActivity : BaseActivity() {
                 return@setupButtonAnimation
             }
             val appName = app.appName.ifEmpty { binding.appName.text.toString() }
-            if (app.isEnabled) {
-                MaterialAlertDialogBuilder(this)
-                    .setTitle(R.string.disable_app)
-                    .setMessage(getString(R.string.disable_app_confirm, appName))
-                    .setPositiveButton(R.string.confirm) { _, _ ->
-                        viewModel.disableApp()
-                        LogManager.info(this, "App disabled", "Package: $packageName")
-                    }
-                    .setNegativeButton(R.string.cancel, null)
-                    .show()
+            val operation = if (app.isEnabled) {
+                getString(R.string.dangerous_operation_disable)
             } else {
-                MaterialAlertDialogBuilder(this)
-                    .setTitle(R.string.enable_app)
-                    .setMessage(getString(R.string.enable_app_confirm, appName))
-                    .setPositiveButton(R.string.confirm) { _, _ ->
-                        viewModel.enableApp()
-                        LogManager.info(this, "App enabled", "Package: $packageName")
-                    }
-                    .setNegativeButton(R.string.cancel, null)
-                    .show()
+                getString(R.string.dangerous_operation_enable)
             }
+            SystemOpChecker.checkDangerousPackage(
+                this,
+                packageName,
+                appName,
+                operation
+            ) {
+                performDisableEnable(app, appName)
+            }.let { handled ->
+                if (!handled) {
+                    performDisableEnable(app, appName)
+                }
+            }
+        }
+    }
+
+    private fun performDisableEnable(app: com.buge.appmanager.model.AppInfo, appName: String) {
+        if (app.isEnabled) {
+            MaterialAlertDialogBuilder(this)
+                .setTitle(R.string.disable_app)
+                .setMessage(getString(R.string.disable_app_confirm, appName))
+                .setPositiveButton(R.string.confirm) { _, _ ->
+                    viewModel.disableApp()
+                    LogManager.info(this, "App disabled", "Package: $packageName")
+                }
+                .setNegativeButton(R.string.cancel, null)
+                .show()
+        } else {
+            MaterialAlertDialogBuilder(this)
+                .setTitle(R.string.enable_app)
+                .setMessage(getString(R.string.enable_app_confirm, appName))
+                .setPositiveButton(R.string.confirm) { _, _ ->
+                    viewModel.enableApp()
+                    LogManager.info(this, "App enabled", "Package: $packageName")
+                }
+                .setNegativeButton(R.string.cancel, null)
+                .show()
         }
     }
 

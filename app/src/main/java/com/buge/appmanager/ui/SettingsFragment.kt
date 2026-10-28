@@ -35,6 +35,7 @@ import com.buge.appmanager.UpdateOptionsActivity
 import com.buge.appmanager.databinding.FragmentSettingsBinding
 import com.buge.appmanager.dhizuku.DhizukuManager
 import com.buge.appmanager.shizuku.ShizukuManager
+import com.buge.appmanager.util.DangerousPackageChecker
 import com.buge.appmanager.util.FontOverrideHelper
 import com.buge.appmanager.util.LocaleManager
 import com.buge.appmanager.util.LogManager
@@ -523,6 +524,16 @@ class SettingsFragment : Fragment() {
                         SnackbarHelper.showSnackbar(binding.root, getString(R.string.setting_saved))
                         LogManager.info(requireContext(), "Auto update changed to $isChecked")
                     }
+                    switchItem.title == getString(R.string.pref_dangerous_packages_warning) -> {
+                        PreferencesManager.setDangerousPackagesWarning(requireContext(), isChecked)
+                        SnackbarHelper.showSnackbar(binding.root, getString(R.string.setting_saved))
+                        if (isChecked) {
+                            DangerousPackageChecker.invalidateCache()
+                            val count = DangerousPackageChecker.getDangerousPackages(requireContext()).size
+                            LogManager.info(requireContext(), "Dangerous package warning enabled", "Loaded $count packages")
+                        }
+                        LogManager.info(requireContext(), "Dangerous packages warning changed to $isChecked")
+                    }
                 }
             },
             onStorageGrantClick = {
@@ -845,6 +856,7 @@ class SettingsFragment : Fragment() {
         val showDisabledApps = PreferencesManager.getShowDisabledApps(requireContext())
         val allowSystemOps = PreferencesManager.getAllowSystemOps(requireContext())
         val autoUpdate = PreferencesManager.getAutoUpdate(requireContext())
+        val dangerousPackagesWarning = PreferencesManager.getDangerousPackagesWarning(requireContext())
         val currentTheme = PreferencesManager.getThemeMode(requireContext())
         val themeText = when (currentTheme) {
             AppCompatDelegate.MODE_NIGHT_NO -> getString(R.string.pref_theme_light)
@@ -948,6 +960,11 @@ class SettingsFragment : Fragment() {
                 getString(R.string.pref_root_su_path),
                 rootSuPath,
                 R.drawable.ic_command
+            ),
+            SettingItem.SwitchItem(
+                getString(R.string.pref_dangerous_packages_warning),
+                dangerousPackagesWarning,
+                R.drawable.ic_warning
             ),
             SettingItem.SwitchItem(getString(R.string.pref_show_disabled_apps), showDisabledApps, R.drawable.ic_disabled_apps),
             SettingItem.SwitchItem(getString(R.string.pref_show_system_apps), showSystemApps, R.drawable.ic_system_apps),

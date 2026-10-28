@@ -1,0 +1,21 @@
+**13.81.141**
+
+**Added** ✨
+- Added Ukrainian language (issue #66 by @AmakerGame)
+- Added disable app labels (proposed by @Pinocchio714 on Telegram)
+- Added dangerous operation warning (proposed by @Pinocchio714 on Telegram)
+- Added F-Droid About entry
+- Added new Fragment to Welcome activity
+
+**Fixes** 🛠
+- Fixed Shizuku and ROOT unable to modify Microphone permission
+- Fixed toast messages displaying behind the navigation bar (issue #74 by @NECOtype)
+
+**Optimizations** ⚡
+- Improved Welcome activity
+- Synced language files to the latest version
+
+**Contributors of this version:**
+- @AmakerGame
+- @Pinocchio714
+- @NECOtype

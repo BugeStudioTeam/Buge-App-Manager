@@ -964,7 +964,7 @@ class SettingsFragment : Fragment() {
             SettingItem.SwitchItem(
                 getString(R.string.pref_dangerous_packages_warning),
                 dangerousPackagesWarning,
-                R.drawable.ic_warning_large
+                R.drawable.ic_warning
             ),
             SettingItem.SwitchItem(getString(R.string.pref_show_disabled_apps), showDisabledApps, R.drawable.ic_disabled_apps),
             SettingItem.SwitchItem(getString(R.string.pref_show_system_apps), showSystemApps, R.drawable.ic_system_apps),

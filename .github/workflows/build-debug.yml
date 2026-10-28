@@ -2,7 +2,7 @@ name: Build Debug APK
 
 on:
   pull_request:
-    branches: [ main, master ]
+    branches: [ main, develop ]
     types: [ synchronize, opened, reopened ]
   workflow_dispatch:
 

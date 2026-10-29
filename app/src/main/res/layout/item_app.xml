@@ -20,11 +20,12 @@
         android:gravity="center_vertical"
         android:minHeight="72dp">
 
-        <com.google.android.material.checkbox.MaterialCheckBox
+        <androidx.appcompat.widget.AppCompatCheckBox
             android:id="@+id/checkbox"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginEnd="8dp"
+            android:button="@drawable/ic_checkbox_custom"
             android:clickable="true"
             android:focusable="true"
             android:visibility="gone"

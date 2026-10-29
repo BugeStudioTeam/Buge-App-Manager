@@ -8,6 +8,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.animation.AccelerateDecelerateInterpolator
 import android.view.animation.OvershootInterpolator
+import android.widget.CheckBox
 import android.widget.FrameLayout
 import android.widget.ImageView
 import android.widget.TextView
@@ -16,7 +17,6 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.buge.appmanager.R
 import com.buge.appmanager.model.AppInfo
-import com.google.android.material.checkbox.MaterialCheckBox
 
 data class AppsItem(
     val app: AppInfo,
@@ -37,20 +37,15 @@ class AppsAdapter(
         }
     }
 
-    fun isInSelectionMode(): Boolean {
-        return selectionMode
-    }
+    fun isInSelectionMode(): Boolean = selectionMode
 
-    fun getSelectedItems(): List<AppInfo> {
-        return currentList.filter { it.isSelected }.map { it.app }
-    }
+    fun getSelectedItems(): List<AppInfo> = currentList.filter { it.isSelected }.map { it.app }
 
     fun toggleSelection(packageName: String) {
         val index = currentList.indexOfFirst { it.app.packageName == packageName }
         if (index >= 0) {
             val item = currentList[index]
-            val newSelected = !item.isSelected
-            item.isSelected = newSelected
+            item.isSelected = !item.isSelected
             notifyItemChanged(index, "selection")
             onSelectionChanged(currentList.count { it.isSelected })
         }
@@ -104,7 +99,6 @@ class AppsAdapter(
     private fun applyItemBackground(holder: AppViewHolder, position: Int) {
         val container = holder.itemView.findViewById<FrameLayout>(R.id.item_container)
         val size = currentList.size
-
         val background = when {
             size == 1 -> R.drawable.bg_setting_item_single
             position == 0 -> R.drawable.bg_setting_item_top
@@ -153,10 +147,6 @@ class AppsAdapter(
         }
     }
 
-    override fun submitList(list: List<AppsItem>?) {
-        super.submitList(list)
-    }
-
     override fun onCurrentListChanged(previousList: MutableList<AppsItem>, currentList: MutableList<AppsItem>) {
         super.onCurrentListChanged(previousList, currentList)
         if (previousList.size != currentList.size) {
@@ -173,7 +163,7 @@ class AppsAdapter(
         private val appVersion: TextView = itemView.findViewById(R.id.app_version)
         private val systemAppBadge: View = itemView.findViewById(R.id.system_app_badge)
         private val textContainer: ViewGroup = appName.parent as ViewGroup
-        val checkbox: MaterialCheckBox = itemView.findViewById(R.id.checkbox)
+        val checkbox: CheckBox = itemView.findViewById(R.id.checkbox)
         private val cardView: View = itemView
 
         fun bind(item: AppsItem) {

@@ -1,0 +1,7 @@
+**13.81.142**
+
+**Fixes** 🛠
+- Fixed fatal crash caused by MIUI/HyperOS theme overrides (PR #86 by @cynex1068)
+
+**Contributors of this version:**
+- @cynex1068

@@ -8,13 +8,13 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.animation.AccelerateDecelerateInterpolator
 import android.view.animation.OvershootInterpolator
+import android.widget.CheckBox
 import android.widget.FrameLayout
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.buge.appmanager.R
 import com.buge.appmanager.model.AppInfo
-import com.google.android.material.checkbox.MaterialCheckBox
 
 data class LabelAppItem(
     val app: AppInfo,
@@ -152,7 +152,7 @@ class LabelAppAdapter(
         private val packageName: TextView = itemView.findViewById(R.id.package_name)
         private val systemAppBadge: View = itemView.findViewById(R.id.system_app_badge)
         private val textContainer: ViewGroup = appName.parent as ViewGroup
-        val checkbox: MaterialCheckBox = itemView.findViewById(R.id.checkbox)
+        val checkbox: CheckBox = itemView.findViewById(R.id.checkbox)
         private val cardView: View = itemView
 
         fun bind(item: LabelAppItem, selectionMode: Boolean) {

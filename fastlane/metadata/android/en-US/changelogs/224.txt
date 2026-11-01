@@ -1,0 +1,8 @@
+**13.81.143**
+
+**Optimizations** ⚡
+- Improved layout
+- Updated font to Google Sans Flex, fully applied across all languages and locales in the app
+
+**Contributors of this version:**
+None

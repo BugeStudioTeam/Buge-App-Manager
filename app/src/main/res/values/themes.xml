@@ -4,7 +4,8 @@
 <resources>
     <!-- Base Blue Theme -->
     <style name="Theme.BugeAppManager" parent="Theme.Material3.Light.NoActionBar">
-        <!-- basic color -->
+        <item name="fontFamily">@font/google_sans</item>
+        <item name="android:fontFamily">@font/google_sans</item>
         <item name="colorPrimary">@color/md_theme_primary</item>
         <item name="colorOnPrimary">@color/md_theme_onPrimary</item>
         <item name="colorPrimaryContainer">@color/md_theme_primaryContainer</item>

@@ -55,7 +55,7 @@
                         android:layout_height="wrap_content"
                         android:adjustViewBounds="true"
                         android:maxHeight="180dp"
-                        android:src="@drawable/ic_buge"
+                        android:src="@drawable/material_shape_cookie_9"
                         android:layout_marginBottom="16dp" />
 
                     <TextView

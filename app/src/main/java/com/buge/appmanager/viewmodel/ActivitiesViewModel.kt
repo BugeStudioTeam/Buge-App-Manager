@@ -9,45 +9,69 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.buge.appmanager.data.ActivityRepository
-import com.buge.appmanager.model.AppInfo
+import com.buge.appmanager.model.ActivityDetail
 import com.buge.appmanager.util.LogManager
 import com.buge.appmanager.util.PreferencesManager
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 
-class ActivitiesViewModel(application: Application) : AndroidViewModel(application) {
+class ActivityDetailViewModel(application: Application) : AndroidViewModel(application) {
     private val repository = ActivityRepository(application)
 
-    private val _apps = MutableLiveData<List<AppInfo>>()
-    val apps: LiveData<List<AppInfo>> = _apps
+    private val _activities = MutableLiveData<List<ActivityDetail>>()
+    val activities: LiveData<List<ActivityDetail>> = _activities
 
     private val _isLoading = MutableLiveData<Boolean>()
     val isLoading: LiveData<Boolean> = _isLoading
 
+    private val _loadedCount = MutableLiveData<Int>()
+    val loadedCount: LiveData<Int> = _loadedCount
+
+    private val _totalCount = MutableLiveData<Int>()
+    val totalCount: LiveData<Int> = _totalCount
+
     private val _error = MutableLiveData<String?>()
     val error: LiveData<String?> = _error
 
-    fun loadApps() {
-        viewModelScope.launch {
+    private var loadJob: Job? = null
+
+    fun loadActivities(packageName: String) {
+        loadJob?.cancel()
+        loadJob = viewModelScope.launch {
             _isLoading.value = true
             _error.value = null
+            _loadedCount.value = 0
+            _totalCount.value = 0
             try {
-                val showSystemApps = PreferencesManager.getShowSystemApps(getApplication())
-                LogManager.info(getApplication(), "ActivitiesViewModel loading apps", "ShowSystemApps: $showSystemApps")
-                val apps = repository.getInstalledAppsWithActivities(showSystemApps)
-                _apps.value = apps
-                LogManager.info(getApplication(), "ActivitiesViewModel loaded apps", "Count: ${apps.size}")
+                val showUndeclared = PreferencesManager.getShowUndeclaredActivities(getApplication())
+                LogManager.info(getApplication(), "ActivityDetailViewModel loading", "Package: $packageName, ShowUndeclared: $showUndeclared")
+                val activities = repository.getAppActivities(
+                    packageName = packageName,
+                    showUndeclared = showUndeclared,
+                    onProgress = { loaded, total ->
+                        _loadedCount.postValue(loaded)
+                        _totalCount.postValue(total)
+                    },
+                    isCancelled = { loadJob?.isActive != true }
+                )
+                _activities.value = activities
+                LogManager.info(getApplication(), "ActivityDetailViewModel loaded", "Package: $packageName, Count: ${activities.size}")
             } catch (e: Exception) {
-                _error.value = e.message
-                LogManager.error(getApplication(), "ActivitiesViewModel load error", e.message)
-                _apps.value = emptyList()
+                if (loadJob?.isActive == true) {
+                    _error.value = e.message
+                    LogManager.error(getApplication(), "ActivityDetailViewModel load error", "Package: $packageName, Error: ${e.message}")
+                    _activities.value = emptyList()
+                }
             } finally {
-                _isLoading.value = false
+                if (loadJob?.isActive == true) {
+                    _isLoading.value = false
+                }
             }
         }
     }
 
-    fun refresh() {
-        LogManager.info(getApplication(), "ActivitiesViewModel refresh", "Refreshing apps")
-        loadApps()
+    fun cancelLoading() {
+        loadJob?.cancel()
+        _isLoading.value = false
     }
 }

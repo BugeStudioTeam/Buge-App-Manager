@@ -7,46 +7,41 @@ import android.content.ComponentName
 import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
-import android.util.Log
 import com.buge.appmanager.model.ActivityDetail
 import com.buge.appmanager.model.AppInfo
 import com.buge.appmanager.util.LogManager
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.isActive
 import kotlinx.coroutines.withContext
 
 class ActivityRepository(private val context: Context) {
     private val pm: PackageManager = context.packageManager
 
-    companion object {
-        private const val TAG = "ActivityRepository"
-    }
-
     suspend fun getInstalledAppsWithActivities(showSystemApps: Boolean): List<AppInfo> = withContext(Dispatchers.IO) {
         try {
             LogManager.info(context, "ActivityRepository: Getting apps with activities", "ShowSystemApps: $showSystemApps")
-            
+
             val allApps = mutableListOf<AppInfo>()
-            
+
             val packages = if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.TIRAMISU) {
                 pm.getInstalledPackages(PackageManager.PackageInfoFlags.of(0))
             } else {
                 @Suppress("DEPRECATION")
                 pm.getInstalledPackages(0)
             }
-            
+
             LogManager.debug(context, "ActivityRepository: Total packages", "${packages.size}")
-            
+
             for (pkgInfo in packages) {
                 try {
                     val packageName = pkgInfo.packageName
                     val appInfo = pm.getApplicationInfo(packageName, 0)
                     val isSystem = (appInfo.flags and android.content.pm.ApplicationInfo.FLAG_SYSTEM) != 0
-                    
+
                     if (!showSystemApps && isSystem) {
                         continue
                     }
-                    
-                    // Check if app has any activities - lightweight check
+
                     val hasActivities = try {
                         val packageInfo = if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.TIRAMISU) {
                             pm.getPackageInfo(packageName, PackageManager.PackageInfoFlags.of(PackageManager.GET_ACTIVITIES.toLong()))
@@ -59,11 +54,11 @@ class ActivityRepository(private val context: Context) {
                     } catch (e: Exception) {
                         false
                     }
-                    
+
                     if (!hasActivities) {
                         continue
                     }
-                    
+
                     allApps.add(
                         AppInfo(
                             packageName = packageName,
@@ -91,7 +86,7 @@ class ActivityRepository(private val context: Context) {
                     LogManager.warning(context, "ActivityRepository: Error getting app info", "${pkgInfo.packageName}: ${e.message}")
                 }
             }
-            
+
             val sorted = allApps.sortedBy { it.appName.lowercase() }
             LogManager.info(context, "ActivityRepository: Apps with activities loaded", "Count: ${sorted.size}")
             sorted
@@ -101,10 +96,15 @@ class ActivityRepository(private val context: Context) {
         }
     }
 
-    suspend fun getAppActivities(packageName: String, showUndeclared: Boolean): List<ActivityDetail> = withContext(Dispatchers.IO) {
+    suspend fun getAppActivities(
+        packageName: String,
+        showUndeclared: Boolean,
+        onProgress: (loaded: Int, total: Int) -> Unit = { _, _ -> },
+        isCancelled: () -> Boolean = { false }
+    ): List<ActivityDetail> = withContext(Dispatchers.IO) {
         try {
             LogManager.info(context, "ActivityRepository: Getting activities for app", "Package: $packageName, ShowUndeclared: $showUndeclared")
-            
+
             val packageInfo = if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.TIRAMISU) {
                 pm.getPackageInfo(packageName, PackageManager.PackageInfoFlags.of(PackageManager.GET_ACTIVITIES.toLong()))
             } else {
@@ -112,22 +112,27 @@ class ActivityRepository(private val context: Context) {
                 pm.getPackageInfo(packageName, PackageManager.GET_ACTIVITIES)
             }
             val activities = packageInfo?.activities ?: return@withContext emptyList()
-            
-            LogManager.debug(context, "ActivityRepository: Total activities in manifest", "${activities.size}")
-            
-            val result = mutableListOf<ActivityDetail>()
-            
-            // Pre-load intent filter counts in batch to avoid per-activity queries
+
+            val total = activities.size
+            LogManager.debug(context, "ActivityRepository: Total activities in manifest", "$total")
+            onProgress(0, total)
+
+            if (total == 0) {
+                return@withContext emptyList()
+            }
+
             val intentFilterCounts = mutableMapOf<String, Int>()
-            
-            for (activityInfo in activities) {
+
+            for ((index, activityInfo) in activities.withIndex()) {
+                if (isCancelled() || !isActive) {
+                    LogManager.info(context, "ActivityRepository: Activity loading cancelled", "Package: $packageName, Index: $index")
+                    return@withContext emptyList()
+                }
+
                 val className = activityInfo.name
-                // Count intent filters by checking if the activity responds to any intent
                 var intentFilterCount = 0
                 try {
-                    // Use a more efficient approach - just check if there are any intent filters
-                    // without enumerating all of them individually
-                    val intent = Intent().apply { 
+                    val intent = Intent().apply {
                         setClassName(packageName, className)
                         action = Intent.ACTION_MAIN
                     }
@@ -137,27 +142,33 @@ class ActivityRepository(private val context: Context) {
                         @Suppress("DEPRECATION")
                         pm.queryIntentActivities(intent, 0)
                     }
-                    // If activity can be resolved, it has at least one intent filter
                     intentFilterCount = if (resolveInfoList.isNotEmpty()) 1 else 0
                 } catch (e: Exception) {
                     intentFilterCount = 0
                 }
                 intentFilterCounts[className] = intentFilterCount
+                onProgress(index + 1, total)
             }
-            
+
             var exportedCount = 0
             var undeclaredCount = 0
-            
+            val result = mutableListOf<ActivityDetail>()
+
             for (activityInfo in activities) {
+                if (isCancelled() || !isActive) {
+                    LogManager.info(context, "ActivityRepository: Activity building cancelled", "Package: $packageName")
+                    return@withContext emptyList()
+                }
+
                 val className = activityInfo.name
                 val intentFilterCount = intentFilterCounts[className] ?: 0
-                
+
                 val activity = ActivityDetail(
-                    name = try { 
+                    name = try {
                         val label = activityInfo.loadLabel(pm)
                         if (label.isNullOrEmpty()) activityInfo.name.substringAfterLast(".") else label.toString()
-                    } catch (e: Exception) { 
-                        activityInfo.name.substringAfterLast(".") 
+                    } catch (e: Exception) {
+                        activityInfo.name.substringAfterLast(".")
                     },
                     className = className,
                     isExported = activityInfo.exported,
@@ -166,7 +177,7 @@ class ActivityRepository(private val context: Context) {
                     launchMode = getLaunchModeString(activityInfo.launchMode),
                     parentActivityName = activityInfo.parentActivityName ?: "None"
                 )
-                
+
                 if (showUndeclared) {
                     result.add(activity)
                     undeclaredCount++
@@ -177,7 +188,7 @@ class ActivityRepository(private val context: Context) {
                     }
                 }
             }
-            
+
             val sorted = result.sortedBy { it.name.lowercase() }
             LogManager.info(context, "ActivityRepository: Activities loaded", "Package: $packageName, Exported: $exportedCount, Undeclared: $undeclaredCount, Total: ${sorted.size}")
             sorted

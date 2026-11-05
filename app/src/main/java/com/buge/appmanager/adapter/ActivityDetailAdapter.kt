@@ -38,22 +38,19 @@ class ActivityDetailAdapter(
         holder.bind(activity)
         updateItemBackground(holder, position)
 
-        // Fuck: clear old listeners to avoid multiple registration
         holder.itemView.setOnLongClickListener(null)
         holder.itemView.setOnClickListener(null)
 
-        // Click listener
         holder.itemView.setOnClickListener {
-            val pos = holder.adapterPosition
+            val pos = holder.bindingAdapterPosition
             if (pos != RecyclerView.NO_POSITION) {
                 val item = getItem(pos)
                 onActivityClick(item)
             }
         }
 
-        // Long click listener for shortcut creation
         holder.itemView.setOnLongClickListener { view ->
-            val pos = holder.adapterPosition
+            val pos = holder.bindingAdapterPosition
             if (pos != RecyclerView.NO_POSITION) {
                 val item = getItem(pos)
                 if (item.isExported) {
@@ -78,13 +75,6 @@ class ActivityDetailAdapter(
         }
     }
 
-    override fun onCurrentListChanged(previousList: MutableList<ActivityDetail>, currentList: MutableList<ActivityDetail>) {
-        super.onCurrentListChanged(previousList, currentList)
-        if (previousList.size != currentList.size) {
-            notifyItemRangeChanged(0, currentList.size, "background")
-        }
-    }
-
     private fun updateItemBackground(holder: ActivityViewHolder, position: Int) {
         val container = holder.itemView.findViewById<FrameLayout>(R.id.item_container)
         val size = itemCount
@@ -96,10 +86,6 @@ class ActivityDetailAdapter(
             else -> R.drawable.bg_setting_item_middle
         }
         container.setBackgroundResource(background)
-    }
-
-    override fun submitList(list: List<ActivityDetail>?) {
-        super.submitList(list)
     }
 
     inner class ActivityViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
@@ -116,8 +102,6 @@ class ActivityDetailAdapter(
             val shortClassName = activity.className.substringAfterLast(".")
             className.text = shortClassName
 
-            // A non-exported activity is normally unserializable, but the root
-            // backend can start it via `am start`, so allow launching then.
             val launchable = activity.isExported || canLaunchUnexported()
 
             if (activity.isExported) {

@@ -15,6 +15,7 @@ import android.os.Build
 import android.os.Bundle
 import android.view.View
 import android.view.inputmethod.EditorInfo
+import android.widget.TextView
 import androidx.activity.OnBackPressedCallback
 import androidx.activity.viewModels
 import androidx.core.widget.addTextChangedListener
@@ -26,11 +27,9 @@ import com.buge.appmanager.model.ActivityDetail
 import com.buge.appmanager.shizuku.ShizukuManager
 import com.buge.appmanager.util.LogManager
 import com.buge.appmanager.util.SnackbarHelper
-import com.buge.appmanager.util.SpringAnimationHelper
 import com.buge.appmanager.viewmodel.ActivityDetailViewModel
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import kotlinx.coroutines.Job
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
 class ActivityDetailActivity : BaseActivity() {
@@ -51,6 +50,8 @@ class ActivityDetailActivity : BaseActivity() {
     private var fontApplied = false
     private var searchQuery: String = ""
 
+    private var isStoppingLoad = false
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityActivityDetailBinding.inflate(layoutInflater)
@@ -69,7 +70,7 @@ class ActivityDetailActivity : BaseActivity() {
         setupRecyclerView()
         setupSearch()
         observeViewModel()
-        viewModel.loadActivities(packageName)
+        startLoading()
 
         LogManager.info(this, "Activity details opened", "Package: $packageName")
     }
@@ -96,6 +97,11 @@ class ActivityDetailActivity : BaseActivity() {
     private fun setupBackPressedCallback() {
         val callback = object : OnBackPressedCallback(true) {
             override fun handleOnBackPressed() {
+                if (viewModel.isLoading.value == true) {
+                    stopLoadingAndFinish()
+                    return
+                }
+
                 val searchText = binding.searchEditText.text.toString()
                 if (searchText.isNotEmpty()) {
                     binding.searchEditText.setText("")
@@ -115,19 +121,35 @@ class ActivityDetailActivity : BaseActivity() {
     private fun setupToolbar() {
         setSupportActionBar(binding.toolbar)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
-        supportActionBar?.setDisplayShowHomeEnabled(true)
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
         supportActionBar?.title = getString(R.string.title_activity_detail)
         LogManager.debug(this, "Toolbar setup complete", "ActivityDetailActivity")
-    }
 
-    override fun onOptionsItemSelected(item: android.view.MenuItem): Boolean {
-        when (item.itemId) {
-            android.R.id.home -> {
-                finish()
-                return true
+        binding.toolbar.setNavigationOnClickListener {
+            if (viewModel.isLoading.value == true) {
+                stopLoadingAndFinish()
+            } else {
+                onBackPressedDispatcher.onBackPressed()
             }
         }
-        return super.onOptionsItemSelected(item)
+    }
+
+    private fun startLoading() {
+        isStoppingLoad = false
+        binding.loadingOverlay.visibility = View.VISIBLE
+        binding.loadingProgressText.text = "0 / 0"
+        binding.loadingHint.visibility = View.VISIBLE
+        binding.recyclerView.visibility = View.GONE
+        binding.emptyState.visibility = View.GONE
+        viewModel.loadActivities(packageName)
+    }
+
+    private fun stopLoadingAndFinish() {
+        if (isStoppingLoad) return
+        isStoppingLoad = true
+        viewModel.cancelLoading()
+        LogManager.info(this, "Activity loading stopped by user", "Package: $packageName")
+        finish()
     }
 
     private fun setupAppInfo() {
@@ -424,10 +446,27 @@ class ActivityDetailActivity : BaseActivity() {
         }
 
         viewModel.isLoading.observe(this) { isLoading ->
+            binding.loadingOverlay.visibility = if (isLoading) View.VISIBLE else View.GONE
             binding.progressBar.visibility = if (isLoading) View.VISIBLE else View.GONE
+
             if (isLoading) {
+                binding.recyclerView.visibility = View.GONE
+                binding.emptyState.visibility = View.GONE
                 LogManager.debug(this, "Loading activities", "Package: $packageName")
+            } else {
+                val hasData = viewModel.activities.value?.isNotEmpty() == true
+                if (hasData) {
+                    binding.recyclerView.visibility = View.VISIBLE
+                }
             }
+        }
+
+        viewModel.loadedCount.observe(this) { loaded ->
+            updateProgress(loaded, viewModel.totalCount.value ?: 0)
+        }
+
+        viewModel.totalCount.observe(this) { total ->
+            updateProgress(viewModel.loadedCount.value ?: 0, total)
         }
 
         viewModel.error.observe(this) { error ->
@@ -436,5 +475,9 @@ class ActivityDetailActivity : BaseActivity() {
                 SnackbarHelper.showSnackbar(binding.root, "Failed to load activities: $error")
             }
         }
+    }
+
+    private fun updateProgress(loaded: Int, total: Int) {
+        binding.loadingProgressText.text = "$loaded / $total"
     }
 }

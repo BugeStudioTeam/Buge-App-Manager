@@ -3,10 +3,6 @@
 
 package com.buge.appmanager.adapter
 
-import android.content.pm.ShortcutInfo
-import android.content.pm.ShortcutManager
-import android.graphics.drawable.Icon
-import android.os.Build
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -19,12 +15,12 @@ import androidx.recyclerview.widget.RecyclerView
 import com.buge.appmanager.R
 import com.buge.appmanager.model.ActivityDetail
 import com.google.android.material.button.MaterialButton
-import com.google.android.material.dialog.MaterialAlertDialogBuilder
 
 class ActivityDetailAdapter(
     private val onActivityClick: (ActivityDetail) -> Unit,
     private val onShortcutCreate: (ActivityDetail, View) -> Unit,
-    private val canLaunchUnexported: () -> Boolean = { false }
+    private val canLaunchUnexported: () -> Boolean = { false },
+    private val hasHeader: Boolean = false
 ) : ListAdapter<ActivityDetail, ActivityDetailAdapter.ActivityViewHolder>(ActivityDiffCallback()) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ActivityViewHolder {
@@ -79,10 +75,14 @@ class ActivityDetailAdapter(
         val container = holder.itemView.findViewById<FrameLayout>(R.id.item_container)
         val size = itemCount
 
+        val isFirst = position == 0 && !hasHeader
+        val isLast = position == size - 1
+
         val background = when {
-            size == 1 -> R.drawable.bg_setting_item_single
-            position == 0 -> R.drawable.bg_setting_item_top
-            position == size - 1 -> R.drawable.bg_setting_item_bottom
+            size == 1 && !hasHeader -> R.drawable.bg_setting_item_single
+            size == 1 && hasHeader -> R.drawable.bg_setting_item_bottom
+            isFirst -> R.drawable.bg_setting_item_top
+            isLast -> R.drawable.bg_setting_item_bottom
             else -> R.drawable.bg_setting_item_middle
         }
         container.setBackgroundResource(background)

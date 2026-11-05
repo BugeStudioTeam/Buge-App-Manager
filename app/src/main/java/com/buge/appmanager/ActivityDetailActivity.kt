@@ -69,8 +69,8 @@ class ActivityDetailActivity : BaseActivity() {
 
         setupBackPressedCallback()
         setupToolbar()
-        setupHeader()
         setupRecyclerView()
+        setupHeader()
         setupSearch()
         observeViewModel()
         viewModel.loadActivities(packageName)

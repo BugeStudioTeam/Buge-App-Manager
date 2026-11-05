@@ -22,7 +22,6 @@
             app:title="@string/title_activity_detail"
             app:titleTextColor="?attr/colorOnSurface" />
 
-        <!-- Fuck: Search bar as pill shape -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -87,127 +86,14 @@
 
     </com.google.android.material.appbar.AppBarLayout>
 
-    <androidx.core.widget.NestedScrollView
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recycler_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:fillViewport="true"
-        app:layout_behavior="@string/appbar_scrolling_view_behavior">
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:padding="16dp">
-
-            <!-- App Info Card -->
-            <FrameLayout
-                android:id="@+id/app_info_container"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="16dp"
-                android:background="@drawable/bg_setting_item_single">
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:padding="16dp"
-                    android:gravity="center_vertical">
-
-                    <ImageView
-                        android:id="@+id/app_icon"
-                        android:layout_width="48dp"
-                        android:layout_height="48dp"
-                        android:scaleType="centerCrop" />
-
-                    <LinearLayout
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:orientation="vertical"
-                        android:layout_marginStart="12dp">
-
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:orientation="horizontal"
-                            android:gravity="center_vertical">
-
-                            <TextView
-                                android:id="@+id/app_name"
-                                android:layout_width="0dp"
-                                android:layout_height="wrap_content"
-                                android:layout_weight="1"
-                                android:textStyle="bold"
-                                android:maxLines="1"
-                                android:ellipsize="end"
-                                style="@style/TextAppearance.Material3.TitleMedium" />
-
-                            <FrameLayout
-                                android:id="@+id/system_badge"
-                                android:layout_width="20dp"
-                                android:layout_height="20dp"
-                                android:layout_marginStart="8dp"
-                                android:visibility="gone">
-
-                                <ImageView
-                                    android:layout_width="20dp"
-                                    android:layout_height="20dp"
-                                    android:src="@drawable/ic_shield_badge" />
-
-                            </FrameLayout>
-
-                        </LinearLayout>
-
-                        <TextView
-                            android:id="@+id/package_name"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:alpha="0.6"
-                            style="@style/TextAppearance.Material3.BodySmall" />
-
-                    </LinearLayout>
-
-                </LinearLayout>
-
-            </FrameLayout>
-
-            <!-- Activities List -->
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/recycler_view"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:nestedScrollingEnabled="false" />
-
-            <!-- Empty State -->
-            <LinearLayout
-                android:id="@+id/empty_state"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:gravity="center"
-                android:padding="32dp"
-                android:visibility="gone">
-
-                <ImageView
-                    android:layout_width="48dp"
-                    android:layout_height="48dp"
-                    android:src="@drawable/ic_security"
-                    android:alpha="0.3" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="12dp"
-                    android:text="@string/no_activities_found"
-                    android:alpha="0.5"
-                    style="@style/TextAppearance.Material3.BodyMedium" />
-
-            </LinearLayout>
-
-        </LinearLayout>
-
-    </androidx.core.widget.NestedScrollView>
+        android:clipToPadding="false"
+        android:paddingTop="8dp"
+        android:paddingBottom="80dp"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior" />
 
     <com.google.android.material.progressindicator.LinearProgressIndicator
         android:id="@+id/progress_bar"

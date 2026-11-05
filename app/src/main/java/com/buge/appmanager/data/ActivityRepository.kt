@@ -28,10 +28,10 @@ class ActivityRepository(private val context: Context) {
             val allApps = mutableListOf<AppInfo>()
             
             val packages = if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.TIRAMISU) {
-                pm.getInstalledPackages(PackageManager.PackageInfoFlags.of(0))
+                pm.getInstalledPackages(PackageManager.PackageInfoFlags.of(PackageManager.GET_ACTIVITIES.toLong()))
             } else {
                 @Suppress("DEPRECATION")
-                pm.getInstalledPackages(0)
+                pm.getInstalledPackages(PackageManager.GET_ACTIVITIES)
             }
             
             LogManager.debug(context, "ActivityRepository: Total packages", "${packages.size}")
@@ -39,28 +39,15 @@ class ActivityRepository(private val context: Context) {
             for (pkgInfo in packages) {
                 try {
                     val packageName = pkgInfo.packageName
-                    val appInfo = pm.getApplicationInfo(packageName, 0)
+                    val appInfo = pkgInfo.applicationInfo ?: continue
                     val isSystem = (appInfo.flags and android.content.pm.ApplicationInfo.FLAG_SYSTEM) != 0
                     
                     if (!showSystemApps && isSystem) {
                         continue
                     }
                     
-                    // Check if app has any activities - lightweight check
-                    val hasActivities = try {
-                        val packageInfo = if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.TIRAMISU) {
-                            pm.getPackageInfo(packageName, PackageManager.PackageInfoFlags.of(PackageManager.GET_ACTIVITIES.toLong()))
-                        } else {
-                            @Suppress("DEPRECATION")
-                            pm.getPackageInfo(packageName, PackageManager.GET_ACTIVITIES)
-                        }
-                        val activities = packageInfo?.activities
-                        activities != null && activities.isNotEmpty()
-                    } catch (e: Exception) {
-                        false
-                    }
-                    
-                    if (!hasActivities) {
+                    val activities = pkgInfo.activities
+                    if (activities == null || activities.isEmpty()) {
                         continue
                     }
                     
@@ -116,57 +103,27 @@ class ActivityRepository(private val context: Context) {
             LogManager.debug(context, "ActivityRepository: Total activities in manifest", "${activities.size}")
             
             val result = mutableListOf<ActivityDetail>()
-            
-            // Pre-load intent filter counts in batch to avoid per-activity queries
-            val intentFilterCounts = mutableMapOf<String, Int>()
-            
-            for (activityInfo in activities) {
-                val className = activityInfo.name
-                // Count intent filters by checking if the activity responds to any intent
-                var intentFilterCount = 0
-                try {
-                    // Use a more efficient approach - just check if there are any intent filters
-                    // without enumerating all of them individually
-                    val intent = Intent().apply { 
-                        setClassName(packageName, className)
-                        action = Intent.ACTION_MAIN
-                    }
-                    val resolveInfoList = if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.TIRAMISU) {
-                        pm.queryIntentActivities(intent, PackageManager.ResolveInfoFlags.of(0))
-                    } else {
-                        @Suppress("DEPRECATION")
-                        pm.queryIntentActivities(intent, 0)
-                    }
-                    // If activity can be resolved, it has at least one intent filter
-                    intentFilterCount = if (resolveInfoList.isNotEmpty()) 1 else 0
-                } catch (e: Exception) {
-                    intentFilterCount = 0
-                }
-                intentFilterCounts[className] = intentFilterCount
-            }
-            
             var exportedCount = 0
             var undeclaredCount = 0
-            
+
             for (activityInfo in activities) {
                 val className = activityInfo.name
-                val intentFilterCount = intentFilterCounts[className] ?: 0
-                
+
                 val activity = ActivityDetail(
-                    name = try { 
+                    name = try {
                         val label = activityInfo.loadLabel(pm)
                         if (label.isNullOrEmpty()) activityInfo.name.substringAfterLast(".") else label.toString()
-                    } catch (e: Exception) { 
-                        activityInfo.name.substringAfterLast(".") 
+                    } catch (e: Exception) {
+                        activityInfo.name.substringAfterLast(".")
                     },
                     className = className,
                     isExported = activityInfo.exported,
-                    intentFilterCount = intentFilterCount,
+                    intentFilterCount = 0,
                     permission = activityInfo.permission ?: "None",
                     launchMode = getLaunchModeString(activityInfo.launchMode),
                     parentActivityName = activityInfo.parentActivityName ?: "None"
                 )
-                
+
                 if (showUndeclared) {
                     result.add(activity)
                     undeclaredCount++

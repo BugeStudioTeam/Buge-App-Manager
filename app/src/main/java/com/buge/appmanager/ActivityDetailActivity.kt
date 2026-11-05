@@ -15,7 +15,6 @@ import android.os.Build
 import android.os.Bundle
 import android.view.View
 import android.view.inputmethod.EditorInfo
-import android.widget.TextView
 import androidx.activity.OnBackPressedCallback
 import androidx.activity.viewModels
 import androidx.core.widget.addTextChangedListener
@@ -51,6 +50,7 @@ class ActivityDetailActivity : BaseActivity() {
     private var searchQuery: String = ""
 
     private var isStoppingLoad = false
+    private var backCallback: OnBackPressedCallback? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -114,6 +114,7 @@ class ActivityDetailActivity : BaseActivity() {
                 }
             }
         }
+        backCallback = callback
         onBackPressedDispatcher.addCallback(this, callback)
         LogManager.debug(this, "Back pressed callback setup", "ActivityDetailActivity")
     }
@@ -121,24 +122,37 @@ class ActivityDetailActivity : BaseActivity() {
     private fun setupToolbar() {
         setSupportActionBar(binding.toolbar)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
-        supportActionBar?.setDisplayHomeAsUpEnabled(true)
+        supportActionBar?.setDisplayShowHomeEnabled(true)
         supportActionBar?.title = getString(R.string.title_activity_detail)
-        LogManager.debug(this, "Toolbar setup complete", "ActivityDetailActivity")
-
         binding.toolbar.setNavigationOnClickListener {
-            if (viewModel.isLoading.value == true) {
-                stopLoadingAndFinish()
-            } else {
-                onBackPressedDispatcher.onBackPressed()
+            handleBackNavigation()
+        }
+        LogManager.debug(this, "Toolbar setup complete", "ActivityDetailActivity")
+    }
+
+    private fun handleBackNavigation() {
+        if (viewModel.isLoading.value == true) {
+            stopLoadingAndFinish()
+        } else {
+            backCallback?.isEnabled = false
+            onBackPressedDispatcher.onBackPressed()
+        }
+    }
+
+    override fun onOptionsItemSelected(item: android.view.MenuItem): Boolean {
+        when (item.itemId) {
+            android.R.id.home -> {
+                handleBackNavigation()
+                return true
             }
         }
+        return super.onOptionsItemSelected(item)
     }
 
     private fun startLoading() {
         isStoppingLoad = false
         binding.loadingOverlay.visibility = View.VISIBLE
         binding.loadingProgressText.text = "0 / 0"
-        binding.loadingHint.visibility = View.VISIBLE
         binding.recyclerView.visibility = View.GONE
         binding.emptyState.visibility = View.GONE
         viewModel.loadActivities(packageName)
@@ -149,6 +163,7 @@ class ActivityDetailActivity : BaseActivity() {
         isStoppingLoad = true
         viewModel.cancelLoading()
         LogManager.info(this, "Activity loading stopped by user", "Package: $packageName")
+        backCallback?.isEnabled = false
         finish()
     }
 

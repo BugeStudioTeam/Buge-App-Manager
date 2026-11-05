@@ -174,8 +174,7 @@ class ActivityDetailActivity : BaseActivity() {
             },
             canLaunchUnexported = {
                 ShizukuManager.isAuthorized()
-            },
-            hasHeader = true
+            }
         )
 
         val concatAdapter = ConcatAdapter(headerAdapter, activitiesAdapter)

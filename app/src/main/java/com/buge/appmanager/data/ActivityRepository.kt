@@ -121,7 +121,9 @@ class ActivityRepository(private val context: Context) {
                 return@withContext emptyList()
             }
 
-            val intentFilterCounts = mutableMapOf<String, Int>()
+            val result = ArrayList<ActivityDetail>(total)
+            var exportedCount = 0
+            var undeclaredCount = 0
 
             for ((index, activityInfo) in activities.withIndex()) {
                 if (isCancelled() || !isActive) {
@@ -130,6 +132,7 @@ class ActivityRepository(private val context: Context) {
                 }
 
                 val className = activityInfo.name
+
                 var intentFilterCount = 0
                 try {
                     val intent = Intent().apply {
@@ -146,22 +149,6 @@ class ActivityRepository(private val context: Context) {
                 } catch (e: Exception) {
                     intentFilterCount = 0
                 }
-                intentFilterCounts[className] = intentFilterCount
-                onProgress(index + 1, total)
-            }
-
-            var exportedCount = 0
-            var undeclaredCount = 0
-            val result = mutableListOf<ActivityDetail>()
-
-            for (activityInfo in activities) {
-                if (isCancelled() || !isActive) {
-                    LogManager.info(context, "ActivityRepository: Activity building cancelled", "Package: $packageName")
-                    return@withContext emptyList()
-                }
-
-                val className = activityInfo.name
-                val intentFilterCount = intentFilterCounts[className] ?: 0
 
                 val activity = ActivityDetail(
                     name = try {
@@ -187,6 +174,8 @@ class ActivityRepository(private val context: Context) {
                         exportedCount++
                     }
                 }
+
+                onProgress(index + 1, total)
             }
 
             val sorted = result.sortedBy { it.name.lowercase() }

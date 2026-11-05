@@ -262,6 +262,8 @@
     <string name="launch">Launch</string>
     <string name="back_to_apps">Back to Apps</string>
     <string name="no_activities_found">No activities found</string>
+    <string name="loading_activities">Loading activities…</string>
+    <string name="loading_total">%1$d / %2$d</string>
 
     <!-- Common -->
     <string name="confirm">Confirm</string>

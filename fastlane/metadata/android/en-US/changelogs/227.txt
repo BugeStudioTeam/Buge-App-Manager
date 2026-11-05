@@ -1,0 +1,10 @@
+**13.84.143**
+
+**Added** ✨
+- Major UI update! Added a large number of Material Design 3 Expressive components and patterns
+
+**Optimizations** ⚡
+- Fully optimized activity loading — loading speed increased exponentially, achieving millisecond-level loading for any number of activities (proposed by @Pinocchio714)
+
+**Contributors of this version:**
+- @Pinocchio714

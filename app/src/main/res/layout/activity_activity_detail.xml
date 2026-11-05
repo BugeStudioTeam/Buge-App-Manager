@@ -22,7 +22,6 @@
             app:title="@string/title_activity_detail"
             app:titleTextColor="?attr/colorOnSurface" />
 
-        <!-- Fuck: Search bar as pill shape -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -99,7 +98,6 @@
             android:orientation="vertical"
             android:padding="16dp">
 
-            <!-- App Info Card -->
             <FrameLayout
                 android:id="@+id/app_info_container"
                 android:layout_width="match_parent"
@@ -172,14 +170,51 @@
 
             </FrameLayout>
 
-            <!-- Activities List -->
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/recycler_view"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:nestedScrollingEnabled="false" />
 
-            <!-- Empty State -->
+            <LinearLayout
+                android:id="@+id/loading_overlay"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:gravity="center"
+                android:paddingVertical="48dp"
+                android:visibility="gone">
+
+                <com.google.android.material.progressindicator.CircularProgressIndicator
+                    android:id="@+id/loading_indicator"
+                    android:layout_width="64dp"
+                    android:layout_height="64dp"
+                    android:indeterminate="true"
+                    app:indicatorColor="?attr/colorPrimary"
+                    app:trackThickness="4dp"
+                    app:indicatorSize="56dp"
+                    app:indicatorDirectionCircular="clockwise" />
+
+                <TextView
+                    android:id="@+id/loading_progress_text"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="20dp"
+                    android:text="0 / 0"
+                    android:textStyle="bold"
+                    style="@style/TextAppearance.Material3.HeadlineSmall" />
+
+                <TextView
+                    android:id="@+id/loading_hint"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:text="@string/loading_activities"
+                    android:alpha="0.6"
+                    style="@style/TextAppearance.Material3.BodyMedium" />
+
+            </LinearLayout>
+
             <LinearLayout
                 android:id="@+id/empty_state"
                 android:layout_width="match_parent"

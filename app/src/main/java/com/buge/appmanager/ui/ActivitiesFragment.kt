@@ -8,27 +8,20 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.EditText
-import android.widget.ImageView
 import androidx.activity.OnBackPressedCallback
 import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.buge.appmanager.ActivityDetailActivity
-import com.buge.appmanager.BaseActivity
 import com.buge.appmanager.R
 import com.buge.appmanager.adapter.ActivitiesAppAdapter
 import com.buge.appmanager.databinding.FragmentActivitiesBinding
 import com.buge.appmanager.model.AppInfo
-import com.buge.appmanager.util.FontOverrideHelper
 import com.buge.appmanager.util.LogManager
 import com.buge.appmanager.util.SpringAnimationHelper
 import com.buge.appmanager.viewmodel.ActivitiesViewModel
 import kotlinx.coroutines.Job
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.launch
 
 class ActivitiesFragment : Fragment() {
 
@@ -38,7 +31,6 @@ class ActivitiesFragment : Fragment() {
     private lateinit var appsAdapter: ActivitiesAppAdapter
     private var searchJob: Job? = null
     private var allApps: List<AppInfo> = emptyList()
-    private var fontApplied = false
     private var searchQuery: String = ""
 
     override fun onCreateView(
@@ -66,10 +58,6 @@ class ActivitiesFragment : Fragment() {
 
     override fun onResume() {
         super.onResume()
-        if (activity is BaseActivity && !fontApplied) {
-            FontOverrideHelper.applyToActivity(activity as BaseActivity)
-            fontApplied = true
-        }
         refresh()
         LogManager.info(requireContext(), "ActivitiesFragment resumed", "onResume called")
     }

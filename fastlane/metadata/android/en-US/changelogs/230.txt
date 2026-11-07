@@ -1,0 +1,11 @@
+**13.85.145**
+
+**Fixes** 🛠
+- Fixed a giant icon that was never added appearing on the settings page and covering text (thanks to @AmakerGame for issue #103)
+- Completed all language translations
+
+**Optimizations** ⚡
+- Rewrote activity preview and loading mechanism
+
+**Contributors of this version:**
+- @AmakerGame

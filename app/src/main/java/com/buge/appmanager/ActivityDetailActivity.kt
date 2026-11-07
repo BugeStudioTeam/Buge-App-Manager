@@ -20,8 +20,10 @@ import androidx.activity.viewModels
 import androidx.appcompat.app.AlertDialog
 import androidx.core.widget.addTextChangedListener
 import androidx.lifecycle.lifecycleScope
+import androidx.recyclerview.widget.ConcatAdapter
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.buge.appmanager.adapter.ActivityDetailAdapter
+import com.buge.appmanager.adapter.ActivityInfoHeaderAdapter
 import com.buge.appmanager.databinding.ActivityActivityDetailBinding
 import com.buge.appmanager.model.ActivityDetail
 import com.buge.appmanager.shizuku.ShizukuManager
@@ -29,10 +31,9 @@ import com.buge.appmanager.util.LogManager
 import com.buge.appmanager.util.SnackbarHelper
 import com.buge.appmanager.viewmodel.ActivityDetailViewModel
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 
 class ActivityDetailActivity : BaseActivity() {
 
@@ -46,12 +47,12 @@ class ActivityDetailActivity : BaseActivity() {
     private lateinit var binding: ActivityActivityDetailBinding
     private val viewModel: ActivityDetailViewModel by viewModels()
     private lateinit var activitiesAdapter: ActivityDetailAdapter
+    private var headerAdapter: ActivityInfoHeaderAdapter? = null
     private var searchJob: Job? = null
     private var allActivities: List<ActivityDetail> = emptyList()
     private var packageName: String = ""
     private var fontApplied = false
     private var searchQuery: String = ""
-
     private var currentDialog: AlertDialog? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -68,7 +69,6 @@ class ActivityDetailActivity : BaseActivity() {
 
         setupBackPressedCallback()
         setupToolbar()
-        setupAppInfo()
         setupRecyclerView()
         setupSearch()
         observeViewModel()
@@ -93,16 +93,12 @@ class ActivityDetailActivity : BaseActivity() {
     override fun onDestroy() {
         super.onDestroy()
         searchJob?.cancel()
-        dismissCurrentDialog()
-        LogManager.info(this, "ActivityDetailActivity destroyed", "Package: $packageName")
-    }
-
-    private fun dismissCurrentDialog() {
         try {
             currentDialog?.dismiss()
         } catch (e: Exception) {
         }
         currentDialog = null
+        LogManager.info(this, "ActivityDetailActivity destroyed", "Package: $packageName")
     }
 
     private fun setupBackPressedCallback() {
@@ -142,27 +138,31 @@ class ActivityDetailActivity : BaseActivity() {
         return super.onOptionsItemSelected(item)
     }
 
-    private fun setupAppInfo() {
+    private fun loadHeaderInfo() {
         val appName = intent.getStringExtra(EXTRA_APP_NAME) ?: packageName
         val isSystem = intent.getBooleanExtra(EXTRA_IS_SYSTEM, false)
 
-        try {
+        val icon: Drawable? = try {
             val appInfo = packageManager.getApplicationInfo(packageName, 0)
-            val icon = packageManager.getApplicationIcon(appInfo)
-            binding.appIcon.setImageDrawable(icon)
+            packageManager.getApplicationIcon(appInfo)
         } catch (e: Exception) {
-            binding.appIcon.setImageResource(android.R.drawable.sym_def_app_icon)
             LogManager.warning(this, "Failed to load app icon", "Package: $packageName, Error: ${e.message}")
+            null
         }
 
-        binding.appName.text = appName
-        binding.packageName.text = packageName
-        binding.systemBadge.visibility = if (isSystem) View.VISIBLE else View.GONE
+        headerAdapter = ActivityInfoHeaderAdapter(
+            appName = appName,
+            packageName = packageName,
+            isSystem = isSystem,
+            appIcon = icon
+        )
 
-        LogManager.debug(this, "App info setup complete", "Package: $packageName, App: $appName, System: $isSystem")
+        LogManager.debug(this, "Header info setup complete", "Package: $packageName, App: $appName, System: $isSystem")
     }
 
     private fun setupRecyclerView() {
+        loadHeaderInfo()
+
         activitiesAdapter = ActivityDetailAdapter(
             onActivityClick = { activity ->
                 handleActivityClick(activity)
@@ -172,10 +172,16 @@ class ActivityDetailActivity : BaseActivity() {
             },
             canLaunchUnexported = {
                 ShizukuManager.isAuthorized()
-            }
+            },
+            includeHeader = true
         )
+
+        val concatAdapter = headerAdapter?.let {
+            ConcatAdapter(it, activitiesAdapter)
+        } ?: activitiesAdapter
+
         binding.recyclerView.layoutManager = LinearLayoutManager(this)
-        binding.recyclerView.adapter = activitiesAdapter
+        binding.recyclerView.adapter = concatAdapter
         LogManager.debug(this, "RecyclerView setup complete", "Package: $packageName")
     }
 
@@ -211,20 +217,15 @@ class ActivityDetailActivity : BaseActivity() {
     }
 
     private fun filterActivities(query: String) {
-        searchJob?.cancel()
         if (query.isEmpty()) {
             activitiesAdapter.submitList(allActivities)
-            return
-        }
-        searchJob = lifecycleScope.launch {
-            val filtered = withContext(Dispatchers.Default) {
-                allActivities.filter {
-                    it.name.contains(query, ignoreCase = true) ||
-                    it.className.contains(query, ignoreCase = true)
-                }
+        } else {
+            val filtered = allActivities.filter {
+                it.name.contains(query, ignoreCase = true) ||
+                it.className.contains(query, ignoreCase = true)
             }
             activitiesAdapter.submitList(filtered)
-            LogManager.debug(this@ActivityDetailActivity, "Filter applied", "Package: $packageName, Query: $query, Results: ${filtered.size}")
+            LogManager.debug(this, "Filter applied", "Package: $packageName, Query: $query, Results: ${filtered.size}")
         }
     }
 
@@ -290,14 +291,24 @@ class ActivityDetailActivity : BaseActivity() {
             return
         }
 
-        dismissCurrentDialog()
+        try {
+            currentDialog?.dismiss()
+        } catch (e: Exception) {
+        }
+
         currentDialog = MaterialAlertDialogBuilder(this)
             .setTitle("Create Shortcut")
             .setMessage("Create shortcut for ${activity.name} on home screen?")
-            .setPositiveButton(R.string.confirm) { _, _ ->
+            .setPositiveButton(R.string.confirm) { dialog, _ ->
                 createShortcut(activity)
+                dialog.dismiss()
             }
-            .setNegativeButton(R.string.cancel, null)
+            .setNegativeButton(R.string.cancel) { dialog, _ ->
+                dialog.dismiss()
+            }
+            .setOnDismissListener {
+                currentDialog = null
+            }
             .show()
     }
 

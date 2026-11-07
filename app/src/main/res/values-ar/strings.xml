@@ -200,6 +200,17 @@
     <string name="disable_app_confirm">تعطيل %s؟ لن يكون التطبيق متاحًا للمستخدم حتى يتم إعادة تفعيله.</string>
     <string name="enable_app_confirm">تفعيل %s؟ سيصبح التطبيق متاحًا للمستخدم مرة أخرى.</string>
 
+    <string name="pref_dangerous_packages_warning">تحذير العملية الخطيرة</string>
+    <string name="dangerous_package_warning_title">عملية خطيرة جداً</string>
+    <string name="dangerous_package_warning_message">أنت على وشك تنفيذ عملية خطيرة على حزمة محمية.\n\nالتطبيق: %1$s\nالحزمة: %2$s\nالعملية: %3$s\n\nقد يؤدي تعديل هذه الحزمة أو إزالتها إلى تعطيل جهازك، أو التسبب في حلقات إقلاع، أو جعل وظائف النظام الأساسية غير قابلة للاستخدام. هذا الإجراء خطير للغاية.\n\nهل تريد المتابعة على أي حال؟</string>
+    <string name="dangerous_package_warning_message_batch">أنت على وشك تنفيذ عملية خطيرة على %1$d حزمة محمية.\n\nالعملية: %2$s\n\nالحزم المحمية المضمنة:\n%3$s\n\nقد يؤدي تعديل هذه الحزم أو إزالتها إلى تعطيل جهازك، أو التسبب في حلقات إقلاع، أو جعل وظائف النظام الأساسية غير قابلة للاستخدام. هذا الإجراء خطير للغاية.\n\nهل تريد المتابعة على أي حال؟</string>
+    <string name="dangerous_package_warning_continue">المتابعة على أي حال</string>
+    <string name="dangerous_operation_uninstall">إلغاء التثبيت</string>
+    <string name="dangerous_operation_disable">تعطيل</string>
+    <string name="dangerous_operation_enable">تفعيل</string>
+    <string name="dangerous_operation_clear_data">مسح البيانات</string>
+    <string name="dangerous_operation_force_stop">إيقاف إجباري</string>
+
     <!-- Storage -->
     <string name="storage_title">التخزين</string>
     <string name="storage_app">التطبيق</string>
@@ -483,6 +494,16 @@
     <string name="welcome_summary_title">الملخص</string>
     <string name="welcome_summary_source">المصدر</string>
     <string name="welcome_summary_auto_update">التحديث التلقائي</string>
+    <string name="welcome_update_options_title">خيارات التحديث</string>
+    <string name="welcome_update_options_subtitle">تكوين تنزيل التحديثات وطريقة التثبيت</string>
+    <string name="welcome_auth_title">التفويض</string>
+    <string name="welcome_auth_subtitle">اختر كيفية منح هذا التطبيق وصولاً مميزاً.</string>
+    <string name="welcome_auth_mode_label">طريقة التفويض</string>
+    <string name="welcome_auth_storage_label">إذن التخزين</string>
+    <string name="welcome_auth_storage_summary">يشمل READ_EXTERNAL_STORAGE و WRITE_EXTERNAL_STORAGE لتصدير APK ووظائف التخزين</string>
+    <string name="welcome_auth_grant">منح إذن التخزين</string>
+    <string name="welcome_auth_not_authorized">غير مفوض</string>
+    <string name="welcome_auth_optional_permissions">أذونات اختيارية</string>
     <string name="welcome_summary_theme">السمة</string>
     <string name="welcome_summary_language">اللغة</string>
     <string name="welcome_summary_default_page">الصفحة الافتراضية</string>

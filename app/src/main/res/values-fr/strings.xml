@@ -200,6 +200,17 @@
     <string name="disable_app_confirm">Désactiver %s ? L\'application ne sera plus disponible pour l\'utilisateur jusqu\'à sa réactivation.</string>
     <string name="enable_app_confirm">Activer %s ? L\'application redeviendra disponible pour l\'utilisateur.</string>
 
+    <string name="pref_dangerous_packages_warning">Avertissement d\'opération dangereuse</string>
+    <string name="dangerous_package_warning_title">Opération très dangereuse</string>
+    <string name="dangerous_package_warning_message">Vous êtes sur le point d\'effectuer une opération dangereuse sur un paquet protégé.\n\nApplication : %1$s\nPaquet : %2$s\nOpération : %3$s\n\nModifier ou supprimer ce paquet peut endommager votre appareil, provoquer des boucles de démarrage ou rendre inutilisables les fonctions essentielles du système. Cette action est extrêmement dangereuse.\n\nContinuer quand même ?</string>
+    <string name="dangerous_package_warning_message_batch">Vous êtes sur le point d\'effectuer une opération dangereuse sur %1$d paquet(s) protégé(s).\n\nOpération : %2$s\n\nPaquets protégés inclus :\n%3$s\n\nModifier ou supprimer ces paquets peut endommager votre appareil, provoquer des boucles de démarrage ou rendre inutilisables les fonctions essentielles du système. Cette action est extrêmement dangereuse.\n\nContinuer quand même ?</string>
+    <string name="dangerous_package_warning_continue">Continuer quand même</string>
+    <string name="dangerous_operation_uninstall">Désinstaller</string>
+    <string name="dangerous_operation_disable">Désactiver</string>
+    <string name="dangerous_operation_enable">Activer</string>
+    <string name="dangerous_operation_clear_data">Effacer les données</string>
+    <string name="dangerous_operation_force_stop">Forcer l\'arrêt</string>
+
     <!-- Storage -->
     <string name="storage_title">Stockage</string>
     <string name="storage_app">Application</string>
@@ -483,6 +494,16 @@
     <string name="welcome_summary_title">Résumé</string>
     <string name="welcome_summary_source">Source</string>
     <string name="welcome_summary_auto_update">Mise à jour automatique</string>
+    <string name="welcome_update_options_title">Options de mise à jour</string>
+    <string name="welcome_update_options_subtitle">Configurer le téléchargement et la méthode d\'installation des mises à jour</string>
+    <string name="welcome_auth_title">Autorisation</string>
+    <string name="welcome_auth_subtitle">Choisissez comment cette application obtient un accès privilégié.</string>
+    <string name="welcome_auth_mode_label">Méthode d\'autorisation</string>
+    <string name="welcome_auth_storage_label">Autorisation de stockage</string>
+    <string name="welcome_auth_storage_summary">Inclut READ_EXTERNAL_STORAGE et WRITE_EXTERNAL_STORAGE pour l\'exportation d\'APK et les fonctions de stockage</string>
+    <string name="welcome_auth_grant">Accorder l\'autorisation de stockage</string>
+    <string name="welcome_auth_not_authorized">Non autorisé</string>
+    <string name="welcome_auth_optional_permissions">Autorisations facultatives</string>
     <string name="welcome_summary_theme">Thème</string>
     <string name="welcome_summary_language">Langue</string>
     <string name="welcome_summary_default_page">Page par défaut</string>

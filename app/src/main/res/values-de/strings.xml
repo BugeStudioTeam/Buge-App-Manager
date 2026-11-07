@@ -200,6 +200,17 @@
     <string name="disable_app_confirm">%s deaktivieren? Die App ist für den Benutzer nicht mehr verfügbar, bis sie wieder aktiviert wird.</string>
     <string name="enable_app_confirm">%s aktivieren? Die App wird für den Benutzer wieder verfügbar.</string>
 
+    <string name="pref_dangerous_packages_warning">Warnung bei gefährlichen Operationen</string>
+    <string name="dangerous_package_warning_title">Sehr gefährliche Operation</string>
+    <string name="dangerous_package_warning_message">Sie sind dabei, eine gefährliche Operation an einem geschützten Paket durchzuführen.\n\nApp: %1$s\nPaket: %2$s\nOperation: %3$s\n\nDas Ändern oder Entfernen dieses Pakets kann Ihr Gerät beschädigen, Boot-Schleifen verursachen oder Kernsystemfunktionen unbrauchbar machen. Diese Aktion ist äußerst gefährlich.\n\nTrotzdem fortfahren?</string>
+    <string name="dangerous_package_warning_message_batch">Sie sind dabei, eine gefährliche Operation an %1$d geschützten Paket(en) durchzuführen.\n\nOperation: %2$s\n\nEnthaltene geschützte Pakete:\n%3$s\n\nDas Ändern oder Entfernen dieser Pakete kann Ihr Gerät beschädigen, Boot-Schleifen verursachen oder Kernsystemfunktionen unbrauchbar machen. Diese Aktion ist äußerst gefährlich.\n\nTrotzdem fortfahren?</string>
+    <string name="dangerous_package_warning_continue">Trotzdem fortfahren</string>
+    <string name="dangerous_operation_uninstall">Deinstallieren</string>
+    <string name="dangerous_operation_disable">Deaktivieren</string>
+    <string name="dangerous_operation_enable">Aktivieren</string>
+    <string name="dangerous_operation_clear_data">Daten löschen</string>
+    <string name="dangerous_operation_force_stop">Beenden erzwingen</string>
+
     <!-- Storage -->
     <string name="storage_title">Speicher</string>
     <string name="storage_app">App</string>
@@ -483,6 +494,16 @@
     <string name="welcome_summary_title">Zusammenfassung</string>
     <string name="welcome_summary_source">Quelle</string>
     <string name="welcome_summary_auto_update">Automatische Aktualisierung</string>
+    <string name="welcome_update_options_title">Update-Optionen</string>
+    <string name="welcome_update_options_subtitle">Download- und Installationsmethode für Updates konfigurieren</string>
+    <string name="welcome_auth_title">Autorisierung</string>
+    <string name="welcome_auth_subtitle">Wählen Sie, wie dieser App privilegierter Zugriff gewährt wird.</string>
+    <string name="welcome_auth_mode_label">Autorisierungsmethode</string>
+    <string name="welcome_auth_storage_label">Speicherberechtigung</string>
+    <string name="welcome_auth_storage_summary">Umfasst READ_EXTERNAL_STORAGE und WRITE_EXTERNAL_STORAGE für APK-Export und Speicherfunktionen</string>
+    <string name="welcome_auth_grant">Speicherberechtigung erteilen</string>
+    <string name="welcome_auth_not_authorized">Nicht autorisiert</string>
+    <string name="welcome_auth_optional_permissions">Optionale Berechtigungen</string>
     <string name="welcome_summary_theme">Design</string>
     <string name="welcome_summary_language">Sprache</string>
     <string name="welcome_summary_default_page">Standardseite</string>

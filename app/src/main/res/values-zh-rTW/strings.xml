@@ -200,17 +200,6 @@
     <string name="disable_app_confirm">停用 %s？在重新啟用之前，使用者將無法使用該應用程式。</string>
     <string name="enable_app_confirm">啟用 %s？該應用程式將再次對使用者可用。</string>
 
-    <string name="pref_dangerous_packages_warning">危險操作警告</string>
-    <string name="dangerous_package_warning_title">非常危險的操作</string>
-    <string name="dangerous_package_warning_message">您即將對受保護的套件執行危險操作。\n\n應用程式：%1$s\n套件：%2$s\n操作：%3$s\n\n修改或移除此套件可能會損壞您的裝置、導致開機循環，或使核心系統功能無法使用。此操作極度危險。\n\n仍然繼續？</string>
-    <string name="dangerous_package_warning_message_batch">您即將對 %1$d 個受保護的套件執行危險操作。\n\n操作：%2$s\n\n包含的受保護套件：\n%3$s\n\n修改或移除這些套件可能會損壞您的裝置、導致開機循環，或使核心系統功能無法使用。此操作極度危險。\n\n仍然繼續？</string>
-    <string name="dangerous_package_warning_continue">仍然繼續</string>
-    <string name="dangerous_operation_uninstall">解除安裝</string>
-    <string name="dangerous_operation_disable">停用</string>
-    <string name="dangerous_operation_enable">啟用</string>
-    <string name="dangerous_operation_clear_data">清除資料</string>
-    <string name="dangerous_operation_force_stop">強制停止</string>
-
     <!-- Storage -->
     <string name="storage_title">儲存空間</string>
     <string name="storage_app">應用程式</string>
@@ -494,16 +483,6 @@
     <string name="welcome_summary_title">摘要</string>
     <string name="welcome_summary_source">來源</string>
     <string name="welcome_summary_auto_update">自動更新</string>
-    <string name="welcome_update_options_title">更新選項</string>
-    <string name="welcome_update_options_subtitle">設定更新下載和安裝方式</string>
-    <string name="welcome_auth_title">授權</string>
-    <string name="welcome_auth_subtitle">選擇如何為此應用程式授予特權存取權限。</string>
-    <string name="welcome_auth_mode_label">授權方式</string>
-    <string name="welcome_auth_storage_label">儲存空間權限</string>
-    <string name="welcome_auth_storage_summary">包含 READ_EXTERNAL_STORAGE 和 WRITE_EXTERNAL_STORAGE，用於 APK 匯出和儲存空間功能</string>
-    <string name="welcome_auth_grant">授予儲存空間權限</string>
-    <string name="welcome_auth_not_authorized">未授權</string>
-    <string name="welcome_auth_optional_permissions">選用權限</string>
     <string name="welcome_summary_theme">主題</string>
     <string name="welcome_summary_language">語言</string>
     <string name="welcome_summary_default_page">預設頁面</string>

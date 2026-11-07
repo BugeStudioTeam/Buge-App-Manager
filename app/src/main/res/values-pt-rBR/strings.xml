@@ -200,17 +200,6 @@
     <string name="disable_app_confirm">Desativar %s? O app deixará de estar disponível para o usuário até ser reativado.</string>
     <string name="enable_app_confirm">Ativar %s? O app voltará a estar disponível para o usuário.</string>
 
-    <string name="pref_dangerous_packages_warning">Aviso de operação perigosa</string>
-    <string name="dangerous_package_warning_title">Operação muito perigosa</string>
-    <string name="dangerous_package_warning_message">Você está prestes a realizar uma operação perigosa em um pacote protegido.\n\nApp: %1$s\nPacote: %2$s\nOperação: %3$s\n\nModificar ou remover este pacote pode danificar seu dispositivo, causar loops de inicialização ou tornar inutilizáveis as funções essenciais do sistema. Esta ação é extremamente perigosa.\n\nContinuar mesmo assim?</string>
-    <string name="dangerous_package_warning_message_batch">Você está prestes a realizar uma operação perigosa em %1$d pacote(s) protegido(s).\n\nOperação: %2$s\n\nPacotes protegidos incluídos:\n%3$s\n\nModificar ou remover estes pacotes pode danificar seu dispositivo, causar loops de inicialização ou tornar inutilizáveis as funções essenciais do sistema. Esta ação é extremamente perigosa.\n\nContinuar mesmo assim?</string>
-    <string name="dangerous_package_warning_continue">Continuar mesmo assim</string>
-    <string name="dangerous_operation_uninstall">Desinstalar</string>
-    <string name="dangerous_operation_disable">Desativar</string>
-    <string name="dangerous_operation_enable">Ativar</string>
-    <string name="dangerous_operation_clear_data">Limpar dados</string>
-    <string name="dangerous_operation_force_stop">Forçar parada</string>
-
     <!-- Storage -->
     <string name="storage_title">Armazenamento</string>
     <string name="storage_app">App</string>
@@ -494,16 +483,6 @@
     <string name="welcome_summary_title">Resumo</string>
     <string name="welcome_summary_source">Origem</string>
     <string name="welcome_summary_auto_update">Atualização automática</string>
-    <string name="welcome_update_options_title">Opções de atualização</string>
-    <string name="welcome_update_options_subtitle">Configurar o download e o método de instalação de atualizações</string>
-    <string name="welcome_auth_title">Autorização</string>
-    <string name="welcome_auth_subtitle">Escolha como este app recebe acesso privilegiado.</string>
-    <string name="welcome_auth_mode_label">Método de autorização</string>
-    <string name="welcome_auth_storage_label">Permissão de armazenamento</string>
-    <string name="welcome_auth_storage_summary">Inclui READ_EXTERNAL_STORAGE e WRITE_EXTERNAL_STORAGE para exportação de APK e funções de armazenamento</string>
-    <string name="welcome_auth_grant">Conceder permissão de armazenamento</string>
-    <string name="welcome_auth_not_authorized">Não autorizado</string>
-    <string name="welcome_auth_optional_permissions">Permissões opcionais</string>
     <string name="welcome_summary_theme">Tema</string>
     <string name="welcome_summary_language">Idioma</string>
     <string name="welcome_summary_default_page">Página padrão</string>

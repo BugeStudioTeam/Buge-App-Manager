@@ -200,17 +200,6 @@
     <string name="disable_app_confirm">%s を無効化しますか？再有効化されるまで、ユーザーはこのアプリを利用できなくなります。</string>
     <string name="enable_app_confirm">%s を有効化しますか？このアプリが再びユーザーに利用可能になります。</string>
 
-    <string name="pref_dangerous_packages_warning">危険な操作の警告</string>
-    <string name="dangerous_package_warning_title">非常に危険な操作</string>
-    <string name="dangerous_package_warning_message">保護されたパッケージに対して危険な操作を実行しようとしています。\n\nアプリ：%1$s\nパッケージ：%2$s\n操作：%3$s\n\nこのパッケージを変更または削除すると、デバイスが故障したり、ブートループが発生したり、システムのコア機能が使用できなくなる可能性があります。この操作は非常に危険です。\n\n続行しますか？</string>
-    <string name="dangerous_package_warning_message_batch">%1$d 個の保護されたパッケージに対して危険な操作を実行しようとしています。\n\n操作：%2$s\n\n含まれる保護されたパッケージ：\n%3$s\n\nこれらのパッケージを変更または削除すると、デバイスが故障したり、ブートループが発生したり、システムのコア機能が使用できなくなる可能性があります。この操作は非常に危険です。\n\n続行しますか？</string>
-    <string name="dangerous_package_warning_continue">そのまま続行</string>
-    <string name="dangerous_operation_uninstall">アンインストール</string>
-    <string name="dangerous_operation_disable">無効化</string>
-    <string name="dangerous_operation_enable">有効化</string>
-    <string name="dangerous_operation_clear_data">データを消去</string>
-    <string name="dangerous_operation_force_stop">強制停止</string>
-
     <!-- Storage -->
     <string name="storage_title">ストレージ</string>
     <string name="storage_app">アプリ</string>
@@ -494,16 +483,6 @@
     <string name="welcome_summary_title">概要</string>
     <string name="welcome_summary_source">ソース</string>
     <string name="welcome_summary_auto_update">自動更新</string>
-    <string name="welcome_update_options_title">アップデートオプション</string>
-    <string name="welcome_update_options_subtitle">アップデートのダウンロードとインストール方法を設定</string>
-    <string name="welcome_auth_title">認証</string>
-    <string name="welcome_auth_subtitle">このアプリに特権アクセスを付与する方法を選択します。</string>
-    <string name="welcome_auth_mode_label">認証方法</string>
-    <string name="welcome_auth_storage_label">ストレージ権限</string>
-    <string name="welcome_auth_storage_summary">APK のエクスポートとストレージ機能のために READ_EXTERNAL_STORAGE と WRITE_EXTERNAL_STORAGE を含みます</string>
-    <string name="welcome_auth_grant">ストレージ権限を許可</string>
-    <string name="welcome_auth_not_authorized">未認証</string>
-    <string name="welcome_auth_optional_permissions">オプションの権限</string>
     <string name="welcome_summary_theme">テーマ</string>
     <string name="welcome_summary_language">言語</string>
     <string name="welcome_summary_default_page">デフォルトページ</string>

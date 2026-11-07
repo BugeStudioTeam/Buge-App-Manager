@@ -483,6 +483,16 @@
     <string name="welcome_summary_title">Resumen</string>
     <string name="welcome_summary_source">Origen</string>
     <string name="welcome_summary_auto_update">Actualización automática</string>
+    <string name="welcome_update_options_title">Opciones de actualización</string>
+    <string name="welcome_update_options_subtitle">Configurar la descarga y el método de instalación de actualizaciones</string>
+    <string name="welcome_auth_title">Autorización</string>
+    <string name="welcome_auth_subtitle">Elige cómo se concede a esta app acceso privilegiado.</string>
+    <string name="welcome_auth_mode_label">Método de autorización</string>
+    <string name="welcome_auth_storage_label">Permiso de almacenamiento</string>
+    <string name="welcome_auth_storage_summary">Incluye READ_EXTERNAL_STORAGE y WRITE_EXTERNAL_STORAGE para la exportación de APK y funciones de almacenamiento</string>
+    <string name="welcome_auth_grant">Conceder permiso de almacenamiento</string>
+    <string name="welcome_auth_not_authorized">No autorizado</string>
+    <string name="welcome_auth_optional_permissions">Permisos opcionales</string>
     <string name="welcome_summary_theme">Tema</string>
     <string name="welcome_summary_language">Idioma</string>
     <string name="welcome_summary_default_page">Página predeterminada</string>

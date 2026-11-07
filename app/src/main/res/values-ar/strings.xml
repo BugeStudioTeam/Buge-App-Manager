@@ -483,6 +483,16 @@
     <string name="welcome_summary_title">الملخص</string>
     <string name="welcome_summary_source">المصدر</string>
     <string name="welcome_summary_auto_update">التحديث التلقائي</string>
+    <string name="welcome_update_options_title">خيارات التحديث</string>
+    <string name="welcome_update_options_subtitle">تكوين تنزيل التحديثات وطريقة التثبيت</string>
+    <string name="welcome_auth_title">التفويض</string>
+    <string name="welcome_auth_subtitle">اختر كيفية منح هذا التطبيق وصولاً مميزاً.</string>
+    <string name="welcome_auth_mode_label">طريقة التفويض</string>
+    <string name="welcome_auth_storage_label">إذن التخزين</string>
+    <string name="welcome_auth_storage_summary">يشمل READ_EXTERNAL_STORAGE و WRITE_EXTERNAL_STORAGE لتصدير APK ووظائف التخزين</string>
+    <string name="welcome_auth_grant">منح إذن التخزين</string>
+    <string name="welcome_auth_not_authorized">غير مفوض</string>
+    <string name="welcome_auth_optional_permissions">أذونات اختيارية</string>
     <string name="welcome_summary_theme">السمة</string>
     <string name="welcome_summary_language">اللغة</string>
     <string name="welcome_summary_default_page">الصفحة الافتراضية</string>

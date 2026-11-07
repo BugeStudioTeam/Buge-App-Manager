@@ -483,6 +483,16 @@
     <string name="welcome_summary_title">摘要</string>
     <string name="welcome_summary_source">來源</string>
     <string name="welcome_summary_auto_update">自動更新</string>
+    <string name="welcome_update_options_title">更新選項</string>
+    <string name="welcome_update_options_subtitle">設定更新下載和安裝方式</string>
+    <string name="welcome_auth_title">授權</string>
+    <string name="welcome_auth_subtitle">選擇如何為此應用程式授予特權存取權限。</string>
+    <string name="welcome_auth_mode_label">授權方式</string>
+    <string name="welcome_auth_storage_label">儲存空間權限</string>
+    <string name="welcome_auth_storage_summary">包含 READ_EXTERNAL_STORAGE 和 WRITE_EXTERNAL_STORAGE，用於 APK 匯出和儲存空間功能</string>
+    <string name="welcome_auth_grant">授予儲存空間權限</string>
+    <string name="welcome_auth_not_authorized">未授權</string>
+    <string name="welcome_auth_optional_permissions">選用權限</string>
     <string name="welcome_summary_theme">主題</string>
     <string name="welcome_summary_language">語言</string>
     <string name="welcome_summary_default_page">預設頁面</string>

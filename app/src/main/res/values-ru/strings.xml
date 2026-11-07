@@ -483,6 +483,16 @@
     <string name="welcome_summary_title">Сводка</string>
     <string name="welcome_summary_source">Источник</string>
     <string name="welcome_summary_auto_update">Автообновление</string>
+    <string name="welcome_update_options_title">Параметры обновления</string>
+    <string name="welcome_update_options_subtitle">Настроить загрузку и способ установки обновлений</string>
+    <string name="welcome_auth_title">Авторизация</string>
+    <string name="welcome_auth_subtitle">Выберите, как этому приложению предоставляется привилегированный доступ.</string>
+    <string name="welcome_auth_mode_label">Метод авторизации</string>
+    <string name="welcome_auth_storage_label">Разрешение на хранилище</string>
+    <string name="welcome_auth_storage_summary">Включает READ_EXTERNAL_STORAGE и WRITE_EXTERNAL_STORAGE для экспорта APK и функций хранилища</string>
+    <string name="welcome_auth_grant">Предоставить разрешение на хранилище</string>
+    <string name="welcome_auth_not_authorized">Не авторизовано</string>
+    <string name="welcome_auth_optional_permissions">Дополнительные разрешения</string>
     <string name="welcome_summary_theme">Тема</string>
     <string name="welcome_summary_language">Язык</string>
     <string name="welcome_summary_default_page">Страница по умолчанию</string>

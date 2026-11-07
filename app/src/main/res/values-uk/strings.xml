@@ -483,6 +483,16 @@
     <string name="welcome_summary_title">Підсумок</string>
     <string name="welcome_summary_source">Джерело</string>
     <string name="welcome_summary_auto_update">Автооновлення</string>
+    <string name="welcome_update_options_title">Параметри оновлення</string>
+    <string name="welcome_update_options_subtitle">Налаштувати завантаження та спосіб встановлення оновлень</string>
+    <string name="welcome_auth_title">Авторизація</string>
+    <string name="welcome_auth_subtitle">Виберіть, як цьому застосунку надається привілейований доступ.</string>
+    <string name="welcome_auth_mode_label">Метод авторизації</string>
+    <string name="welcome_auth_storage_label">Дозвіл на сховище</string>
+    <string name="welcome_auth_storage_summary">Включає READ_EXTERNAL_STORAGE та WRITE_EXTERNAL_STORAGE для експорту APK і функцій сховища</string>
+    <string name="welcome_auth_grant">Надати дозвіл на сховище</string>
+    <string name="welcome_auth_not_authorized">Не авторизовано</string>
+    <string name="welcome_auth_optional_permissions">Необов\'язкові дозволи</string>
     <string name="welcome_summary_theme">Тема</string>
     <string name="welcome_summary_language">Мова</string>
     <string name="welcome_summary_default_page">Типова сторінка</string>

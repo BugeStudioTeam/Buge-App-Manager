@@ -207,6 +207,13 @@ class SettingsAdapter(
         fun bind(item: SettingItem.SwitchItem) {
             icon.setImageResource(item.iconRes)
             title.text = item.title
+            
+            // Fuck: Reset any weird state caused by recycled views or global font changes
+            switchControl.showText = false
+            switchControl.text = null
+            switchControl.textOn = null
+            switchControl.textOff = null
+            
             switchControl.isChecked = item.isChecked
             switchControl.isEnabled = item.isEnabled
             if (!item.isEnabled) {

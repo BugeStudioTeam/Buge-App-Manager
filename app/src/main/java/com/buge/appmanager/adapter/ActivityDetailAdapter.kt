@@ -22,12 +22,6 @@ class ActivityDetailAdapter(
     private val canLaunchUnexported: () -> Boolean = { false }
 ) : ListAdapter<ActivityDetail, ActivityDetailAdapter.ActivityViewHolder>(ActivityDiffCallback()) {
 
-    companion object {
-        private const val VIEW_TYPE_ACTIVITY = 1002
-    }
-
-    override fun getItemViewType(position: Int): Int = VIEW_TYPE_ACTIVITY
-
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ActivityViewHolder {
         val view = LayoutInflater.from(parent.context)
             .inflate(R.layout.item_activity_detail, parent, false)
@@ -43,7 +37,7 @@ class ActivityDetailAdapter(
         holder.itemView.setOnClickListener(null)
 
         holder.itemView.setOnClickListener {
-            val pos = holder.bindingAdapterPosition
+            val pos = holder.adapterPosition
             if (pos != RecyclerView.NO_POSITION) {
                 val item = getItem(pos)
                 onActivityClick(item)
@@ -51,7 +45,7 @@ class ActivityDetailAdapter(
         }
 
         holder.itemView.setOnLongClickListener { view ->
-            val pos = holder.bindingAdapterPosition
+            val pos = holder.adapterPosition
             if (pos != RecyclerView.NO_POSITION) {
                 val item = getItem(pos)
                 if (item.isExported) {
@@ -87,6 +81,10 @@ class ActivityDetailAdapter(
             else -> R.drawable.bg_setting_item_middle
         }
         container.setBackgroundResource(background)
+    }
+
+    override fun submitList(list: List<ActivityDetail>?) {
+        super.submitList(list)
     }
 
     inner class ActivityViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
@@ -158,8 +156,12 @@ class ActivityDetailAdapter(
                    oldItem.name == newItem.name
         }
 
-        override fun getChangePayload(oldItem: ActivityDetail, newItem: ActivityDetail): Boolean {
-            return oldItem.isExported != newItem.isExported || oldItem.name != newItem.name
+        override fun getChangePayload(oldItem: ActivityDetail, newItem: ActivityDetail): Any? {
+            if (oldItem.isExported != newItem.isExported ||
+                oldItem.name != newItem.name) {
+                return "content"
+            }
+            return null
         }
     }
 }

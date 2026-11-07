@@ -200,6 +200,17 @@
     <string name="disable_app_confirm">Отключить %s? Приложение станет недоступным для пользователя до повторного включения.</string>
     <string name="enable_app_confirm">Включить %s? Приложение снова станет доступным для пользователя.</string>
 
+    <string name="pref_dangerous_packages_warning">Предупреждение об опасной операции</string>
+    <string name="dangerous_package_warning_title">Очень опасная операция</string>
+    <string name="dangerous_package_warning_message">Вы собираетесь выполнить опасную операцию с защищённым пакетом.\n\nПриложение: %1$s\nПакет: %2$s\nОперация: %3$s\n\nИзменение или удаление этого пакета может повредить ваше устройство, вызвать цикл загрузки или сделать основные системные функции непригодными. Это действие крайне опасно.\n\nВсё равно продолжить?</string>
+    <string name="dangerous_package_warning_message_batch">Вы собираетесь выполнить опасную операцию с %1$d защищённым(и) пакетом(ами).\n\nОперация: %2$s\n\nЗащищённые пакеты включены:\n%3$s\n\nИзменение или удаление этих пакетов может повредить ваше устройство, вызвать цикл загрузки или сделать основные системные функции непригодными. Это действие крайне опасно.\n\nВсё равно продолжить?</string>
+    <string name="dangerous_package_warning_continue">Всё равно продолжить</string>
+    <string name="dangerous_operation_uninstall">Удалить</string>
+    <string name="dangerous_operation_disable">Отключить</string>
+    <string name="dangerous_operation_enable">Включить</string>
+    <string name="dangerous_operation_clear_data">Очистить данные</string>
+    <string name="dangerous_operation_force_stop">Принудительно остановить</string>
+
     <!-- Storage -->
     <string name="storage_title">Хранилище</string>
     <string name="storage_app">Приложение</string>
@@ -483,6 +494,16 @@
     <string name="welcome_summary_title">Сводка</string>
     <string name="welcome_summary_source">Источник</string>
     <string name="welcome_summary_auto_update">Автообновление</string>
+    <string name="welcome_update_options_title">Параметры обновления</string>
+    <string name="welcome_update_options_subtitle">Настроить загрузку и способ установки обновлений</string>
+    <string name="welcome_auth_title">Авторизация</string>
+    <string name="welcome_auth_subtitle">Выберите, как этому приложению предоставляется привилегированный доступ.</string>
+    <string name="welcome_auth_mode_label">Метод авторизации</string>
+    <string name="welcome_auth_storage_label">Разрешение на хранилище</string>
+    <string name="welcome_auth_storage_summary">Включает READ_EXTERNAL_STORAGE и WRITE_EXTERNAL_STORAGE для экспорта APK и функций хранилища</string>
+    <string name="welcome_auth_grant">Предоставить разрешение на хранилище</string>
+    <string name="welcome_auth_not_authorized">Не авторизовано</string>
+    <string name="welcome_auth_optional_permissions">Дополнительные разрешения</string>
     <string name="welcome_summary_theme">Тема</string>
     <string name="welcome_summary_language">Язык</string>
     <string name="welcome_summary_default_page">Страница по умолчанию</string>

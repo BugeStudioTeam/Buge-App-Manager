@@ -72,7 +72,11 @@ object FontOverrideHelper {
             is Chip -> applyTypefaceToTextView(view)
             is TextInputEditText -> applyTypefaceToTextView(view)
             is MaterialSwitch -> {
-                // Do not recurse into MaterialSwitch to avoid mangling internal hidden text/thumb views
+                if (view is ViewGroup) {
+                    for (i in 0 until view.childCount) {
+                        applyGoogleSansToView(view.getChildAt(i))
+                    }
+                }
             }
             is ViewGroup -> {
                 for (i in 0 until view.childCount) {
@@ -83,11 +87,6 @@ object FontOverrideHelper {
     }
 
     private fun applyTypefaceToTextView(textView: TextView) {
-        // Do not apply to SwitchCompat internal text views
-        if (textView.parent is MaterialSwitch || textView.parent?.parent is MaterialSwitch) {
-            return
-        }
-
         val currentTypeface = textView.typeface
         val style = currentTypeface?.style ?: Typeface.NORMAL
 

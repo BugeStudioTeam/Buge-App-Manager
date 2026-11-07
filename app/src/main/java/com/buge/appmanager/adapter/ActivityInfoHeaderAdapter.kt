@@ -21,6 +21,10 @@ data class ActivityInfoHeader(
 
 class ActivityInfoHeaderAdapter : RecyclerView.Adapter<ActivityInfoHeaderAdapter.HeaderViewHolder>() {
 
+    companion object {
+        private const val VIEW_TYPE_HEADER = 1001
+    }
+
     private var item: ActivityInfoHeader? = null
 
     fun submit(header: ActivityInfoHeader) {
@@ -29,6 +33,8 @@ class ActivityInfoHeaderAdapter : RecyclerView.Adapter<ActivityInfoHeaderAdapter
     }
 
     override fun getItemCount(): Int = if (item == null) 0 else 1
+
+    override fun getItemViewType(position: Int): Int = VIEW_TYPE_HEADER
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): HeaderViewHolder {
         val view = LayoutInflater.from(parent.context)

@@ -42,13 +42,13 @@ class SettingsAdapter(
 ) : RecyclerView.Adapter<SettingsAdapter.ViewHolder>() {
 
     companion object {
-        private const val TYPE_HEADER = 1
-        private const val TYPE_NORMAL = 2
-        private const val TYPE_SWITCH = 3
-        private const val TYPE_ABOUT = 4
-        private const val TYPE_SHIZUKU = 5
-        private const val TYPE_ABOUT_MORE = 6
-        private const val TYPE_STORAGE_PERMISSION = 7
+        private const val TYPE_HEADER = 101
+        private const val TYPE_NORMAL = 102
+        private const val TYPE_SWITCH = 103
+        private const val TYPE_ABOUT = 104
+        private const val TYPE_SHIZUKU = 105
+        private const val TYPE_ABOUT_MORE = 106
+        private const val TYPE_STORAGE_PERMISSION = 107
     }
 
     override fun getItemViewType(position: Int): Int {
@@ -207,13 +207,6 @@ class SettingsAdapter(
         fun bind(item: SettingItem.SwitchItem) {
             icon.setImageResource(item.iconRes)
             title.text = item.title
-            
-            // Fuck: Reset any weird state caused by recycled views or global font changes
-            switchControl.showText = false
-            switchControl.text = null
-            switchControl.textOn = null
-            switchControl.textOff = null
-            
             switchControl.isChecked = item.isChecked
             switchControl.isEnabled = item.isEnabled
             if (!item.isEnabled) {

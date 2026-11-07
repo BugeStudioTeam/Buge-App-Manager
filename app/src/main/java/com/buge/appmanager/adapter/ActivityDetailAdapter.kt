@@ -22,6 +22,12 @@ class ActivityDetailAdapter(
     private val canLaunchUnexported: () -> Boolean = { false }
 ) : ListAdapter<ActivityDetail, ActivityDetailAdapter.ActivityViewHolder>(ActivityDiffCallback()) {
 
+    companion object {
+        private const val VIEW_TYPE_ACTIVITY = 1002
+    }
+
+    override fun getItemViewType(position: Int): Int = VIEW_TYPE_ACTIVITY
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ActivityViewHolder {
         val view = LayoutInflater.from(parent.context)
             .inflate(R.layout.item_activity_detail, parent, false)
@@ -152,12 +158,8 @@ class ActivityDetailAdapter(
                    oldItem.name == newItem.name
         }
 
-        override fun getChangePayload(oldItem: ActivityDetail, newItem: ActivityDetail): Any? {
-            if (oldItem.isExported != newItem.isExported ||
-                oldItem.name != newItem.name) {
-                return "content"
-            }
-            return null
+        override fun getChangePayload(oldItem: ActivityDetail, newItem: ActivityDetail): Boolean {
+            return oldItem.isExported != newItem.isExported || oldItem.name != newItem.name
         }
     }
 }

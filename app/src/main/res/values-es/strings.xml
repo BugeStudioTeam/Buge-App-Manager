@@ -200,6 +200,17 @@
     <string name="disable_app_confirm">¿Desactivar %s? La app dejará de estar disponible para el usuario hasta que se vuelva a activar.</string>
     <string name="enable_app_confirm">¿Activar %s? La app volverá a estar disponible para el usuario.</string>
 
+    <string name="pref_dangerous_packages_warning">Advertencia de operación peligrosa</string>
+    <string name="dangerous_package_warning_title">Operación muy peligrosa</string>
+    <string name="dangerous_package_warning_message">Estás a punto de realizar una operación peligrosa en un paquete protegido.\n\nApp: %1$s\nPaquete: %2$s\nOperación: %3$s\n\nModificar o eliminar este paquete puede dañar tu dispositivo, causar bucles de arranque o inutilizar funciones esenciales del sistema. Esta acción es extremadamente peligrosa.\n\n¿Continuar de todos modos?</string>
+    <string name="dangerous_package_warning_message_batch">Estás a punto de realizar una operación peligrosa en %1$d paquete(s) protegido(s).\n\nOperación: %2$s\n\nPaquetes protegidos incluidos:\n%3$s\n\nModificar o eliminar estos paquetes puede dañar tu dispositivo, causar bucles de arranque o inutilizar funciones esenciales del sistema. Esta acción es extremadamente peligrosa.\n\n¿Continuar de todos modos?</string>
+    <string name="dangerous_package_warning_continue">Continuar de todos modos</string>
+    <string name="dangerous_operation_uninstall">Desinstalar</string>
+    <string name="dangerous_operation_disable">Desactivar</string>
+    <string name="dangerous_operation_enable">Activar</string>
+    <string name="dangerous_operation_clear_data">Borrar datos</string>
+    <string name="dangerous_operation_force_stop">Forzar detención</string>
+
     <!-- Storage -->
     <string name="storage_title">Almacenamiento</string>
     <string name="storage_app">App</string>

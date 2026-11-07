@@ -200,6 +200,17 @@
     <string name="disable_app_confirm">%s を無効化しますか？再有効化されるまで、ユーザーはこのアプリを利用できなくなります。</string>
     <string name="enable_app_confirm">%s を有効化しますか？このアプリが再びユーザーに利用可能になります。</string>
 
+    <string name="pref_dangerous_packages_warning">危険な操作の警告</string>
+    <string name="dangerous_package_warning_title">非常に危険な操作</string>
+    <string name="dangerous_package_warning_message">保護されたパッケージに対して危険な操作を実行しようとしています。\n\nアプリ：%1$s\nパッケージ：%2$s\n操作：%3$s\n\nこのパッケージを変更または削除すると、デバイスが故障したり、ブートループが発生したり、システムのコア機能が使用できなくなる可能性があります。この操作は非常に危険です。\n\n続行しますか？</string>
+    <string name="dangerous_package_warning_message_batch">%1$d 個の保護されたパッケージに対して危険な操作を実行しようとしています。\n\n操作：%2$s\n\n含まれる保護されたパッケージ：\n%3$s\n\nこれらのパッケージを変更または削除すると、デバイスが故障したり、ブートループが発生したり、システムのコア機能が使用できなくなる可能性があります。この操作は非常に危険です。\n\n続行しますか？</string>
+    <string name="dangerous_package_warning_continue">そのまま続行</string>
+    <string name="dangerous_operation_uninstall">アンインストール</string>
+    <string name="dangerous_operation_disable">無効化</string>
+    <string name="dangerous_operation_enable">有効化</string>
+    <string name="dangerous_operation_clear_data">データを消去</string>
+    <string name="dangerous_operation_force_stop">強制停止</string>
+
     <!-- Storage -->
     <string name="storage_title">ストレージ</string>
     <string name="storage_app">アプリ</string>

@@ -200,6 +200,17 @@
     <string name="disable_app_confirm">Desativar %s? A app deixará de estar disponível para o utilizador até ser reativada.</string>
     <string name="enable_app_confirm">Ativar %s? A app voltará a estar disponível para o utilizador.</string>
 
+    <string name="pref_dangerous_packages_warning">Aviso de operação perigosa</string>
+    <string name="dangerous_package_warning_title">Operação muito perigosa</string>
+    <string name="dangerous_package_warning_message">Está prestes a realizar uma operação perigosa num pacote protegido.\n\nApp: %1$s\nPacote: %2$s\nOperação: %3$s\n\nModificar ou remover este pacote pode danificar o seu dispositivo, causar ciclos de arranque ou tornar inutilizáveis as funções essenciais do sistema. Esta ação é extremamente perigosa.\n\nContinuar mesmo assim?</string>
+    <string name="dangerous_package_warning_message_batch">Está prestes a realizar uma operação perigosa em %1$d pacote(s) protegido(s).\n\nOperação: %2$s\n\nPacotes protegidos incluídos:\n%3$s\n\nModificar ou remover estes pacotes pode danificar o seu dispositivo, causar ciclos de arranque ou tornar inutilizáveis as funções essenciais do sistema. Esta ação é extremamente perigosa.\n\nContinuar mesmo assim?</string>
+    <string name="dangerous_package_warning_continue">Continuar mesmo assim</string>
+    <string name="dangerous_operation_uninstall">Desinstalar</string>
+    <string name="dangerous_operation_disable">Desativar</string>
+    <string name="dangerous_operation_enable">Ativar</string>
+    <string name="dangerous_operation_clear_data">Limpar dados</string>
+    <string name="dangerous_operation_force_stop">Forçar paragem</string>
+
     <!-- Storage -->
     <string name="storage_title">Armazenamento</string>
     <string name="storage_app">App</string>

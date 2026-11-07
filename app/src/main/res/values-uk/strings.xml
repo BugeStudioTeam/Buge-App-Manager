@@ -200,6 +200,17 @@
     <string name="disable_app_confirm">Вимкнути %s? Застосунок стане недоступним для користувача, доки його знову не буде увімкнено.</string>
     <string name="enable_app_confirm">Увімкнути %s? Застосунок знову стане доступним для користувача.</string>
 
+    <string name="pref_dangerous_packages_warning">Попередження про небезпечну операцію</string>
+    <string name="dangerous_package_warning_title">Дуже небезпечна операція</string>
+    <string name="dangerous_package_warning_message">Ви збираєтеся виконати небезпечну операцію із захищеним пакетом.\n\nЗастосунок: %1$s\nПакет: %2$s\nОперація: %3$s\n\nЗміна або видалення цього пакета може пошкодити ваш пристрій, спричинити цикл завантаження або зробити основні системні функції непридатними. Ця дія є надзвичайно небезпечною.\n\nВсе одно продовжити?</string>
+    <string name="dangerous_package_warning_message_batch">Ви збираєтеся виконати небезпечну операцію з %1$d захищеним(и) пакетом(ами).\n\nОперація: %2$s\n\nВключені захищені пакети:\n%3$s\n\nЗміна або видалення цих пакетів може пошкодити ваш пристрій, спричинити цикл завантаження або зробити основні системні функції непридатними. Ця дія є надзвичайно небезпечною.\n\nВсе одно продовжити?</string>
+    <string name="dangerous_package_warning_continue">Все одно продовжити</string>
+    <string name="dangerous_operation_uninstall">Видалити</string>
+    <string name="dangerous_operation_disable">Вимкнути</string>
+    <string name="dangerous_operation_enable">Увімкнути</string>
+    <string name="dangerous_operation_clear_data">Очистити дані</string>
+    <string name="dangerous_operation_force_stop">Примусово зупинити</string>
+
     <!-- Storage -->
     <string name="storage_title">Сховище</string>
     <string name="storage_app">Застосунок</string>

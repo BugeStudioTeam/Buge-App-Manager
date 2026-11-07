@@ -200,6 +200,17 @@
     <string name="disable_app_confirm">تعطيل %s؟ لن يكون التطبيق متاحًا للمستخدم حتى يتم إعادة تفعيله.</string>
     <string name="enable_app_confirm">تفعيل %s؟ سيصبح التطبيق متاحًا للمستخدم مرة أخرى.</string>
 
+    <string name="pref_dangerous_packages_warning">تحذير العملية الخطيرة</string>
+    <string name="dangerous_package_warning_title">عملية خطيرة جداً</string>
+    <string name="dangerous_package_warning_message">أنت على وشك تنفيذ عملية خطيرة على حزمة محمية.\n\nالتطبيق: %1$s\nالحزمة: %2$s\nالعملية: %3$s\n\nقد يؤدي تعديل هذه الحزمة أو إزالتها إلى تعطيل جهازك، أو التسبب في حلقات إقلاع، أو جعل وظائف النظام الأساسية غير قابلة للاستخدام. هذا الإجراء خطير للغاية.\n\nهل تريد المتابعة على أي حال؟</string>
+    <string name="dangerous_package_warning_message_batch">أنت على وشك تنفيذ عملية خطيرة على %1$d حزمة محمية.\n\nالعملية: %2$s\n\nالحزم المحمية المضمنة:\n%3$s\n\nقد يؤدي تعديل هذه الحزم أو إزالتها إلى تعطيل جهازك، أو التسبب في حلقات إقلاع، أو جعل وظائف النظام الأساسية غير قابلة للاستخدام. هذا الإجراء خطير للغاية.\n\nهل تريد المتابعة على أي حال؟</string>
+    <string name="dangerous_package_warning_continue">المتابعة على أي حال</string>
+    <string name="dangerous_operation_uninstall">إلغاء التثبيت</string>
+    <string name="dangerous_operation_disable">تعطيل</string>
+    <string name="dangerous_operation_enable">تفعيل</string>
+    <string name="dangerous_operation_clear_data">مسح البيانات</string>
+    <string name="dangerous_operation_force_stop">إيقاف إجباري</string>
+
     <!-- Storage -->
     <string name="storage_title">التخزين</string>
     <string name="storage_app">التطبيق</string>

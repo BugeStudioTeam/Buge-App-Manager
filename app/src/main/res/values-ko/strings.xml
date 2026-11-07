@@ -200,6 +200,17 @@
     <string name="disable_app_confirm">%s을(를) 비활성화하시겠습니까? 다시 활성화할 때까지 사용자가 앱을 사용할 수 없습니다.</string>
     <string name="enable_app_confirm">%s을(를) 활성화하시겠습니까? 앱이 다시 사용자에게 제공됩니다.</string>
 
+    <string name="pref_dangerous_packages_warning">위험한 작업 경고</string>
+    <string name="dangerous_package_warning_title">매우 위험한 작업</string>
+    <string name="dangerous_package_warning_message">보호된 패키지에 대해 위험한 작업을 수행하려고 합니다.\n\n앱: %1$s\n패키지: %2$s\n작업: %3$s\n\n이 패키지를 수정하거나 제거하면 기기가 손상되거나 부팅 루프가 발생하거나 핵심 시스템 기능을 사용할 수 없게 될 수 있습니다. 이 작업은 매우 위험합니다.\n\n계속 진행하시겠습니까?</string>
+    <string name="dangerous_package_warning_message_batch">보호된 패키지 %1$d개에 대해 위험한 작업을 수행하려고 합니다.\n\n작업: %2$s\n\n포함된 보호 패키지:\n%3$s\n\n이 패키지들을 수정하거나 제거하면 기기가 손상되거나 부팅 루프가 발생하거나 핵심 시스템 기능을 사용할 수 없게 될 수 있습니다. 이 작업은 매우 위험합니다.\n\n계속 진행하시겠습니까?</string>
+    <string name="dangerous_package_warning_continue">계속 진행</string>
+    <string name="dangerous_operation_uninstall">제거</string>
+    <string name="dangerous_operation_disable">비활성화</string>
+    <string name="dangerous_operation_enable">활성화</string>
+    <string name="dangerous_operation_clear_data">데이터 삭제</string>
+    <string name="dangerous_operation_force_stop">강제 중지</string>
+
     <!-- Storage -->
     <string name="storage_title">저장소</string>
     <string name="storage_app">앱</string>

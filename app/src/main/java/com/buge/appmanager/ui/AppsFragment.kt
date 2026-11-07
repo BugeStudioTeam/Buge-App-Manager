@@ -7,10 +7,13 @@ import android.content.Intent
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
+import android.os.Parcelable
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.animation.OvershootInterpolator
+import android.widget.EditText
+import android.widget.ImageView
 import android.widget.ProgressBar
 import android.widget.TextView
 import androidx.activity.OnBackPressedCallback
@@ -22,6 +25,7 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.buge.appmanager.AppDetailActivity
+import com.buge.appmanager.BaseActivity
 import com.buge.appmanager.R
 import com.buge.appmanager.adapter.AppsAdapter
 import com.buge.appmanager.adapter.AppsItem
@@ -31,6 +35,7 @@ import com.buge.appmanager.model.AppInfo
 import com.buge.appmanager.model.AppSortOrder
 import com.buge.appmanager.shizuku.ShizukuManager
 import com.buge.appmanager.util.CustomLabelManager
+import com.buge.appmanager.util.FontOverrideHelper
 import com.buge.appmanager.util.LogManager
 import com.buge.appmanager.util.PreferencesManager
 import com.buge.appmanager.util.SnackbarHelper
@@ -61,6 +66,7 @@ class AppsFragment : Fragment() {
 
     private val viewModel: AppsViewModel by viewModels()
     private lateinit var adapter: AppsAdapter
+    private var fontApplied = false
     private var allApps: List<AppInfo> = emptyList()
     private var selectedLabelId: String? = null
     private var currentFilter: AppFilter = AppFilter.ALL
@@ -105,6 +111,10 @@ class AppsFragment : Fragment() {
 
     override fun onResume() {
         super.onResume()
+        if (activity is BaseActivity && !fontApplied) {
+            FontOverrideHelper.applyToActivity(activity as BaseActivity)
+            fontApplied = true
+        }
         updateDisabledChipVisibility()
         setupLabelChips()
         viewModel.loadApps()
@@ -352,6 +362,11 @@ class AppsFragment : Fragment() {
                 chip.isChecked = isSelected
                 chip.isClickable = true
                 chip.isFocusable = true
+
+                val typeface = FontOverrideHelper.getTypefaceByStyle(android.graphics.Typeface.NORMAL)
+                if (typeface != null) {
+                    chip.typeface = typeface
+                }
 
                 chip.setOnClickListener {
                     if (isUpdatingChips) return@setOnClickListener

@@ -23,6 +23,7 @@ import com.buge.appmanager.AboutUsActivity
 import com.buge.appmanager.AppearanceActivity
 import com.buge.appmanager.BackupActivity
 import com.buge.appmanager.BackupSettingsActivity
+import com.buge.appmanager.BaseActivity
 import com.buge.appmanager.CustomLabelsActivity
 import com.buge.appmanager.InstallAppsActivity
 import com.buge.appmanager.LogViewerActivity
@@ -35,6 +36,7 @@ import com.buge.appmanager.databinding.FragmentSettingsBinding
 import com.buge.appmanager.dhizuku.DhizukuManager
 import com.buge.appmanager.shizuku.ShizukuManager
 import com.buge.appmanager.util.DangerousPackageChecker
+import com.buge.appmanager.util.FontOverrideHelper
 import com.buge.appmanager.util.LocaleManager
 import com.buge.appmanager.util.LogManager
 import com.buge.appmanager.util.PreferencesManager
@@ -53,6 +55,7 @@ class SettingsFragment : Fragment() {
     private var _binding: FragmentSettingsBinding? = null
     private val binding get() = _binding!!
     private lateinit var adapter: SettingsAdapter
+    private var fontApplied = false
     private var pendingLanguageCode: String? = null
 
     private var savedScrollPosition: Int = 0
@@ -108,6 +111,10 @@ class SettingsFragment : Fragment() {
 
     override fun onResume() {
         super.onResume()
+        if (activity is BaseActivity && !fontApplied) {
+            FontOverrideHelper.applyToActivity(activity as BaseActivity)
+            fontApplied = true
+        }
         updateShizukuStatus()
         refreshGoogleServiceStatus()
         restoreScrollPosition()
@@ -957,7 +964,7 @@ class SettingsFragment : Fragment() {
             SettingItem.SwitchItem(
                 getString(R.string.pref_dangerous_packages_warning),
                 dangerousPackagesWarning,
-                R.drawable.ic_warning_large
+                R.drawable.ic_warning
             ),
             SettingItem.SwitchItem(getString(R.string.pref_show_disabled_apps), showDisabledApps, R.drawable.ic_disabled_apps),
             SettingItem.SwitchItem(getString(R.string.pref_show_system_apps), showSystemApps, R.drawable.ic_system_apps),
@@ -1189,6 +1196,10 @@ class SettingsFragment : Fragment() {
                 AppCompatDelegate.setDefaultNightMode(mode)
                 dialog.dismiss()
 
+                val isEnglish = Locale.getDefault().language == "en"
+                FontOverrideHelper.setEnglishLocaleFlag(isEnglish)
+                fontApplied = false
+
                 requireActivity().recreate()
             }
             .show()
@@ -1215,6 +1226,17 @@ class SettingsFragment : Fragment() {
                     message = getString(R.string.language_changed_restart)
                 ) {
                     LocaleManager.setLanguage(requireContext(), selectedCode)
+
+                    val isEnglish = when (selectedCode) {
+                        "", "en" -> true
+                        else -> {
+                            val locale = if (selectedCode.isEmpty()) Locale.getDefault() else Locale(selectedCode)
+                            locale.language == "en"
+                        }
+                    }
+                    FontOverrideHelper.setEnglishLocaleFlag(isEnglish)
+                    fontApplied = false
+
                     restartApp()
                 }
             }

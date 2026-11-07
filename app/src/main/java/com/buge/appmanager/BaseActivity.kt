@@ -7,12 +7,15 @@ import android.content.Context
 import android.os.Build
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
+import com.buge.appmanager.util.FontOverrideHelper
 import com.buge.appmanager.util.LocaleManager
 import com.buge.appmanager.util.PreferencesManager
 import com.buge.appmanager.util.ThemeManager
 import com.google.android.material.color.DynamicColors
 
 abstract class BaseActivity : AppCompatActivity() {
+
+    private var fontApplied = false
 
     override fun attachBaseContext(newBase: Context?) {
         if (newBase != null) {
@@ -25,11 +28,21 @@ abstract class BaseActivity : AppCompatActivity() {
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        ThemeManager.applyColorTheme(this)
+        
+        ThemeManager.applyColorTheme(this)               
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S &&
             PreferencesManager.getDynamicColor(this)) {
             DynamicColors.applyToActivityIfAvailable(this)
         }
+        
         super.onCreate(savedInstanceState)
+    }
+
+    override fun onResume() {
+        super.onResume()
+        if (!fontApplied) {
+            FontOverrideHelper.applyToActivity(this)
+            fontApplied = true
+        }
     }
 }

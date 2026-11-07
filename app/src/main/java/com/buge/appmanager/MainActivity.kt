@@ -24,6 +24,7 @@ import com.buge.appmanager.ui.AppsFragment
 import com.buge.appmanager.ui.PermissionsFragment
 import com.buge.appmanager.ui.SettingsFragment
 import com.buge.appmanager.ui.SignatureWarningDialog
+import com.buge.appmanager.util.FontOverrideHelper
 import com.buge.appmanager.util.LocaleManager
 import com.buge.appmanager.util.LogManager
 import com.buge.appmanager.util.PreferencesManager
@@ -34,6 +35,7 @@ import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.navigationrail.NavigationRailView
 import kotlinx.coroutines.launch
 import rikka.shizuku.Shizuku
+import java.util.Locale
 
 class MainActivity : BaseActivity() {
 
@@ -56,6 +58,14 @@ class MainActivity : BaseActivity() {
             val savedLanguage = LocaleManager.getLanguage(newBase)
             val context = LocaleManager.createContextWithLocale(newBase, savedLanguage)
             super.attachBaseContext(context)
+
+            val currentLocale = if (savedLanguage.isEmpty()) {
+                Locale.getDefault()
+            } else {
+                Locale(savedLanguage)
+            }
+            val isEnglish = currentLocale.language == "en"
+            FontOverrideHelper.setEnglishLocaleFlag(isEnglish)
         } else {
             super.attachBaseContext(newBase)
         }

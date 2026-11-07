@@ -12,7 +12,6 @@ import androidx.activity.OnBackPressedCallback
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.buge.appmanager.BaseActivity
 import com.buge.appmanager.R
 import com.buge.appmanager.adapter.AppPermissionAdapter
 import com.buge.appmanager.adapter.AppPermissionItem
@@ -20,7 +19,6 @@ import com.buge.appmanager.data.AppRepository
 import com.buge.appmanager.databinding.FragmentPermissionsBinding
 import com.buge.appmanager.model.AppInfo
 import com.buge.appmanager.shizuku.ShizukuManager
-import com.buge.appmanager.util.FontOverrideHelper
 import com.buge.appmanager.util.PreferencesManager
 import com.buge.appmanager.util.SnackbarHelper
 import com.buge.appmanager.viewmodel.PermissionsViewModel
@@ -34,7 +32,6 @@ class PermissionsFragment : Fragment() {
     private lateinit var adapter: AppPermissionAdapter
     private var currentPermissions: List<String> = AppRepository.PERMISSION_MICROPHONE
     private var currentPermissionLabel: String = ""
-    private var fontApplied = false
 
     private val dhizukuHiddenPermissionIds = setOf(
         R.id.chip_overlay,
@@ -67,10 +64,6 @@ class PermissionsFragment : Fragment() {
 
     override fun onResume() {
         super.onResume()
-        if (activity is BaseActivity && !fontApplied) {
-            FontOverrideHelper.applyToActivity(activity as BaseActivity)
-            fontApplied = true
-        }
         updateDhizukuChipVisibility()
     }
 

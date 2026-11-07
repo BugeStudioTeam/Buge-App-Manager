@@ -12,33 +12,24 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.buge.appmanager.R
 
-data class ActivityInfoHeader(
-    val appName: String,
-    val packageName: String,
-    val icon: Drawable?,
-    val isSystemApp: Boolean
-)
-
-class ActivityInfoHeaderAdapter : RecyclerView.Adapter<ActivityInfoHeaderAdapter.HeaderViewHolder>() {
-
-    private var item: ActivityInfoHeader? = null
-
-    fun submit(header: ActivityInfoHeader) {
-        item = header
-        notifyItemChanged(0)
-    }
-
-    override fun getItemCount(): Int = if (item == null) 0 else 1
+class ActivityInfoHeaderAdapter(
+    private val appName: String,
+    private val packageName: String,
+    private val isSystem: Boolean,
+    private val appIcon: Drawable?
+) : RecyclerView.Adapter<ActivityInfoHeaderAdapter.HeaderViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): HeaderViewHolder {
         val view = LayoutInflater.from(parent.context)
-            .inflate(R.layout.item_activity_info_header, parent, false)
+            .inflate(R.layout.item_activity_header, parent, false)
         return HeaderViewHolder(view)
     }
 
     override fun onBindViewHolder(holder: HeaderViewHolder, position: Int) {
-        item?.let { holder.bind(it) }
+        holder.bind(appName, packageName, isSystem, appIcon)
     }
+
+    override fun getItemCount(): Int = 1
 
     class HeaderViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         private val appIcon: ImageView = itemView.findViewById(R.id.app_icon)
@@ -46,15 +37,20 @@ class ActivityInfoHeaderAdapter : RecyclerView.Adapter<ActivityInfoHeaderAdapter
         private val packageName: TextView = itemView.findViewById(R.id.package_name)
         private val systemBadge: View = itemView.findViewById(R.id.system_badge)
 
-        fun bind(header: ActivityInfoHeader) {
-            if (header.icon != null) {
-                appIcon.setImageDrawable(header.icon)
+        fun bind(
+            name: String,
+            pkg: String,
+            isSystem: Boolean,
+            icon: Drawable?
+        ) {
+            if (icon != null) {
+                appIcon.setImageDrawable(icon)
             } else {
                 appIcon.setImageResource(android.R.drawable.sym_def_app_icon)
             }
-            appName.text = header.appName
-            packageName.text = header.packageName
-            systemBadge.visibility = if (header.isSystemApp) View.VISIBLE else View.GONE
+            appName.text = name
+            packageName.text = pkg
+            systemBadge.visibility = if (isSystem) View.VISIBLE else View.GONE
         }
     }
 }

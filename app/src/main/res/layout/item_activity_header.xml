@@ -2,12 +2,11 @@
 <!-- SPDX-License-Identifier: GPL-3.0-only -->
 <!-- Copyright (C) 2026 Buge Studio -->
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_marginHorizontal="16dp"
-    android:layout_marginBottom="16dp"
-    android:background="@drawable/bg_setting_item_single">
+    android:layout_marginBottom="2dp"
+    android:background="@drawable/bg_setting_item_top">
 
     <LinearLayout
         android:layout_width="match_parent"

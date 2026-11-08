@@ -38,11 +38,9 @@ class ActivityDetailAdapter(
         holder.bind(activity)
         updateItemBackground(holder, position)
 
-        // Fuck: clear old listeners to avoid multiple registration
         holder.itemView.setOnLongClickListener(null)
         holder.itemView.setOnClickListener(null)
 
-        // Click listener
         holder.itemView.setOnClickListener {
             val pos = holder.adapterPosition
             if (pos != RecyclerView.NO_POSITION) {
@@ -51,7 +49,6 @@ class ActivityDetailAdapter(
             }
         }
 
-        // Long click listener for shortcut creation
         holder.itemView.setOnLongClickListener { view ->
             val pos = holder.adapterPosition
             if (pos != RecyclerView.NO_POSITION) {
@@ -86,7 +83,7 @@ class ActivityDetailAdapter(
     }
 
     private fun updateItemBackground(holder: ActivityViewHolder, position: Int) {
-        val container = holder.itemView.findViewById<FrameLayout>(R.id.item_container)
+        val container = holder.container
         val size = itemCount
 
         val background = when {
@@ -103,6 +100,7 @@ class ActivityDetailAdapter(
     }
 
     inner class ActivityViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+        val container: FrameLayout = itemView.findViewById(R.id.item_container)
         private val exportIcon: ImageView = itemView.findViewById(R.id.export_icon)
         private val activityName: TextView = itemView.findViewById(R.id.activity_name)
         private val className: TextView = itemView.findViewById(R.id.class_name)
@@ -116,8 +114,6 @@ class ActivityDetailAdapter(
             val shortClassName = activity.className.substringAfterLast(".")
             className.text = shortClassName
 
-            // A non-exported activity is normally unserializable, but the root
-            // backend can start it via `am start`, so allow launching then.
             val launchable = activity.isExported || canLaunchUnexported()
 
             if (activity.isExported) {

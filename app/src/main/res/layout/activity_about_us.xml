@@ -49,14 +49,29 @@
                     android:gravity="center_horizontal"
                     android:padding="24dp">
 
-                    <ImageView
-                        android:id="@+id/app_icon_large"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:adjustViewBounds="true"
-                        android:maxHeight="180dp"
-                        android:src="@drawable/ic_buge"
-                        android:layout_marginBottom="16dp" />
+                    <FrameLayout
+                        android:layout_width="200dp"
+                        android:layout_height="200dp"
+                        android:layout_marginBottom="16dp">
+
+                        <ImageView
+                            android:id="@+id/app_icon_shape_rotating"
+                            android:layout_width="200dp"
+                            android:layout_height="200dp"
+                            android:layout_gravity="center"
+                            android:src="@drawable/material_shape_cookie_9"
+                            android:contentDescription="@null" />
+
+                        <ImageView
+                            android:id="@+id/app_icon_large"
+                            android:layout_width="120dp"
+                            android:layout_height="120dp"
+                            android:layout_gravity="center"
+                            android:adjustViewBounds="true"
+                            android:scaleType="fitCenter"
+                            android:src="@drawable/ic_buge" />
+
+                    </FrameLayout>
 
                     <TextView
                         android:layout_width="wrap_content"

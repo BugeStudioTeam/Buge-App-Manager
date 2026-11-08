@@ -65,7 +65,6 @@ class ActivityDetailActivity : BaseActivity() {
 
         setupBackPressedCallback()
         setupToolbar()
-        setupAppInfo()
         setupRecyclerView()
         setupSearch()
         observeViewModel()
@@ -128,26 +127,6 @@ class ActivityDetailActivity : BaseActivity() {
             }
         }
         return super.onOptionsItemSelected(item)
-    }
-
-    private fun setupAppInfo() {
-        val appName = intent.getStringExtra(EXTRA_APP_NAME) ?: packageName
-        val isSystem = intent.getBooleanExtra(EXTRA_IS_SYSTEM, false)
-
-        try {
-            val appInfo = packageManager.getApplicationInfo(packageName, 0)
-            val icon = packageManager.getApplicationIcon(appInfo)
-            binding.appIcon.setImageDrawable(icon)
-        } catch (e: Exception) {
-            binding.appIcon.setImageResource(android.R.drawable.sym_def_app_icon)
-            LogManager.warning(this, "Failed to load app icon", "Package: $packageName, Error: ${e.message}")
-        }
-
-        binding.appName.text = appName
-        binding.packageName.text = packageName
-        binding.systemBadge.visibility = if (isSystem) View.VISIBLE else View.GONE
-
-        LogManager.debug(this, "App info setup complete", "Package: $packageName, App: $appName, System: $isSystem")
     }
 
     private fun setupRecyclerView() {

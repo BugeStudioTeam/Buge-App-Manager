@@ -14,7 +14,7 @@ import java.util.Locale
 object LogManager {
 
     private const val LOG_FILE_NAME = "app_logs.txt"
-    private const val MAX_LOG_SIZE = 1024 * 1024 // 1MB
+    private const val MAX_LOG_SIZE = 1024 * 1024
     private const val MAX_LOG_LINES = 2000
 
     enum class LogType(val display: String) {
@@ -68,9 +68,11 @@ object LogManager {
         }
     }
 
+    private val lock = Any()
+
     private var isEnabled = false
-    private var logEntries = mutableListOf<LogEntry>()
-    private val listeners = mutableListOf<() -> Unit>()
+    private val logEntries = mutableListOf<LogEntry>()
+    private val listeners = java.util.concurrent.CopyOnWriteArrayList<() -> Unit>()
     private var currentSessionId = System.currentTimeMillis()
 
     private val logTag = "BugeAppManager"
@@ -78,8 +80,7 @@ object LogManager {
     private var logcatReaderThread: Thread? = null
     private var isLogcatReading = false
 
-    // Fuck: Track processed logcat entries to avoid duplicates
-    private val processedLogcatKeys = mutableSetOf<String>()
+    private val processedLogcatKeys = java.util.Collections.synchronizedSet(mutableSetOf<String>())
     private var lastLogcatTimestamp = 0L
 
     fun init(context: Context) {
@@ -98,7 +99,6 @@ object LogManager {
         PreferencesManager.setLoggingEnabled(context, enabled)
         if (enabled) {
             info(context, "Logging enabled", "Session resumed")
-            // Fuck: Reset logcat tracking when re-enabling
             processedLogcatKeys.clear()
             lastLogcatTimestamp = System.currentTimeMillis()
             startLogcatReader(context)
@@ -110,13 +110,17 @@ object LogManager {
         notifyListeners()
     }
 
-    fun getLogs(): List<LogEntry> = logEntries.toList()
+    fun getLogs(): List<LogEntry> {
+        synchronized(lock) {
+            return logEntries.toList()
+        }
+    }
 
-    fun getLogsByType(type: LogType): List<LogEntry> = logEntries.filter { it.type == type }
+    fun getLogsByType(type: LogType): List<LogEntry> = getLogs().filter { it.type == type }
 
-    fun getLogsByTag(tag: String): List<LogEntry> = logEntries.filter { it.tag == tag }
+    fun getLogsByTag(tag: String): List<LogEntry> = getLogs().filter { it.tag == tag }
 
-    fun getLogsSince(timestamp: Long): List<LogEntry> = logEntries.filter { it.timestamp >= timestamp }
+    fun getLogsSince(timestamp: Long): List<LogEntry> = getLogs().filter { it.timestamp >= timestamp }
 
     fun getSessionId(): Long = currentSessionId
 
@@ -126,7 +130,9 @@ object LogManager {
     }
 
     fun clearLogs(context: Context) {
-        logEntries.clear()
+        synchronized(lock) {
+            logEntries.clear()
+        }
         processedLogcatKeys.clear()
         saveLogsToFile(context)
         info(context, "Logs cleared", "All logs have been cleared")
@@ -137,32 +143,32 @@ object LogManager {
         return try {
             val logs = getLogs()
             if (logs.isEmpty()) return null
-            
+
             val timestamp = SimpleDateFormat("yyyyMMdd_HHmmss", Locale.getDefault()).format(Date())
             val exportFile = File(context.getExternalFilesDir(null), "logs_export_$timestamp.txt")
-            
+
             exportFile.printWriter().use { printer ->
-                printer.println("=" .repeat(80))
+                printer.println("=".repeat(80))
                 printer.println("Buge App Manager - Log Export")
-                printer.println("=" .repeat(80))
+                printer.println("=".repeat(80))
                 printer.println("Export Date: ${SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault()).format(Date())}")
                 printer.println("Session ID: $currentSessionId")
                 printer.println("Total Logs: ${logs.size}")
                 printer.println("Device: ${Build.MANUFACTURER} ${Build.MODEL}")
                 printer.println("Android Version: ${Build.VERSION.RELEASE} (API ${Build.VERSION.SDK_INT})")
-                printer.println("=" .repeat(80))
+                printer.println("=".repeat(80))
                 printer.println()
-                
+
                 logs.reversed().forEach { entry ->
                     printer.println(entry.getFormattedMessage())
                     printer.println()
                 }
-                
-                printer.println("=" .repeat(80))
+
+                printer.println("=".repeat(80))
                 printer.println("End of Export")
-                printer.println("=" .repeat(80))
+                printer.println("=".repeat(80))
             }
-            
+
             exportFile
         } catch (e: Exception) {
             Log.e(logTag, "Failed to export logs", e)
@@ -174,17 +180,17 @@ object LogManager {
         return try {
             val logs = getLogs()
             if (logs.isEmpty()) return null
-            
+
             val timestamp = SimpleDateFormat("yyyyMMdd_HHmmss", Locale.getDefault()).format(Date())
             val exportFile = File(context.getExternalFilesDir(null), "logs_export_$timestamp.csv")
-            
+
             exportFile.printWriter().use { printer ->
                 printer.println("Timestamp,Type,Tag,Message,Details")
                 logs.reversed().forEach { entry ->
                     printer.println(entry.toCsvString())
                 }
             }
-            
+
             exportFile
         } catch (e: Exception) {
             Log.e(logTag, "Failed to export logs as CSV", e)
@@ -216,8 +222,6 @@ object LogManager {
 
     private fun readLogcat(context: Context) {
         try {
-            // Fuck: Use -T 1 to read from the beginning, but we track processed keys
-            // Only read ERROR level
             val process = Runtime.getRuntime().exec(arrayOf(
                 "logcat",
                 "-v", "time",
@@ -259,7 +263,6 @@ object LogManager {
             }
 
         } catch (e: InterruptedException) {
-            // Fuck: Thread interrupted, normal shutdown
         } catch (e: Exception) {
             Log.e(logTag, "Logcat reader error: ${e.message}", e)
         } finally {
@@ -284,21 +287,16 @@ object LogManager {
                     if (message.isEmpty()) continue
                     if (tag == "BugeAppManager") continue
 
-                    // Fuck: Only record ERROR level from logcat
                     if (level != "E" && level != "F") continue
 
-                    // Fuck: Build a unique key to avoid duplicates
-                    // Key = time + tag + message
                     val uniqueKey = "$timeStr|$tag|$message"
 
                     if (processedLogcatKeys.contains(uniqueKey)) {
                         continue
                     }
 
-                    // Fuck: Add to processed set
                     processedLogcatKeys.add(uniqueKey)
 
-                    // Fuck: Limit the processed set size to avoid memory leak
                     if (processedLogcatKeys.size > 5000) {
                         val iterator = processedLogcatKeys.iterator()
                         var count = 0
@@ -309,7 +307,6 @@ object LogManager {
                         }
                     }
 
-                    // Fuck: Parse the logcat time to a real timestamp
                     val logcatTime = parseLogcatTime(timeStr)
 
                     val entry = LogEntry(
@@ -323,24 +320,23 @@ object LogManager {
                         isLogcat = true
                     )
 
-                    logEntries.add(0, entry)
-
-                    while (logEntries.size > MAX_LOG_LINES) {
-                        logEntries.removeAt(logEntries.lastIndex)
+                    synchronized(lock) {
+                        logEntries.add(0, entry)
+                        while (logEntries.size > MAX_LOG_LINES) {
+                            logEntries.removeAt(logEntries.lastIndex)
+                        }
                     }
 
                     saveLogsToFile(context)
                     notifyListeners()
                 }
             } catch (e: Exception) {
-                // Fuck: Skip malformed lines
             }
         }
 
         buffer.clear()
     }
 
-    // Fuck: Parse logcat time format "MM-dd HH:mm:ss.SSS" to timestamp
     private fun parseLogcatTime(timeStr: String): Long {
         return try {
             val currentYear = SimpleDateFormat("yyyy", Locale.getDefault()).format(Date())
@@ -358,7 +354,6 @@ object LogManager {
         startLogcatReader(context)
     }
 
-    // Fuck: Detailed logging methods
     fun debug(context: Context, message: String, details: String? = null, tag: String? = null) {
         addLog(context, LogType.DEBUG, message, details, tag)
         Log.d(logTag, "[DEBUG] $message${details?.let { " - $it" } ?: ""}")
@@ -486,11 +481,12 @@ object LogManager {
             stackTrace = stackTrace,
             isLogcat = false
         )
-        
-        logEntries.add(0, entry)
 
-        while (logEntries.size > MAX_LOG_LINES) {
-            logEntries.removeAt(logEntries.lastIndex)
+        synchronized(lock) {
+            logEntries.add(0, entry)
+            while (logEntries.size > MAX_LOG_LINES) {
+                logEntries.removeAt(logEntries.lastIndex)
+            }
         }
 
         saveLogsToFile(context)
@@ -517,9 +513,10 @@ object LogManager {
                             stackTrace = null,
                             isLogcat = false
                         )
-                        logEntries.add(entry)
+                        synchronized(lock) {
+                            logEntries.add(entry)
+                        }
                     } catch (e: Exception) {
-                        // Skip malformed lines
                     }
                 }
             }
@@ -530,10 +527,16 @@ object LogManager {
 
     private fun saveLogsToFile(context: Context) {
         try {
+            val snapshot: List<LogEntry>
+            synchronized(lock) {
+                snapshot = logEntries.toList()
+            }
             val file = File(context.filesDir, LOG_FILE_NAME)
             file.printWriter().use { printer ->
-                logEntries.reversed().forEach { entry ->
-                    printer.println(entry.getFormattedMessage())
+                snapshot.reversed().forEach { entry ->
+                    if (entry != null) {
+                        printer.println(entry.getFormattedMessage())
+                    }
                 }
             }
         } catch (e: Exception) {
@@ -542,7 +545,9 @@ object LogManager {
     }
 
     fun addListener(listener: () -> Unit) {
-        listeners.add(listener)
+        if (!listeners.contains(listener)) {
+            listeners.add(listener)
+        }
     }
 
     fun removeListener(listener: () -> Unit) {
@@ -563,11 +568,12 @@ object LogManager {
     }
 
     fun getStatistics(): Map<String, Any> {
-        val typeCounts = LogType.values().associateWith { type -> logEntries.count { it.type == type } }
-        val totalLogs = logEntries.size
-        val logcatCount = logEntries.count { it.isLogcat }
-        val firstLogTime = logEntries.lastOrNull()?.timestamp
-        val lastLogTime = logEntries.firstOrNull()?.timestamp
+        val snapshot = getLogs()
+        val typeCounts = LogType.values().associateWith { type -> snapshot.count { it.type == type } }
+        val totalLogs = snapshot.size
+        val logcatCount = snapshot.count { it.isLogcat }
+        val firstLogTime = snapshot.lastOrNull()?.timestamp
+        val lastLogTime = snapshot.firstOrNull()?.timestamp
         val timeRange = if (firstLogTime != null && lastLogTime != null) {
             (lastLogTime - firstLogTime) / 1000
         } else 0L

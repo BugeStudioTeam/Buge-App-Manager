@@ -158,17 +158,13 @@ class ActivityRepository(private val context: Context) {
             val intent = Intent().apply {
                 setClassName(activityInfo.packageName, activityInfo.name)
             }
-            val flags = if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.TIRAMISU) {
-                PackageManager.ResolveInfoFlags.of(PackageManager.MATCH_DEFAULT_ONLY.toLong())
-            } else {
-                0
-            }
-            if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.TIRAMISU) {
-                pm.queryIntentActivities(intent, flags).size
+            val resolveInfos = if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.TIRAMISU) {
+                pm.queryIntentActivities(intent, PackageManager.ResolveInfoFlags.of(0L))
             } else {
                 @Suppress("DEPRECATION")
-                pm.queryIntentActivities(intent, 0).size
+                pm.queryIntentActivities(intent, 0)
             }
+            resolveInfos.size
         } catch (e: Exception) {
             0
         }

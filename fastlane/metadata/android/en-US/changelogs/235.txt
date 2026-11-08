@@ -1,0 +1,7 @@
+**13.85.150**
+
+**Fixes** 🛠
+- Temporarily removed a critical bug affecting versions 13.84.143 through 13.85.145. As a result of this removal, activity loading has reverted to the previous logic. We sincerely apologize for the inconvenience.
+
+**Contributors of this version:**
+None

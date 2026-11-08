@@ -200,6 +200,17 @@
     <string name="disable_app_confirm">%s을(를) 비활성화하시겠습니까? 다시 활성화할 때까지 사용자가 앱을 사용할 수 없습니다.</string>
     <string name="enable_app_confirm">%s을(를) 활성화하시겠습니까? 앱이 다시 사용자에게 제공됩니다.</string>
 
+    <string name="pref_dangerous_packages_warning">위험한 작업 경고</string>
+    <string name="dangerous_package_warning_title">매우 위험한 작업</string>
+    <string name="dangerous_package_warning_message">보호된 패키지에 대해 위험한 작업을 수행하려고 합니다.\n\n앱: %1$s\n패키지: %2$s\n작업: %3$s\n\n이 패키지를 수정하거나 제거하면 기기가 손상되거나 부팅 루프가 발생하거나 핵심 시스템 기능을 사용할 수 없게 될 수 있습니다. 이 작업은 매우 위험합니다.\n\n계속 진행하시겠습니까?</string>
+    <string name="dangerous_package_warning_message_batch">보호된 패키지 %1$d개에 대해 위험한 작업을 수행하려고 합니다.\n\n작업: %2$s\n\n포함된 보호 패키지:\n%3$s\n\n이 패키지들을 수정하거나 제거하면 기기가 손상되거나 부팅 루프가 발생하거나 핵심 시스템 기능을 사용할 수 없게 될 수 있습니다. 이 작업은 매우 위험합니다.\n\n계속 진행하시겠습니까?</string>
+    <string name="dangerous_package_warning_continue">계속 진행</string>
+    <string name="dangerous_operation_uninstall">제거</string>
+    <string name="dangerous_operation_disable">비활성화</string>
+    <string name="dangerous_operation_enable">활성화</string>
+    <string name="dangerous_operation_clear_data">데이터 삭제</string>
+    <string name="dangerous_operation_force_stop">강제 중지</string>
+
     <!-- Storage -->
     <string name="storage_title">저장소</string>
     <string name="storage_app">앱</string>
@@ -483,6 +494,16 @@
     <string name="welcome_summary_title">요약</string>
     <string name="welcome_summary_source">소스</string>
     <string name="welcome_summary_auto_update">자동 업데이트</string>
+    <string name="welcome_update_options_title">업데이트 옵션</string>
+    <string name="welcome_update_options_subtitle">업데이트 다운로드 및 설치 방법 구성</string>
+    <string name="welcome_auth_title">권한 부여</string>
+    <string name="welcome_auth_subtitle">이 앱에 권한 있는 액세스를 부여하는 방법을 선택하세요.</string>
+    <string name="welcome_auth_mode_label">권한 부여 방법</string>
+    <string name="welcome_auth_storage_label">저장소 권한</string>
+    <string name="welcome_auth_storage_summary">APK 내보내기 및 저장소 기능을 위한 READ_EXTERNAL_STORAGE 및 WRITE_EXTERNAL_STORAGE 포함</string>
+    <string name="welcome_auth_grant">저장소 권한 허용</string>
+    <string name="welcome_auth_not_authorized">승인되지 않음</string>
+    <string name="welcome_auth_optional_permissions">선택적 권한</string>
     <string name="welcome_summary_theme">테마</string>
     <string name="welcome_summary_language">언어</string>
     <string name="welcome_summary_default_page">기본 페이지</string>

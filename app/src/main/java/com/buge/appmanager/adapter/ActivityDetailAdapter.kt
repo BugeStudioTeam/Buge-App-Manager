@@ -24,8 +24,7 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder
 class ActivityDetailAdapter(
     private val onActivityClick: (ActivityDetail) -> Unit,
     private val onShortcutCreate: (ActivityDetail, View) -> Unit,
-    private val canLaunchUnexported: () -> Boolean = { false },
-    private val includeHeader: Boolean = true
+    private val canLaunchUnexported: () -> Boolean = { false }
 ) : ListAdapter<ActivityDetail, ActivityDetailAdapter.ActivityViewHolder>(ActivityDiffCallback()) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ActivityViewHolder {
@@ -39,9 +38,11 @@ class ActivityDetailAdapter(
         holder.bind(activity)
         updateItemBackground(holder, position)
 
+        // Fuck: clear old listeners to avoid multiple registration
         holder.itemView.setOnLongClickListener(null)
         holder.itemView.setOnClickListener(null)
 
+        // Click listener
         holder.itemView.setOnClickListener {
             val pos = holder.adapterPosition
             if (pos != RecyclerView.NO_POSITION) {
@@ -50,6 +51,7 @@ class ActivityDetailAdapter(
             }
         }
 
+        // Long click listener for shortcut creation
         holder.itemView.setOnLongClickListener { view ->
             val pos = holder.adapterPosition
             if (pos != RecyclerView.NO_POSITION) {
@@ -88,21 +90,10 @@ class ActivityDetailAdapter(
         val size = itemCount
 
         val background = when {
-            includeHeader -> {
-                when {
-                    size == 0 -> R.drawable.bg_setting_item_single
-                    position == size - 1 -> R.drawable.bg_setting_item_bottom
-                    else -> R.drawable.bg_setting_item_middle
-                }
-            }
-            else -> {
-                when {
-                    size == 1 -> R.drawable.bg_setting_item_single
-                    position == 0 -> R.drawable.bg_setting_item_top
-                    position == size - 1 -> R.drawable.bg_setting_item_bottom
-                    else -> R.drawable.bg_setting_item_middle
-                }
-            }
+            size == 1 -> R.drawable.bg_setting_item_single
+            position == 0 -> R.drawable.bg_setting_item_top
+            position == size - 1 -> R.drawable.bg_setting_item_bottom
+            else -> R.drawable.bg_setting_item_middle
         }
         container.setBackgroundResource(background)
     }
@@ -125,6 +116,8 @@ class ActivityDetailAdapter(
             val shortClassName = activity.className.substringAfterLast(".")
             className.text = shortClassName
 
+            // A non-exported activity is normally unserializable, but the root
+            // backend can start it via `am start`, so allow launching then.
             val launchable = activity.isExported || canLaunchUnexported()
 
             if (activity.isExported) {

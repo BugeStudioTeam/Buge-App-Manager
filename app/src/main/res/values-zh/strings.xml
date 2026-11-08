@@ -200,6 +200,17 @@
     <string name="disable_app_confirm">停用 %s？在重新启用之前，用户将无法使用该应用。</string>
     <string name="enable_app_confirm">启用 %s？该应用将再次对用户可用。</string>
 
+    <string name="pref_dangerous_packages_warning">危险操作警告</string>
+    <string name="dangerous_package_warning_title">非常危险的操作</string>
+    <string name="dangerous_package_warning_message">你即将对受保护的软件包执行危险操作。\n\n应用：%1$s\n软件包：%2$s\n操作：%3$s\n\n修改或移除此软件包可能会损坏你的设备、导致开机循环，或使核心系统功能不可用。此操作极其危险。\n\n仍然继续？</string>
+    <string name="dangerous_package_warning_message_batch">你即将对 %1$d 个受保护的软件包执行危险操作。\n\n操作：%2$s\n\n包含的受保护软件包：\n%3$s\n\n修改或移除这些软件包可能会损坏你的设备、导致开机循环，或使核心系统功能不可用。此操作极其危险。\n\n仍然继续？</string>
+    <string name="dangerous_package_warning_continue">仍然继续</string>
+    <string name="dangerous_operation_uninstall">卸载</string>
+    <string name="dangerous_operation_disable">停用</string>
+    <string name="dangerous_operation_enable">启用</string>
+    <string name="dangerous_operation_clear_data">清除数据</string>
+    <string name="dangerous_operation_force_stop">强制停止</string>
+
     <!-- Storage -->
     <string name="storage_title">存储</string>
     <string name="storage_app">应用</string>
@@ -483,6 +494,16 @@
     <string name="welcome_summary_title">摘要</string>
     <string name="welcome_summary_source">来源</string>
     <string name="welcome_summary_auto_update">自动更新</string>
+    <string name="welcome_update_options_title">更新选项</string>
+    <string name="welcome_update_options_subtitle">配置更新下载和安装方式</string>
+    <string name="welcome_auth_title">授权</string>
+    <string name="welcome_auth_subtitle">选择如何为此应用授予特权访问权限。</string>
+    <string name="welcome_auth_mode_label">授权方式</string>
+    <string name="welcome_auth_storage_label">存储权限</string>
+    <string name="welcome_auth_storage_summary">包含 READ_EXTERNAL_STORAGE 和 WRITE_EXTERNAL_STORAGE，用于 APK 导出和存储功能</string>
+    <string name="welcome_auth_grant">授予存储权限</string>
+    <string name="welcome_auth_not_authorized">未授权</string>
+    <string name="welcome_auth_optional_permissions">可选权限</string>
     <string name="welcome_summary_theme">主题</string>
     <string name="welcome_summary_language">语言</string>
     <string name="welcome_summary_default_page">默认页面</string>

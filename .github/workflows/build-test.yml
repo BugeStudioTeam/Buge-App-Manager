@@ -20,6 +20,16 @@ jobs:
       - name: Setup Android SDK
         uses: android-actions/setup-android@v4
 
+      - name: Fix Gradle distribution URL
+        run: |
+          if [ -f gradle/wrapper/gradle-wrapper.properties ]; then
+            sed -i 's|https\\://services.gradle.org/distributions/|https\\://downloads.gradle.org/distributions/|' gradle/wrapper/gradle-wrapper.properties
+            grep distributionUrl gradle/wrapper/gradle-wrapper.properties
+          fi
+
+      - name: Setup Gradle
+        uses: gradle/actions/setup-gradle@v4
+
       - name: Decode keystore.properties
         run: |
           echo "${{ secrets.KEYSTORE_PROPERTIES_BASE64 }}" | base64 -d > keystore.properties
@@ -50,6 +60,7 @@ jobs:
           retention-days: 30
 
       - name: Upload Mapping File
+        if: hashFiles('app/build/outputs/mapping/release/mapping.txt') != ''
         uses: actions/upload-artifact@v4
         with:
           name: mapping-file

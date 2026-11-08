@@ -7,8 +7,6 @@ import android.animation.ValueAnimator
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
-import android.view.animation.LinearInterpolator
-import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.appcompat.widget.Toolbar
@@ -23,9 +21,6 @@ class AboutUsActivity : BaseActivity() {
     private lateinit var cardWebsite: LinearLayout
     private lateinit var cardActivityManager: LinearLayout
     private lateinit var cardFdroid: LinearLayout
-    private lateinit var rotatingShape: ImageView
-
-    private var rotationAnimator: ValueAnimator? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -35,7 +30,6 @@ class AboutUsActivity : BaseActivity() {
         setupToolbar()
         setupVersionInfo()
         setupClickListeners()
-        startRotatingShape()
     }
 
     private fun setupViews() {
@@ -46,7 +40,6 @@ class AboutUsActivity : BaseActivity() {
         cardWebsite = findViewById(R.id.card_website)
         cardActivityManager = findViewById(R.id.card_activitymanager)
         cardFdroid = findViewById(R.id.card_fdroid)
-        rotatingShape = findViewById(R.id.app_icon_shape_rotating)
     }
 
     private fun setupToolbar() {
@@ -62,19 +55,6 @@ class AboutUsActivity : BaseActivity() {
             tvVersion.text = "Version ${packageInfo.versionName}"
         } catch (e: Exception) {
             tvVersion.text = "Version 1.0"
-        }
-    }
-
-    private fun startRotatingShape() {
-        rotationAnimator?.cancel()
-        rotationAnimator = ValueAnimator.ofFloat(0f, 360f).apply {
-            duration = 12000L
-            repeatCount = ValueAnimator.INFINITE
-            interpolator = LinearInterpolator()
-            addUpdateListener { animator ->
-                rotatingShape.rotation = animator.animatedValue as Float
-            }
-            start()
         }
     }
 
@@ -128,22 +108,6 @@ class AboutUsActivity : BaseActivity() {
             startActivity(intent)
         } catch (e: Exception) {
         }
-    }
-
-    override fun onPause() {
-        super.onPause()
-        rotationAnimator?.pause()
-    }
-
-    override fun onResume() {
-        super.onResume()
-        rotationAnimator?.resume()
-    }
-
-    override fun onDestroy() {
-        super.onDestroy()
-        rotationAnimator?.cancel()
-        rotationAnimator = null
     }
 
     override fun onSupportNavigateUp(): Boolean {

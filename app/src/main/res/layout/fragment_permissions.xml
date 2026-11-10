@@ -116,6 +116,13 @@
                     android:text="@string/perm_notifications" />
 
                 <com.google.android.material.chip.Chip
+                    android:id="@+id/chip_vibrate"
+                    style="@style/Widget.Material3.Chip.Filter"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/perm_vibrate" />
+
+                <com.google.android.material.chip.Chip
                     android:id="@+id/chip_overlay"
                     style="@style/Widget.Material3.Chip.Filter"
                     android:layout_width="wrap_content"
@@ -149,7 +156,6 @@
         android:orientation="vertical"
         app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
-        <!-- Batch Action Bar - Now using HorizontalScrollView -->
         <HorizontalScrollView
             android:id="@+id/batch_action_scroll"
             android:layout_width="match_parent"
@@ -234,7 +240,6 @@
 
         </HorizontalScrollView>
 
-        <!-- Loading Overlay -->
         <FrameLayout
             android:id="@+id/loading_overlay"
             android:layout_width="match_parent"
@@ -256,7 +261,6 @@
 
         </FrameLayout>
 
-        <!-- Empty State -->
         <LinearLayout
             android:id="@+id/empty_state"
             android:layout_width="match_parent"

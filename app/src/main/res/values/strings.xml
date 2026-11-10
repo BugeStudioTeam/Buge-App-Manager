@@ -245,6 +245,7 @@
     <string name="perm_calendar">Calendar</string>
     <string name="perm_body_sensors">Body Sensors</string>
     <string name="perm_notifications">Notifications</string>
+    <string name="perm_vibrate">Vibrate</string>
     <string name="perm_overlay">Display Over Other Apps</string>
     <string name="perm_install_unknown">Install Unknown Apps</string>
     <string name="batch_revoke">Revoke Permission</string>
@@ -284,12 +285,12 @@
     <string name="pref_language_ar">العربية</string>
     <string name="pref_language_pt">Português</string>
     <string name="pref_language_es">Español</string>
-    
+
     <string name="restart_required">Restart Required</string>
     <string name="restart_required_message">The default start page has been changed. Restart the app for the change to take effect.</string>
     <string name="restart_now">Restart Now</string>
     <string name="later">Later</string>
-    
+
     <!-- Update Checker -->
     <string name="update_available">Update Available</string>
     <string name="download">Download</string>
@@ -301,10 +302,10 @@
     <string name="please_wait">Please wait...</string>
     <string name="ok">OK</string>
     <string name="ignore">Ignore</string>
-    
+
     <!-- Shortcuts -->
     <string name="shortcut_app_manager_long">Open Buge App Manager</string>
-    
+
     <string name="appearance_settings">Appearance Settings</string>
     <string name="theme_mode">Theme Mode</string>
     <string name="color_theme">Color Theme</string>
@@ -433,7 +434,7 @@
     <string name="menu_f_droid">View on F-Droid</string>
     <string name="menu_grant_all_permissions">Grant All Permissions</string>
     <string name="menu_revoke_all_permissions">Revoke All Permissions</string>
-    
+
     <!-- Install Apps -->
     <string name="pref_install_apps">Install Apps</string>
     <string name="pref_install_apps_summary">Install APK files with advanced options</string>
@@ -460,7 +461,7 @@
     <string name="install_apk_package">Package</string>
     <string name="install_apk_path">Path</string>
     <string name="install_invalid_apk">Invalid APK file</string>
-    
+
     <!-- Welcome / Onboarding -->
     <string name="welcome_title">Welcome</string>
     <string name="welcome_subtitle">Let\'s set up Buge App Manager in a few quick steps.</string>
@@ -489,7 +490,7 @@
 
     <string name="welcome_ready_title">You\'re all set</string>
     <string name="welcome_ready_subtitle">Start managing your apps with Buge App Manager.</string>
-    
+
     <string name="welcome_summary_title">Summary</string>
     <string name="welcome_summary_source">Source</string>
     <string name="welcome_summary_auto_update">Auto Update</string>
@@ -511,5 +512,5 @@
     <string name="welcome_summary_color_theme">Color Theme</string>
     <string name="welcome_summary_on">On</string>
     <string name="welcome_summary_off">Off</string>
-    
+
 </resources>

@@ -114,6 +114,9 @@ class AppRepository(private val context: Context) {
         val PERMISSION_WRITE_SETTINGS = listOf(
             "android.permission.WRITE_SETTINGS"
         )
+        val PERMISSION_VIBRATE = listOf(
+            "android.permission.VIBRATE"
+        )
         val ALL_DANGEROUS_PERMISSIONS = (
             PERMISSION_MICROPHONE + PERMISSION_CAMERA + PERMISSION_LOCATION +
             PERMISSION_BACKGROUND_LOCATION + PERMISSION_CONTACTS + PERMISSION_STORAGE +
@@ -121,12 +124,13 @@ class AppRepository(private val context: Context) {
             PERMISSION_ACTIVITY + PERMISSION_NEARBY + PERMISSION_NOTIFICATIONS +
             PERMISSION_MEDIA_IMAGES + PERMISSION_MEDIA_VIDEO + PERMISSION_MEDIA_AUDIO +
             PERMISSION_OVERLAY + PERMISSION_INSTALL_UNKNOWN_APPS + PERMISSION_MANAGE_STORAGE +
-            PERMISSION_WRITE_SETTINGS
+            PERMISSION_WRITE_SETTINGS + PERMISSION_VIBRATE
         ).toSet()
 
         val APPOP_PERMISSIONS = setOf(
             "android.permission.SYSTEM_ALERT_WINDOW",
-            "android.permission.REQUEST_INSTALL_PACKAGES"
+            "android.permission.REQUEST_INSTALL_PACKAGES",
+            "android.permission.VIBRATE"
         )
 
         val APPOP_ONLY_PERMISSIONS = setOf(
@@ -164,6 +168,20 @@ class AppRepository(private val context: Context) {
                         val uid = pm.getApplicationInfo(packageName, 0).uid
                         val mode = appOps.checkOpNoThrow(
                             "android:request_install_packages",
+                            uid,
+                            packageName
+                        )
+                        mode == AppOpsManager.MODE_ALLOWED
+                    } else {
+                        true
+                    }
+                }
+                "android.permission.VIBRATE" -> {
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                        val appOps = context.getSystemService(AppOpsManager::class.java)
+                        val uid = pm.getApplicationInfo(packageName, 0).uid
+                        val mode = appOps.checkOpNoThrow(
+                            "android:vibrate",
                             uid,
                             packageName
                         )
@@ -406,6 +424,7 @@ class AppRepository(private val context: Context) {
             val hasOverlayInManifest = requestedPermissions.contains("android.permission.SYSTEM_ALERT_WINDOW")
             val hasInstallUnknownInManifest = requestedPermissions.contains("android.permission.REQUEST_INSTALL_PACKAGES")
             val hasManageStorageInManifest = requestedPermissions.contains("android.permission.MANAGE_EXTERNAL_STORAGE")
+            val hasVibrateInManifest = requestedPermissions.contains("android.permission.VIBRATE")
 
             val isDhizuku = ShizukuManager.isDhizukuMode()
 
@@ -492,6 +511,18 @@ class AppRepository(private val context: Context) {
                 )
             }
 
+            if (hasVibrateInManifest && !permissions.any { it.name == "android.permission.VIBRATE" }) {
+                val vibrateStatus = getSpecialPermissionStatus(packageName, "android.permission.VIBRATE")
+                permissions.add(
+                    PermissionInfo(
+                        name = "android.permission.VIBRATE",
+                        isGranted = vibrateStatus ?: false,
+                        isRuntime = true,
+                        isDangerous = true
+                    )
+                )
+            }
+
             permissions.sortedWith(compareByDescending<PermissionInfo> { it.isDangerous }.thenBy { it.name })
         } catch (e: Exception) {
             Log.e(TAG, "Error getting permissions for $packageName: ${e.message}")
@@ -537,6 +568,9 @@ class AppRepository(private val context: Context) {
                             }
                             "android.permission.REQUEST_INSTALL_PACKAGES" -> {
                                 ShizukuManager.getInstallUnknownAppsStatus(app.packageName) ?: false
+                            }
+                            "android.permission.VIBRATE" -> {
+                                getSpecialPermissionStatus(app.packageName, "android.permission.VIBRATE") ?: false
                             }
                             else -> {
                                 val pkgInfo = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
@@ -609,6 +643,9 @@ class AppRepository(private val context: Context) {
                             }
                             "android.permission.MANAGE_EXTERNAL_STORAGE" -> {
                                 getManageExternalStorageStatus(app.packageName) ?: false
+                            }
+                            "android.permission.VIBRATE" -> {
+                                getSpecialPermissionStatus(app.packageName, "android.permission.VIBRATE") ?: false
                             }
                             else -> {
                                 val pkgInfo = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {

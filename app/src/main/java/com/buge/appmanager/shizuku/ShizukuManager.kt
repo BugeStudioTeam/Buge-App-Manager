@@ -241,6 +241,9 @@ object ShizukuManager {
             "android.permission.REQUEST_INSTALL_PACKAGES" -> {
                 executeCommand("appops set $packageName REQUEST_INSTALL_PACKAGES allow")
             }
+            "android.permission.VIBRATE" -> {
+                executeCommand("appops set $packageName VIBRATE allow")
+            }
             "android.permission.MANAGE_EXTERNAL_STORAGE" -> {
                 grantManageExternalStorage(packageName)
             }
@@ -272,6 +275,9 @@ object ShizukuManager {
             }
             "android.permission.REQUEST_INSTALL_PACKAGES" -> {
                 executeCommand("appops set $packageName REQUEST_INSTALL_PACKAGES deny")
+            }
+            "android.permission.VIBRATE" -> {
+                executeCommand("appops set $packageName VIBRATE ignore")
             }
             "android.permission.MANAGE_EXTERNAL_STORAGE" -> {
                 revokeManageExternalStorage(packageName)
@@ -366,6 +372,25 @@ object ShizukuManager {
             }
         } catch (e: Exception) {
             Log.e(TAG, "Error checking REQUEST_INSTALL_PACKAGES: ${e.message}")
+            null
+        }
+    }
+
+    suspend fun getVibrateStatus(packageName: String): Boolean? {
+        return try {
+            val result = executeCommand("appops get $packageName VIBRATE")
+            if (result.success) {
+                when {
+                    result.output.contains("allow") -> true
+                    result.output.contains("ignore") -> false
+                    result.output.contains("deny") -> false
+                    else -> null
+                }
+            } else {
+                null
+            }
+        } catch (e: Exception) {
+            Log.e(TAG, "Error checking VIBRATE: ${e.message}")
             null
         }
     }

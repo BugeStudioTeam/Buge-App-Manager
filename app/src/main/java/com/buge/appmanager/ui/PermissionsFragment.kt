@@ -171,6 +171,9 @@ class PermissionsFragment : Fragment() {
                         Pair(listOf("android.permission.WRITE_SETTINGS"), getString(R.string.perm_write_settings))
                     }
                 }
+                checkedIds.contains(R.id.chip_vibrate) -> {
+                    Pair(AppRepository.PERMISSION_VIBRATE, getString(R.string.perm_vibrate))
+                }
                 else -> Pair(AppRepository.PERMISSION_MICROPHONE, getString(R.string.perm_microphone))
             }
             currentPermissions = permissions

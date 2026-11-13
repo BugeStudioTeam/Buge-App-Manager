@@ -348,7 +348,7 @@
     <string name="pref_update_options_summary">Налаштувати завантаження та спосіб встановлення оновлень</string>
     <string name="title_update_options">Параметри оновлення</string>
     <string name="update_method_browser">Відкрити в браузері</string>
-    <string name="update_method_silent">Тихе встановлення (Shizuku)</string>
+    <string name="update_method_silent">Тихе встановлення</string>
     <string name="installer_name">Ім\'я інсталятора</string>
     <string name="installer_name_hint">Введіть ім\'я інсталятора</string>
     <string name="update_downloading">Завантаження оновлення...</string>

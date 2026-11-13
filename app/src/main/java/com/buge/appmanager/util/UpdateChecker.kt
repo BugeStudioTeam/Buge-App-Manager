@@ -52,8 +52,8 @@ object UpdateChecker {
         }
     }
 
-    private suspend fun checkFdroidUpdates(context: Context): ReleaseInfo? {
-        return try {
+    private suspend fun checkFdroidUpdates(context: Context): ReleaseInfo? = withContext(Dispatchers.IO) {
+        try {
             val currentVersionCode = getCurrentVersionCode(context)
             Log.d(TAG, "F-Droid check, current versionCode: $currentVersionCode")
 
@@ -65,17 +65,17 @@ object UpdateChecker {
             val response = client.newCall(request).execute()
             if (!response.isSuccessful) {
                 Log.e(TAG, "F-Droid API request failed: ${response.code}")
-                return null
+                return@withContext null
             }
 
-            val responseBody = response.body?.string() ?: return null
+            val responseBody = response.body?.string() ?: return@withContext null
             val json = JSONObject(responseBody)
             val suggestedVersionCode = json.optLong("suggestedVersionCode", 0L)
             Log.d(TAG, "F-Droid suggestedVersionCode: $suggestedVersionCode")
 
             if (suggestedVersionCode <= currentVersionCode) {
                 Log.d(TAG, "F-Droid: no newer version (suggested=$suggestedVersionCode, current=$currentVersionCode)")
-                return null
+                return@withContext null
             }
 
             var suggestedVersionName = "unknown"
@@ -104,8 +104,8 @@ object UpdateChecker {
         }
     }
 
-    private suspend fun checkGithubUpdates(context: Context): ReleaseInfo? {
-        return try {
+    private suspend fun checkGithubUpdates(context: Context): ReleaseInfo? = withContext(Dispatchers.IO) {
+        try {
             val currentVersion = getCurrentVersion(context)
             Log.d(TAG, "GitHub check, current version: $currentVersion")
 
@@ -117,10 +117,10 @@ object UpdateChecker {
             val response = client.newCall(request).execute()
             if (!response.isSuccessful) {
                 Log.e(TAG, "GitHub API request failed: ${response.code}")
-                return null
+                return@withContext null
             }
 
-            val responseBody = response.body?.string() ?: return null
+            val responseBody = response.body?.string() ?: return@withContext null
             val releasesArray = JSONArray(responseBody)
             Log.d(TAG, "Total releases: ${releasesArray.length()}")
 

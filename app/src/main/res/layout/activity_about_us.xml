@@ -35,64 +35,55 @@
             android:padding="16dp"
             android:paddingTop="8dp">
 
-            <FrameLayout
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginHorizontal="16dp"
-                android:layout_marginBottom="2dp"
-                android:background="@drawable/bg_setting_item_single">
+                android:orientation="vertical"
+                android:gravity="center_horizontal"
+                android:padding="24dp">
 
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    android:gravity="center_horizontal"
-                    android:padding="24dp">
+                <FrameLayout
+                    android:layout_width="200dp"
+                    android:layout_height="200dp"
+                    android:layout_marginBottom="16dp">
 
-                    <FrameLayout
+                    <ImageView
+                        android:id="@+id/app_icon_shape_rotating"
                         android:layout_width="200dp"
                         android:layout_height="200dp"
-                        android:layout_marginBottom="16dp">
+                        android:layout_gravity="center"
+                        android:src="@drawable/material_shape_cookie_9"
+                        android:contentDescription="@null" />
 
-                        <ImageView
-                            android:id="@+id/app_icon_shape_rotating"
-                            android:layout_width="200dp"
-                            android:layout_height="200dp"
-                            android:layout_gravity="center"
-                            android:src="@drawable/material_shape_cookie_9"
-                            android:contentDescription="@null" />
+                    <ImageView
+                        android:id="@+id/app_icon_large"
+                        android:layout_width="120dp"
+                        android:layout_height="120dp"
+                        android:layout_gravity="center"
+                        android:adjustViewBounds="true"
+                        android:scaleType="fitCenter"
+                        android:src="@drawable/ic_buge" />
 
-                        <ImageView
-                            android:id="@+id/app_icon_large"
-                            android:layout_width="120dp"
-                            android:layout_height="120dp"
-                            android:layout_gravity="center"
-                            android:adjustViewBounds="true"
-                            android:scaleType="fitCenter"
-                            android:src="@drawable/ic_buge" />
+                </FrameLayout>
 
-                    </FrameLayout>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Buge Studio"
+                    android:textAppearance="?attr/textAppearanceHeadlineSmall"
+                    android:textStyle="bold"
+                    android:gravity="center" />
 
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Buge Studio"
-                        android:textAppearance="?attr/textAppearanceHeadlineSmall"
-                        android:textStyle="bold"
-                        android:gravity="center" />
+                <TextView
+                    android:id="@+id/tv_version"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="?attr/textAppearanceBodyMedium"
+                    android:alpha="0.6"
+                    android:layout_marginTop="4dp" />
 
-                    <TextView
-                        android:id="@+id/tv_version"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:textAppearance="?attr/textAppearanceBodyMedium"
-                        android:alpha="0.6"
-                        android:layout_marginTop="4dp" />
+            </LinearLayout>
 
-                </LinearLayout>
-
-            </FrameLayout>
-            
             <FrameLayout
                 android:id="@+id/description_container"
                 android:layout_width="match_parent"

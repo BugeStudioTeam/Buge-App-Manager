@@ -348,7 +348,7 @@
     <string name="pref_update_options_summary">تكوين تنزيل التحديثات وطريقة التثبيت</string>
     <string name="title_update_options">خيارات التحديث</string>
     <string name="update_method_browser">فتح في المتصفح</string>
-    <string name="update_method_silent">تثبيت صامت (Shizuku)</string>
+    <string name="update_method_silent">تثبيت صامت</string>
     <string name="installer_name">اسم المثبت</string>
     <string name="installer_name_hint">أدخل اسم المثبت</string>
     <string name="update_downloading">جارٍ تنزيل التحديث...</string>

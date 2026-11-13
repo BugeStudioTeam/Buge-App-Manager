@@ -1,0 +1,15 @@
+**13.88.153**
+
+**Added** ✨
+- Added Vibration permission support (issue #109 by @Madis0)
+- Added F-Droid update support
+
+**Fixes** 🛠
+- Fixed Google Service icon
+
+**Optimizations** ⚡
+- Improved About screen
+- Improved language files
+
+**Contributors of this version:**
+- @Madis0

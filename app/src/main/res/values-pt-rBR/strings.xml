@@ -348,7 +348,7 @@
     <string name="pref_update_options_summary">Configurar o download e o método de instalação de atualizações</string>
     <string name="title_update_options">Opções de atualização</string>
     <string name="update_method_browser">Abrir no navegador</string>
-    <string name="update_method_silent">Instalação silenciosa (Shizuku)</string>
+    <string name="update_method_silent">Instalação silenciosa</string>
     <string name="installer_name">Nome do instalador</string>
     <string name="installer_name_hint">Digite o nome do instalador</string>
     <string name="update_downloading">Baixando atualização...</string>

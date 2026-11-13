@@ -18,14 +18,15 @@ import kotlinx.coroutines.withContext
 import okhttp3.OkHttpClient
 import okhttp3.Request
 import org.json.JSONArray
-import java.io.File
-import java.io.FileOutputStream
+import org.json.JSONObject
 import java.util.concurrent.TimeUnit
 
 object UpdateChecker {
 
     private const val TAG = "UpdateChecker"
     private const val GITHUB_API_URL = "https://api.github.com/repos/BugeStudioTeam/Buge-App-Manager/releases"
+    private const val FDROID_API_URL = "https://f-droid.org/api/v1/packages/com.buge.appmanager"
+    private const val FDROID_PAGE_URL = "https://f-droid.org/packages/com.buge.appmanager/"
 
     private val client = OkHttpClient.Builder()
         .connectTimeout(10, TimeUnit.SECONDS)
@@ -43,9 +44,70 @@ object UpdateChecker {
     )
 
     suspend fun checkForUpdates(context: Context): ReleaseInfo? = withContext(Dispatchers.IO) {
+        val source = PreferencesManager.getAppSource(context)
+        if (source == "F-Droid") {
+            checkFdroidUpdates(context)
+        } else {
+            checkGithubUpdates(context)
+        }
+    }
+
+    private suspend fun checkFdroidUpdates(context: Context): ReleaseInfo? = withContext(Dispatchers.IO) {
+        try {
+            val currentVersionCode = getCurrentVersionCode(context)
+            Log.d(TAG, "F-Droid check, current versionCode: $currentVersionCode")
+
+            val request = Request.Builder()
+                .url(FDROID_API_URL)
+                .header("User-Agent", "BugeAppManager")
+                .build()
+
+            val response = client.newCall(request).execute()
+            if (!response.isSuccessful) {
+                Log.e(TAG, "F-Droid API request failed: ${response.code}")
+                return@withContext null
+            }
+
+            val responseBody = response.body?.string() ?: return@withContext null
+            val json = JSONObject(responseBody)
+            val suggestedVersionCode = json.optLong("suggestedVersionCode", 0L)
+            Log.d(TAG, "F-Droid suggestedVersionCode: $suggestedVersionCode")
+
+            if (suggestedVersionCode <= currentVersionCode) {
+                Log.d(TAG, "F-Droid: no newer version (suggested=$suggestedVersionCode, current=$currentVersionCode)")
+                return@withContext null
+            }
+
+            var suggestedVersionName = "unknown"
+            val packagesArray = json.optJSONArray("packages")
+            if (packagesArray != null) {
+                for (i in 0 until packagesArray.length()) {
+                    val pkg = packagesArray.getJSONObject(i)
+                    if (pkg.optLong("versionCode", 0L) == suggestedVersionCode) {
+                        suggestedVersionName = pkg.optString("versionName", "unknown")
+                        break
+                    }
+                }
+            }
+
+            ReleaseInfo(
+                tagName = suggestedVersionName,
+                name = "Buge App Manager $suggestedVersionName",
+                body = "A new version is available on F-Droid.",
+                publishedAt = "",
+                htmlUrl = FDROID_PAGE_URL,
+                apkDownloadUrl = FDROID_PAGE_URL
+            )
+        } catch (e: Exception) {
+            Log.e(TAG, "F-Droid update check error: ${e.message}", e)
+            null
+        }
+    }
+
+    private suspend fun checkGithubUpdates(context: Context): ReleaseInfo? = withContext(Dispatchers.IO) {
         try {
             val currentVersion = getCurrentVersion(context)
-            Log.d(TAG, "Current version: $currentVersion")
+            Log.d(TAG, "GitHub check, current version: $currentVersion")
 
             val request = Request.Builder()
                 .url(GITHUB_API_URL)
@@ -54,7 +116,7 @@ object UpdateChecker {
 
             val response = client.newCall(request).execute()
             if (!response.isSuccessful) {
-                Log.e(TAG, "API request failed: ${response.code}")
+                Log.e(TAG, "GitHub API request failed: ${response.code}")
                 return@withContext null
             }
 
@@ -104,7 +166,7 @@ object UpdateChecker {
             }
             null
         } catch (e: Exception) {
-            Log.e(TAG, "Update check error: ${e.message}", e)
+            Log.e(TAG, "GitHub update check error: ${e.message}", e)
             null
         }
     }
@@ -132,6 +194,21 @@ object UpdateChecker {
         } catch (e: PackageManager.NameNotFoundException) {
             Log.e(TAG, "Failed to get package info", e)
             "0"
+        }
+    }
+
+    private fun getCurrentVersionCode(context: Context): Long {
+        return try {
+            val packageInfo = context.packageManager.getPackageInfo(context.packageName, 0)
+            if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.P) {
+                packageInfo.longVersionCode
+            } else {
+                @Suppress("DEPRECATION")
+                packageInfo.versionCode.toLong()
+            }
+        } catch (e: Exception) {
+            Log.e(TAG, "Failed to get version code", e)
+            0L
         }
     }
 
@@ -167,7 +244,10 @@ object UpdateChecker {
                 releaseInfo.body
             }
 
-            val methodText = if (updateMethod == "silent") {
+            val source = PreferencesManager.getAppSource(context)
+            val methodText = if (source == "F-Droid") {
+                "Open F-Droid page"
+            } else if (updateMethod == "silent") {
                 "Silent install (Shizuku)"
             } else {
                 "Open in browser"
@@ -175,9 +255,11 @@ object UpdateChecker {
 
             val message = buildString {
                 appendLine("Version: ${releaseInfo.tagName}")
-                appendLine("Published: ${releaseInfo.publishedAt.substringBefore("T")}")
+                if (releaseInfo.publishedAt.isNotEmpty()) {
+                    appendLine("Published: ${releaseInfo.publishedAt.substringBefore("T")}")
+                }
                 appendLine("Method: $methodText")
-                if (installerName.isNotEmpty()) {
+                if (installerName.isNotEmpty() && source != "F-Droid") {
                     appendLine("Installer: $installerName")
                 }
                 appendLine()
@@ -199,6 +281,20 @@ object UpdateChecker {
         val apkUrl = releaseInfo.apkDownloadUrl
         if (apkUrl.isNullOrEmpty()) {
             showErrorDialog(context, "No APK download URL available")
+            return
+        }
+
+        val source = PreferencesManager.getAppSource(context)
+        if (source == "F-Droid") {
+            try {
+                val intent = Intent(Intent.ACTION_VIEW, Uri.parse(FDROID_PAGE_URL))
+                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                context.startActivity(intent)
+                LogManager.info(context, "Update opened on F-Droid", "URL: $FDROID_PAGE_URL")
+            } catch (e: Exception) {
+                LogManager.error(context, "Failed to open F-Droid page", e.message)
+                showErrorDialog(context, "Cannot open browser: ${e.message}")
+            }
             return
         }
 

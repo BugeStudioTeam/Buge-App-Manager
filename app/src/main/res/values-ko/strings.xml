@@ -348,7 +348,7 @@
     <string name="pref_update_options_summary">업데이트 다운로드 및 설치 방법 구성</string>
     <string name="title_update_options">업데이트 옵션</string>
     <string name="update_method_browser">브라우저에서 열기</string>
-    <string name="update_method_silent">자동 설치 (Shizuku)</string>
+    <string name="update_method_silent">자동 설치</string>
     <string name="installer_name">설치 프로그램 이름</string>
     <string name="installer_name_hint">설치 프로그램 이름 입력</string>
     <string name="update_downloading">업데이트 다운로드 중...</string>

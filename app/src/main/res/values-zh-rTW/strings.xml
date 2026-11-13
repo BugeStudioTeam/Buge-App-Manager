@@ -348,7 +348,7 @@
     <string name="pref_update_options_summary">設定更新下載和安裝方式</string>
     <string name="title_update_options">更新選項</string>
     <string name="update_method_browser">在瀏覽器中開啟</string>
-    <string name="update_method_silent">靜默安裝（Shizuku）</string>
+    <string name="update_method_silent">靜默安裝</string>
     <string name="installer_name">安裝程式名稱</string>
     <string name="installer_name_hint">輸入安裝程式名稱</string>
     <string name="update_downloading">正在下載更新...</string>

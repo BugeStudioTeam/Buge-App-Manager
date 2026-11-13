@@ -80,7 +80,6 @@ class UpdateOptionsActivity : BaseActivity() {
         try {
             unregisterReceiver(downloadReceiver)
         } catch (e: Exception) {
-            // Ignore
         }
         cleanupTempFile()
     }
@@ -148,7 +147,7 @@ class UpdateOptionsActivity : BaseActivity() {
     }
 
     private fun setupUpdateSourceSelector() {
-        val savedSource = PreferencesManager.getUpdateSource(this)
+        val savedSource = PreferencesManager.getAppSource(this)
         updateSource = if (savedSource.isNotEmpty()) savedSource else "GitHub"
         updateSourceDisplay()
 
@@ -162,14 +161,14 @@ class UpdateOptionsActivity : BaseActivity() {
     }
 
     private fun showUpdateSourceDialog() {
-        val options = arrayOf("GitHub")
-        val currentIndex = 0
+        val options = arrayOf("GitHub", "F-Droid")
+        val currentIndex = options.indexOf(updateSource).coerceAtLeast(0)
 
         MaterialAlertDialogBuilder(this)
             .setTitle("Installation Source")
             .setSingleChoiceItems(options, currentIndex) { dialog, which ->
                 updateSource = options[which]
-                PreferencesManager.setUpdateSource(this, updateSource)
+                PreferencesManager.setAppSource(this, updateSource)
                 updateSourceDisplay()
                 dialog.dismiss()
             }
@@ -204,7 +203,7 @@ class UpdateOptionsActivity : BaseActivity() {
         val installerName = binding.installerNameInput.text?.toString()?.trim() ?: ""
         PreferencesManager.setInstallerName(this, installerName)
         PreferencesManager.setUpdateMethod(this, if (updateMethod == UpdateMethod.SILENT) "silent" else "browser")
-        PreferencesManager.setUpdateSource(this, updateSource)
+        PreferencesManager.setAppSource(this, updateSource)
         SnackbarHelper.showSnackbar(binding.root, "Settings saved")
         LogManager.info(this, "Update settings saved", "Method: $updateMethod, Source: $updateSource, Installer: $installerName")
     }
@@ -263,7 +262,9 @@ class UpdateOptionsActivity : BaseActivity() {
 
         val message = buildString {
             appendLine("Version: ${releaseInfo.tagName}")
-            appendLine("Published: ${releaseInfo.publishedAt.substringBefore("T")}")
+            if (releaseInfo.publishedAt.isNotEmpty()) {
+                appendLine("Published: ${releaseInfo.publishedAt.substringBefore("T")}")
+            }
             appendLine()
             appendLine(releaseNotes)
         }
@@ -282,6 +283,18 @@ class UpdateOptionsActivity : BaseActivity() {
         val apkUrl = releaseInfo.apkDownloadUrl
         if (apkUrl.isNullOrEmpty()) {
             SnackbarHelper.showSnackbar(binding.root, "No APK download URL available")
+            return
+        }
+
+        if (updateSource == "F-Droid") {
+            try {
+                val intent = Intent(Intent.ACTION_VIEW, Uri.parse("https://f-droid.org/packages/com.buge.appmanager/"))
+                startActivity(intent)
+                LogManager.info(this, "Update opened on F-Droid")
+            } catch (e: Exception) {
+                SnackbarHelper.showSnackbar(binding.root, "Cannot open browser: ${e.message}")
+                LogManager.error(this, "Failed to open F-Droid page", e.message)
+            }
             return
         }
 
@@ -567,7 +580,6 @@ class UpdateOptionsActivity : BaseActivity() {
             try {
                 it.dismiss()
             } catch (e: Exception) {
-                // ignore
             }
         }
         progressDialog = null
@@ -583,7 +595,7 @@ class UpdateOptionsActivity : BaseActivity() {
         }
     }
 
-    private fun handleDownloadComplete() {        
+    private fun handleDownloadComplete() {
     }
 
     private fun cleanupTempFile() {
@@ -604,7 +616,6 @@ class UpdateOptionsActivity : BaseActivity() {
                 }
             }
         } catch (e: Exception) {
-            // Ignore
         }
     }
 

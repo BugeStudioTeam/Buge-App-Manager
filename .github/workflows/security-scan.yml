@@ -40,15 +40,10 @@ jobs:
             exit 1
           }
 
-      - name: Install Trivy directly
+      - name: Install Trivy
         run: |
-          TRIVY_VERSION=0.55.0
-          mkdir -p "$HOME/.local/bin"
-          curl -sfL \
-            "https://github.com/aquasecurity/trivy/releases/download/v${TRIVY_VERSION}/trivy_${TRIVY_VERSION}_Linux-64bit.tar.gz" \
-            -o /tmp/trivy.tar.gz
-          tar -xzf /tmp/trivy.tar.gz -C "$HOME/.local/bin" trivy
-          echo "$HOME/.local/bin" >> "$GITHUB_PATH"
+          curl -sfL https://raw.githubusercontent.com/aquasecurity/trivy/main/contrib/install.sh | sudo sh -s -- -b /usr/local/bin
+          trivy --version
 
       - name: Run Trivy filesystem scan
         run: |

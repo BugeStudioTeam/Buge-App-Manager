@@ -3,6 +3,7 @@
 
 package com.buge.appmanager.ui
 
+import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
@@ -37,6 +38,10 @@ import java.util.Locale
 
 class AppDetailFragment : Fragment() {
 
+    interface OnDetailCloseListener {
+        fun onDetailClose()
+    }
+
     companion object {
         private const val ARG_PACKAGE_NAME = "arg_package_name"
         fun newInstance(packageName: String): AppDetailFragment {
@@ -54,6 +59,17 @@ class AppDetailFragment : Fragment() {
     private lateinit var permAdapter: PermissionDetailAdapter
     private var packageName: String = ""
     private var favoriteMenuItem: MenuItem? = null
+    private var closeListener: OnDetailCloseListener? = null
+
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        closeListener = context as? OnDetailCloseListener
+    }
+
+    override fun onDetach() {
+        super.onDetach()
+        closeListener = null
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -67,7 +83,7 @@ class AppDetailFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         packageName = arguments?.getString(ARG_PACKAGE_NAME) ?: run {
-            parentFragmentManager.popBackStack()
+            closeListener?.onDetailClose()
             return
         }
 
@@ -97,7 +113,7 @@ class AppDetailFragment : Fragment() {
         favoriteMenuItem = binding.detailToolbar.menu.findItem(R.id.action_favorite)
         updateFavoriteIcon()
         binding.detailToolbar.setNavigationOnClickListener {
-            parentFragmentManager.popBackStack()
+            closeListener?.onDetailClose()
         }
         binding.detailToolbar.setOnMenuItemClickListener { item ->
             handleMenuItem(item)

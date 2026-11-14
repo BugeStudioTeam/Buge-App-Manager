@@ -97,6 +97,7 @@ object LocaleManager {
             "de" to "Deutsch",
             "ru" to "Русский",
             "uk" to "Українська",
+            "tr" to "Türkçe",
             "pt" to "Português",
             "pt-rBR" to "Português (Brasil)",
             "es" to "Español",

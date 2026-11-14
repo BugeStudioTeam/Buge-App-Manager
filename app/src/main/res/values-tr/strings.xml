@@ -1,0 +1,516 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- SPDX-License-Identifier: GPL-3.0-only -->
+<!-- Copyright (C) 2026 Buge Studio -->
+<resources>
+    <string name="app_name">Buge App Manager</string>
+    <string name="developer_name">Buge Team</string>
+
+    <!-- Navigation -->
+    <string name="nav_apps">Uygulamalar</string>
+    <string name="nav_activities">Etkinlikler</string>
+    <string name="nav_permissions">İzinler</string>
+    <string name="nav_settings">Ayarlar</string>
+
+    <!-- Settings Groups -->
+    <string name="search_settings_hint">Ayarlarda ara…</string>
+    <string name="no_settings_found">Ayar bulunamadı</string>
+    <string name="settings_group_authorization">Yetkilendirme</string>
+    <string name="settings_group_appearance">Görünüm</string>
+    <string name="settings_group_apps">Uygulamalar</string>
+    <string name="settings_group_advanced">Gelişmiş</string>
+    <string name="settings_group_about">Hakkında</string>
+
+    <!-- Basic Settings -->
+    <string name="title_settings">Ayarlar</string>
+    <string name="pref_theme">Tema</string>
+    <string name="pref_theme_light">Açık</string>
+    <string name="pref_theme_dark">Koyu</string>
+    <string name="pref_theme_auto">Sistem Varsayılanı</string>
+    <string name="pref_language">Dil</string>
+    <string name="pref_language_auto">Sistem Varsayılanı</string>
+    <string name="pref_default_page">Varsayılan sayfa</string>
+    <string name="pref_default_page_summary">Uygulama başlatıldığında gösterilecek sayfayı seçin</string>
+    <string name="pref_show_system_apps">Sistem Uygulamalarını Göster</string>
+    <string name="pref_show_disabled_apps">Devre dışı bırakılmış uygulamaları göster</string>
+    <string name="pref_show_undeclared_activities">Bildirilmemiş etkinlikleri göster</string>
+    <string name="pref_allow_system_ops">Sistem Uygulaması İşlemlerine İzin Ver</string>
+    <string name="pref_allow_system_ops_summary">Sistem uygulamalarında değişiklik yapılmasına izin ver (izinler, devre dışı bırakma, kaldırma)</string>
+    <string name="pref_about">Hakkında</string>
+    <string name="setting_saved">Ayar kaydedildi</string>
+    <string name="pref_auto_update">Otomatik Güncelleme</string>
+
+    <!-- Apps Settings -->
+    <string name="pref_google_services">Google Hizmetleri</string>
+    <string name="pref_google_services_summary">Google Mobil Hizmetleri\'ni etkinleştirin veya devre dışı bırakın</string>
+    <string name="pref_google_services_disabled">Google Hizmetleri bu cihazda kullanılamıyor</string>
+
+    <!-- Shizuku Provider -->
+    <string name="pref_shizuku_provider">Shizuku Sağlayıcısı</string>
+    <string name="pref_shizuku_provider_summary">Shizuku sağlayıcı paket adını özelleştirin</string>
+    <string name="shizuku_provider_title">Shizuku Sağlayıcı Paket Adı</string>
+    <string name="shizuku_provider_default">moe.shizuku.privileged.api</string>
+    <string name="shizuku_provider_restore_default">Varsayılana Geri Yükle</string>
+
+    <!-- Log Settings -->
+    <string name="pref_logging">Günlük Kaydı</string>
+    <string name="pref_logging_summary">Kullanıcı işlemlerini ve hataları kaydedin</string>
+    <string name="log_activity_title">İşlem Günlüğü</string>
+    <string name="log_settings_title">Günlük Ayarları</string>
+    <string name="log_enable">Günlük Kaydını Etkinleştir</string>
+    <string name="log_enable_summary">Tüm kullanıcı işlemlerini ve sistem hatalarını kaydet</string>
+    <string name="log_empty">Henüz günlük kaydı yok</string>
+    <string name="log_copy">Kopyala</string>
+    <string name="log_cleared">Günlükler temizlendi</string>
+    <string name="log_copied">Günlükler panoya kopyalandı</string>
+
+    <!-- Default Page Dialog -->
+    <string name="default_page_title">Varsayılan başlangıç sayfası</string>
+    <string name="default_page_apps">Uygulamalar</string>
+    <string name="default_page_permissions">İzinler</string>
+    <string name="default_page_activities">Etkinlikler</string>
+    <string name="default_page_settings">Ayarlar</string>
+
+    <!-- About Dialog -->
+    <string name="about_desc">Buge App Manager, gelişmiş izin ve uygulama denetimi için Shizuku desteğine sahip güçlü bir uygulama yönetimi aracıdır.</string>
+
+    <!-- About Links -->
+    <string name="website">Web Sitesi</string>
+    <string name="website_desc">Resmi web sitemizi ziyaret edin</string>
+    <string name="github">GitHub</string>
+    <string name="github_desc">GitHub depomuzu ziyaret edin</string>
+    <string name="telegram">Telegram</string>
+    <string name="fdroid">F-Droid</string>
+    <string name="fdroid_desc">Bu uygulamayı F-Droid üzerinde görüntüleyin</string>
+    <string name="telegram_desc">Telegram kanalımıza katılın</string>
+    <string name="activitymanager">ActivityManager</string>
+    <string name="activitymanager_desc">Açık kaynaklı proje — dışa aktarılmamış etkinlikleri başlatmak için Shizuku yöntemi</string>
+    <string name="check_for_update">Güncellemeleri Denetle</string>
+    <string name="update_desc">GitHub üzerinde yeni sürümleri kontrol edin</string>
+    <string name="about_more">Hakkımızda daha fazla bilgi göster</string>
+    <string name="about_more_summary">Geliştirme ekibi ve proje vizyonu hakkında daha fazla bilgi edinin</string>
+    <string name="about">Hakkında</string>
+    <string name="close">Kapat</string>
+    <string name="open">Aç</string>
+
+    <!-- About Us Activity -->
+    <string name="about_us">Hakkımızda</string>
+    <string name="about_us_title">Buge Studio Ekibi</string>
+    <string name="about_us_description">Buge Studio Ekibi, Android platformu için yenilikçi ve pratik yardımcı uygulamalar oluşturmaya kendini adamış tutkulu bir geliştirici ve tasarımcı topluluğudur. Kullanıcı gizliliğine, sistem kontrolüne ve açıklığa odaklanıyoruz. Amacımız, kullanıcılara şeffaf, verimli ve güvenilir araçlar sunmaktır. Buge App Manager açık kaynaklı bir projedir ve ilk büyük uygulamamızdır. Herkesi uygulamanın geliştirilmesine ve iyileştirilmesine birlikte katılmaya davet ediyoruz.</string>
+
+    <!-- GMS Disable Warning -->
+    <string name="gms_disable_warning_title">Google Hizmetleri Devre Dışı Bırakılsın mı?</string>
+    <string name="gms_disable_warning_message">Google Hizmetleri\'ni devre dışı bırakmak aşağıdakileri etkileyecektir:\n\n• Google Play Store çalışmayı durduracaktır\n• Google Play Hizmetleri\'ne bağlı uygulamalar çökebilir\n• Google uygulamalarından gelen anlık bildirimler duracaktır\n• Konum hizmetleri etkilenebilir\n• Uygulama içi satın almalar çalışmayacaktır\n\nGoogle Hizmetleri\'ni devre dışı bırakmak istediğinizden emin misiniz?</string>
+
+    <!-- System Operation Blocked -->
+    <string name="system_op_blocked_title">İşlem Engellendi</string>
+    <string name="system_op_blocked_message">Sistem uygulaması işlemleri şu anda devre dışı.\n\nBu işlemi gerçekleştirmek için Ayarlar\'dan "Sistem Uygulaması İşlemlerine İzin Ver" seçeneğini etkinleştirebilirsiniz.</string>
+
+    <!-- Restore -->
+    <string name="pref_restore_apps">Kaldırılan Uygulamaları Geri Yükle</string>
+    <string name="pref_restore_apps_summary">Daha önce kaldırılmış sistem uygulamalarını görüntüleyin ve geri yükleyin</string>
+    <string name="title_restore_apps">Uygulamaları Geri Yükle</string>
+    <string name="restore">Geri Yükle</string>
+    <string name="no_uninstalled_apps">Kaldırılmış uygulama bulunamadı</string>
+    <string name="restore_confirm">%s geri yüklensin mi?</string>
+    <string name="restore_success">Uygulama başarıyla geri yüklendi</string>
+    <string name="restore_failed">Uygulama geri yüklenemedi</string>
+
+    <!-- Shizuku -->
+    <string name="shizuku_title">Shizuku Yetkilendirmesi</string>
+    <string name="shizuku_desc">Uygulama izinlerini yönetmek ve gelişmiş işlemleri gerçekleştirmek için Shizuku gereklidir. Lütfen Shizuku içinde bu uygulamayı yetkilendirin.</string>
+    <string name="shizuku_status_ok">Yetkilendirildi ve çalışıyor</string>
+    <string name="shizuku_status_no_auth">Çalışıyor ancak yetkilendirilmemiş</string>
+    <string name="shizuku_status_not_running">Çalışmıyor</string>
+    <string name="shizuku_authorized">Yetkilendirildi</string>
+    <string name="shizuku_not_authorized">Yetkilendirilmedi</string>
+    <string name="shizuku_not_running">Çalışmıyor</string>
+    <string name="shizuku_request_auth">Yetki İste</string>
+
+    <!-- Dhizuku -->
+    <string name="auth_mode_dhizuku">Dhizuku</string>
+    <string name="dhizuku_title">Dhizuku Yetkilendirmesi</string>
+    <string name="dhizuku_desc">Dhizuku, Cihaz Sahibi tabanlı alternatif bir yetki arka ucudur. Shizuku veya Root olmadan uygulama izinlerini yönetebilir ve gelişmiş işlemleri gerçekleştirebilir. Lütfen Dhizuku içinde bu uygulamayı yetkilendirin.</string>
+    <string name="dhizuku_status_ok">Yetkilendirildi ve çalışıyor</string>
+    <string name="dhizuku_status_no_auth">Çalışıyor ancak yetkilendirilmemiş</string>
+    <string name="dhizuku_status_not_installed">Dhizuku yüklü değil</string>
+    <string name="dhizuku_request_auth">Yetki İste</string>
+    <string name="dhizuku_install">Dhizuku\'yu Yükle</string>
+    <string name="dhizuku_unsupported_permission">Bu izin Dhizuku modunda yönetilemez. Shizuku veya Root moduna geçin.</string>
+
+    <!-- Root / Authorization Method -->
+    <string name="pref_auth_mode">Yetkilendirme Yöntemi</string>
+    <string name="auth_mode_title">Yetkilendirme Yöntemi</string>
+    <string name="auth_mode_shizuku">Shizuku</string>
+    <string name="auth_mode_root">Root (su)</string>
+    <string name="pref_root_su_path">su Komutu</string>
+    <string name="root_su_path_title">su Komutu</string>
+    <string name="root_su_path_hint">ör. su, ksu, /system/bin/su</string>
+    <string name="root_su_path_default">su</string>
+    <string name="root_authorization_title">Root Yetkilendirmesi</string>
+    <string name="root_authorization_desc">Uygulama izinlerini yönetmek ve gelişmiş işlemleri gerçekleştirmek için Root erişimi kullanılır. Cihazınızın rootlu olduğundan ve su komutunun doğru yapılandırıldığından emin olun.</string>
+    <string name="root_status_ok">Root kullanılabilir</string>
+    <string name="root_status_not_ok">Root kullanılamıyor</string>
+    <string name="error_no_privilege">Kullanılabilir veya yetkilendirilmiş bir yetki arka ucu yok. Ayarlar\'dan birini seçin.</string>
+    <string name="request_auth">Yetkilendir</string>
+    <string name="not_authorized">Yetkilendirilmedi</string>
+
+    <!-- App List -->
+    <string name="title_app_list">Yüklü Uygulamalar</string>
+    <string name="search_hint">Uygulamalarda ara…</string>
+    <string name="filter_all">Tüm Uygulamalar</string>
+    <string name="filter_user">Kullanıcı Uygulamaları</string>
+    <string name="filter_system">Sistem Uygulamaları</string>
+    <string name="filter_disabled">Devre Dışı Uygulamalar</string>
+    <string name="filter_favorite">Favori Uygulamalar</string>
+    <string name="sort_name">Ad</string>
+    <string name="sort_size">Boyut</string>
+    <string name="sort_install_date">Yüklenme Tarihi</string>
+    <string name="apps_count">%d uygulama</string>
+    <string name="loading_apps">Uygulamalar yükleniyor…</string>
+    <string name="refresh">Yenile</string>
+    <string name="no_apps_found">Uygulama bulunamadı</string>
+    <string name="share_apks">APK\'ları Paylaş</string>
+
+    <!-- App Detail -->
+    <string name="title_app_detail">Uygulama Ayrıntıları</string>
+    <string name="package_name">Paket Adı</string>
+    <string name="version">Sürüm</string>
+    <string name="install_date">Yüklenme Tarihi</string>
+    <string name="update_date">Son Güncelleme</string>
+    <string name="app_size">Uygulama Boyutu</string>
+    <string name="data_size">Veri Boyutu</string>
+    <string name="cache_size">Önbellek Boyutu</string>
+    <string name="target_sdk">Hedef SDK</string>
+    <string name="min_sdk">Minimum SDK</string>
+    <string name="permissions_title">İzinler</string>
+    <string name="granted">İzin Verildi</string>
+    <string name="denied">Reddedildi</string>
+    <string name="grant_permission">İzin Ver</string>
+    <string name="revoke_permission">İptal Et</string>
+    <string name="open_app">Uygulamayı Aç</string>
+    <string name="app_info">Uygulama Bilgisi</string>
+    <string name="uninstall">Kaldır</string>
+    <string name="force_stop">Durmaya Zorla</string>
+    <string name="clear_data">Verileri Temizle</string>
+    <string name="clear_cache">Önbelleği Temizle</string>
+    <string name="disable_app">Uygulamayı Devre Dışı Bırak</string>
+    <string name="enable_app">Uygulamayı Etkinleştir</string>
+    <string name="freeze_app">Uygulamayı Dondur</string>
+    <string name="unfreeze_app">Uygulamanın Dondurmasını Kaldır</string>
+    <string name="disable_app_confirm">%s devre dışı bırakılsın mı? Uygulama yeniden etkinleştirilene kadar kullanıcı tarafından kullanılamayacaktır.</string>
+    <string name="enable_app_confirm">%s etkinleştirilsin mi? Uygulama kullanıcı için yeniden kullanılabilir hale gelecektir.</string>
+    <string name="pref_dangerous_packages_warning">Tehlikeli İşlem Uyarısı</string>
+    <string name="dangerous_package_warning_title">Çok Tehlikeli İşlem</string>
+    <string name="dangerous_package_warning_message">Korumalı bir paket üzerinde tehlikeli bir işlem gerçekleştirmek üzeresiniz.\n\nUygulama: %1$s\nPaket: %2$s\nİşlem: %3$s\n\nBu paketin değiştirilmesi veya kaldırılması cihazınıza zarar verebilir, açılış döngülerine neden olabilir veya temel sistem işlevlerini kullanılamaz hale getirebilir. Bu işlem son derece tehlikelidir.\n\nYine de devam edilsin mi?</string>
+    <string name="dangerous_package_warning_message_batch">%1$d korumalı paket üzerinde tehlikeli bir işlem gerçekleştirmek üzeresiniz.\n\nİşlem: %2$s\n\nDahil edilen korumalı paketler:\n%3$s\n\nBu paketlerin değiştirilmesi veya kaldırılması cihazınıza zarar verebilir, açılış döngülerine neden olabilir veya temel sistem işlevlerini kullanılamaz hale getirebilir. Bu işlem son derece tehlikelidir.\n\nYine de devam edilsin mi?</string>
+    <string name="dangerous_package_warning_continue">Yine de Devam Et</string>
+    <string name="dangerous_operation_uninstall">Kaldır</string>
+    <string name="dangerous_operation_disable">Devre dışı bırak</string>
+    <string name="dangerous_operation_enable">Etkinleştir</string>
+    <string name="dangerous_operation_clear_data">Verileri temizle</string>
+    <string name="dangerous_operation_force_stop">Durmaya zorla</string>
+
+    <!-- Storage -->
+    <string name="storage_title">Depolama</string>
+    <string name="storage_app">Uygulama</string>
+    <string name="storage_data">Veri</string>
+    <string name="storage_total">Toplam</string>
+    <string name="storage_unknown">Bilinmiyor</string>
+    <string name="installer_app">Yükleyici Uygulama</string>
+
+    <!-- App Detail Activity Strings -->
+    <string name="removed_from_favorites">Favorilerden kaldırıldı</string>
+    <string name="added_to_favorites">Favorilere eklendi</string>
+    <string name="apk_path_not_found">APK yolu bulunamadı</string>
+    <string name="apk_file_not_exist">APK dosyası mevcut değil</string>
+    <string name="apk_saved_to">APK şuraya kaydedildi: %s</string>
+    <string name="export_failed">Dışa aktarma başarısız: %s</string>
+    <string name="cannot_open_google_play">Google Play açılamıyor</string>
+    <string name="cannot_open_fdroid">F-Droid açılamıyor</string>
+    <string name="cannot_launch_app">Bu uygulama başlatılamıyor</string>
+    <string name="force_stop_confirm">%s durmaya zorlansın mı?</string>
+    <string name="uninstall_confirm">%s kaldırılsın mı?</string>
+    <string name="clear_data_confirm">%s için tüm veriler temizlensin mi? Bu işlem geri alınamaz.</string>
+
+    <!-- Permissions List -->
+    <string name="title_permissions">İzin Yöneticisi</string>
+    <string name="perm_microphone">Mikrofon</string>
+    <string name="perm_camera">Kamera</string>
+    <string name="perm_location">Konum</string>
+    <string name="perm_contacts">Kişiler</string>
+    <string name="perm_storage">Depolama</string>
+    <string name="perm_manage_storage">Tüm Dosyalara Erişim</string>
+    <string name="perm_phone">Telefon</string>
+    <string name="perm_sms">SMS</string>
+    <string name="perm_calendar">Takvim</string>
+    <string name="perm_body_sensors">Vücut Sensörleri</string>
+    <string name="perm_notifications">Bildirimler</string>
+    <string name="perm_vibrate">Titreşim</string>
+    <string name="perm_overlay">Diğer Uygulamaların Üzerinde Göster</string>
+    <string name="perm_install_unknown">Bilinmeyen Uygulamaları Yükle</string>
+    <string name="batch_revoke">İzni İptal Et</string>
+    <string name="batch_grant">İzin Ver</string>
+    <string name="confirm_revoke">%d uygulamadan izin iptal edilsin mi?</string>
+    <string name="confirm_grant">%d uygulamaya izin verilsin mi?</string>
+    <string name="selected_count">%d seçildi</string>
+    <string name="open_system_settings">Ayarları Aç</string>
+    <string name="perm_write_settings">Sistem Ayarlarını Değiştir</string>
+
+    <!-- Activities -->
+    <string name="title_activities">Etkinlik Yöneticisi</string>
+    <string name="title_activity_detail">Etkinlik Ayrıntıları</string>
+    <string name="search_activity_hint">Etkinliklerde ara…</string>
+    <string name="launch">Başlat</string>
+    <string name="back_to_apps">Uygulamalara Dön</string>
+    <string name="no_activities_found">Etkinlik bulunamadı</string>
+
+    <!-- Common -->
+    <string name="confirm">Onayla</string>
+    <string name="cancel">İptal</string>
+    <string name="operation_success">İşlem başarılı</string>
+    <string name="operation_failed">İşlem başarısız: %s</string>
+    <string name="error_no_shizuku">Shizuku kullanılamıyor veya yetkilendirilmemiş</string>
+    <string name="error_system_ops_disabled">Sistem uygulaması işlemleri devre dışı. Ayarlar\'dan "Sistem Uygulaması İşlemlerine İzin Ver" seçeneğini etkinleştirin.</string>
+    <string name="language_changed_restart">Dil değiştirildi. Değişikliklerin uygulanması için uygulamayı yeniden başlatın.</string>
+    <string name="restart">Yeniden Başlat</string>
+
+    <!-- Language names -->
+    <string name="pref_language_en">English</string>
+    <string name="pref_language_zh">中文 (Basitleştirilmiş)</string>
+    <string name="pref_language_ja">日本語</string>
+    <string name="pref_language_ko">한국어</string>
+    <string name="pref_language_fr">Français</string>
+    <string name="pref_language_de">Deutsch</string>
+    <string name="pref_language_ru">Русский</string>
+    <string name="pref_language_ar">العربية</string>
+    <string name="pref_language_pt">Português</string>
+    <string name="pref_language_es">Español</string>
+
+    <string name="restart_required">Yeniden Başlatma Gerekli</string>
+    <string name="restart_required_message">Varsayılan başlangıç sayfası değiştirildi. Değişikliğin etkili olması için uygulamayı yeniden başlatın.</string>
+    <string name="restart_now">Şimdi Yeniden Başlat</string>
+    <string name="later">Daha Sonra</string>
+
+    <!-- Update Checker -->
+    <string name="update_available">Güncelleme Mevcut</string>
+    <string name="download">İndir</string>
+    <string name="no_update_title">Güncelleme Yok</string>
+    <string name="no_update_message">Zaten en son sürümü kullanıyorsunuz.</string>
+    <string name="update_check_failed">Güncelleme Denetimi Başarısız</string>
+    <string name="update_check_failed_message">Güncellemeler denetlenemedi. Lütfen internet bağlantınızı kontrol edin.</string>
+    <string name="checking_for_update">Güncelleme denetleniyor...</string>
+    <string name="please_wait">Lütfen bekleyin...</string>
+    <string name="ok">Tamam</string>
+    <string name="ignore">Yoksay</string>
+
+    <!-- Shortcuts -->
+    <string name="shortcut_app_manager_long">Buge App Manager\'ı Aç</string>
+
+    <string name="appearance_settings">Görünüm Ayarları</string>
+    <string name="theme_mode">Tema Modu</string>
+    <string name="color_theme">Renk Teması</string>
+    <string name="color_default">Varsayılan (Mavi)</string>
+    <string name="color_red">Kırmızı</string>
+    <string name="color_green">Yeşil</string>
+    <string name="color_yellow">Sarı</string>
+    <string name="more_options">Daha Fazla Seçenek</string>
+    <string name="more_options_summary">Tema ve renkleri özelleştirin</string>
+    <string name="theme_change_restart_message">Tema değiştirildi. Değişikliklerin uygulanması için uygulamayı yeniden başlatın.</string>
+    <string name="theme_group">Tema</string>
+    <string name="hide_nav_labels">Gezinme etiketlerini gizle</string>
+    <string name="hide_nav_labels_summary">Seçili olmayan gezinme öğelerinin başlıklarını gizle, yalnızca seçili olanı göster</string>
+
+    <!-- Dynamic Color -->
+    <string name="dynamic_color">Dinamik Renk</string>
+    <string name="dynamic_color_summary">Renkleri duvar kağıdından otomatik olarak uyarla (Android 12+)</string>
+    <string name="dynamic_color_unavailable">Android 12 veya üzeri gerektirir</string>
+
+    <!-- Custom Labels -->
+    <string name="pref_custom_labels">Özel Etiketler</string>
+    <string name="pref_custom_labels_summary">Özel uygulama etiketleri oluşturun ve yönetin</string>
+    <string name="title_custom_labels">Özel Etiketler</string>
+    <string name="create_label">Etiket Oluştur</string>
+    <string name="label_name">Etiket Adı</string>
+    <string name="label_name_hint">Etiket adını girin</string>
+    <string name="create_new_label">Yeni Etiket Oluştur</string>
+    <string name="no_labels_created">Henüz etiket oluşturulmadı</string>
+    <string name="tap_to_create">İlk etiketinizi oluşturmak için + simgesine dokunun</string>
+    <string name="delete_label_confirm">"%s" silinsin mi?</string>
+    <string name="delete_label">Etiketi Sil</string>
+    <string name="select_apps_for_label">"%s" için uygulamaları seçin</string>
+    <string name="label_created">Etiket oluşturuldu</string>
+    <string name="label_updated">Etiket güncellendi</string>
+    <string name="label_deleted">Etiket silindi</string>
+    <string name="filter_label">Etiket: %s</string>
+
+    <!-- Update Options -->
+    <string name="pref_update_options">Güncelleme Seçenekleri</string>
+    <string name="pref_update_options_summary">Güncelleme indirme ve yükleme yöntemini yapılandırın</string>
+    <string name="title_update_options">Güncelleme Seçenekleri</string>
+    <string name="update_method_browser">Tarayıcıda Aç</string>
+    <string name="update_method_silent">Sessiz Yükleme</string>
+    <string name="installer_name">Yükleyici Adı</string>
+    <string name="installer_name_hint">Yükleyici adını girin</string>
+    <string name="update_downloading">Güncelleme indiriliyor...</string>
+    <string name="update_download_failed">İndirme başarısız</string>
+    <string name="update_installing">Güncelleme yükleniyor...</string>
+    <string name="update_install_success">Güncelleme başarıyla yüklendi</string>
+    <string name="update_install_failed">Yükleme başarısız</string>
+    <string name="update_already_latest">Zaten en son sürümü kullanıyorsunuz</string>
+    <string name="checking_for_update_dialog">Güncelleme denetleniyor...</string>
+    <string name="update_download_complete">İndirme tamamlandı</string>
+    <string name="save">Kaydet</string>
+
+    <!-- Backup -->
+    <string name="pref_backup">Yedekleme</string>
+    <string name="pref_backup_summary">Uygulama ayarlarını ve uygulama listesini yedekleyin ve geri yükleyin</string>
+    <string name="title_backup">Yedekleme</string>
+    <string name="backup_app_settings">Uygulama Ayarlarını Yedekle</string>
+    <string name="backup_app_settings_summary">Bu uygulamanın ayarlarını bir dosyaya yedekleyin</string>
+    <string name="backup_app_list">Uygulama Listesini Yedekle</string>
+    <string name="backup_app_list_summary">Tüm yüklü uygulamaların listesini dışa aktarın</string>
+    <string name="import_app_settings">Uygulama Ayarlarını İçe Aktar</string>
+    <string name="import_app_settings_summary">Ayarları bir yedekleme dosyasından geri yükleyin</string>
+    <string name="backup_auto_settings">Yedekleme Ayarları</string>
+    <string name="backup_enable">Yedeklemeyi Etkinleştir</string>
+    <string name="backup_section">Yedekleme</string>
+    <string name="backup_auto_section">Otomatik Yedekleme Aralığı</string>
+    <string name="backup_location">Yedekleme Konumu</string>
+    <string name="backup_location_default">Belgeler</string>
+    <string name="backup_location_hint">Yedekleme klasörünü seçin</string>
+    <string name="backup_success">Yedekleme başarıyla oluşturuldu</string>
+    <string name="backup_failed">Yedekleme başarısız</string>
+    <string name="import_success">Ayarlar başarıyla içe aktarıldı</string>
+    <string name="import_failed">İçe aktarma başarısız</string>
+    <string name="backup_auto_hours">%d saat</string>
+    <string name="backup_auto_disabled">Devre dışı</string>
+    <string name="backup_auto_title">Otomatik Yedekleme Aralığı</string>
+    <string name="backup_auto_summary">Uygulamayı başlattığınızda otomatik olarak yedekleyin</string>
+    <string name="backup_auto_hint">Saat girin (devre dışı bırakmak için 0)</string>
+    <string name="other_languages">Diğer Diller</string>
+    <string name="other_languages_title">Uygulama Dilleri</string>
+    <string name="no_other_languages">Bu uygulamanın başka dil kaynağı yok</string>
+    <string name="backup_auto_on_launch">Başlatmada otomatik yedekle</string>
+    <string name="backup_auto_on_launch_summary">Uygulama her başlatıldığında yedek oluşturun veya mevcut yedeği değiştirin</string>
+    <string name="backup_content">Yedekleme içeriği</string>
+    <string name="backup_content_settings">Uygulama ayarları</string>
+    <string name="backup_content_app_list">Yüklü uygulamalar</string>
+    <string name="backup_content_both">Ayarlar ve yüklü uygulamalar</string>
+    <string name="backup_select_location_first">Lütfen önce bir yedekleme konumu seçin</string>
+
+    <!-- Optional Permissions -->
+    <string name="pref_optional_permissions">İsteğe Bağlı İzinler</string>
+    <string name="pref_optional_permissions_summary">Ek özellikler için isteğe bağlı izinler verin</string>
+    <string name="title_optional_permissions">İsteğe Bağlı İzinler</string>
+    <string name="pref_storage_permission">Depolama İzni</string>
+    <string name="pref_storage_permission_summary">APK dışa aktarma ve depolama işlevleri için READ_EXTERNAL_STORAGE ve WRITE_EXTERNAL_STORAGE izinlerini içerir</string>
+    <string name="storage_permission_required">APK dışa aktarma ve depolama işlevleri için gereklidir</string>
+    <string name="storage_permission_grant">Depolama İzni Ver</string>
+    <string name="perm_read_external_storage">Harici Depolamayı Okuma</string>
+    <string name="perm_read_external_storage_desc">Uygulamanın APK dışa aktarma ve paylaşma için harici depolamadan dosya okumasına izin verir</string>
+    <string name="perm_write_external_storage">Harici Depolamaya Yazma</string>
+    <string name="perm_write_external_storage_desc">Uygulamanın APK dışa aktarma ve paylaşma için harici depolamaya dosya yazmasına izin verir</string>
+    <string name="optional_perm_granted">İzin Verildi</string>
+    <string name="optional_perm_denied">Reddedildi</string>
+    <string name="optional_perm_grant">İzin Ver</string>
+
+    <!-- Signature Validation -->
+    <string name="signature_warning_title">Güvenlik Uyarısı</string>
+    <string name="signature_warning_message">İmza karması doğrulaması başarısız oldu!\n\nBu uygulamanın resmi olmayan imzalı bir sürümünü kullanıyorsunuz!\nBu sürümün güvenli veya güvenilir olup olmadığını doğrulayamıyoruz!\n\nResmi olmayan sürümlerin kullanılması sizi veri hırsızlığı, gizlilik ihlalleri ve kötü amaçlı yazılımlar dahil olmak üzere güvenlik risklerine maruz bırakabilir.\n\nLütfen resmi sürümü aşağıdaki güvenilir platformlarımızdan indirin.</string>
+    <string name="signature_warning_platforms_title">Güvenilir İndirme Platformları</string>
+    <string name="signature_warning_sha256_label">Beklenen İmza SHA-256 Değeri</string>
+    <string name="signature_warning_button_exit">Uygulamadan Çık</string>
+    <string name="signature_warning_button_continue">Yine de Devam Et</string>
+    <string name="signature_warning_github_url">https://github.com/BugeStudioTeam/Buge-App-Manager/releases</string>
+    <string name="signature_warning_fdroid_url">https://f-droid.org/packages/com.buge.appmanager/</string>
+
+    <!-- App Detail Menu -->
+    <string name="menu_favorite">Favori</string>
+    <string name="menu_share_apk">APK Paylaş</string>
+    <string name="menu_export_apk">APK\'yı Dışa Aktar</string>
+    <string name="menu_export_info">Uygulama Bilgisini Dışa Aktar</string>
+    <string name="menu_other_languages">Diğer Diller</string>
+    <string name="menu_google_play">Google Play Store\'da Görüntüle</string>
+    <string name="menu_f_droid">F-Droid\'de Görüntüle</string>
+    <string name="menu_grant_all_permissions">Tüm İzinleri Ver</string>
+    <string name="menu_revoke_all_permissions">Tüm İzinleri İptal Et</string>
+
+    <!-- Install Apps -->
+    <string name="pref_install_apps">Uygulama Yükle</string>
+    <string name="pref_install_apps_summary">Gelişmiş seçeneklerle APK dosyalarını yükleyin</string>
+    <string name="title_install_apps">Uygulama Yükle</string>
+    <string name="install_installer_name">Yükleyici Adı</string>
+    <string name="install_installer_name_summary">-i bayrağı için yükleyici paket adını ayarlayın</string>
+    <string name="install_allow_downgrade">Sürüm Düşürmeye İzin Ver</string>
+    <string name="install_allow_downgrade_summary">Daha yeni sürümlerin üzerine eski sürümlerin yüklenmesine izin verin</string>
+    <string name="install_allow_test_packages">Test Paketlerine İzin Ver</string>
+    <string name="install_allow_test_packages_summary">Yalnızca test amaçlı APK\'ların yüklenmesine izin verin</string>
+    <string name="install_allow_system_apps">Sistem Uygulaması Yüklemeye İzin Ver</string>
+    <string name="install_allow_system_apps_summary">Sistem uygulamalarının yüklenmesine veya güncellenmesine izin verin</string>
+    <string name="install_all_users">Tüm Kullanıcılar İçin Yükle</string>
+    <string name="install_all_users_summary">APK\'yı cihazdaki her kullanıcı için yükleyin</string>
+    <string name="install_no_apks">APK dosyası seçilmedi</string>
+    <string name="install_add_apk">APK Ekle</string>
+    <string name="install_button">Yükle</string>
+    <string name="install_installing">%1$s yükleniyor...</string>
+    <string name="install_success">Yüklendi: %1$s</string>
+    <string name="install_failed">Başarısız: %1$s - %2$s</string>
+    <string name="install_complete">Yükleme tamamlandı: %1$d başarılı, %2$d başarısız</string>
+    <string name="install_remove">Kaldır</string>
+    <string name="install_apk_version">Sürüm</string>
+    <string name="install_apk_package">Paket</string>
+    <string name="install_apk_path">Yol</string>
+    <string name="install_invalid_apk">Geçersiz APK dosyası</string>
+
+    <!-- Welcome / Onboarding -->
+    <string name="welcome_title">Hoş Geldiniz</string>
+    <string name="welcome_subtitle">Buge App Manager\'ı birkaç hızlı adımda kuralım.</string>
+    <string name="welcome_get_started">Başlayın</string>
+    <string name="welcome_next">İleri</string>
+    <string name="welcome_back">Geri</string>
+    <string name="welcome_finish">Kullanmaya Başla</string>
+    <string name="welcome_skip">Atla</string>
+
+    <string name="welcome_source_title">Bu uygulamayı nereden edindiniz?</string>
+    <string name="welcome_source_subtitle">Bu, güncellemeleri doğru şekilde yapılandırmamıza yardımcı olur.</string>
+    <string name="welcome_source_github">GitHub</string>
+    <string name="welcome_source_fdroid">F-Droid</string>
+    <string name="welcome_source_other">Diğer</string>
+
+    <string name="welcome_update_title">Otomatik Güncelleme</string>
+    <string name="welcome_update_subtitle">Uygulama başlangıcında yeni sürümleri otomatik olarak denetle.</string>
+    <string name="welcome_update_enabled">Otomatik güncelleme etkinleştirildi</string>
+    <string name="welcome_update_disabled">Otomatik güncelleme devre dışı bırakıldı</string>
+
+    <string name="welcome_usage_title">Genel Tercihler</string>
+    <string name="welcome_usage_subtitle">Bir tema, dil ve varsayılan sayfa seçin.</string>
+
+    <string name="welcome_appearance_title">Görünüm</string>
+    <string name="welcome_appearance_subtitle">Renkleri ve gezinmeyi özelleştirin.</string>
+
+    <string name="welcome_ready_title">Her şey hazır</string>
+    <string name="welcome_ready_subtitle">Buge App Manager ile uygulamalarınızı yönetmeye başlayın.</string>
+
+    <string name="welcome_summary_title">Özet</string>
+    <string name="welcome_summary_source">Kaynak</string>
+    <string name="welcome_summary_auto_update">Otomatik Güncelleme</string>
+    <string name="welcome_update_options_title">Güncelleme Seçenekleri</string>
+    <string name="welcome_update_options_subtitle">Güncellemelerin nasıl indirileceğini ve yükleneceğini yapılandırın.</string>
+    <string name="welcome_auth_title">Yetkilendirme</string>
+    <string name="welcome_auth_subtitle">Bu uygulamaya ayrıcalıklı erişimin nasıl verileceğini seçin.</string>
+    <string name="welcome_auth_mode_label">Yetkilendirme Yöntemi</string>
+    <string name="welcome_auth_storage_label">Depolama İzni</string>
+    <string name="welcome_auth_storage_summary">APK dışa aktarma ve depolama işlevleri için READ_EXTERNAL_STORAGE ve WRITE_EXTERNAL_STORAGE izinlerini içerir</string>
+    <string name="welcome_auth_grant">Depolama İzni Ver</string>
+    <string name="welcome_auth_not_authorized">Yetkilendirilmedi</string>
+    <string name="welcome_auth_optional_permissions">İsteğe Bağlı İzinler</string>
+    <string name="welcome_summary_theme">Tema</string>
+    <string name="welcome_summary_language">Dil</string>
+    <string name="welcome_summary_default_page">Varsayılan Sayfa</string>
+    <string name="welcome_summary_dynamic_color">Dinamik Renk</string>
+    <string name="welcome_summary_hide_nav_labels">Gezinme Etiketlerini Gizle</string>
+    <string name="welcome_summary_color_theme">Renk Teması</string>
+    <string name="welcome_summary_on">Açık</string>
+    <string name="welcome_summary_off">Kapalı</string>
+
+</resources>

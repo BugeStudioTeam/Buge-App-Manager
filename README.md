@@ -143,6 +143,15 @@ Choose between **Shizuku**, **Dhizuku** or **ROOT** authorization.
 
 ---
 
+## Support
+
+If you find Buge App Manager useful, consider supporting the project.<br>
+Your support helps keep development going!
+
+**[Support Us](https://bugestudio.website/support/)**
+
+---
+
 ## License
 
 This project is licensed under the **GNU General Public License v3.0**.

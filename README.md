@@ -1,9 +1,12 @@
 <p align="center">
-  <img src="https://raw.githubusercontent.com/BugeStudioTeam/Buge-App-Manager/refs/heads/main/images/icons/icon.png" alt="Buge App Manager Icon" width="120"/>
+  <img src="https://raw.githubusercontent.com/BugeStudioTeam/Buge-App-Manager/refs/heads/main/assets/con.png" alt="Buge App Manager Icon" width="120"/>
 </p>
 
 <p align="center">
-  <img src="https://raw.githubusercontent.com/BugeStudioTeam/Buge-App-Manager/refs/heads/main/images/title.svg" alt="Buge App Manager" width="520"/>
+  <picture>
+    <source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/BugeStudioTeam/Buge-App-Manager/refs/heads/main/assets/readme/dark/title.svg"/>
+    <img src="https://raw.githubusercontent.com/BugeStudioTeam/Buge-App-Manager/refs/heads/main/assets/readme/light/title.svg" alt="Buge App Manager" width="520"/>
+  </picture>
 </p>
 
 

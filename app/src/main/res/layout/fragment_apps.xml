@@ -322,12 +322,22 @@
 
         </LinearLayout>
 
-        <View
+        <FrameLayout
             android:id="@+id/split_divider"
             android:layout_width="8dp"
             android:layout_height="match_parent"
             android:background="?attr/colorSurfaceContainerHigh"
-            android:visibility="gone" />
+            android:visibility="gone">
+
+            <View
+                android:layout_width="4dp"
+                android:layout_height="48dp"
+                android:layout_gravity="center"
+                android:background="@drawable/bg_split_handle"
+                android:clickable="false"
+                android:focusable="false" />
+
+        </FrameLayout>
 
         <FrameLayout
             android:id="@+id/detail_pane"

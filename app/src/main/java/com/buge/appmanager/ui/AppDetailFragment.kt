@@ -63,7 +63,7 @@ class AppDetailFragment : Fragment() {
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
-        closeListener = context as? OnDetailCloseListener
+        closeListener = parentFragment as? OnDetailCloseListener
     }
 
     override fun onDetach() {

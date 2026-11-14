@@ -37,7 +37,7 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 
-class AppsFragment : Fragment() {
+class AppsFragment : Fragment(), AppDetailFragment.OnDetailCloseListener {
 
     private var _binding: FragmentAppsBinding? = null
     private val binding get() = _binding!!
@@ -108,6 +108,10 @@ class AppsFragment : Fragment() {
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
+    }
+
+    override fun onDetailClose() {
+        closeDetailPane()
     }
 
     private fun isLargeScreen(): Boolean {

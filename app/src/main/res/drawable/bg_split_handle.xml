@@ -3,6 +3,6 @@
 <!-- Copyright (C) 2026 Buge Studio -->
 <shape xmlns:android="http://schemas.android.com/apk/res/android"
     android:shape="rectangle">
-    <solid android:color="#000000" />
+    <solid android:color="?attr/colorOnPrimaryContainer" />
     <corners android:radius="2dp" />
 </shape>

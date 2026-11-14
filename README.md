@@ -25,11 +25,11 @@
 
 <div align="center">
 
-<img src="https://raw.githubusercontent.com/BugeStudioTeam/Buge-App-Manager/main/images/Screenshot_Apps.png" alt="Buge App Manager apps screen" width="25%">
-<img src="https://raw.githubusercontent.com/BugeStudioTeam/Buge-App-Manager/main/images/Screenshot_Permissions.png" alt="Buge App Manager permissions screen" width="25%">
-<img src="https://raw.githubusercontent.com/BugeStudioTeam/Buge-App-Manager/main/images/Screenshot_Activities.png" alt="Buge App Manager activities screen" width="25%">
-<img src="https://raw.githubusercontent.com/BugeStudioTeam/Buge-App-Manager/main/images/Screenshot_Settings.png" alt="Buge App Manager settings screen" width="25%">
-<img src="https://raw.githubusercontent.com/BugeStudioTeam/Buge-App-Manager/main/images/Screenshot_Details.png" alt="Buge App Manager app details screen" width="25%">
+<img src="https://raw.githubusercontent.com/BugeStudioTeam/Buge-App-Manager/main/images/Screenshot_Apps.png" alt="Buge App Manager apps screen" width="15%">
+<img src="https://raw.githubusercontent.com/BugeStudioTeam/Buge-App-Manager/main/images/Screenshot_Permissions.png" alt="Buge App Manager permissions screen" width="15%">
+<img src="https://raw.githubusercontent.com/BugeStudioTeam/Buge-App-Manager/main/images/Screenshot_Activities.png" alt="Buge App Manager activities screen" width="15%">
+<img src="https://raw.githubusercontent.com/BugeStudioTeam/Buge-App-Manager/main/images/Screenshot_Settings.png" alt="Buge App Manager settings screen" width="15%">
+<img src="https://raw.githubusercontent.com/BugeStudioTeam/Buge-App-Manager/main/images/Screenshot_Details.png" alt="Buge App Manager app details screen" width="15%">
 
 </div>
 

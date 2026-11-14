@@ -8,12 +8,10 @@ import android.net.Uri
 import android.os.Bundle
 import android.provider.Settings
 import android.view.LayoutInflater
-import android.view.Menu
 import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
-import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
@@ -22,7 +20,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.buge.appmanager.R
 import com.buge.appmanager.adapter.PermissionDetailAdapter
 import com.buge.appmanager.data.AppRepository
-import com.buge.appmanager.databinding.ActivityAppDetailBinding
+import com.buge.appmanager.databinding.FragmentAppDetailBinding
 import com.buge.appmanager.model.PermissionInfo
 import com.buge.appmanager.shizuku.ShizukuManager
 import com.buge.appmanager.util.LocaleManager
@@ -31,7 +29,6 @@ import com.buge.appmanager.util.PreferencesManager
 import com.buge.appmanager.util.SnackbarHelper
 import com.buge.appmanager.util.SystemOpChecker
 import com.buge.appmanager.viewmodel.AppDetailViewModel
-import com.google.android.material.button.MaterialButton
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import kotlinx.coroutines.launch
 import java.text.SimpleDateFormat
@@ -51,7 +48,7 @@ class AppDetailFragment : Fragment() {
         }
     }
 
-    private var _binding: ActivityAppDetailBinding? = null
+    private var _binding: FragmentAppDetailBinding? = null
     private val binding get() = _binding!!
     private val viewModel: AppDetailViewModel by viewModels()
     private lateinit var permAdapter: PermissionDetailAdapter
@@ -63,7 +60,7 @@ class AppDetailFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        _binding = ActivityAppDetailBinding.inflate(inflater, container, false)
+        _binding = FragmentAppDetailBinding.inflate(inflater, container, false)
         return binding.root
     }
 
@@ -74,10 +71,7 @@ class AppDetailFragment : Fragment() {
             return
         }
 
-        setHasOptionsMenu(true)
-
-        binding.toolbar.visibility = View.GONE
-
+        setupToolbar()
         setupPermissionsRecycler()
         setupActions()
         observeViewModel()
@@ -98,13 +92,19 @@ class AppDetailFragment : Fragment() {
         _binding = null
     }
 
-    override fun onCreateOptionsMenu(menu: Menu, inflater: android.view.MenuInflater) {
-        inflater.inflate(R.menu.menu_app_detail, menu)
-        favoriteMenuItem = menu.findItem(R.id.action_favorite)
+    private fun setupToolbar() {
+        binding.detailToolbar.inflateMenu(R.menu.menu_app_detail)
+        favoriteMenuItem = binding.detailToolbar.menu.findItem(R.id.action_favorite)
         updateFavoriteIcon()
+        binding.detailToolbar.setNavigationOnClickListener {
+            parentFragmentManager.popBackStack()
+        }
+        binding.detailToolbar.setOnMenuItemClickListener { item ->
+            handleMenuItem(item)
+        }
     }
 
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+    private fun handleMenuItem(item: MenuItem): Boolean {
         when (item.itemId) {
             R.id.action_favorite -> {
                 toggleFavorite()
@@ -127,7 +127,7 @@ class AppDetailFragment : Fragment() {
                 return true
             }
         }
-        return super.onOptionsItemSelected(item)
+        return false
     }
 
     private fun setupPermissionsRecycler() {

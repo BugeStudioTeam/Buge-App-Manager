@@ -1,6 +1,7 @@
 # SPDX-License-Identifier: GPL-3.0-only
 # Copyright (C) 2026 Buge Studio
 android
+com.android.internal.systemui.navbar.threebutton
 com.android.systemui
 com.android.settings
 com.android.phone
@@ -41,3 +42,6 @@ com.android.configinfrastructure
 com.android.rkpd
 com.qualcomm.location
 AICore
+com.google.android.webview
+com.android.shell
+com.android.photopicker

@@ -18,14 +18,31 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: Scan for viruses with ClamAV
-        id: clamav
-        uses: pompelmi/pompelmi@v1.8.0
-        with:
-          fail-on-virus: 'true'
-          comment-on-pr: 'true'
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: Install ClamAV
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y clamav ca-certificates
+          sudo systemctl stop clamav-freshclam || true
+
+      - name: Update ClamAV database
+        run: |
+          sudo freshclam || {
+            echo "::warning::freshclam failed, checking existing database"
+            ls -la /var/lib/clamav/ || true
+            exit 1
+          }
+
+      - name: Scan repository with ClamAV
+        run: |
+          clamscan -r --infected --no-summary . || {
+            EXIT_CODE=$?
+            if [ $EXIT_CODE -eq 1 ]; then
+              echo "::error::ClamAV found infected files"
+            else
+              echo "::error::ClamAV scan failed with exit code $EXIT_CODE"
+            fi
+            exit 1
+          }
 
       - name: Install pipx
         run: |
@@ -51,7 +68,7 @@ jobs:
             --format sarif \
             --output trivy-results.sarif \
             --severity CRITICAL,HIGH \
-            --scanners vuln,secret,config
+            --scanners vuln,secret,misconfig
 
       - name: Upload Trivy results to Security tab
         if: always()

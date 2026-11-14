@@ -40,15 +40,23 @@ jobs:
             exit 1
           }
 
+      - name: Install Trivy directly
+        run: |
+          TRIVY_VERSION=0.55.0
+          mkdir -p "$HOME/.local/bin"
+          curl -sfL \
+            "https://github.com/aquasecurity/trivy/releases/download/v${TRIVY_VERSION}/trivy_${TRIVY_VERSION}_Linux-64bit.tar.gz" \
+            -o /tmp/trivy.tar.gz
+          tar -xzf /tmp/trivy.tar.gz -C "$HOME/.local/bin" trivy
+          echo "$HOME/.local/bin" >> "$GITHUB_PATH"
+
       - name: Run Trivy filesystem scan
-        uses: aquasecurity/trivy-action@v0.32.0
-        with:
-          scan-type: 'fs'
-          scan-ref: '.'
-          format: 'sarif'
-          output: 'trivy-results.sarif'
-          severity: 'CRITICAL,HIGH'
-          scanners: 'vuln,secret,config'
+        run: |
+          trivy fs . \
+            --format sarif \
+            --output trivy-results.sarif \
+            --severity CRITICAL,HIGH \
+            --scanners vuln,secret,config
 
       - name: Upload Trivy results to Security tab
         if: always()

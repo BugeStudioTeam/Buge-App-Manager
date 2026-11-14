@@ -8,13 +8,10 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.EditText
-import android.widget.ImageView
 import androidx.activity.OnBackPressedCallback
 import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.buge.appmanager.ActivityDetailActivity
 import com.buge.appmanager.BaseActivity
@@ -24,13 +21,12 @@ import com.buge.appmanager.databinding.FragmentActivitiesBinding
 import com.buge.appmanager.model.AppInfo
 import com.buge.appmanager.util.FontOverrideHelper
 import com.buge.appmanager.util.LogManager
+import com.buge.appmanager.util.SplitPaneController
 import com.buge.appmanager.util.SpringAnimationHelper
 import com.buge.appmanager.viewmodel.ActivitiesViewModel
 import kotlinx.coroutines.Job
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.launch
 
-class ActivitiesFragment : Fragment() {
+class ActivitiesFragment : Fragment(), ActivityDetailFragment.OnDetailCloseListener {
 
     private var _binding: FragmentActivitiesBinding? = null
     private val binding get() = _binding!!
@@ -40,6 +36,11 @@ class ActivitiesFragment : Fragment() {
     private var allApps: List<AppInfo> = emptyList()
     private var fontApplied = false
     private var searchQuery: String = ""
+
+    private var splitController: SplitPaneController? = null
+    private var isTabletMode = false
+
+    private val detailContainerId = 1002
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -52,8 +53,11 @@ class ActivitiesFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        isTabletMode = isLargeScreen()
+
         LogManager.info(requireContext(), "ActivitiesFragment created", "View created")
 
+        setupSplitPane()
         setupBackPressedCallback()
         setupRecyclerView()
         setupSearch()
@@ -71,35 +75,68 @@ class ActivitiesFragment : Fragment() {
             fontApplied = true
         }
         refresh()
-        LogManager.info(requireContext(), "ActivitiesFragment resumed", "onResume called")
-    }
-
-    override fun onPause() {
-        super.onPause()
-        LogManager.info(requireContext(), "ActivitiesFragment paused", "onPause called")
     }
 
     override fun onDestroyView() {
         super.onDestroyView()
         searchJob?.cancel()
         _binding = null
-        LogManager.info(requireContext(), "ActivitiesFragment destroyed", "View destroyed")
+    }
+
+    override fun onDetailClose() {
+        closeDetailPane()
     }
 
     fun refresh() {
-        LogManager.info(requireContext(), "ActivitiesFragment refresh", "Refreshing apps")
         viewModel.refresh()
+    }
+
+    private fun isLargeScreen(): Boolean {
+        val displayMetrics = resources.displayMetrics
+        val widthDp = displayMetrics.widthPixels / displayMetrics.density
+        return widthDp >= 600
+    }
+
+    private fun setupSplitPane() {
+        if (!isTabletMode) {
+            binding.detailPane.visibility = View.GONE
+            binding.splitDivider.visibility = View.GONE
+            return
+        }
+        splitController = SplitPaneController(
+            listPane = binding.listPane,
+            divider = binding.splitDivider,
+            detailPane = binding.detailPane
+        ) {
+            binding.recyclerView.scrollToPosition(0)
+        }
+    }
+
+    private fun openDetailInPane(app: AppInfo) {
+        val controller = splitController ?: return
+        if (binding.detailPane.id != detailContainerId) {
+            binding.detailPane.id = detailContainerId
+        }
+        val fragment = ActivityDetailFragment.newInstance(app.packageName, app.appName, app.isSystemApp)
+        controller.open(childFragmentManager, detailContainerId, fragment, "activity_detail_${app.packageName}")
+    }
+
+    private fun closeDetailPane(): Boolean {
+        val controller = splitController ?: return false
+        return controller.closeIfOpen(childFragmentManager, detailContainerId)
     }
 
     private fun setupBackPressedCallback() {
         val callback = object : OnBackPressedCallback(true) {
             override fun handleOnBackPressed() {
+                if (isTabletMode && closeDetailPane()) {
+                    return
+                }
                 val searchText = binding.searchEditText.text.toString()
                 if (searchText.isNotEmpty()) {
                     binding.searchEditText.setText("")
                     searchQuery = ""
                     filterApps("")
-                    LogManager.info(requireContext(), "Search cleared via back", "Search text was: $searchText")
                 } else {
                     isEnabled = false
                     requireActivity().onBackPressedDispatcher.onBackPressed()
@@ -107,7 +144,6 @@ class ActivitiesFragment : Fragment() {
             }
         }
         requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner, callback)
-        LogManager.debug(requireContext(), "Back pressed callback setup", "ActivitiesFragment")
     }
 
     private fun runSpringEnterAnimation() {
@@ -118,7 +154,6 @@ class ActivitiesFragment : Fragment() {
             if (isAdded && view != null) {
                 SpringAnimationHelper.animateAlpha(binding.recyclerView, 1f)
                 SpringAnimationHelper.animateTranslationY(binding.recyclerView, 0f)
-                LogManager.debug(requireContext(), "Spring enter animation applied", "ActivitiesFragment")
             }
         }
     }
@@ -127,7 +162,16 @@ class ActivitiesFragment : Fragment() {
         if (!isAdded || view == null) return
         appsAdapter = ActivitiesAppAdapter { app ->
             SpringAnimationHelper.animateClick(binding.recyclerView)
-            LogManager.info(requireContext(), "App clicked in Activities", "Package: ${app.packageName}, App: ${app.appName}")
+            openAppActivities(app)
+        }
+        binding.recyclerView.layoutManager = LinearLayoutManager(requireContext())
+        binding.recyclerView.adapter = appsAdapter
+    }
+
+    private fun openAppActivities(app: AppInfo) {
+        if (isTabletMode) {
+            openDetailInPane(app)
+        } else {
             val intent = Intent(requireContext(), ActivityDetailActivity::class.java).apply {
                 putExtra(ActivityDetailActivity.EXTRA_PACKAGE_NAME, app.packageName)
                 putExtra(ActivityDetailActivity.EXTRA_APP_NAME, app.appName)
@@ -135,9 +179,6 @@ class ActivitiesFragment : Fragment() {
             }
             startActivity(intent)
         }
-        binding.recyclerView.layoutManager = LinearLayoutManager(requireContext())
-        binding.recyclerView.adapter = appsAdapter
-        LogManager.debug(requireContext(), "RecyclerView setup complete", "ActivitiesFragment")
     }
 
     private fun setupSearch() {
@@ -168,17 +209,13 @@ class ActivitiesFragment : Fragment() {
                 false
             }
         }
-
-        LogManager.debug(requireContext(), "Search setup complete", "ActivitiesFragment")
     }
 
     private fun setupSwipeRefresh() {
         if (!isAdded || view == null) return
         binding.swipeRefresh.setOnRefreshListener {
-            LogManager.info(requireContext(), "Swipe refresh triggered", "ActivitiesFragment")
             viewModel.refresh()
         }
-        LogManager.debug(requireContext(), "Swipe refresh setup complete", "ActivitiesFragment")
     }
 
     private fun filterApps(query: String) {
@@ -191,7 +228,6 @@ class ActivitiesFragment : Fragment() {
                 it.packageName.contains(query, ignoreCase = true)
             }
             appsAdapter.submitList(filtered)
-            LogManager.debug(requireContext(), "Filter applied", "Query: $query, Results: ${filtered.size}")
         }
     }
 
@@ -205,8 +241,6 @@ class ActivitiesFragment : Fragment() {
             binding.recyclerView.visibility = if (isEmpty) View.GONE else View.VISIBLE
             binding.swipeRefresh.isRefreshing = false
             binding.loadingOverlay.visibility = View.GONE
-
-            LogManager.info(requireContext(), "Activities loaded", "Count: ${apps.size}, Empty: $isEmpty")
         }
 
         viewModel.isLoading.observe(viewLifecycleOwner) { isLoading ->
@@ -215,7 +249,6 @@ class ActivitiesFragment : Fragment() {
                 binding.loadingOverlay.visibility = View.VISIBLE
                 binding.recyclerView.visibility = View.GONE
                 binding.emptyState.visibility = View.GONE
-                LogManager.debug(requireContext(), "Loading activities", "Loading overlay shown")
             } else {
                 binding.loadingOverlay.visibility = View.GONE
             }

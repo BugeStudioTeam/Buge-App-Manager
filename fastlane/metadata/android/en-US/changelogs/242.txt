@@ -1,0 +1,7 @@
+**13.89.153**
+
+**Added**
+- Updated tablet interface with split-screen functionality
+
+**Contributors of this version:**
+None

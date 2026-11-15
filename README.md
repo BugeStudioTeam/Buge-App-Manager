@@ -99,6 +99,8 @@ Choose between **Shizuku**, **Dhizuku** or **ROOT** authorization.
 
 - Українська - uk
 
+- Türkçe - tr
+
 - Português - pt
 
 - Português (Brasil) - pt-rBR
@@ -140,6 +142,15 @@ Choose between **Shizuku**, **Dhizuku** or **ROOT** authorization.
    <img alt="Star History Chart" src="https://api.star-history.com/chart?repos=BugeStudioTeam/Buge-App-Manager&type=date&legend=top-left&sealed_token=jZTygO4Pz6rzviCijN8nJplRBnY9ehHv9qlEL3uW_EVikw63qBIraoS0O7xV3lszffGX8ONjKeKo47xT3Kv8g6xwd27TbnZVekUxbRDLPGZjUlV7vc-jPg" />
  </picture>
 </a>
+
+---
+
+## Support
+
+If you find Buge App Manager useful, consider supporting the project.<br>
+Your support helps keep development going!
+
+**[Support Us](https://bugestudio.website/support/)**
 
 ---
 

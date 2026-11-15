@@ -1,0 +1,10 @@
+**13.90.154**
+
+**Added**
+- Added Turkish language (issue #122 and language files by @kyoyacchi)
+
+**Fixes**
+- Fixed list bugs
+
+**Contributors of this version:**
+- @kyoyacchi

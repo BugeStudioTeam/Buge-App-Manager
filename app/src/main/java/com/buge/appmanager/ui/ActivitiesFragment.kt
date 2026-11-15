@@ -37,6 +37,10 @@ class ActivitiesFragment : Fragment(), ActivityDetailFragment.OnDetailCloseListe
     private var fontApplied = false
     private var searchQuery: String = ""
 
+    private var savedScrollPosition: Int = 0
+    private var savedScrollOffset: Int = 0
+    private var isRestoringScroll = false
+
     private var splitController: SplitPaneController? = null
     private var isTabletMode = false
 
@@ -75,6 +79,12 @@ class ActivitiesFragment : Fragment(), ActivityDetailFragment.OnDetailCloseListe
             fontApplied = true
         }
         refresh()
+        restoreScrollPosition()
+    }
+
+    override fun onPause() {
+        super.onPause()
+        saveScrollPosition()
     }
 
     override fun onDestroyView() {
@@ -108,12 +118,12 @@ class ActivitiesFragment : Fragment(), ActivityDetailFragment.OnDetailCloseListe
             divider = binding.splitDivider,
             detailPane = binding.detailPane
         ) {
-            binding.recyclerView.scrollToPosition(0)
         }
     }
 
     private fun openDetailInPane(app: AppInfo) {
         val controller = splitController ?: return
+        saveScrollPosition()
         if (binding.detailPane.id != detailContainerId) {
             binding.detailPane.id = detailContainerId
         }
@@ -123,7 +133,13 @@ class ActivitiesFragment : Fragment(), ActivityDetailFragment.OnDetailCloseListe
 
     private fun closeDetailPane(): Boolean {
         val controller = splitController ?: return false
-        return controller.closeIfOpen(childFragmentManager, detailContainerId)
+        if (!controller.isOpen()) return false
+        controller.close(childFragmentManager, detailContainerId)
+        binding.recyclerView.post {
+            val layoutManager = binding.recyclerView.layoutManager as? LinearLayoutManager
+            layoutManager?.scrollToPositionWithOffset(savedScrollPosition, savedScrollOffset)
+        }
+        return true
     }
 
     private fun setupBackPressedCallback() {
@@ -172,6 +188,7 @@ class ActivitiesFragment : Fragment(), ActivityDetailFragment.OnDetailCloseListe
         if (isTabletMode) {
             openDetailInPane(app)
         } else {
+            saveScrollPosition()
             val intent = Intent(requireContext(), ActivityDetailActivity::class.java).apply {
                 putExtra(ActivityDetailActivity.EXTRA_PACKAGE_NAME, app.packageName)
                 putExtra(ActivityDetailActivity.EXTRA_APP_NAME, app.appName)
@@ -231,11 +248,37 @@ class ActivitiesFragment : Fragment(), ActivityDetailFragment.OnDetailCloseListe
         }
     }
 
+    private fun saveScrollPosition() {
+        val layoutManager = binding.recyclerView.layoutManager as? LinearLayoutManager
+        layoutManager?.let {
+            savedScrollPosition = it.findFirstVisibleItemPosition()
+            val firstView = it.findViewByPosition(savedScrollPosition)
+            savedScrollOffset = firstView?.top ?: 0
+        }
+    }
+
+    private fun restoreScrollPosition() {
+        if (savedScrollPosition > 0 && !isRestoringScroll) {
+            isRestoringScroll = true
+            binding.recyclerView.post {
+                val layoutManager = binding.recyclerView.layoutManager as? LinearLayoutManager
+                layoutManager?.scrollToPositionWithOffset(savedScrollPosition, savedScrollOffset)
+                isRestoringScroll = false
+            }
+        }
+    }
+
     private fun observeViewModel() {
         viewModel.apps.observe(viewLifecycleOwner) { apps ->
             if (!isAdded || view == null) return@observe
             allApps = apps
             filterApps(searchQuery)
+            if (savedScrollPosition > 0) {
+                binding.recyclerView.post {
+                    val layoutManager = binding.recyclerView.layoutManager as? LinearLayoutManager
+                    layoutManager?.scrollToPositionWithOffset(savedScrollPosition, savedScrollOffset)
+                }
+            }
             val isEmpty = apps.isEmpty()
             binding.emptyState.visibility = if (isEmpty) View.VISIBLE else View.GONE
             binding.recyclerView.visibility = if (isEmpty) View.GONE else View.VISIBLE

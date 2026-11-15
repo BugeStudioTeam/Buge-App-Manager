@@ -99,6 +99,8 @@ Choose between **Shizuku**, **Dhizuku** or **ROOT** authorization.
 
 - Українська - uk
 
+- Türkçe - tr
+
 - Português - pt
 
 - Português (Brasil) - pt-rBR

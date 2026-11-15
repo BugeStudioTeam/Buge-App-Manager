@@ -131,12 +131,12 @@ class AppsFragment : Fragment(), AppDetailFragment.OnDetailCloseListener {
             divider = binding.splitDivider,
             detailPane = binding.detailPane
         ) {
-            binding.recyclerView.scrollToPosition(0)
         }
     }
 
     private fun openDetailInPane(packageName: String) {
         val controller = splitController ?: return
+        saveScrollPosition()
         if (binding.detailPane.id != detailContainerId) {
             binding.detailPane.id = detailContainerId
         }
@@ -146,7 +146,13 @@ class AppsFragment : Fragment(), AppDetailFragment.OnDetailCloseListener {
 
     private fun closeDetailPane(): Boolean {
         val controller = splitController ?: return false
-        return controller.closeIfOpen(childFragmentManager, detailContainerId)
+        if (!controller.isOpen()) return false
+        controller.close(childFragmentManager, detailContainerId)
+        binding.recyclerView.post {
+            val layoutManager = binding.recyclerView.layoutManager as? LinearLayoutManager
+            layoutManager?.scrollToPositionWithOffset(savedScrollPosition, savedScrollOffset)
+        }
+        return true
     }
 
     private fun setupRecyclerView() {
@@ -649,12 +655,17 @@ class AppsFragment : Fragment(), AppDetailFragment.OnDetailCloseListener {
             } else {
                 applyFilter(currentFilter)
             }
-            if (!isRestoringScroll) {
+            if (isRestoringScroll) {
+                restoreScrollPosition()
+            } else if (savedScrollPosition == 0) {
                 binding.recyclerView.post {
                     binding.recyclerView.scrollToPosition(0)
                 }
             } else {
-                restoreScrollPosition()
+                binding.recyclerView.post {
+                    val layoutManager = binding.recyclerView.layoutManager as? LinearLayoutManager
+                    layoutManager?.scrollToPositionWithOffset(savedScrollPosition, savedScrollOffset)
+                }
             }
             binding.loadingOverlay.visibility = View.GONE
             binding.swipeRefresh.isRefreshing = false

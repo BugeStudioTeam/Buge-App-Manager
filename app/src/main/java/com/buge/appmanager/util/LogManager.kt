@@ -395,8 +395,14 @@ object LogManager {
             logEntries.clear()
         }
         processedLogcatKeys.clear()
-        saveLogsToFile(context)
-        info(context, "Logs cleared", "All logs have been cleared")
+        try {
+            val file = File(context.filesDir, LOG_FILE_NAME)
+            if (file.exists()) {
+                file.delete()
+            }
+        } catch (e: Exception) {
+            Log.e(logTag, "Failed to delete log file on clear", e)
+        }
         notifyListeners()
     }
 

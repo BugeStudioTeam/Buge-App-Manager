@@ -4,24 +4,21 @@
 package com.buge.appmanager
 
 import android.os.Bundle
-import android.view.LayoutInflater
+import android.text.SpannableStringBuilder
+import android.text.style.ForegroundColorSpan
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
-import android.view.ViewGroup
-import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
+import androidx.core.content.ContextCompat
 import com.buge.appmanager.databinding.ActivityLogViewerBinding
 import com.buge.appmanager.util.LogManager
 import com.buge.appmanager.util.SnackbarHelper
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.snackbar.Snackbar
-import android.widget.TextView
 
 class LogViewerActivity : BaseActivity() {
 
     private lateinit var binding: ActivityLogViewerBinding
-    private lateinit var adapter: LogAdapter
 
     private val logUpdateListener = {
         runOnUiThread {
@@ -36,7 +33,6 @@ class LogViewerActivity : BaseActivity() {
 
         setupToolbar()
         setupLogSwitch()
-        setupRecyclerView()
         updateLogDisplay()
 
         LogManager.addListener(logUpdateListener)
@@ -201,51 +197,65 @@ class LogViewerActivity : BaseActivity() {
         }
     }
 
-    private fun setupRecyclerView() {
-        adapter = LogAdapter()
-        binding.logRecyclerView.layoutManager = LinearLayoutManager(this)
-        binding.logRecyclerView.adapter = adapter
-    }
-
     private fun updateLogDisplay() {
         val logs = LogManager.getLogs()
-        adapter.submitList(logs)
-        val isEmpty = logs.isEmpty()
-        binding.emptyState.visibility = if (isEmpty) View.VISIBLE else View.GONE
-        binding.logRecyclerView.visibility = if (isEmpty) View.GONE else View.VISIBLE
+        if (logs.isEmpty()) {
+            binding.logText.text = ""
+            binding.logScrollView.visibility = View.GONE
+            binding.emptyState.visibility = View.VISIBLE
+            return
+        }
+
+        binding.logScrollView.visibility = View.VISIBLE
+        binding.emptyState.visibility = View.GONE
+
+        val builder = SpannableStringBuilder()
+        logs.forEachIndexed { index, entry ->
+            val line = entry.toLine()
+            val start = builder.length
+            builder.append(line)
+            val end = builder.length
+
+            val color = colorForType(entry.type)
+            if (color != null) {
+                builder.setSpan(
+                    ForegroundColorSpan(color),
+                    start,
+                    end,
+                    SpannableStringBuilder.SPAN_EXCLUSIVE_EXCLUSIVE
+                )
+            }
+
+            if (index < logs.size - 1) {
+                builder.append("\n")
+            }
+        }
+
+        binding.logText.text = builder
+    }
+
+    private fun colorForType(type: LogManager.LogType): Int? {
+        return when (type) {
+            LogManager.LogType.ERROR -> ContextCompat.getColor(this, R.color.color_denied)
+            LogManager.LogType.WARNING -> ContextCompat.getColor(this, android.R.color.holo_orange_dark)
+            LogManager.LogType.DEBUG -> ContextCompat.getColor(this, android.R.color.holo_amber_dark)
+            LogManager.LogType.INFO -> ContextCompat.getColor(this, R.color.md_theme_primary)
+            LogManager.LogType.VERBOSE -> ContextCompat.getColor(this, android.R.color.darker_gray)
+            LogManager.LogType.SUCCESS -> ContextCompat.getColor(this, R.color.color_granted)
+            LogManager.LogType.PERMISSION -> ContextCompat.getColor(this, R.color.color_granted)
+            LogManager.LogType.PERMISSION_CHANGE -> ContextCompat.getColor(this, R.color.color_granted)
+            LogManager.LogType.SHIZUKU -> ContextCompat.getColor(this, R.color.color_granted)
+            LogManager.LogType.ACTIVITY -> ContextCompat.getColor(this, R.color.color_granted)
+            LogManager.LogType.UI -> ContextCompat.getColor(this, R.color.md_theme_primary)
+            LogManager.LogType.STORAGE -> ContextCompat.getColor(this, android.R.color.holo_blue_dark)
+            LogManager.LogType.NETWORK -> ContextCompat.getColor(this, android.R.color.holo_purple)
+            LogManager.LogType.LOGCAT -> ContextCompat.getColor(this, android.R.color.darker_gray)
+            else -> null
+        }
     }
 
     override fun onDestroy() {
         super.onDestroy()
         LogManager.removeListener(logUpdateListener)
-    }
-
-    inner class LogAdapter : RecyclerView.Adapter<LogAdapter.LogViewHolder>() {
-
-        private var items: List<LogManager.LogEntry> = emptyList()
-
-        fun submitList(newItems: List<LogManager.LogEntry>) {
-            items = newItems
-            notifyDataSetChanged()
-        }
-
-        override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): LogViewHolder {
-            val view = LayoutInflater.from(parent.context).inflate(R.layout.item_log_entry, parent, false)
-            return LogViewHolder(view)
-        }
-
-        override fun onBindViewHolder(holder: LogViewHolder, position: Int) {
-            holder.bind(items[position])
-        }
-
-        override fun getItemCount(): Int = items.size
-
-        inner class LogViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-            private val logLine: TextView = itemView.findViewById(R.id.log_line)
-
-            fun bind(entry: LogManager.LogEntry) {
-                logLine.text = entry.toLine()
-            }
-        }
     }
 }

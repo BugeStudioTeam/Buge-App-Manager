@@ -238,7 +238,7 @@ class LogViewerActivity : BaseActivity() {
         return when (type) {
             LogManager.LogType.ERROR -> ContextCompat.getColor(this, R.color.color_denied)
             LogManager.LogType.WARNING -> ContextCompat.getColor(this, android.R.color.holo_orange_dark)
-            LogManager.LogType.DEBUG -> ContextCompat.getColor(this, android.R.color.holo_amber_dark)
+            LogManager.LogType.DEBUG -> ContextCompat.getColor(this, R.color.log_debug)
             LogManager.LogType.INFO -> ContextCompat.getColor(this, R.color.md_theme_primary)
             LogManager.LogType.VERBOSE -> ContextCompat.getColor(this, android.R.color.darker_gray)
             LogManager.LogType.SUCCESS -> ContextCompat.getColor(this, R.color.color_granted)

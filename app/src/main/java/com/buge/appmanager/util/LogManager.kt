@@ -135,12 +135,25 @@ object LogManager {
     private val gson = Gson()
 
     fun init(context: Context) {
+        synchronized(lock) {
+            logEntries.clear()
+        }
+        processedLogcatKeys.clear()
+        try {
+            val file = File(context.filesDir, LOG_FILE_NAME)
+            if (file.exists()) {
+                file.delete()
+            }
+        } catch (e: Exception) {
+            Log.e(logTag, "Failed to delete log file on init", e)
+        }
+        clearTimestamp = System.currentTimeMillis()
+        PreferencesManager.setLogClearTimestamp(context, clearTimestamp)
+
         isEnabled = PreferencesManager.getLoggingEnabled(context)
         currentSessionId = System.currentTimeMillis()
-        clearTimestamp = PreferencesManager.getLogClearTimestamp(context)
         info(context, "LogManager initialized", "Session started: $currentSessionId")
         info(context, "Device Info", "Model: ${Build.MODEL}, SDK: ${Build.VERSION.SDK_INT}, Android: ${Build.VERSION.RELEASE}")
-        loadLogsFromFile(context)
         startLogcatReader(context)
     }
 

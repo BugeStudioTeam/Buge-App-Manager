@@ -124,6 +124,9 @@ object LogManager {
     private val processedLogcatKeys = java.util.Collections.synchronizedSet(mutableSetOf<String>())
 
     @Volatile
+    private var clearTimestamp: Long = 0L
+
+    @Volatile
     private var recordStatus: RecordStatus = RecordStatus.Idle
 
     private var recordingFileInfo: RecordingFileInfo? = null
@@ -134,6 +137,7 @@ object LogManager {
     fun init(context: Context) {
         isEnabled = PreferencesManager.getLoggingEnabled(context)
         currentSessionId = System.currentTimeMillis()
+        clearTimestamp = PreferencesManager.getLogClearTimestamp(context)
         info(context, "LogManager initialized", "Session started: $currentSessionId")
         info(context, "Device Info", "Model: ${Build.MODEL}, SDK: ${Build.VERSION.SDK_INT}, Android: ${Build.VERSION.RELEASE}")
         loadLogsFromFile(context)
@@ -395,6 +399,8 @@ object LogManager {
             logEntries.clear()
         }
         processedLogcatKeys.clear()
+        clearTimestamp = System.currentTimeMillis()
+        PreferencesManager.setLogClearTimestamp(context, clearTimestamp)
         try {
             val file = File(context.filesDir, LOG_FILE_NAME)
             if (file.exists()) {
@@ -536,6 +542,7 @@ object LogManager {
         if (buffer.isEmpty()) return
 
         val regex = Regex("""(\d{2}-\d{2}\s+\d{2}:\d{2}:\d{2}\.\d{3})\s+(\w)/([^:]+):(.*)""")
+        val threshold = clearTimestamp
 
         for (line in buffer) {
             try {
@@ -548,6 +555,12 @@ object LogManager {
 
                     if (message.isEmpty()) continue
                     if (tag == "BugeAppManager") continue
+
+                    val logcatTime = parseLogcatTime(timeStr)
+
+                    if (logcatTime <= threshold) {
+                        continue
+                    }
 
                     val uniqueKey = "$timeStr|$level|$tag|$message"
 
@@ -567,7 +580,6 @@ object LogManager {
                         }
                     }
 
-                    val logcatTime = parseLogcatTime(timeStr)
                     val logType = when (level) {
                         "V" -> LogType.VERBOSE
                         "D" -> LogType.DEBUG

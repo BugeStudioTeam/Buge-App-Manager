@@ -78,23 +78,16 @@
             android:paddingHorizontal="16dp"
             android:paddingBottom="80dp">
 
-            <HorizontalScrollView
+            <TextView
+                android:id="@+id/log_text"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:scrollbars="none">
-
-                <TextView
-                    android:id="@+id/log_text"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:fontFamily="monospace"
-                    android:textSize="12sp"
-                    android:textColor="?attr/colorOnSurface"
-                    android:textIsSelectable="true"
-                    android:lineSpacingExtra="2dp"
-                    android:paddingVertical="4dp" />
-
-            </HorizontalScrollView>
+                android:fontFamily="monospace"
+                android:textSize="12sp"
+                android:textColor="?attr/colorOnSurface"
+                android:textIsSelectable="true"
+                android:lineSpacingExtra="2dp"
+                android:paddingVertical="4dp" />
 
         </ScrollView>
 

@@ -4,9 +4,15 @@
 package com.buge.appmanager.util
 
 import android.content.Context
+import android.net.Uri
 import android.os.Build
 import android.util.Log
+import androidx.documentfile.provider.DocumentFile
+import com.google.gson.Gson
+import com.google.gson.reflect.TypeToken
+import java.io.BufferedWriter
 import java.io.File
+import java.io.IOException
 import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
@@ -16,6 +22,18 @@ object LogManager {
     private const val LOG_FILE_NAME = "app_logs.txt"
     private const val MAX_LOG_SIZE = 1024 * 1024
     private const val MAX_LOG_LINES = 2000
+    private const val LOGCAT_DIR = "logcat_recordings"
+    private const val RECORDING_PREF = "logcat_recordings_pref"
+    private const val RECORDING_LIST_KEY = "recordings"
+
+    enum class RecordStatus {
+        Idle,
+        RecordingInProgress,
+        SaveRecordedLogs,
+        ;
+
+        fun isIdle() = this == Idle
+    }
 
     enum class LogType(val display: String) {
         INFO("INFO"),
@@ -68,11 +86,27 @@ object LogManager {
         }
     }
 
+    data class RecordingFileInfo(
+        val fileName: String,
+        val uri: Uri,
+        val isCustomLocation: Boolean,
+        val timestamp: Long
+    )
+
+    data class SavedRecordingInfo(
+        val fileName: String,
+        val path: String,
+        val isCustom: Boolean,
+        val timestamp: Long
+    )
+
     private val lock = Any()
+    private val recordingLock = Any()
 
     private var isEnabled = false
     private val logEntries = mutableListOf<LogEntry>()
     private val listeners = java.util.concurrent.CopyOnWriteArrayList<() -> Unit>()
+    private val recordStateListeners = java.util.concurrent.CopyOnWriteArrayList<(RecordStatus) -> Unit>()
     private var currentSessionId = System.currentTimeMillis()
 
     private val logTag = "BugeAppManager"
@@ -81,7 +115,14 @@ object LogManager {
     private var isLogcatReading = false
 
     private val processedLogcatKeys = java.util.Collections.synchronizedSet(mutableSetOf<String>())
-    private var lastLogcatTimestamp = 0L
+
+    @Volatile
+    private var recordStatus: RecordStatus = RecordStatus.Idle
+
+    private var recordingFileInfo: RecordingFileInfo? = null
+    private var recordingWriter: BufferedWriter? = null
+
+    private val gson = Gson()
 
     fun init(context: Context) {
         isEnabled = PreferencesManager.getLoggingEnabled(context)
@@ -100,7 +141,6 @@ object LogManager {
         if (enabled) {
             info(context, "Logging enabled", "Session resumed")
             processedLogcatKeys.clear()
-            lastLogcatTimestamp = System.currentTimeMillis()
             startLogcatReader(context)
         } else {
             info(context, "Logging disabled", "Session paused")
@@ -108,6 +148,220 @@ object LogManager {
             Log.d(logTag, "Logging disabled by user")
         }
         notifyListeners()
+    }
+
+    fun getRecordStatus(): RecordStatus = recordStatus
+
+    fun setRecordStatus(context: Context, status: RecordStatus) {
+        if (recordStatus == status) return
+        recordStatus = status
+        notifyRecordStateListeners(status)
+
+        when (status) {
+            RecordStatus.Idle -> Unit
+            RecordStatus.RecordingInProgress -> startRecording(context)
+            RecordStatus.SaveRecordedLogs -> stopRecording(context)
+        }
+    }
+
+    fun addRecordStateListener(listener: (RecordStatus) -> Unit) {
+        if (!recordStateListeners.contains(listener)) {
+            recordStateListeners.add(listener)
+        }
+    }
+
+    fun removeRecordStateListener(listener: (RecordStatus) -> Unit) {
+        recordStateListeners.remove(listener)
+    }
+
+    private fun notifyRecordStateListeners(status: RecordStatus) {
+        recordStateListeners.forEach { it.invoke(status) }
+    }
+
+    private fun startRecording(context: Context) {
+        synchronized(recordingLock) {
+            if (recordingWriter != null) {
+                Log.w(logTag, "startRecording called while already recording, ignored")
+                return
+            }
+            val fileInfo = createFileToStartRecording(context)
+            if (fileInfo == null) {
+                Log.e(logTag, "startRecording failed: createFile returned null")
+                recordStatus = RecordStatus.Idle
+                notifyRecordStateListeners(recordStatus)
+                return
+            }
+            val writer = createBufferedWriter(context, fileInfo)
+            if (writer == null) {
+                Log.e(logTag, "startRecording failed: createBufferedWriter returned null")
+                recordStatus = RecordStatus.Idle
+                notifyRecordStateListeners(recordStatus)
+                return
+            }
+            recordingFileInfo = fileInfo
+            recordingWriter = writer
+            Log.d(logTag, "Recording started: ${fileInfo.fileName}")
+        }
+    }
+
+    private fun stopRecording(context: Context) {
+        synchronized(recordingLock) {
+            val info = recordingFileInfo
+            val writer = recordingWriter
+            recordingWriter = null
+            recordingFileInfo = null
+
+            var success = false
+            if (writer != null) {
+                try {
+                    writer.flush()
+                    writer.close()
+                    success = true
+                } catch (e: Exception) {
+                    Log.e(logTag, "Failed to close recording writer: ${e.message}", e)
+                }
+            }
+
+            recordStatus = RecordStatus.Idle
+            notifyRecordStateListeners(recordStatus)
+
+            if (success && info != null) {
+                notifyListeners()
+                Log.d(logTag, "Recording saved: ${info.fileName}")
+            } else {
+                Log.e(logTag, "Recording stop failed or no active recording")
+            }
+        }
+    }
+
+    private fun createFileToStartRecording(context: Context): RecordingFileInfo? {
+        val createFileResult = createFile(context, recording = true) ?: return null
+        val (uri, isCustomLocation, timestamp) = createFileResult
+
+        val fileName = if (isCustomLocation) {
+            DocumentFile.fromSingleUri(context, uri)?.name
+        } else {
+            uri.lastPathSegment?.substringAfterLast("/")
+        } ?: return null
+
+        saveRecordingInfo(
+            context,
+            SavedRecordingInfo(
+                fileName = fileName,
+                path = uri.toString(),
+                isCustom = isCustomLocation,
+                timestamp = timestamp
+            )
+        )
+
+        return RecordingFileInfo(
+            fileName = fileName,
+            uri = uri,
+            isCustomLocation = isCustomLocation,
+            timestamp = timestamp
+        )
+    }
+
+    private fun createFile(context: Context, recording: Boolean): Triple<Uri, Boolean, Long>? {
+        val date = Date()
+        val timeStamp = SimpleDateFormat("yyyy-MM-dd_HH-mm-ss", Locale.getDefault()).format(date)
+        val fileName = buildString {
+            append("logcat_")
+            if (recording) append("recording_")
+            append(timeStamp)
+        }
+
+        val customSaveLocation = PreferencesManager.getLogcatSaveLocation(context)
+
+        return if (customSaveLocation.isEmpty()) {
+            val dir = File(context.filesDir, LOGCAT_DIR)
+            if (!dir.exists()) dir.mkdirs()
+            val file = File(dir, "$fileName.txt")
+            Triple(Uri.fromFile(file), false, date.time)
+        } else {
+            try {
+                val treeUri = Uri.parse(customSaveLocation)
+                val documentFile = DocumentFile.fromTreeUri(context, treeUri) ?: return null
+                val created = documentFile.createFile("text/plain", fileName) ?: return null
+                Triple(created.uri, true, date.time)
+            } catch (e: Exception) {
+                Log.e(logTag, "createFile SAF failed: ${e.message}", e)
+                null
+            }
+        }
+    }
+
+    private fun createBufferedWriter(context: Context, fileInfo: RecordingFileInfo): BufferedWriter? {
+        return try {
+            if (fileInfo.isCustomLocation) {
+                context.contentResolver.openOutputStream(fileInfo.uri)?.bufferedWriter()
+            } else {
+                val file = File(fileInfo.uri.path ?: return null)
+                val parent = file.parentFile
+                if (parent != null && !parent.exists()) parent.mkdirs()
+                file.bufferedWriter()
+            }
+        } catch (e: IOException) {
+            Log.e(logTag, "createBufferedWriter failed: ${e.message}", e)
+            null
+        }
+    }
+
+    private fun writeToRecording(entry: LogEntry) {
+        val writer = recordingWriter ?: return
+        try {
+            writer.write(entry.getFormattedMessage())
+            writer.newLine()
+        } catch (e: Exception) {
+            Log.e(logTag, "writeToRecording failed: ${e.message}", e)
+        }
+    }
+
+    private fun saveRecordingInfo(context: Context, info: SavedRecordingInfo) {
+        try {
+            val list = getSavedRecordings(context).toMutableList()
+            list.add(0, info)
+            val json = gson.toJson(list)
+            context.getSharedPreferences(RECORDING_PREF, Context.MODE_PRIVATE)
+                .edit()
+                .putString(RECORDING_LIST_KEY, json)
+                .apply()
+        } catch (e: Exception) {
+            Log.e(logTag, "saveRecordingInfo failed: ${e.message}", e)
+        }
+    }
+
+    fun getSavedRecordings(context: Context): List<SavedRecordingInfo> {
+        return try {
+            val json = context.getSharedPreferences(RECORDING_PREF, Context.MODE_PRIVATE)
+                .getString(RECORDING_LIST_KEY, "[]") ?: "[]"
+            val type = object : TypeToken<List<SavedRecordingInfo>>() {}.type
+            gson.fromJson(json, type) ?: emptyList()
+        } catch (e: Exception) {
+            emptyList()
+        }
+    }
+
+    fun deleteSavedRecording(context: Context, info: SavedRecordingInfo) {
+        try {
+            val uri = Uri.parse(info.path)
+            if (info.isCustom) {
+                val doc = DocumentFile.fromSingleUri(context, uri)
+                doc?.delete()
+            } else {
+                val file = File(uri.path ?: return)
+                if (file.exists()) file.delete()
+            }
+            val list = getSavedRecordings(context).toMutableList()
+            list.removeAll { it.path == info.path }
+            val json = gson.toJson(list)
+            context.getSharedPreferences(RECORDING_PREF, Context.MODE_PRIVATE)
+                .edit()
+                .putString(RECORDING_LIST_KEY, json)
+                .apply()
+        } catch (e: Exception) {
+            Log.e(logTag, "deleteSavedRecording failed: ${e.message}", e)
+        }
     }
 
     fun getLogs(): List<LogEntry> {
@@ -327,6 +581,8 @@ object LogManager {
                         }
                     }
 
+                    writeToRecording(entry)
+
                     saveLogsToFile(context)
                     notifyListeners()
                 }
@@ -489,6 +745,8 @@ object LogManager {
             }
         }
 
+        writeToRecording(entry)
+
         saveLogsToFile(context)
         notifyListeners()
     }
@@ -589,5 +847,15 @@ object LogManager {
 
     fun shutdown() {
         stopLogcatReader()
+        synchronized(recordingLock) {
+            try {
+                recordingWriter?.flush()
+                recordingWriter?.close()
+            } catch (e: Exception) {
+            }
+            recordingWriter = null
+            recordingFileInfo = null
+            recordStatus = RecordStatus.Idle
+        }
     }
 }

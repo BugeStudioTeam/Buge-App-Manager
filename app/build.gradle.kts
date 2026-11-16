@@ -98,6 +98,7 @@ dependencies {
     implementation(libs.androidx.constraintlayout)
     implementation(libs.androidx.viewpager2)
     implementation(libs.androidx.dynamicanimation)
+    implementation(libs.androidx.documentfile)
     implementation(libs.google.material)
     implementation(libs.rikka.shizuku.api)
     implementation(libs.rikka.shizuku.provider)

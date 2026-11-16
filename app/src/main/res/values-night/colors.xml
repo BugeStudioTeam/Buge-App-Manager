@@ -310,4 +310,8 @@
     <color name="md_theme_primary_red">#FFB5A0</color>
     <color name="md_theme_primary_green">#B1D18A</color>
     <color name="md_theme_primary_yellow">#DBC66E</color>
+    
+    <!-- Log font -->
+    <color name="log_debug">#FFD54F</color>
+    
 </resources>

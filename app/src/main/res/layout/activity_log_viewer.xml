@@ -69,23 +69,36 @@
 
         </FrameLayout>
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/log_recycler_view"
+        <ScrollView
+            android:id="@+id/log_scroll_view"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="1"
-            android:clipToPadding="false"
+            android:fillViewport="true"
             android:paddingHorizontal="16dp"
-            android:paddingBottom="80dp" />
+            android:paddingBottom="80dp">
+
+            <TextView
+                android:id="@+id/log_text"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:fontFamily="monospace"
+                android:textSize="12sp"
+                android:textColor="?attr/colorOnSurface"
+                android:textIsSelectable="true"
+                android:lineSpacingExtra="2dp"
+                android:paddingVertical="4dp" />
+
+        </ScrollView>
 
         <LinearLayout
             android:id="@+id/empty_state"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
             android:orientation="vertical"
             android:gravity="center"
-            android:visibility="gone"
-            app:layout_behavior="@string/appbar_scrolling_view_behavior">
+            android:visibility="gone">
 
             <ImageView
                 android:layout_width="48dp"

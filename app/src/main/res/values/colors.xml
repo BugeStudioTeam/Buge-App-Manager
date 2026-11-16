@@ -312,4 +312,8 @@
     
     <!-- Navigation bar background color -->
     <color name="navigation_bar_background">@color/md_theme_surface</color>
+    
+    <!-- Log font -->
+    <color name="log_debug">#FFC107</color>
+    
 </resources>

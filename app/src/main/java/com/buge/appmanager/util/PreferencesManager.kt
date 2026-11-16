@@ -43,6 +43,8 @@ object PreferencesManager {
     private const val WELCOME_COMPLETED_KEY = "welcome_completed"
     private const val APP_SOURCE_KEY = "app_source"
     private const val DANGEROUS_PACKAGES_WARNING_KEY = "dangerous_packages_warning"
+    private const val LOGCAT_SAVE_LOCATION_KEY = "logcat_save_location"
+    private const val LOG_CLEAR_TIMESTAMP_KEY = "log_clear_timestamp"
 
     const val AUTH_MODE_SHIZUKU = "shizuku"
     const val AUTH_MODE_DHIZUKU = "dhizuku"
@@ -360,5 +362,21 @@ object PreferencesManager {
 
     fun getDangerousPackagesWarning(context: Context): Boolean {
         return getPreferences(context).getBoolean(DANGEROUS_PACKAGES_WARNING_KEY, false)
+    }
+
+    fun setLogcatSaveLocation(context: Context, uri: String) {
+        getPreferences(context).edit().putString(LOGCAT_SAVE_LOCATION_KEY, uri).apply()
+    }
+
+    fun getLogcatSaveLocation(context: Context): String {
+        return getPreferences(context).getString(LOGCAT_SAVE_LOCATION_KEY, "") ?: ""
+    }
+
+    fun setLogClearTimestamp(context: Context, timestamp: Long) {
+        getPreferences(context).edit().putLong(LOG_CLEAR_TIMESTAMP_KEY, timestamp).apply()
+    }
+
+    fun getLogClearTimestamp(context: Context): Long {
+        return getPreferences(context).getLong(LOG_CLEAR_TIMESTAMP_KEY, 0L)
     }
 }

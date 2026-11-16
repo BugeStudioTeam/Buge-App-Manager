@@ -21,6 +21,7 @@ gson = "2.11.0"
 okhttp = "4.12.0"
 viewpager2 = "1.1.0"
 hiddenapibypass = "6.1"
+documentfile = "1.0.1"
 
 [libraries]
 androidx-core-ktx = { module = "androidx.core:core-ktx", version.ref = "coreKtx" }
@@ -36,6 +37,7 @@ androidx-preference-ktx = { module = "androidx.preference:preference-ktx", versi
 androidx-constraintlayout = { module = "androidx.constraintlayout:constraintlayout", version.ref = "constraintlayout" }
 androidx-viewpager2 = { module = "androidx.viewpager2:viewpager2", version.ref = "viewpager2" }
 androidx-dynamicanimation = { module = "androidx.dynamicanimation:dynamicanimation", version.ref = "dynamicanimation" }
+androidx-documentfile = { module = "androidx.documentfile:documentfile", version.ref = "documentfile" }
 google-material = { module = "com.google.android.material:material", version.ref = "material" }
 rikka-shizuku-api = { module = "dev.rikka.shizuku:api", version.ref = "shizuku" }
 rikka-shizuku-provider = { module = "dev.rikka.shizuku:provider", version.ref = "shizuku" }

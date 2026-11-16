@@ -80,6 +80,13 @@ object LogManager {
             return SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(Date(timestamp))
         }
 
+        fun toLine(): String {
+            val time = getDisplayTime()
+            val level = type.display
+            val tagPart = tag?.let { " $it" } ?: ""
+            return "$time $level:$tagPart $message"
+        }
+
         fun toCsvString(): String {
             val date = SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS", Locale.getDefault()).format(Date(timestamp))
             return "$date,${type.display},${tag ?: ""},${message.replace(",", ";")},${details?.replace(",", ";") ?: ""}"
@@ -480,12 +487,11 @@ object LogManager {
                 "logcat",
                 "-v", "time",
                 "-d",
-                "*:E"
+                "*:V"
             ))
 
             val reader = process.inputStream.bufferedReader()
             var buffer = mutableListOf<String>()
-            var lastReadTime = System.currentTimeMillis()
 
             while (isLogcatReading) {
                 var line: String? = reader.readLine()
@@ -505,11 +511,7 @@ object LogManager {
 
                 Thread.sleep(2000)
 
-                if (System.currentTimeMillis() - lastReadTime > 60000) {
-                    lastReadTime = System.currentTimeMillis()
-                    process.destroy()
-                    break
-                }
+                if (!isLogcatReading) break
             }
 
             if (buffer.isNotEmpty()) {
@@ -541,9 +543,7 @@ object LogManager {
                     if (message.isEmpty()) continue
                     if (tag == "BugeAppManager") continue
 
-                    if (level != "E" && level != "F") continue
-
-                    val uniqueKey = "$timeStr|$tag|$message"
+                    val uniqueKey = "$timeStr|$level|$tag|$message"
 
                     if (processedLogcatKeys.contains(uniqueKey)) {
                         continue
@@ -562,12 +562,21 @@ object LogManager {
                     }
 
                     val logcatTime = parseLogcatTime(timeStr)
+                    val logType = when (level) {
+                        "V" -> LogType.VERBOSE
+                        "D" -> LogType.DEBUG
+                        "I" -> LogType.INFO
+                        "W" -> LogType.WARNING
+                        "E" -> LogType.ERROR
+                        "F" -> LogType.ERROR
+                        else -> LogType.LOGCAT
+                    }
 
                     val entry = LogEntry(
                         timestamp = logcatTime,
-                        type = LogType.ERROR,
+                        type = logType,
                         message = message,
-                        details = "Logcat",
+                        details = null,
                         tag = tag,
                         threadName = null,
                         stackTrace = null,

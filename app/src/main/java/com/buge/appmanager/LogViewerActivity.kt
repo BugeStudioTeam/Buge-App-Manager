@@ -9,16 +9,14 @@ import android.view.Menu
 import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
-import android.widget.TextView
-import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.buge.appmanager.databinding.ActivityLogViewerBinding
 import com.buge.appmanager.util.LogManager
 import com.buge.appmanager.util.SnackbarHelper
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
-import com.google.android.material.materialswitch.MaterialSwitch
 import com.google.android.material.snackbar.Snackbar
+import android.widget.TextView
 
 class LogViewerActivity : BaseActivity() {
 
@@ -46,7 +44,6 @@ class LogViewerActivity : BaseActivity() {
 
     override fun onResume() {
         super.onResume()
-        // Fuck: Refresh logcat when user opens the viewer
         LogManager.refreshLogcat(this)
         updateLogDisplay()
     }
@@ -189,7 +186,7 @@ class LogViewerActivity : BaseActivity() {
             SnackbarHelper.showSnackbar(binding.root, getString(R.string.log_empty))
             return
         }
-        val text = logs.joinToString("\n\n") { it.getFormattedMessage() }
+        val text = logs.joinToString("\n") { it.toLine() }
         val clipboard = getSystemService(android.content.Context.CLIPBOARD_SERVICE) as android.content.ClipboardManager
         val clip = android.content.ClipData.newPlainText("App Logs", text)
         clipboard.setPrimaryClip(clip)
@@ -244,53 +241,10 @@ class LogViewerActivity : BaseActivity() {
         override fun getItemCount(): Int = items.size
 
         inner class LogViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-            private val logTime: TextView = itemView.findViewById(R.id.log_time)
-            private val logType: TextView = itemView.findViewById(R.id.log_type)
-            private val logMessage: TextView = itemView.findViewById(R.id.log_message)
-            private val logDetails: TextView = itemView.findViewById(R.id.log_details)
-            private val logcatBadge: TextView = itemView.findViewById(R.id.logcat_badge)
+            private val logLine: TextView = itemView.findViewById(R.id.log_line)
 
             fun bind(entry: LogManager.LogEntry) {
-                logTime.text = entry.getDisplayTime()
-                logType.text = entry.type.display
-                logType.setTextColor(getTypeColor(entry.type))
-                logMessage.text = entry.message
-
-                // show logcat badge for logcat entries
-                if (entry.isLogcat) {
-                    logcatBadge.visibility = View.VISIBLE
-                    logcatBadge.text = "LOGCAT"
-                    logcatBadge.setTextColor(ContextCompat.getColor(itemView.context, android.R.color.holo_blue_dark))
-                } else {
-                    logcatBadge.visibility = View.GONE
-                }
-
-                if (!entry.details.isNullOrEmpty()) {
-                    logDetails.visibility = View.VISIBLE
-                    logDetails.text = entry.details
-                } else {
-                    logDetails.visibility = View.GONE
-                }
-            }
-
-            private fun getTypeColor(type: LogManager.LogType): Int {
-                return when (type) {
-                    LogManager.LogType.INFO -> ContextCompat.getColor(itemView.context, R.color.color_granted)
-                    LogManager.LogType.WARNING -> ContextCompat.getColor(itemView.context, android.R.color.holo_orange_dark)
-                    LogManager.LogType.ERROR -> ContextCompat.getColor(itemView.context, R.color.color_denied)
-                    LogManager.LogType.SUCCESS -> ContextCompat.getColor(itemView.context, R.color.color_granted)
-                    LogManager.LogType.PERMISSION -> ContextCompat.getColor(itemView.context, R.color.color_granted)
-                    LogManager.LogType.PERMISSION_CHANGE -> ContextCompat.getColor(itemView.context, R.color.color_granted)
-                    LogManager.LogType.SHIZUKU -> ContextCompat.getColor(itemView.context, R.color.color_granted)
-                    LogManager.LogType.DEBUG -> ContextCompat.getColor(itemView.context, android.R.color.holo_blue_dark)
-                    LogManager.LogType.VERBOSE -> ContextCompat.getColor(itemView.context, android.R.color.darker_gray)
-                    LogManager.LogType.ACTIVITY -> ContextCompat.getColor(itemView.context, R.color.color_granted)
-                    LogManager.LogType.UI -> ContextCompat.getColor(itemView.context, R.color.color_granted)
-                    LogManager.LogType.STORAGE -> ContextCompat.getColor(itemView.context, android.R.color.holo_blue_dark)
-                    LogManager.LogType.NETWORK -> ContextCompat.getColor(itemView.context, android.R.color.holo_purple)
-                    LogManager.LogType.LOGCAT -> ContextCompat.getColor(itemView.context, android.R.color.holo_blue_dark)
-                    else -> ContextCompat.getColor(itemView.context, android.R.color.darker_gray)
-                }
+                logLine.text = entry.toLine()
             }
         }
     }

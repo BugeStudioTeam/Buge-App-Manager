@@ -4,12 +4,11 @@
     android:viewportWidth="750"
     android:viewportHeight="742">
 
-    <!-- 修改 scaleX / scaleY 即可继续调整内部图形的大小比例（当前为 0.7） -->
     <group
         android:pivotX="375"
         android:pivotY="371"
-        android:scaleX="0.7"
-        android:scaleY="0.7">
+        android:scaleX="0.49"
+        android:scaleY="0.49">
 
         <group android:translateY="20">
             <path

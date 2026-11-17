@@ -20,7 +20,7 @@ import java.util.Locale
 
 object LogManager {
 
-    private const val LOG_FILE_NAME = "app_logs.txt"
+    private const val LOG_FILE_NAME = "app_logs.json"
     private const val MAX_LOG_SIZE = 1024 * 1024
     private const val MAX_LOG_LINES = 2000
     private const val LOGCAT_DIR = "logcat_recordings"
@@ -118,6 +118,7 @@ object LogManager {
     private val lock = Any()
     private val recordingLock = Any()
 
+    private var initialized = false
     private var isEnabled = false
     private val logEntries = mutableListOf<LogEntry>()
     private val listeners = java.util.concurrent.CopyOnWriteArrayList<() -> Unit>()
@@ -143,20 +144,17 @@ object LogManager {
     private val gson = Gson()
 
     fun init(context: Context) {
+        synchronized(lock) {
+            if (initialized) return
+            initialized = true
+        }
+
+        loadLogsFromFile(context)
+
         val now = System.currentTimeMillis()
         synchronized(lock) {
-            logEntries.clear()
             logcatWatermark = now
         }
-        try {
-            val file = File(context.filesDir, LOG_FILE_NAME)
-            if (file.exists()) {
-                file.delete()
-            }
-        } catch (e: Exception) {
-            Log.e(logTag, "Failed to delete log file on init", e)
-        }
-        PreferencesManager.setLogClearTimestamp(context, now)
 
         isEnabled = PreferencesManager.getLoggingEnabled(context)
         currentSessionId = System.currentTimeMillis()
@@ -760,26 +758,14 @@ object LogManager {
         if (!file.exists()) return
 
         try {
-            val content = file.readText()
-            if (content.isNotEmpty()) {
-                val lines = content.split("\n").filter { it.isNotEmpty() }
-                for (line in lines) {
-                    try {
-                        val entry = LogEntry(
-                            timestamp = System.currentTimeMillis(),
-                            type = LogType.INFO,
-                            message = line.take(200),
-                            details = "Loaded from file",
-                            tag = null,
-                            threadName = null,
-                            stackTrace = null,
-                            isLogcat = false
-                        )
-                        synchronized(lock) {
-                            logEntries.add(entry)
-                        }
-                    } catch (e: Exception) {
-                    }
+            val json = file.readText()
+            if (json.isBlank()) return
+            val type = object : TypeToken<List<LogEntry>>() {}.type
+            val loaded: List<LogEntry>? = gson.fromJson(json, type)
+            if (loaded != null) {
+                synchronized(lock) {
+                    logEntries.clear()
+                    logEntries.addAll(loaded.filterNotNull().take(MAX_LOG_LINES))
                 }
             }
         } catch (e: Exception) {
@@ -794,13 +780,7 @@ object LogManager {
                 snapshot = logEntries.toList()
             }
             val file = File(context.filesDir, LOG_FILE_NAME)
-            file.printWriter().use { printer ->
-                snapshot.reversed().forEach { entry ->
-                    if (entry != null) {
-                        printer.println(entry.getFormattedMessage())
-                    }
-                }
-            }
+            file.writeText(gson.toJson(snapshot))
         } catch (e: Exception) {
             Log.e(logTag, "Failed to save logs to file", e)
         }

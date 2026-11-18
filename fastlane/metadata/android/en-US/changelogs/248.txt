@@ -1,0 +1,12 @@
+**13.92.156**
+
+**Added**
+- New more personalized and textured icon, with dynamic color background on Android 12+
+- Complete log feature overhaul
+- Restored log retention functionality
+
+**Fixes**
+- Fixed crash caused by duplicate log records
+
+**Contributors of this version:**
+None

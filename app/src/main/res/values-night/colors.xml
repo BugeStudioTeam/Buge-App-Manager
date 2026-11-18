@@ -4,7 +4,6 @@
 <resources>
 
     <color name="ic_launcher_foreground">#A1C2F7</color>
-    <color name="ic_launcher_background">#151617</color>
     
     <!-- Dark theme colors - Blue -->
     <color name="md_theme_primary">#AAC7FF</color>
@@ -160,7 +159,7 @@
     <color name="color_denied_container">#7F0000</color>
     <color name="color_user_app">#AAC7FF</color>
     <color name="color_system_app">#DDBCE0</color>
-    <color name="ic_launcher_background">#284777</color>
+    <color name="ic_launcher_background">#151617</color>
     <color name="bottom_nav_background">#111318</color>
 
     <!-- Red Theme Dark Colors -->

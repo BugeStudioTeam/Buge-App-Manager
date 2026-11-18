@@ -2,6 +2,10 @@
 <!-- SPDX-License-Identifier: GPL-3.0-only -->
 <!-- Copyright (C) 2026 Buge Studio -->
 <resources>
+
+    <color name="ic_launcher_foreground">#A1C2F7</color>
+    <color name="ic_launcher_background">#151617</color>
+    
     <!-- Dark theme colors - Blue -->
     <color name="md_theme_primary">#AAC7FF</color>
     <color name="md_theme_onPrimary">#0A305F</color>

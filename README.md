@@ -1,5 +1,8 @@
 <p align="center">
-  <img src="https://raw.githubusercontent.com/BugeStudioTeam/Buge-App-Manager/refs/heads/main/assets/icon.png" alt="Buge App Manager Icon" width="120"/>
+  <picture>
+    <source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/BugeStudioTeam/Buge-App-Manager/refs/heads/main/assets/readme/dark/icon.svg"/>
+    <img src="https://raw.githubusercontent.com/BugeStudioTeam/Buge-App-Manager/refs/heads/main/assets/readme/light/icon.svg" alt="Buge App Manager Icon" width="150"/>
+  </picture>
 </p>
 
 <p align="center">

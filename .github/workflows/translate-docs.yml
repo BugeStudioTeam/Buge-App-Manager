@@ -1,0 +1,58 @@
+name: Translate docs
+
+on:
+  workflow_dispatch:
+    inputs:
+      langs:
+        description: 'Comma separated language codes (empty = all)'
+        required: false
+        default: ''
+
+permissions:
+  contents: write
+
+concurrency:
+  group: translate-docs
+  cancel-in-progress: false
+
+jobs:
+  translate:
+    runs-on: ubuntu-latest
+    env:
+      TRANSLATE_API_KEY: ${{ secrets.TRANSLATE_API_KEY }}
+      TRANSLATE_API_BASE: ${{ vars.TRANSLATE_API_BASE || 'https://api.openai.com/v1' }}
+      TRANSLATE_MODEL: ${{ vars.TRANSLATE_MODEL || 'gpt-4o-mini' }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Check translations exist
+        if: env.TRANSLATE_API_KEY == ''
+        run: python scripts/translate_readme.py --check
+
+      - name: Translate
+        if: env.TRANSLATE_API_KEY != ''
+        run: |
+          if [ -n "${{ inputs.langs }}" ]; then
+            python scripts/translate_readme.py --langs "${{ inputs.langs }}"
+          else
+            python scripts/translate_readme.py
+          fi
+
+      - name: Commit
+        if: env.TRANSLATE_API_KEY != ''
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add docs
+          if git diff --cached --quiet; then
+            echo "no translation changes"
+            exit 0
+          fi
+          git commit -m "docs: refresh translations"
+          git push

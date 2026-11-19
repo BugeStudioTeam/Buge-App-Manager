@@ -1,14 +1,14 @@
 <p align="center">
   <picture>
-    <source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/BugeStudioTeam/Buge-App-Manager/refs/heads/main/assets/readme/dark/icon.svg"/>
-    <img src="https://raw.githubusercontent.com/BugeStudioTeam/Buge-App-Manager/refs/heads/main/assets/readme/light/icon.svg" alt="Buge App Manager Icon" width="150"/>
+    <source media="(prefers-color-scheme: dark)" srcset="assets/readme/dark/icon.svg"/>
+    <img src="assets/readme/light/icon.svg" alt="Buge App Manager Icon" width="150"/>
   </picture>
 </p>
 
 <p align="center">
   <picture>
-    <source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/BugeStudioTeam/Buge-App-Manager/refs/heads/main/assets/readme/dark/title.svg"/>
-    <img src="https://raw.githubusercontent.com/BugeStudioTeam/Buge-App-Manager/refs/heads/main/assets/readme/light/title.svg" alt="Buge App Manager" width="520"/>
+    <source media="(prefers-color-scheme: dark)" srcset="assets/readme/dark/title.svg"/>
+    <img src="assets/readme/light/title.svg" alt="Buge App Manager" width="520"/>
   </picture>
 </p>
 
@@ -28,11 +28,11 @@
 
 <div align="center">
 
-<img src="https://raw.githubusercontent.com/BugeStudioTeam/Buge-App-Manager/main/images/Screenshot_Apps.png" alt="Buge App Manager apps screen" width="30%">
-<img src="https://raw.githubusercontent.com/BugeStudioTeam/Buge-App-Manager/main/images/Screenshot_Permissions.png" alt="Buge App Manager permissions screen" width="30%">
-<img src="https://raw.githubusercontent.com/BugeStudioTeam/Buge-App-Manager/main/images/Screenshot_Activities.png" alt="Buge App Manager activities screen" width="30%">
-<img src="https://raw.githubusercontent.com/BugeStudioTeam/Buge-App-Manager/main/images/Screenshot_Settings.png" alt="Buge App Manager settings screen" width="30%">
-<img src="https://raw.githubusercontent.com/BugeStudioTeam/Buge-App-Manager/main/images/Screenshot_Details.png" alt="Buge App Manager app details screen" width="30%">
+<img src="assets/readme/screenshots/Screenshot_Apps.png" alt="Buge App Manager apps screen" width="30%">
+<img src="assets/readme/screenshots/Screenshot_Permissions.png" alt="Buge App Manager permissions screen" width="30%">
+<img src="assets/readme/screenshots/Screenshot_Activities.png" alt="Buge App Manager activities screen" width="30%">
+<img src="assets/readme/screenshots/Screenshot_Settings.png" alt="Buge App Manager settings screen" width="30%">
+<img src="assets/readme/screenshots/Screenshot_Details.png" alt="Buge App Manager app details screen" width="30%">
 
 </div>
 
@@ -126,7 +126,7 @@ Choose between **Shizuku**, **Dhizuku** or **ROOT** authorization.
 
 ## Installation
 
-[![Get it on GitHub](images/README/Release/get-it-on-github.svg)](https://github.com/BugeStudioTeam/Buge-App-Manager/releases) [![Get it on Telegram](images/README/Release/get-it-on-telegram.svg)](https://t.me/bugestudio) [![Get it on F-Droid](images/README/Release/get-it-on-fdroid.svg)](https://f-droid.org/packages/com.buge.appmanager/)
+[![Get it on GitHub](assets/readme/release/get-it-on-github.svg)](https://github.com/BugeStudioTeam/Buge-App-Manager/releases) [![Get it on Telegram](assets/readme/release/get-it-on-telegram.svg)](https://t.me/bugestudio) [![Get it on F-Droid](assets/readme/release/get-it-on-fdroid.svg)](https://f-droid.org/packages/com.buge.appmanager/)
  
 ---
 

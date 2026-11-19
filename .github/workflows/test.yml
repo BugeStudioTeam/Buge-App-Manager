@@ -1,8 +1,6 @@
 name: Tests
 
 on:
-  push:
-    branches: [ main, develop, preview ]
   pull_request:
     branches: [ main, develop, preview ]
     types: [ synchronize, opened, reopened, ready_for_review ]

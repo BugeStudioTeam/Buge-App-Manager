@@ -147,7 +147,12 @@ Choose between **Shizuku**, **Dhizuku** or **ROOT** authorization.
 If you find Buge App Manager useful, consider supporting the project.<br>
 Your support helps keep development going!
 
-**[Support Us](https://bugestudio.website/support/)**
+<p align="center">
+  <picture>
+    <source media="(prefers-color-scheme: dark)" srcset="assets/readme/dark/support.svg"/>
+    <img src="assets/readme/light/support.svg" alt="Support Us"/>
+  </picture>
+</p>
 
 ---
 

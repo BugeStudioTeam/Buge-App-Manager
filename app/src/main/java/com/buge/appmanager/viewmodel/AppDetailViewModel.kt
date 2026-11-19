@@ -42,6 +42,9 @@ class AppDetailViewModel(application: Application) : AndroidViewModel(applicatio
     private val _installerAppName = MutableLiveData<String?>()
     val installerAppName: LiveData<String?> = _installerAppName
 
+    private val _uninstallCompleted = MutableLiveData<Boolean>()
+    val uninstallCompleted: LiveData<Boolean> = _uninstallCompleted
+
     private var currentPackageName: String = ""
 
     fun loadApp(packageName: String) {
@@ -86,7 +89,6 @@ class AppDetailViewModel(application: Application) : AndroidViewModel(applicatio
             var appSize = 0L
             var dataSize = 0L
 
-            // Get app size from APK file
             try {
                 val appInfo = packageManager.getApplicationInfo(packageName, 0)
                 val apkFile = File(appInfo.sourceDir)
@@ -97,7 +99,6 @@ class AppDetailViewModel(application: Application) : AndroidViewModel(applicatio
                 LogManager.warning(getApplication(), "Failed to get APK size", e.message)
             }
 
-            // Get data size using Shizuku
             try {
                 val result = ShizukuManager.executeCommand("du -s /data/data/$packageName 2>/dev/null")
                 if (result.success && result.output.isNotEmpty()) {
@@ -110,18 +111,16 @@ class AppDetailViewModel(application: Application) : AndroidViewModel(applicatio
                 LogManager.warning(getApplication(), "Failed to get data size via Shizuku", e.message)
             }
 
-            // Fallback: try to check if data directory exists
             if (dataSize == 0L) {
                 try {
                     val result = ShizukuManager.executeCommand("ls -la /data/data/$packageName 2>/dev/null | wc -l")
                     if (result.success && result.output.isNotEmpty()) {
                         val lineCount = result.output.trim().toIntOrNull()
                         if (lineCount != null && lineCount > 1) {
-                            dataSize = 1024L * 1024 // 1MB placeholder
+                            dataSize = 1024L * 1024
                         }
                     }
                 } catch (e: Exception) {
-                    // Ignore
                 }
             }
 
@@ -199,8 +198,15 @@ class AppDetailViewModel(application: Application) : AndroidViewModel(applicatio
             _isLoading.value = true
             val result = ShizukuManager.uninstallApp(currentPackageName)
             _operationResult.value = result
+            if (result.success) {
+                _uninstallCompleted.value = true
+            }
             _isLoading.value = false
         }
+    }
+
+    fun clearUninstallCompleted() {
+        _uninstallCompleted.value = false
     }
 
     fun clearOperationResult() {

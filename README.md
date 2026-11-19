@@ -14,10 +14,10 @@
 
 
 <p align="center">
-  <img src="https://ziadoua.github.io/m3-Markdown-Badges/badges/Android/android2.svg">
-  <img src="https://ziadoua.github.io/m3-Markdown-Badges/badges/Kotlin/kotlin2.svg">
-  <img src="https://ziadoua.github.io/m3-Markdown-Badges/badges/Github/github3.svg">
-  <img src="https://ziadoua.github.io/m3-Markdown-Badges/badges/LicenceGPLv3/licencegplv32.svg">
+  <img src="https://ziadoua.github.io/m3-Markdown-Badges/badges/Android/android2.svg" alt="Android">
+  <img src="https://ziadoua.github.io/m3-Markdown-Badges/badges/Kotlin/kotlin2.svg" alt="Kotlin">
+  <img src="https://ziadoua.github.io/m3-Markdown-Badges/badges/Github/github3.svg" alt="GitHub">
+  <img src="https://ziadoua.github.io/m3-Markdown-Badges/badges/LicenceGPLv3/licencegplv32.svg" alt="GPL 3.0">
 </p>
 
 **Buge App Manager** is a powerful Android utility application designed for advanced app and permission management. Built with **Material Design 3 Expressive**, it offers a modern and intuitive interface for granular control over your device.
@@ -147,7 +147,14 @@ Choose between **Shizuku**, **Dhizuku** or **ROOT** authorization.
 If you find Buge App Manager useful, consider supporting the project.<br>
 Your support helps keep development going!
 
-**[Support Us](https://bugestudio.website/support/)**
+<p align="center">
+  <a href="https://bugestudio.website/support/">
+    <picture>
+      <source media="(prefers-color-scheme: dark)" srcset="assets/readme/dark/support.svg"/>
+      <img src="assets/readme/light/support.svg" alt="Support Us"/>
+    </picture>
+  </a>
+</p>
 
 ---
 

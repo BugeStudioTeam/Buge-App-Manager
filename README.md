@@ -150,7 +150,7 @@ Your support helps keep development going!
 <p align="center">
   <picture>
     <source media="(prefers-color-scheme: dark)" srcset="assets/readme/dark/support.svg"/>
-    <img src="assets/readme/light/support.svg" alt="Support Us"/>
+    <img src="assets/readme/light/support.svg" alt="Support Us"/(https://bugestudio.website/support/)>
   </picture>
 </p>
 

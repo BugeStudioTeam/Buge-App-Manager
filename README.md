@@ -148,10 +148,12 @@ If you find Buge App Manager useful, consider supporting the project.<br>
 Your support helps keep development going!
 
 <p align="center">
-  <picture>
-    <source media="(prefers-color-scheme: dark)" srcset="assets/readme/dark/support.svg"/>
-    <img src="assets/readme/light/support.svg" alt="Support Us"/(https://bugestudio.website/support/)>
-  </picture>
+  <a href="https://bugestudio.website/support/">
+    <picture>
+      <source media="(prefers-color-scheme: dark)" srcset="assets/readme/dark/support.svg"/>
+      <img src="assets/readme/light/support.svg" alt="Support Us"/>
+    </picture>
+  </a>
 </p>
 
 ---

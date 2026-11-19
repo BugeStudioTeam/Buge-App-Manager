@@ -502,6 +502,13 @@ class AppDetailFragment : Fragment() {
             SnackbarHelper.showSnackbar(binding.root, msg)
             viewModel.clearOperationResult()
         }
+
+        viewModel.uninstallCompleted.observe(viewLifecycleOwner) { completed ->
+            if (completed == true) {
+                viewModel.clearUninstallCompleted()
+                closeListener?.onDetailClose()
+            }
+        }
     }
 
     private fun getCurrentLocale(): Locale {

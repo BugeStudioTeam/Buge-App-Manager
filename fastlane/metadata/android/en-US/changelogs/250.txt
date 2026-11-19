@@ -1,0 +1,10 @@
+**13.92.158**
+
+**Optimizations**
+- Optimized the experience and visual design of the app details page
+
+**Fixes**
+- Fixed an issue where the "No Apps Found" message would not reposition itself when switching to or from tablet mode
+
+**Contributors of this version:**
+None

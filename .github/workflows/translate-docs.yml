@@ -1,11 +1,6 @@
 name: Translate docs
 
 on:
-  push:
-    branches: [ main, preview ]
-    paths:
-      - 'README.md'
-      - 'scripts/translate_readme.py'
   workflow_dispatch:
     inputs:
       langs:
@@ -18,7 +13,7 @@ permissions:
 
 concurrency:
   group: translate-docs
-  cancel-in-progress: true
+  cancel-in-progress: false
 
 jobs:
   translate:

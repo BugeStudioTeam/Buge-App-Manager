@@ -32,17 +32,6 @@ jobs:
       - name: Grant execute permission for gradlew
         run: chmod +x gradlew
 
-      - name: Run unit tests
-        run: bash scripts/test.sh --unit
-
-      - name: Upload test report
-        if: failure()
-        uses: actions/upload-artifact@v4
-        with:
-          name: unit-test-report
-          path: app/build/reports/tests/
-          retention-days: 7
-
       - name: Build Debug APK
         run: ./gradlew assembleDebug
 

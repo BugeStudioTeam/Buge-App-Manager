@@ -111,8 +111,8 @@
                         android:text="@string/app_info"
                         android:gravity="center"
                         android:textAlignment="center"
-                        android:textColor="?attr/colorOnSurface"
-                        app:backgroundTint="?attr/colorSurface"
+                        android:textColor="?attr/onSecondaryContainer"
+                        app:backgroundTint="?attr/secondaryContainer"
                         android:background="@drawable/bg_setting_item_top_right_large" />
 
                 </LinearLayout>
@@ -167,8 +167,8 @@
                         android:text="@string/clear_data"
                         android:gravity="center"
                         android:textAlignment="center"
-                        android:textColor="?attr/colorOnSurface"
-                        app:backgroundTint="?attr/colorSurface"
+                        android:textColor="?attr/onSecondaryContainer"
+                        app:backgroundTint="?attr/secondaryContainer"
                         android:background="@drawable/bg_setting_item_bottom_left_large" />
 
                     <com.google.android.material.button.MaterialButton

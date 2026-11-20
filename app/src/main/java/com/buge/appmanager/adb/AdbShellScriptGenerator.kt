@@ -8,31 +8,51 @@ import java.io.File
 
 object AdbShellScriptGenerator {
 
-    fun generateScript(context: Context): File {
-        val scriptContent = buildString {
-            appendLine("#!/system/bin/sh")
-            appendLine("pkg=\"${context.packageName}\"")
-            appendLine("base_dir=\"/data/app/~~*==/\$pkg-*==/lib/\"")
-            appendLine("native_dir=\"\"")
-            appendLine("for arch in arm64-v8a armeabi-v7a x86_64 x86; do")
-            appendLine("    candidate=\"/data/app/\"*\"/\$pkg-\"*\"/lib/\$arch/libstart.so\"")
-            appendLine("    found=\$(ls \$candidate 2>/dev/null | head -n 1)")
-            appendLine("    if [ -n \"\$found\" ]; then")
-            appendLine("        native_dir=\$(dirname \"\$found\")")
-            appendLine("        break")
-            appendLine("    fi")
-            appendLine("done")
-            appendLine("if [ -z \"\$native_dir\" ]; then")
-            appendLine("    echo \"buge_service: libstart.so not found\"")
-            appendLine("    exit 1")
-            appendLine("fi")
-            appendLine("export LD_LIBRARY_PATH=\"\$native_dir:\$LD_LIBRARY_PATH\"")
-            appendLine("exec \"\$native_dir/libstart.so\"")
-        }
+    private const val SCRIPT_NAME = "buge_service.sh"
+    private const val PACKAGE_NAME = "com.buge.appmanager"
+    private const val SERVICE_CLASS = "com.buge.appmanager.adb.AdbShellService"
 
-        val file = File(context.getExternalFilesDir(null), "start.sh")
-        file.writeText(scriptContent)
-        file.setExecutable(true, false)
+    fun getScriptFile(context: Context): File {
+        val dir = context.getExternalFilesDir(null) ?: context.filesDir
+        return File(dir, SCRIPT_NAME)
+    }
+
+    fun generateScript(context: Context): File {
+        val file = getScriptFile(context)
+        val content = buildString {
+            appendLine("#!/system/bin/sh")
+            appendLine("# SPDX-License-Identifier: GPL-3.0-only")
+            appendLine("# Copyright (C) 2026 Buge Studio")
+            appendLine()
+            appendLine("PKG=$PACKAGE_NAME")
+            appendLine("APK=\$(pm path \$PKG | head -n1 | cut -d: -f2)")
+            appendLine("if [ -z \"\$APK\" ]; then")
+            appendLine("  echo \"buge_service: cannot find APK for \$PKG\"")
+            appendLine("  exit 1")
+            appendLine("fi")
+            appendLine()
+            appendLine("LIB_DIR=\$(dirname \$APK | sed 's#/base.apk##')/lib")
+            appendLine("ARCH=\$(getprop ro.product.cpu.abi)")
+            appendLine("LIBST=\$LIB_DIR/\$ARCH/libstart.so")
+            appendLine()
+            appendLine("if [ ! -f \"\$LIBST\" ]; then")
+            appendLine("  echo \"buge_service: libstart.so not found at \$LIBST\"")
+            appendLine("  exit 1")
+            appendLine("fi")
+            appendLine()
+            appendLine("echo \"buge_service: starting with apk=\$APK arch=\$ARCH\"")
+            appendLine("exec \"\$LIBST\" --apk=\"\$APK\" --class=$SERVICE_CLASS")
+        }
+        file.writeText(content)
+        try {
+            file.setExecutable(true, false)
+        } catch (e: Exception) {
+        }
         return file
+    }
+
+    fun getAdbCommand(context: Context): String {
+        val file = getScriptFile(context)
+        return "adb shell sh ${file.absolutePath}"
     }
 }

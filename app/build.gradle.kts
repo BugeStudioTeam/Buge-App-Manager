@@ -45,6 +45,12 @@ android {
         }
     }
 
+    packaging {
+        jniLibs {
+            useLegacyPackaging = true
+        }
+    }
+
     dependenciesInfo {
         includeInApk = false
         includeInBundle = false

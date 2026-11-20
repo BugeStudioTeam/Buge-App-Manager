@@ -155,9 +155,12 @@
     <string name="not_authorized">Not Authorized</string>
 
     <!-- adb command -->
-    <string name="auth_mode_adb_command">ADB Command</string>
-    <string name="adb_command_service_running">ADB shell service is running</string>
-    <string name="adb_command_service_not_running">ADB shell service is not running. Run the generated script via adb shell.</string>
+    <string name="adb_command_title">ADB Command</string>
+    <string name="adb_command_desc">Run the generated script with adb from your computer to start the privileged service.</string>
+    <string name="adb_command_show_command">Show command</string>
+    <string name="adb_command_message">Run this on your computer:\n\n%1$s\n\nScript: %2$s</string>
+    <string name="adb_command_copy">Copy</string>
+    <string name="adb_command_copied">Copied</string>
 
     <!-- App List -->
     <string name="title_app_list">Installed Apps</string>

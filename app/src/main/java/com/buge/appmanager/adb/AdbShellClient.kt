@@ -12,6 +12,8 @@ import java.io.InputStreamReader
 import java.io.OutputStreamWriter
 import java.net.InetSocketAddress
 import java.net.Socket
+import java.util.concurrent.FutureTask
+import java.util.concurrent.TimeUnit
 
 object AdbShellClient {
 
@@ -20,6 +22,7 @@ object AdbShellClient {
     private const val MAGIC = "BUGE_ADB_SHELL"
     private const val PORT_FILE_NAME = "adb_shell_port"
     private const val TIMEOUT_MS = 5000
+    private const val CHECK_TIMEOUT_MS = 1500
 
     private fun readPort(context: Context?): Int {
         if (context == null) return DEFAULT_PORT
@@ -38,12 +41,26 @@ object AdbShellClient {
 
     fun isServiceRunning(context: Context?): Boolean {
         val port = readPort(context)
+
+        val task = FutureTask {
+            try {
+                Socket().use { socket ->
+                    socket.connect(
+                        InetSocketAddress(HOST, port),
+                        CHECK_TIMEOUT_MS
+                    )
+                }
+                true
+            } catch (e: Exception) {
+                false
+            }
+        }
+
         return try {
-            val socket = Socket()
-            socket.connect(InetSocketAddress(HOST, port), TIMEOUT_MS)
-            socket.close()
-            true
+            Thread(task, "adb-shell-check").start()
+            task.get(CHECK_TIMEOUT_MS + 500L, TimeUnit.MILLISECONDS)
         } catch (e: Exception) {
+            task.cancel(true)
             false
         }
     }

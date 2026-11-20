@@ -186,7 +186,7 @@ object ShizukuManager {
                 val result = DhizukuManager.executeCommand(command)
                 ShizukuResult(result.success, result.output, result.error)
             }
-            isAdbCommandMode() -> {
+            isAdbCommandMode() -> withContext(Dispatchers.IO) {
                 AdbShellClient.execute(AppGlobals.applicationContext, command)
             }
             else -> executeViaShizuku(command)

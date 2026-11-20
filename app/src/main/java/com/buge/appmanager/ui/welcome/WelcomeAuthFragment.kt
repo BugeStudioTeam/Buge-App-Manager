@@ -195,6 +195,7 @@ class WelcomeAuthFragment : Fragment() {
                 val newMode = when (which) {
                     1 -> PreferencesManager.AUTH_MODE_DHIZUKU
                     2 -> PreferencesManager.AUTH_MODE_ROOT
+                    3 -> PreferencesManager.AUTH_MODE_ADB_COMMAND
                     else -> PreferencesManager.AUTH_MODE_SHIZUKU
                 }
                 PreferencesManager.setAuthMode(requireContext(), newMode)

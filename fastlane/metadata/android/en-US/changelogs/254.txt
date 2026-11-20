@@ -1,0 +1,12 @@
+**13.93.161**
+
+**Added**
+- Added a new authorization method: **Adb Command**
+
+**Fixes**
+- Fixed an issue where ADB commands could not be authorized
+- Fixed an issue where, despite successful authorization, operations could not be performed due to an error in ShizukuManager
+- Fixed dependency loading failure
+
+**Contributors of this version:**
+None

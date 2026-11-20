@@ -101,6 +101,24 @@ object ShizukuManager {
         }
     }
 
+    fun isAdbCommandMode(): Boolean {
+        return try {
+            PreferencesManager.getAuthMode(AppGlobals.applicationContext) == PreferencesManager.AUTH_MODE_ADB_COMMAND
+        } catch (e: Exception) {
+            Log.w(TAG, "Error reading auth mode: ${e.message}")
+            false
+        }
+    }
+
+    fun isAdbCommandAvailable(): Boolean {
+        return try {
+            AdbShellClient.isServiceRunning(AppGlobals.applicationContext)
+        } catch (e: Exception) {
+            Log.w(TAG, "Error checking adb command service: ${e.message}")
+            false
+        }
+    }
+
     private fun getRootSuPath(): String {
         return try {
             PreferencesManager.getRootSuPath(AppGlobals.applicationContext)

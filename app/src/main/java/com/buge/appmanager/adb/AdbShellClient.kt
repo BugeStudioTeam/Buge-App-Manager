@@ -3,9 +3,11 @@
 
 package com.buge.appmanager.adb
 
+import android.content.Context
 import com.buge.appmanager.shizuku.ShizukuResult
 import java.io.BufferedReader
 import java.io.BufferedWriter
+import java.io.File
 import java.io.InputStreamReader
 import java.io.OutputStreamWriter
 import java.net.InetSocketAddress
@@ -14,14 +16,31 @@ import java.net.Socket
 object AdbShellClient {
 
     private const val HOST = "127.0.0.1"
-    private const val PORT = 15793
+    private const val DEFAULT_PORT = 15793
     private const val MAGIC = "BUGE_ADB_SHELL"
+    private const val PORT_FILE_NAME = "adb_shell_port"
     private const val TIMEOUT_MS = 5000
 
-    fun isServiceRunning(): Boolean {
+    private fun readPort(context: Context?): Int {
+        if (context == null) return DEFAULT_PORT
+        return try {
+            val dir = context.getExternalFilesDir(null) ?: return DEFAULT_PORT
+            val file = File(dir, PORT_FILE_NAME)
+            if (file.exists()) {
+                file.readText().trim().toIntOrNull() ?: DEFAULT_PORT
+            } else {
+                DEFAULT_PORT
+            }
+        } catch (e: Exception) {
+            DEFAULT_PORT
+        }
+    }
+
+    fun isServiceRunning(context: Context?): Boolean {
+        val port = readPort(context)
         return try {
             val socket = Socket()
-            socket.connect(InetSocketAddress(HOST, PORT), TIMEOUT_MS)
+            socket.connect(InetSocketAddress(HOST, port), TIMEOUT_MS)
             socket.close()
             true
         } catch (e: Exception) {
@@ -29,10 +48,11 @@ object AdbShellClient {
         }
     }
 
-    fun execute(command: String): ShizukuResult {
+    fun execute(context: Context?, command: String): ShizukuResult {
+        val port = readPort(context)
         return try {
             val socket = Socket()
-            socket.connect(InetSocketAddress(HOST, PORT), TIMEOUT_MS)
+            socket.connect(InetSocketAddress(HOST, port), TIMEOUT_MS)
             socket.soTimeout = 30000
 
             val writer = BufferedWriter(OutputStreamWriter(socket.getOutputStream()))

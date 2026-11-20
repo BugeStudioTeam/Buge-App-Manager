@@ -47,6 +47,7 @@ object PreferencesManager {
     private const val LOG_CLEAR_TIMESTAMP_KEY = "log_clear_timestamp"
 
     const val AUTH_MODE_SHIZUKU = "shizuku"
+    const val AUTH_MODE_ADB_COMMAND = "adb_command"
     const val AUTH_MODE_DHIZUKU = "dhizuku"
     const val AUTH_MODE_ROOT = "root"
     const val DEFAULT_SU_PATH = "su"

@@ -10,6 +10,7 @@ import android.content.pm.PackageManager
 import android.provider.Settings
 import android.util.Log
 import android.view.KeyEvent
+import com.buge.appmanager.adb.AdbShellClient
 import com.buge.appmanager.dhizuku.DhizukuManager
 import com.buge.appmanager.root.RootManager
 import com.buge.appmanager.util.AppGlobals
@@ -100,6 +101,24 @@ object ShizukuManager {
         }
     }
 
+    fun isAdbCommandMode(): Boolean {
+        return try {
+            PreferencesManager.getAuthMode(AppGlobals.applicationContext) == PreferencesManager.AUTH_MODE_ADB_COMMAND
+        } catch (e: Exception) {
+            Log.w(TAG, "Error reading auth mode: ${e.message}")
+            false
+        }
+    }
+
+    fun isAdbCommandAvailable(): Boolean {
+        return try {
+            AdbShellClient.isServiceRunning(AppGlobals.applicationContext)
+        } catch (e: Exception) {
+            Log.w(TAG, "Error checking adb command service: ${e.message}")
+            false
+        }
+    }
+
     private fun getRootSuPath(): String {
         return try {
             PreferencesManager.getRootSuPath(AppGlobals.applicationContext)
@@ -130,6 +149,7 @@ object ShizukuManager {
         return when {
             isRootMode() -> isRootAvailable()
             isDhizukuMode() -> isDhizukuAuthorized()
+            isAdbCommandMode() -> isAdbCommandAvailable()
             else -> isShizukuAvailable() && hasShizukuPermission()
         }
     }
@@ -140,6 +160,8 @@ object ShizukuManager {
             }
             isDhizukuMode() -> {
                 DhizukuManager.requestDhizukuPermission()
+            }
+            isAdbCommandMode() -> {
             }
             else -> {
                 requestShizukuPermission()
@@ -163,6 +185,9 @@ object ShizukuManager {
             isDhizukuMode() -> {
                 val result = DhizukuManager.executeCommand(command)
                 ShizukuResult(result.success, result.output, result.error)
+            }
+            isAdbCommandMode() -> withContext(Dispatchers.IO) {
+                AdbShellClient.execute(AppGlobals.applicationContext, command)
             }
             else -> executeViaShizuku(command)
         }

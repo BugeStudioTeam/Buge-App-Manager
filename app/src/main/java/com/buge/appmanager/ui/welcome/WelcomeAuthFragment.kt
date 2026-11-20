@@ -3,22 +3,23 @@
 
 package com.buge.appmanager.ui.welcome
 
+import android.content.ClipData
+import android.content.ClipboardManager
+import android.content.Context
 import android.content.pm.PackageManager
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageView
-import android.widget.TextView
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import com.buge.appmanager.R
+import com.buge.appmanager.adb.AdbShellScriptGenerator
 import com.buge.appmanager.databinding.FragmentWelcomeAuthBinding
 import com.buge.appmanager.dhizuku.DhizukuManager
 import com.buge.appmanager.shizuku.ShizukuManager
 import com.buge.appmanager.util.PreferencesManager
 import com.buge.appmanager.util.SnackbarHelper
-import com.google.android.material.button.MaterialButton
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 
 class WelcomeAuthFragment : Fragment() {
@@ -64,6 +65,7 @@ class WelcomeAuthFragment : Fragment() {
         binding.authModeValue.text = when (mode) {
             PreferencesManager.AUTH_MODE_DHIZUKU -> getString(R.string.auth_mode_dhizuku)
             PreferencesManager.AUTH_MODE_ROOT -> getString(R.string.auth_mode_root)
+            PreferencesManager.AUTH_MODE_ADB_COMMAND -> getString(R.string.auth_mode_adb_command)
             else -> getString(R.string.auth_mode_shizuku)
         }
     }
@@ -74,6 +76,7 @@ class WelcomeAuthFragment : Fragment() {
             val authMode = PreferencesManager.getAuthMode(requireContext())
             val isRootMode = authMode == PreferencesManager.AUTH_MODE_ROOT
             val isDhizukuMode = authMode == PreferencesManager.AUTH_MODE_DHIZUKU
+            val isAdbCommandMode = authMode == PreferencesManager.AUTH_MODE_ADB_COMMAND
 
             val statusText: String
             val iconRes: Int
@@ -120,6 +123,24 @@ class WelcomeAuthFragment : Fragment() {
                 }
                 titleText = getString(R.string.dhizuku_title)
                 descText = getString(R.string.dhizuku_desc)
+            } else if (isAdbCommandMode) {
+                val isAvailable = ShizukuManager.isAdbCommandAvailable()
+
+                if (isAvailable) {
+                    statusText = getString(R.string.adb_command_service_running)
+                    iconRes = R.drawable.ic_shield
+                    buttonEnabled = true
+                    buttonText = getString(R.string.adb_command_show_command)
+                    statusColor = ContextCompat.getColor(requireContext(), R.color.color_granted)
+                } else {
+                    statusText = getString(R.string.adb_command_service_not_running)
+                    iconRes = R.drawable.ic_shield_badge_x
+                    buttonEnabled = true
+                    buttonText = getString(R.string.adb_command_show_command)
+                    statusColor = ContextCompat.getColor(requireContext(), com.google.android.material.R.color.design_default_color_error)
+                }
+                titleText = getString(R.string.adb_command_title)
+                descText = getString(R.string.adb_command_desc)
             } else {
                 val isAvailable = ShizukuManager.isShizukuAvailable()
                 val hasPermission = ShizukuManager.hasShizukuPermission()
@@ -167,6 +188,9 @@ class WelcomeAuthFragment : Fragment() {
                         DhizukuManager.requestDhizukuPermission()
                         binding.root.postDelayed({ if (_binding != null) updateAuthStatus() }, 800)
                     }
+                    isAdbCommandMode -> {
+                        showAdbCommandDialog()
+                    }
                     else -> {
                         ShizukuManager.requestShizukuPermission()
                     }
@@ -180,12 +204,14 @@ class WelcomeAuthFragment : Fragment() {
         val options = arrayOf(
             getString(R.string.auth_mode_shizuku),
             getString(R.string.auth_mode_dhizuku),
-            getString(R.string.auth_mode_root)
+            getString(R.string.auth_mode_root),
+            getString(R.string.auth_mode_adb_command)
         )
         val currentMode = PreferencesManager.getAuthMode(requireContext())
         val currentIndex = when (currentMode) {
             PreferencesManager.AUTH_MODE_DHIZUKU -> 1
             PreferencesManager.AUTH_MODE_ROOT -> 2
+            PreferencesManager.AUTH_MODE_ADB_COMMAND -> 3
             else -> 0
         }
 
@@ -195,6 +221,7 @@ class WelcomeAuthFragment : Fragment() {
                 val newMode = when (which) {
                     1 -> PreferencesManager.AUTH_MODE_DHIZUKU
                     2 -> PreferencesManager.AUTH_MODE_ROOT
+                    3 -> PreferencesManager.AUTH_MODE_ADB_COMMAND
                     else -> PreferencesManager.AUTH_MODE_SHIZUKU
                 }
                 PreferencesManager.setAuthMode(requireContext(), newMode)
@@ -205,7 +232,37 @@ class WelcomeAuthFragment : Fragment() {
                 }
                 updateAuthModeDisplay()
                 updateAuthStatus()
+                if (newMode == PreferencesManager.AUTH_MODE_ADB_COMMAND) {
+                    showAdbCommandDialog()
+                }
             }
             .show()
+    }
+
+    private fun showAdbCommandDialog() {
+        if (!isAdded || view == null) return
+        val context = requireContext()
+        try {
+            val script = AdbShellScriptGenerator.generateScript(context)
+            val cmd = AdbShellScriptGenerator.getAdbCommand(context)
+            MaterialAlertDialogBuilder(context)
+                .setTitle(R.string.adb_command_title)
+                .setMessage(
+                    getString(
+                        R.string.adb_command_message,
+                        cmd,
+                        script.absolutePath
+                    )
+                )
+                .setPositiveButton(R.string.adb_command_copy) { _, _ ->
+                    val clipboard = context.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
+                    clipboard.setPrimaryClip(ClipData.newPlainText("adb", cmd))
+                    SnackbarHelper.showSnackbar(binding.root, getString(R.string.adb_command_copied))
+                }
+                .setNegativeButton(R.string.close, null)
+                .show()
+        } catch (e: Exception) {
+            SnackbarHelper.showSnackbar(binding.root, "Failed: ${e.message}")
+        }
     }
 }

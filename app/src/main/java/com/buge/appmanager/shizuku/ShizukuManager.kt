@@ -149,6 +149,7 @@ object ShizukuManager {
         return when {
             isRootMode() -> isRootAvailable()
             isDhizukuMode() -> isDhizukuAuthorized()
+            isAdbCommandMode() -> isAdbCommandAvailable()
             else -> isShizukuAvailable() && hasShizukuPermission()
         }
     }
@@ -159,6 +160,8 @@ object ShizukuManager {
             }
             isDhizukuMode() -> {
                 DhizukuManager.requestDhizukuPermission()
+            }
+            isAdbCommandMode() -> {
             }
             else -> {
                 requestShizukuPermission()
@@ -182,6 +185,9 @@ object ShizukuManager {
             isDhizukuMode() -> {
                 val result = DhizukuManager.executeCommand(command)
                 ShizukuResult(result.success, result.output, result.error)
+            }
+            isAdbCommandMode() -> {
+                AdbShellClient.execute(AppGlobals.applicationContext, command)
             }
             else -> executeViaShizuku(command)
         }

@@ -1,4 +1,3 @@
-
 <?xml version="1.0" encoding="utf-8"?>
 <!-- SPDX-License-Identifier: GPL-3.0-only -->
 <!-- Copyright (C) 2026 Buge Studio -->
@@ -42,7 +41,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
+        
         <activity
             android:name=".WelcomeActivity"
             android:exported="true"
@@ -92,7 +91,7 @@
             android:exported="true"
             android:parentActivityName=".MainActivity"
             android:launchMode="singleTop" />
-
+            
         <activity
             android:name=".InstallAppsActivity"
             android:exported="true"

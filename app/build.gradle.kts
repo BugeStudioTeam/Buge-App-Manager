@@ -1,3 +1,4 @@
+
 /*
  * SPDX-License-Identifier: GPL-3.0-only
  * Copyright (C) 2026 BugeStudio Team
@@ -42,6 +43,12 @@ android {
         cmake {
             path = file("src/main/cpp/CMakeLists.txt")
             version = "3.22.1"
+        }
+    }
+
+    packaging {
+        jniLibs {
+            useLegacyPackaging = true
         }
     }
 

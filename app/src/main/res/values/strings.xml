@@ -154,6 +154,11 @@
     <string name="request_auth">Authorize</string>
     <string name="not_authorized">Not Authorized</string>
 
+    <!-- adb command -->
+    <string name="auth_mode_adb_command">ADB Command</string>
+    <string name="adb_command_service_running">ADB shell service is running</string>
+    <string name="adb_command_service_not_running">ADB shell service is not running. Run the generated script via adb shell.</string>
+
     <!-- App List -->
     <string name="title_app_list">Installed Apps</string>
     <string name="search_hint">Search apps…</string>

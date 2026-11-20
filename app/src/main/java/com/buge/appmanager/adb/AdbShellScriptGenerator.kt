@@ -8,7 +8,7 @@ import java.io.File
 
 object AdbShellScriptGenerator {
 
-    private const val SCRIPT_NAME = "buge_service.sh"
+    private const val SCRIPT_NAME = "start.sh"
     private const val PACKAGE_NAME = "com.buge.appmanager"
     private const val SERVICE_CLASS = "com.buge.appmanager.adb.AdbShellService"
 
@@ -27,7 +27,7 @@ object AdbShellScriptGenerator {
             appendLine("PKG=$PACKAGE_NAME")
             appendLine("APK=\$(pm path \$PKG | head -n1 | cut -d: -f2)")
             appendLine("if [ -z \"\$APK\" ]; then")
-            appendLine("  echo \"buge_service: cannot find APK for \$PKG\"")
+            appendLine("  echo \"start.sh: cannot find APK for \$PKG\"")
             appendLine("  exit 1")
             appendLine("fi")
             appendLine()
@@ -36,11 +36,11 @@ object AdbShellScriptGenerator {
             appendLine("LIBST=\$LIB_DIR/\$ARCH/libstart.so")
             appendLine()
             appendLine("if [ ! -f \"\$LIBST\" ]; then")
-            appendLine("  echo \"buge_service: libstart.so not found at \$LIBST\"")
+            appendLine("  echo \"start.sh: libstart.so not found at \$LIBST\"")
             appendLine("  exit 1")
             appendLine("fi")
             appendLine()
-            appendLine("echo \"buge_service: starting with apk=\$APK arch=\$ARCH\"")
+            appendLine("echo \"start.sh: starting with apk=\$APK arch=\$ARCH\"")
             appendLine("exec \"\$LIBST\" --apk=\"\$APK\" --class=$SERVICE_CLASS")
         }
         file.writeText(content)

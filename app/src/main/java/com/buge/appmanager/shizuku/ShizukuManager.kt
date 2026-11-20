@@ -10,6 +10,7 @@ import android.content.pm.PackageManager
 import android.provider.Settings
 import android.util.Log
 import android.view.KeyEvent
+import com.buge.appmanager.adb.AdbShellClient
 import com.buge.appmanager.dhizuku.DhizukuManager
 import com.buge.appmanager.root.RootManager
 import com.buge.appmanager.util.AppGlobals

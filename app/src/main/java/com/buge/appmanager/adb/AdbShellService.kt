@@ -5,6 +5,7 @@ package com.buge.appmanager.adb
 
 import java.io.BufferedReader
 import java.io.BufferedWriter
+import java.io.File
 import java.io.InputStreamReader
 import java.io.OutputStreamWriter
 import java.net.ServerSocket
@@ -13,13 +14,15 @@ import kotlin.concurrent.thread
 
 object AdbShellService {
 
-    private const val PORT = 15793
+    private const val DEFAULT_PORT = 15793
     private const val MAGIC = "BUGE_ADB_SHELL"
+    private const val PORT_FILE_NAME = "adb_shell_port"
+    private const val APP_DIR = "/sdcard/Android/data/com.buge.appmanager/files"
 
     @JvmStatic
     fun main(args: Array<String>) {
         val uid = try {
-            java.io.File("/proc/self/status").readLines()
+            File("/proc/self/status").readLines()
                 .firstOrNull { it.startsWith("Uid:") }
                 ?.split("\\s+".toRegex())
                 ?.getOrNull(1)
@@ -33,8 +36,21 @@ object AdbShellService {
             System.exit(1)
         }
 
-        val server = ServerSocket(PORT)
-        println("AdbShellService: listening on 127.0.0.1:$PORT, uid=$uid")
+        val server = try {
+            ServerSocket(DEFAULT_PORT)
+        } catch (e: Exception) {
+            try {
+                ServerSocket(0)
+            } catch (e2: Exception) {
+                System.err.println("AdbShellService: cannot bind port: ${e2.message}")
+                System.exit(1)
+                return
+            }
+        }
+
+        val actualPort = server.localPort
+        writePortFile(actualPort)
+        println("AdbShellService: listening on 127.0.0.1:$actualPort, uid=$uid")
 
         while (true) {
             try {
@@ -43,6 +59,16 @@ object AdbShellService {
             } catch (e: Exception) {
                 System.err.println("AdbShellService: accept failed: ${e.message}")
             }
+        }
+    }
+
+    private fun writePortFile(port: Int) {
+        try {
+            val dir = File(APP_DIR)
+            if (!dir.exists()) dir.mkdirs()
+            File(dir, PORT_FILE_NAME).writeText(port.toString())
+        } catch (e: Exception) {
+            System.err.println("AdbShellService: cannot write port file: ${e.message}")
         }
     }
 

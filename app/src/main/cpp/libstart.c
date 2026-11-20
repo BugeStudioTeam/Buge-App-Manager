@@ -58,7 +58,8 @@ int main(int argc, char **argv) {
             "--runtime-args",
             klass,
             "--apk",
-            apk
+            apk,
+            NULL
         };
 
         execv(APP_PROCESS, (char *const *) cmd);

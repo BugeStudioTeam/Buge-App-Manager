@@ -1,0 +1,353 @@
+name: F-Droid Reproducible Build Verification
+
+on:
+  workflow_dispatch:
+    inputs:
+      source_commit:
+        description: Source commit to build. Leave empty to use the current commit.
+        required: false
+        type: string
+        default: ''
+
+permissions:
+  contents: read
+
+concurrency:
+  group: reproducible-build-${{ github.ref }}
+  cancel-in-progress: false
+
+env:
+  JAVA_VERSION: '17'
+  NDK_VERSION: '28.2.13676358'
+  CMAKE_VERSION: '3.22.1'
+
+jobs:
+  build-signed:
+    name: Build Signed Release APK
+    runs-on: ubuntu-24.04
+
+    steps:
+      - name: Checkout source
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ inputs.source_commit || github.sha }}
+
+      - name: Set up Java
+        uses: actions/setup-java@v4
+        with:
+          java-version: ${{ env.JAVA_VERSION }}
+          distribution: temurin
+
+      - name: Set up Android SDK
+        uses: android-actions/setup-android@v4
+
+      - name: Install Android build tools
+        run: |
+          sdkmanager --install \
+            "ndk;${NDK_VERSION}" \
+            "cmake;${CMAKE_VERSION}"
+
+      - name: Decode signing files
+        env:
+          KEYSTORE_PROPERTIES_BASE64: ${{ secrets.KEYSTORE_PROPERTIES_BASE64 }}
+          KEYSTORE_JKS_BASE64: ${{ secrets.KEYSTORE_JKS_BASE64 }}
+        run: |
+          test -n "$KEYSTORE_PROPERTIES_BASE64"
+          test -n "$KEYSTORE_JKS_BASE64"
+
+          printf '%s' "$KEYSTORE_PROPERTIES_BASE64" | base64 --decode > keystore.properties
+          printf '%s' "$KEYSTORE_JKS_BASE64" | base64 --decode > app/keystore.jks
+
+          chmod 600 keystore.properties app/keystore.jks
+
+      - name: Prepare Gradle
+        run: |
+          sed -i '/org.gradle.java.home/d' gradle.properties
+          chmod +x gradlew
+
+      - name: Build Signed Release APK
+        run: |
+          ./gradlew --no-daemon clean assembleRelease
+
+          mkdir -p dist
+
+          APK=$(find app/build/outputs/apk/release \
+            -maxdepth 1 \
+            -type f \
+            -name '*.apk' \
+            | head -n 1)
+
+          test -n "$APK"
+          cp "$APK" dist/signed-release.apk
+
+      - name: Verify APK Signature
+        run: |
+          APKSIGNER=$(find "$ANDROID_HOME/build-tools" \
+            -name apksigner \
+            -type f \
+            | sort -V \
+            | tail -n 1)
+
+          test -n "$APKSIGNER"
+          "$APKSIGNER" verify --verbose dist/signed-release.apk
+
+      - name: Upload Signed APK
+        uses: actions/upload-artifact@v4
+        with:
+          name: signed-release-apk
+          path: dist/signed-release.apk
+          retention-days: 7
+
+  build-fdroid:
+    name: Build F-Droid Release APK
+    runs-on: ubuntu-24.04
+
+    container:
+      image: registry.gitlab.com/fdroid/fdroidserver:buildserver-trixie
+
+    steps:
+      - name: Checkout source
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ inputs.source_commit || github.sha }}
+
+      - name: Verify F-Droid build environment
+        run: |
+          set -euo pipefail
+
+          test -x /usr/local/bin/gradlew-fdroid
+          test -d /opt/android-sdk
+
+          echo "Java version:"
+          java -version
+
+          echo "Android SDK:"
+          echo "$ANDROID_HOME"
+
+          echo "Installed NDK versions:"
+          ls -1 /opt/android-sdk/ndk || true
+
+          echo "Installed CMake versions:"
+          ls -1 /opt/android-sdk/cmake || true
+
+          echo "F-Droid Gradle wrapper:"
+          ls -l /usr/local/bin/gradlew-fdroid
+
+      - name: Prepare F-Droid build directory
+        run: |
+          set -euo pipefail
+
+          FDROID_BUILD_DIR="/home/vagrant/build/com.buge.appmanager"
+
+          rm -rf "$FDROID_BUILD_DIR"
+          mkdir -p "$FDROID_BUILD_DIR"
+
+          cp -a "$GITHUB_WORKSPACE/." "$FDROID_BUILD_DIR/"
+
+          rm -f "$FDROID_BUILD_DIR/gradle/wrapper/gradle-wrapper.jar"
+          rm -f "$FDROID_BUILD_DIR/keystore.properties"
+          rm -f "$FDROID_BUILD_DIR/app/keystore.jks"
+
+          sed -i '/org.gradle.java.home/d' "$FDROID_BUILD_DIR/gradle.properties"
+
+          printf 'sdk.dir=/opt/android-sdk\n' \
+            > "$FDROID_BUILD_DIR/local.properties"
+
+          printf 'sdk.dir=/opt/android-sdk\n' \
+            > "$FDROID_BUILD_DIR/app/local.properties"
+
+          chown -R vagrant:vagrant "$FDROID_BUILD_DIR"
+
+      - name: Build using F-Droid Gradle wrapper
+        run: |
+          set -euo pipefail
+
+          FDROID_BUILD_DIR="/home/vagrant/build/com.buge.appmanager"
+
+          runuser -u vagrant -- env \
+            HOME=/home/vagrant \
+            ANDROID_HOME=/opt/android-sdk \
+            ANDROID_SDK_ROOT=/opt/android-sdk \
+            bash -c '
+              set -euo pipefail
+              cd /home/vagrant/build/com.buge.appmanager
+              /usr/local/bin/gradlew-fdroid assembleRelease
+            '
+
+      - name: Collect F-Droid APK
+        run: |
+          set -euo pipefail
+
+          APK="/home/vagrant/build/com.buge.appmanager/app/build/outputs/apk/release/app-release-unsigned.apk"
+
+          test -f "$APK"
+
+          mkdir -p dist
+          cp "$APK" dist/fdroid-release.apk
+
+          sha256sum dist/fdroid-release.apk
+
+      - name: Upload F-Droid APK
+        uses: actions/upload-artifact@v4
+        with:
+          name: fdroid-release-apk
+          path: dist/fdroid-release.apk
+          retention-days: 7
+
+  verify-reproducibility:
+    name: Verify APK Reproducibility
+    runs-on: ubuntu-24.04
+
+    needs:
+      - build-signed
+      - build-fdroid
+
+    steps:
+      - name: Download Signed APK
+        uses: actions/download-artifact@v4
+        with:
+          name: signed-release-apk
+          path: signed
+
+      - name: Download F-Droid APK
+        uses: actions/download-artifact@v4
+        with:
+          name: fdroid-release-apk
+          path: fdroid
+
+      - name: Compare APK contents
+        id: compare
+        run: |
+          python3 - <<'PY'
+          import hashlib
+          import sys
+          import zipfile
+
+          signed_apk = "signed/signed-release.apk"
+          fdroid_apk = "fdroid/fdroid-release.apk"
+
+          def sha256(data):
+              return hashlib.sha256(data).hexdigest()
+
+          def is_signature_file(name):
+              upper = name.upper()
+
+              if not upper.startswith("META-INF/"):
+                  return False
+
+              filename = upper.rsplit("/", 1)[-1]
+
+              return (
+                  filename == "MANIFEST.MF"
+                  or filename.endswith((".SF", ".RSA", ".DSA", ".EC"))
+                  or filename.startswith("SIG-")
+              )
+
+          def read_apk(path):
+              with zipfile.ZipFile(path, "r") as archive:
+                  return {
+                      name: archive.read(name)
+                      for name in archive.namelist()
+                      if not is_signature_file(name)
+                  }
+
+          print("Loading APK files...")
+
+          signed = read_apk(signed_apk)
+          fdroid = read_apk(fdroid_apk)
+
+          signed_names = set(signed)
+          fdroid_names = set(fdroid)
+
+          missing_in_signed = sorted(fdroid_names - signed_names)
+          missing_in_fdroid = sorted(signed_names - fdroid_names)
+
+          failed = False
+
+          if missing_in_signed:
+              failed = True
+              print("\nFiles missing in signed APK:")
+
+              for name in missing_in_signed:
+                  print(f"  {name}")
+
+          if missing_in_fdroid:
+              failed = True
+              print("\nFiles missing in F-Droid APK:")
+
+              for name in missing_in_fdroid:
+                  print(f"  {name}")
+
+          common_names = sorted(signed_names & fdroid_names)
+
+          print(f"\nComparing {len(common_names)} APK entries...")
+
+          differences = []
+
+          for name in common_names:
+              signed_hash = sha256(signed[name])
+              fdroid_hash = sha256(fdroid[name])
+
+              if signed_hash != fdroid_hash:
+                  failed = True
+                  differences.append(name)
+
+                  print(f"\nDIFFERENT: {name}")
+                  print(f"  Signed: {signed_hash}")
+                  print(f"  F-Droid: {fdroid_hash}")
+
+          native_libraries = [
+              "lib/arm64-v8a/libstart.so",
+              "lib/armeabi-v7a/libstart.so",
+              "lib/x86/libstart.so",
+              "lib/x86_64/libstart.so"
+          ]
+
+          print("\nNative library verification:")
+
+          for name in native_libraries:
+              if name not in signed or name not in fdroid:
+                  failed = True
+                  print(f"  MISSING: {name}")
+                  continue
+
+              signed_hash = sha256(signed[name])
+              fdroid_hash = sha256(fdroid[name])
+
+              if signed_hash == fdroid_hash:
+                  print(f"  MATCH: {name}")
+              else:
+                  print(f"  DIFFERENT: {name}")
+                  print(f"    Signed: {signed_hash}")
+                  print(f"    F-Droid: {fdroid_hash}")
+                  failed = True
+
+          print("\nReproducibility summary:")
+          print(f"  Signed entries: {len(signed)}")
+          print(f"  F-Droid entries: {len(fdroid)}")
+          print(f"  Differences: {len(differences)}")
+
+          if failed:
+              print("\nRESULT: REPRODUCIBILITY FAILED")
+              sys.exit(1)
+
+          print("\nRESULT: REPRODUCIBILITY PASSED")
+          PY
+
+      - name: Generate Job Summary
+        if: always()
+        run: |
+          {
+            echo "## F-Droid Reproducible Build Verification"
+            echo ""
+            echo "| Build | Result |"
+            echo "|---|---|"
+            echo "| Signed Release APK | ${{ needs.build-signed.result }} |"
+            echo "| F-Droid Release APK | ${{ needs.build-fdroid.result }} |"
+            echo "| APK Comparison | ${{ steps.compare.outcome || 'not executed' }} |"
+            echo ""
+            echo "The F-Droid build uses the official F-Droid buildserver-trixie image."
+            echo "The build uses /usr/local/bin/gradlew-fdroid."
+            echo "APK signature metadata is excluded from the content comparison."
+            echo "Native libraries are checked individually."
+          } >> "$GITHUB_STEP_SUMMARY"

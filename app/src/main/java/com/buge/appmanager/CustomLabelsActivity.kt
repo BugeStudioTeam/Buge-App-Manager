@@ -11,6 +11,7 @@ import android.view.ViewGroup
 import android.widget.FrameLayout
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.buge.appmanager.databinding.ActivityCustomLabelsBinding
@@ -42,7 +43,6 @@ class CustomLabelsActivity : BaseActivity() {
 
     override fun onResume() {
         super.onResume()
-        // refresh labels when returning from detail activity
         loadLabels()
     }
 
@@ -75,13 +75,69 @@ class CustomLabelsActivity : BaseActivity() {
                 showDeleteConfirmDialog(label)
             }
         )
+
         binding.recyclerView.layoutManager = LinearLayoutManager(this)
         binding.recyclerView.adapter = adapter
+
+        val itemTouchHelper = ItemTouchHelper(
+            object : ItemTouchHelper.SimpleCallback(
+                ItemTouchHelper.UP or ItemTouchHelper.DOWN,
+                0
+            ) {
+                private var hasMoved = false
+
+                override fun onMove(
+                    recyclerView: RecyclerView,
+                    viewHolder: RecyclerView.ViewHolder,
+                    target: RecyclerView.ViewHolder
+                ): Boolean {
+                    val fromPosition = viewHolder.bindingAdapterPosition
+                    val toPosition = target.bindingAdapterPosition
+
+                    if (
+                        fromPosition == RecyclerView.NO_POSITION ||
+                        toPosition == RecyclerView.NO_POSITION
+                    ) {
+                        return false
+                    }
+
+                    adapter.moveItem(fromPosition, toPosition)
+                    hasMoved = true
+                    return true
+                }
+
+                override fun onSwiped(
+                    viewHolder: RecyclerView.ViewHolder,
+                    direction: Int
+                ) {
+                }
+
+                override fun clearView(
+                    recyclerView: RecyclerView,
+                    viewHolder: RecyclerView.ViewHolder
+                ) {
+                    super.clearView(recyclerView, viewHolder)
+
+                    if (hasMoved) {
+                        labels = adapter.getItems()
+                        CustomLabelManager.saveLabels(this@CustomLabelsActivity, labels)
+                        LogManager.info(
+                            this@CustomLabelsActivity,
+                            "Custom label order updated"
+                        )
+                        hasMoved = false
+                    }
+                }
+            }
+        )
+
+        itemTouchHelper.attachToRecyclerView(binding.recyclerView)
     }
 
     private fun loadLabels() {
         labels = CustomLabelManager.getLabels(this)
         adapter.submitList(labels)
+
         if (labels.isEmpty()) {
             binding.emptyState.visibility = View.VISIBLE
             binding.recyclerView.visibility = View.GONE
@@ -89,6 +145,7 @@ class CustomLabelsActivity : BaseActivity() {
             binding.emptyState.visibility = View.GONE
             binding.recyclerView.visibility = View.VISIBLE
         }
+
         LogManager.debug(this, "Labels loaded", "Count: ${labels.size}")
     }
 
@@ -151,8 +208,29 @@ class CustomLabelsActivity : BaseActivity() {
         private var items: List<CustomLabel> = emptyList()
 
         fun submitList(newItems: List<CustomLabel>) {
-            items = newItems
+            items = newItems.toList()
             notifyDataSetChanged()
+        }
+
+        fun getItems(): List<CustomLabel> = items.toList()
+
+        fun moveItem(fromPosition: Int, toPosition: Int) {
+            if (
+                fromPosition !in items.indices ||
+                toPosition !in items.indices ||
+                fromPosition == toPosition
+            ) {
+                return
+            }
+
+            val mutableItems = items.toMutableList()
+            val item = mutableItems.removeAt(fromPosition)
+            mutableItems.add(toPosition, item)
+            items = mutableItems
+
+            notifyItemMoved(fromPosition, toPosition)
+            notifyItemChanged(minOf(fromPosition, toPosition))
+            notifyItemChanged(maxOf(fromPosition, toPosition))
         }
 
         override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -162,21 +240,31 @@ class CustomLabelsActivity : BaseActivity() {
         }
 
         override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-            holder.bind(items[position])
+            val label = items[position]
+
+            holder.bind(label)
             applyItemBackground(holder, position)
-            holder.itemView.setOnClickListener { onItemClick(items[position]) }
-            holder.btnDelete.setOnClickListener { onDeleteClick(items[position]) }
+
+            holder.itemView.setOnClickListener {
+                onItemClick(label)
+            }
+
+            holder.btnDelete.setOnClickListener {
+                onDeleteClick(label)
+            }
         }
 
         private fun applyItemBackground(holder: ViewHolder, position: Int) {
             val container = holder.itemView.findViewById<FrameLayout>(R.id.item_container)
             val size = items.size
+
             val background = when {
                 size == 1 -> R.drawable.bg_setting_item_single
                 position == 0 -> R.drawable.bg_setting_item_top
                 position == size - 1 -> R.drawable.bg_setting_item_bottom
                 else -> R.drawable.bg_setting_item_middle
             }
+
             container.setBackgroundResource(background)
         }
 

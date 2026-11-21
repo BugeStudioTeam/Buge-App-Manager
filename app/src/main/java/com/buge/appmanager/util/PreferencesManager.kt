@@ -45,11 +45,12 @@ object PreferencesManager {
     private const val DANGEROUS_PACKAGES_WARNING_KEY = "dangerous_packages_warning"
     private const val LOGCAT_SAVE_LOCATION_KEY = "logcat_save_location"
     private const val LOG_CLEAR_TIMESTAMP_KEY = "log_clear_timestamp"
+    private const val LOG_FILTER_TYPES_KEY = "log_filter_types"
 
     const val AUTH_MODE_SHIZUKU = "shizuku"
-    const val AUTH_MODE_ADB_COMMAND = "adb_command"
     const val AUTH_MODE_DHIZUKU = "dhizuku"
     const val AUTH_MODE_ROOT = "root"
+    const val AUTH_MODE_ADB_COMMAND = "adb_command"
     const val DEFAULT_SU_PATH = "su"
 
     const val BACKUP_CONTENT_SETTINGS = "settings"
@@ -379,5 +380,17 @@ object PreferencesManager {
 
     fun getLogClearTimestamp(context: Context): Long {
         return getPreferences(context).getLong(LOG_CLEAR_TIMESTAMP_KEY, 0L)
+    }
+
+    fun setLogFilterTypes(context: Context, types: Set<String>) {
+        getPreferences(context).edit().putStringSet(LOG_FILTER_TYPES_KEY, types).apply()
+    }
+
+    fun getLogFilterTypes(context: Context): Set<String>? {
+        val prefs = getPreferences(context)
+        if (!prefs.contains(LOG_FILTER_TYPES_KEY)) {
+            return null
+        }
+        return prefs.getStringSet(LOG_FILTER_TYPES_KEY, null)
     }
 }

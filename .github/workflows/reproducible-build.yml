@@ -1,0 +1,302 @@
+name: Reproducible Release Build
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: reproducible-build-${{ github.ref }}
+  cancel-in-progress: false
+
+env:
+  JAVA_VERSION: '17'
+  NDK_VERSION: '28.2.13676358'
+  CMAKE_VERSION: '3.22.1'
+
+jobs:
+  build-signed:
+    name: Build Signed Release APK
+    runs-on: ubuntu-24.04
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.sha }}
+
+      - name: Set up JDK
+        uses: actions/setup-java@v4
+        with:
+          java-version: ${{ env.JAVA_VERSION }}
+          distribution: temurin
+
+      - name: Setup Android SDK
+        uses: android-actions/setup-android@v4
+
+      - name: Install Android NDK and CMake
+        run: |
+          sdkmanager --install \
+            "ndk;${NDK_VERSION}" \
+            "cmake;${CMAKE_VERSION}"
+
+      - name: Decode signing files
+        env:
+          KEYSTORE_PROPERTIES_BASE64: ${{ secrets.KEYSTORE_PROPERTIES_BASE64 }}
+          KEYSTORE_JKS_BASE64: ${{ secrets.KEYSTORE_JKS_BASE64 }}
+        run: |
+          test -n "$KEYSTORE_PROPERTIES_BASE64"
+          test -n "$KEYSTORE_JKS_BASE64"
+
+          printf '%s' "$KEYSTORE_PROPERTIES_BASE64" | base64 --decode > keystore.properties
+          printf '%s' "$KEYSTORE_JKS_BASE64" | base64 --decode > app/keystore.jks
+
+          chmod 600 keystore.properties app/keystore.jks
+
+      - name: Prepare Gradle
+        run: |
+          sed -i '/org.gradle.java.home/d' gradle.properties
+          chmod +x gradlew
+
+      - name: Build Signed Release APK
+        run: |
+          ./gradlew --no-daemon clean assembleRelease
+
+          mkdir -p dist
+
+          APK=$(find app/build/outputs/apk/release -maxdepth 1 -type f -name '*.apk' | head -n 1)
+
+          test -n "$APK"
+
+          cp "$APK" dist/signed-release.apk
+
+      - name: Verify APK Signature
+        run: |
+          APKSIGNER=$(find "$ANDROID_HOME/build-tools" -name apksigner -type f | sort -V | tail -n 1)
+
+          test -n "$APKSIGNER"
+
+          "$APKSIGNER" verify --verbose dist/signed-release.apk
+
+      - name: Upload Signed APK
+        uses: actions/upload-artifact@v4
+        with:
+          name: signed-release-apk
+          path: dist/signed-release.apk
+          retention-days: 7
+
+  build-unsigned:
+    name: Build Unsigned Release APK
+    runs-on: ubuntu-24.04
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.sha }}
+
+      - name: Set up JDK
+        uses: actions/setup-java@v4
+        with:
+          java-version: ${{ env.JAVA_VERSION }}
+          distribution: temurin
+
+      - name: Setup Android SDK
+        uses: android-actions/setup-android@v4
+
+      - name: Install Android NDK and CMake
+        run: |
+          sdkmanager --install \
+            "ndk;${NDK_VERSION}" \
+            "cmake;${CMAKE_VERSION}"
+
+      - name: Prepare Gradle
+        run: |
+          sed -i '/org.gradle.java.home/d' gradle.properties
+          chmod +x gradlew
+
+          rm -f keystore.properties
+          rm -f app/keystore.jks
+
+      - name: Build Unsigned Release APK
+        run: |
+          ./gradlew --no-daemon clean assembleRelease
+
+          mkdir -p dist
+
+          APK=$(find app/build/outputs/apk/release -maxdepth 1 -type f -name '*.apk' | head -n 1)
+
+          test -n "$APK"
+
+          cp "$APK" dist/unsigned-release.apk
+
+      - name: Check APK Is Unsigned
+        run: |
+          APKSIGNER=$(find "$ANDROID_HOME/build-tools" -name apksigner -type f | sort -V | tail -n 1)
+
+          test -n "$APKSIGNER"
+
+          if "$APKSIGNER" verify dist/unsigned-release.apk; then
+            echo "ERROR: Unsigned APK unexpectedly contains a valid APK signature."
+            exit 1
+          fi
+
+      - name: Upload Unsigned APK
+        uses: actions/upload-artifact@v4
+        with:
+          name: unsigned-release-apk
+          path: dist/unsigned-release.apk
+          retention-days: 7
+
+  verify-reproducibility:
+    name: Verify APK Reproducibility
+    runs-on: ubuntu-24.04
+    needs:
+      - build-signed
+      - build-unsigned
+
+    steps:
+      - name: Download Signed APK
+        uses: actions/download-artifact@v4
+        with:
+          name: signed-release-apk
+          path: signed
+
+      - name: Download Unsigned APK
+        uses: actions/download-artifact@v4
+        with:
+          name: unsigned-release-apk
+          path: unsigned
+
+      - name: Compare APK Contents
+        run: |
+          python3 - <<'PY'
+          import hashlib
+          import sys
+          import zipfile
+
+          signed_apk = "signed/signed-release.apk"
+          unsigned_apk = "unsigned/unsigned-release.apk"
+
+          def sha256(data):
+              return hashlib.sha256(data).hexdigest()
+
+          def is_signature_file(name):
+              upper = name.upper()
+
+              if not upper.startswith("META-INF/"):
+                  return False
+
+              filename = upper.rsplit("/", 1)[-1]
+
+              return (
+                  filename == "MANIFEST.MF"
+                  or filename.endswith((".SF", ".RSA", ".DSA", ".EC"))
+                  or filename.startswith("SIG-")
+              )
+
+          def read_apk(path):
+              with zipfile.ZipFile(path, "r") as archive:
+                  return {
+                      name: archive.read(name)
+                      for name in archive.namelist()
+                      if not is_signature_file(name)
+                  }
+
+          print("Loading APK files...")
+
+          signed = read_apk(signed_apk)
+          unsigned = read_apk(unsigned_apk)
+
+          signed_names = set(signed)
+          unsigned_names = set(unsigned)
+
+          missing_in_signed = sorted(unsigned_names - signed_names)
+          missing_in_unsigned = sorted(signed_names - unsigned_names)
+
+          failed = False
+
+          if missing_in_signed:
+              failed = True
+              print("\nFiles missing in signed APK:")
+
+              for name in missing_in_signed:
+                  print(f"  {name}")
+
+          if missing_in_unsigned:
+              failed = True
+              print("\nFiles missing in unsigned APK:")
+
+              for name in missing_in_unsigned:
+                  print(f"  {name}")
+
+          common_names = sorted(signed_names & unsigned_names)
+
+          print(f"\nComparing {len(common_names)} APK entries...")
+
+          differences = []
+
+          for name in common_names:
+              signed_hash = sha256(signed[name])
+              unsigned_hash = sha256(unsigned[name])
+
+              if signed_hash != unsigned_hash:
+                  failed = True
+                  differences.append(name)
+
+                  print(f"\nDIFFERENT: {name}")
+                  print(f"  Signed:   {signed_hash}")
+                  print(f"  Unsigned: {unsigned_hash}")
+
+          native_libraries = [
+              "lib/arm64-v8a/libstart.so",
+              "lib/armeabi-v7a/libstart.so",
+              "lib/x86/libstart.so",
+              "lib/x86_64/libstart.so"
+          ]
+
+          print("\nNative library verification:")
+
+          for name in native_libraries:
+              if name not in signed or name not in unsigned:
+                  failed = True
+                  print(f"  MISSING: {name}")
+                  continue
+
+              signed_hash = sha256(signed[name])
+              unsigned_hash = sha256(unsigned[name])
+
+              if signed_hash == unsigned_hash:
+                  print(f"  MATCH: {name}")
+              else:
+                  print(f"  DIFFERENT: {name}")
+                  failed = True
+
+          print("\nReproducibility summary:")
+          print(f"  Signed entries:   {len(signed)}")
+          print(f"  Unsigned entries: {len(unsigned)}")
+          print(f"  Differences:      {len(differences)}")
+
+          if failed:
+              print("\nRESULT: REPRODUCIBILITY FAILED")
+              sys.exit(1)
+
+          print("\nRESULT: REPRODUCIBILITY PASSED")
+          PY
+
+      - name: Generate Build Summary
+        if: always()
+        run: |
+          {
+            echo "## Reproducible Build Verification"
+            echo ""
+            echo "| Build | Result |"
+            echo "|---|---|"
+            echo "| Signed Release APK | ${{ needs.build-signed.result }} |"
+            echo "| Unsigned Release APK | ${{ needs.build-unsigned.result }} |"
+            echo "| Reproducibility | ${{ job.status }} |"
+            echo ""
+            echo "The verification compares APK entries while excluding signing metadata."
+            echo "Native libraries are checked individually."
+          } >> "$GITHUB_STEP_SUMMARY"

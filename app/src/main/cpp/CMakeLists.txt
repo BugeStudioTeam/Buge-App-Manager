@@ -7,3 +7,4 @@ project(bugeappmanager)
 
 add_library(start SHARED libstart.c)
 target_link_libraries(start log)
+target_link_options(start PRIVATE "-Wl,--build-id=none")

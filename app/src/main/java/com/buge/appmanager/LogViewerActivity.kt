@@ -12,6 +12,7 @@ import android.view.View
 import androidx.core.content.ContextCompat
 import com.buge.appmanager.databinding.ActivityLogViewerBinding
 import com.buge.appmanager.util.LogManager
+import com.buge.appmanager.util.PreferencesManager
 import com.buge.appmanager.util.SnackbarHelper
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.snackbar.Snackbar
@@ -33,7 +34,7 @@ class LogViewerActivity : BaseActivity() {
         binding = ActivityLogViewerBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        selectedTypes.addAll(LogManager.LogType.values().toList())
+        loadFilterTypes()
 
         setupToolbar()
         setupLogSwitch()
@@ -46,6 +47,24 @@ class LogViewerActivity : BaseActivity() {
         super.onResume()
         LogManager.refreshLogcat(this)
         updateLogDisplay()
+    }
+
+    private fun loadFilterTypes() {
+        val saved = PreferencesManager.getLogFilterTypes(this)
+        if (saved == null) {
+            selectedTypes.addAll(LogManager.LogType.values().toList())
+        } else {
+            for (name in saved) {
+                try {
+                    selectedTypes.add(LogManager.LogType.valueOf(name))
+                } catch (e: Exception) {
+                }
+            }
+        }
+    }
+
+    private fun saveFilterTypes() {
+        PreferencesManager.setLogFilterTypes(this, selectedTypes.map { it.name }.toSet())
     }
 
     private fun setupToolbar() {
@@ -120,11 +139,13 @@ class LogViewerActivity : BaseActivity() {
                 }
             }
             .setPositiveButton(R.string.confirm) { _, _ ->
+                saveFilterTypes()
                 updateLogDisplay()
             }
             .setNeutralButton(R.string.log_filter_select_all) { _, _ ->
                 selectedTypes.clear()
                 selectedTypes.addAll(types.toList())
+                saveFilterTypes()
                 updateLogDisplay()
             }
             .setNegativeButton(R.string.cancel, null)

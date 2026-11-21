@@ -10,6 +10,8 @@ import android.view.ViewGroup
 import android.widget.FrameLayout
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.activity.OnBackPressedCallback
+import androidx.core.widget.addTextChangedListener
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -32,15 +34,35 @@ class RestoreAppsActivity : BaseActivity() {
     private lateinit var binding: ActivityRestoreAppsBinding
     private lateinit var adapter: RestoreAppsAdapter
     private var uninstalledApps: List<UninstalledAppInfo> = emptyList()
+    private var searchQuery: String = ""
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityRestoreAppsBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        setupBackPressedCallback()
         setupToolbar()
+        setupSearch()
         setupRecyclerView()
         loadUninstalledApps()
+    }
+
+    private fun setupBackPressedCallback() {
+        val callback = object : OnBackPressedCallback(true) {
+            override fun handleOnBackPressed() {
+                val searchText = binding.searchEditText.text.toString()
+                if (searchText.isNotEmpty()) {
+                    binding.searchEditText.setText("")
+                    searchQuery = ""
+                    filterApps("")
+                } else {
+                    isEnabled = false
+                    onBackPressedDispatcher.onBackPressed()
+                }
+            }
+        }
+        onBackPressedDispatcher.addCallback(this, callback)
     }
 
     private fun setupToolbar() {
@@ -60,6 +82,35 @@ class RestoreAppsActivity : BaseActivity() {
         return super.onOptionsItemSelected(item)
     }
 
+    private fun setupSearch() {
+        val searchEditText = binding.searchEditText
+        val btnClear = binding.btnClearSearch
+
+        searchEditText.addTextChangedListener { text ->
+            searchQuery = text?.toString()?.trim() ?: ""
+            btnClear.visibility = if (searchQuery.isNotEmpty()) View.VISIBLE else View.GONE
+            filterApps(searchQuery)
+        }
+
+        btnClear.setOnClickListener {
+            searchEditText.setText("")
+            searchQuery = ""
+            searchEditText.requestFocus()
+            filterApps("")
+        }
+
+        searchEditText.setOnEditorActionListener { _, actionId, _ ->
+            if (actionId == android.view.inputmethod.EditorInfo.IME_ACTION_SEARCH) {
+                val imm = getSystemService(android.content.Context.INPUT_METHOD_SERVICE) as android.view.inputmethod.InputMethodManager
+                imm.hideSoftInputFromWindow(searchEditText.windowToken, 0)
+                searchEditText.clearFocus()
+                true
+            } else {
+                false
+            }
+        }
+    }
+
     private fun setupRecyclerView() {
         adapter = RestoreAppsAdapter { app ->
             showRestoreConfirmDialog(app)
@@ -77,20 +128,36 @@ class RestoreAppsActivity : BaseActivity() {
             try {
                 val apps = getUninstalledApps()
                 uninstalledApps = apps
-                adapter.submitList(apps)
-                if (apps.isEmpty()) {
-                    binding.emptyState.visibility = View.VISIBLE
-                    binding.recyclerView.visibility = View.GONE
-                } else {
-                    binding.emptyState.visibility = View.GONE
-                    binding.recyclerView.visibility = View.VISIBLE
-                }
+                filterApps(searchQuery)
             } catch (e: Exception) {
                 LogManager.error(this@RestoreAppsActivity, "Failed to load uninstalled apps", e.message)
                 SnackbarHelper.showSnackbar(binding.root, "Failed to load: ${e.message}")
             } finally {
                 binding.loadingOverlay.visibility = View.GONE
             }
+        }
+    }
+
+    private fun filterApps(query: String) {
+        val filtered = if (query.isEmpty()) {
+            uninstalledApps
+        } else {
+            uninstalledApps.filter {
+                it.appName.contains(query, ignoreCase = true) ||
+                it.packageName.contains(query, ignoreCase = true)
+            }
+        }
+
+        adapter.submitList(filtered)
+
+        val isEmpty = filtered.isEmpty()
+        binding.emptyState.visibility = if (isEmpty) View.VISIBLE else View.GONE
+        binding.recyclerView.visibility = if (isEmpty) View.GONE else View.VISIBLE
+
+        binding.emptyStateText.text = if (uninstalledApps.isEmpty()) {
+            getString(R.string.no_uninstalled_apps)
+        } else {
+            getString(R.string.no_apps_found)
         }
     }
 
@@ -107,7 +174,6 @@ class RestoreAppsActivity : BaseActivity() {
             .filter { it.isNotEmpty() }
             .toSet()
 
-        // Get currently installed packages
         val installedResult = ShizukuManager.executeCommand("pm list packages")
         if (!installedResult.success) {
             LogManager.warning(this, "Failed to get installed packages", installedResult.error)
@@ -120,7 +186,6 @@ class RestoreAppsActivity : BaseActivity() {
             .filter { it.isNotEmpty() }
             .toSet()
 
-        // Get system packages
         val systemResult = ShizukuManager.executeCommand("pm list packages -s")
         if (!systemResult.success) {
             LogManager.warning(this, "Failed to get system packages", systemResult.error)
@@ -133,7 +198,6 @@ class RestoreAppsActivity : BaseActivity() {
             .filter { it.isNotEmpty() }
             .toSet()
 
-        // Uninstalled apps = packages that appear in -u list but not in installed list
         val uninstalledPackageNames = allPackages.filter { pkg ->
             pkg !in installedPackages
         }
@@ -149,14 +213,12 @@ class RestoreAppsActivity : BaseActivity() {
             val isSystemApp = pkg in systemPackages
 
             try {
-                // Try to get app label from package info
                 val labelResult = ShizukuManager.executeCommand("dumpsys package $pkg | grep -E 'applicationInfo.*labelRes' | head -1")
                 if (labelResult.success && labelResult.output.isNotEmpty()) {
                     val match = Regex("labelRes=0x[0-9a-f]+ '([^']+)'").find(labelResult.output)
                     appName = match?.groupValues?.get(1) ?: appName
                 }
             } catch (e: Exception) {
-                // Keep package name as fallback
             }
 
             apps.add(UninstalledAppInfo(

@@ -62,6 +62,8 @@
     <string name="log_copy">Copy</string>
     <string name="log_cleared">Logs cleared</string>
     <string name="log_copied">Logs copied to clipboard</string>
+    <string name="log_filter_title">Filter log types</string>
+    <string name="log_filter_select_all">Select all</string>
 
     <!-- Default Page Dialog -->
     <string name="default_page_title">Default start page</string>

@@ -1,0 +1,12 @@
+**13.95.162**
+
+**Added**
+- Added Search bar in Restore page
+- Added Customizable tags position swapping function
+
+**Fixes**
+- Activity page items
+- Fix reproducible build on F-Droid (removed .so and CMake)
+
+**Contributors of this version:**
+None

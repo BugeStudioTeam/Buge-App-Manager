@@ -20,6 +20,8 @@ class LogViewerActivity : BaseActivity() {
 
     private lateinit var binding: ActivityLogViewerBinding
 
+    private val selectedTypes = mutableSetOf<LogManager.LogType>()
+
     private val logUpdateListener = {
         runOnUiThread {
             updateLogDisplay()
@@ -30,6 +32,8 @@ class LogViewerActivity : BaseActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityLogViewerBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+        selectedTypes.addAll(LogManager.LogType.values().toList())
 
         setupToolbar()
         setupLogSwitch()
@@ -52,12 +56,13 @@ class LogViewerActivity : BaseActivity() {
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
-        menu.add(0, 1, 0, "Clear")
-        menu.add(0, 2, 1, "Copy")
-        menu.add(0, 3, 2, "Export TXT")
-        menu.add(0, 4, 3, "Export CSV")
-        menu.add(0, 5, 4, "Statistics")
-        menu.add(0, 6, 5, "Refresh Logcat")
+        menu.add(0, 1, 0, "Filter")
+        menu.add(0, 2, 1, "Clear")
+        menu.add(0, 3, 2, "Copy")
+        menu.add(0, 4, 3, "Export TXT")
+        menu.add(0, 5, 4, "Export CSV")
+        menu.add(0, 6, 5, "Statistics")
+        menu.add(0, 7, 6, "Refresh Logcat")
         return super.onCreateOptionsMenu(menu)
     }
 
@@ -68,31 +73,62 @@ class LogViewerActivity : BaseActivity() {
                 return true
             }
             1 -> {
-                showClearLogsDialog()
+                showFilterDialog()
                 return true
             }
             2 -> {
-                copyLogsToClipboard()
+                showClearLogsDialog()
                 return true
             }
             3 -> {
-                exportLogsTxt()
+                copyLogsToClipboard()
                 return true
             }
             4 -> {
-                exportLogsCsv()
+                exportLogsTxt()
                 return true
             }
             5 -> {
-                showStatisticsDialog()
+                exportLogsCsv()
                 return true
             }
             6 -> {
+                showStatisticsDialog()
+                return true
+            }
+            7 -> {
                 refreshLogcat()
                 return true
             }
         }
         return super.onOptionsItemSelected(item)
+    }
+
+    private fun showFilterDialog() {
+        val types = LogManager.LogType.values()
+        val labels = types.map { it.display }.toTypedArray()
+        val checked = types.map { selectedTypes.contains(it) }.toBooleanArray()
+
+        MaterialAlertDialogBuilder(this)
+            .setTitle(R.string.log_filter_title)
+            .setMultiChoiceItems(labels, checked) { _, which, isChecked ->
+                val type = types[which]
+                if (isChecked) {
+                    selectedTypes.add(type)
+                } else {
+                    selectedTypes.remove(type)
+                }
+            }
+            .setPositiveButton(R.string.confirm) { _, _ ->
+                updateLogDisplay()
+            }
+            .setNeutralButton(R.string.log_filter_select_all) { _, _ ->
+                selectedTypes.clear()
+                selectedTypes.addAll(types.toList())
+                updateLogDisplay()
+            }
+            .setNegativeButton(R.string.cancel, null)
+            .show()
     }
 
     private fun refreshLogcat() {
@@ -177,7 +213,7 @@ class LogViewerActivity : BaseActivity() {
     }
 
     private fun copyLogsToClipboard() {
-        val logs = LogManager.getLogs()
+        val logs = LogManager.getLogs().filter { selectedTypes.contains(it.type) }
         if (logs.isEmpty()) {
             SnackbarHelper.showSnackbar(binding.root, getString(R.string.log_empty))
             return
@@ -198,7 +234,7 @@ class LogViewerActivity : BaseActivity() {
     }
 
     private fun updateLogDisplay() {
-        val logs = LogManager.getLogs()
+        val logs = LogManager.getLogs().filter { selectedTypes.contains(it.type) }
         if (logs.isEmpty()) {
             binding.logText.text = ""
             binding.logScrollView.visibility = View.GONE

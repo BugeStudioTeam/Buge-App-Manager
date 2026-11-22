@@ -134,6 +134,10 @@ class AppDetailFragment : Fragment() {
                 revokeAllPermissions()
                 return true
             }
+            R.id.action_export_info -> {
+                shareAppInfo()
+                return true
+            }
             R.id.action_google_play -> {
                 openInGooglePlay()
                 return true
@@ -299,6 +303,46 @@ class AppDetailFragment : Fragment() {
             .setPositiveButton(R.string.confirm, null)
             .setNegativeButton(R.string.cancel, null)
             .show()
+    }
+
+    private fun shareAppInfo() {
+        val app = viewModel.appInfo.value
+        if (app == null) {
+            SnackbarHelper.showSnackbar(binding.root, "Unable to share app info")
+            return
+        }
+
+        try {
+            val permissions = viewModel.permissions.value ?: emptyList()
+            val content = buildString {
+                appendLine("Buge App Manager - Application Information")
+                appendLine()
+                appendLine("App Name: ${app.appName}")
+                appendLine("Package Name: ${app.packageName}")
+                appendLine("Version Name: ${app.versionName}")
+                appendLine("Version Code: ${app.versionCode}")
+                appendLine("System App: ${app.isSystemApp}")
+                appendLine("Enabled: ${app.isEnabled}")
+                appendLine("Target SDK: API ${app.targetSdkVersion}")
+                appendLine("Min SDK: API ${app.minSdkVersion}")
+                appendLine()
+                appendLine("Permissions (${permissions.size}):")
+                permissions.forEach { permission ->
+                    appendLine("${permission.name}: ${if (permission.isGranted) "Granted" else "Not granted"}")
+                }
+            }
+
+            val shareIntent = Intent(Intent.ACTION_SEND).apply {
+                type = "text/plain"
+                putExtra(Intent.EXTRA_SUBJECT, "${app.appName} - Application Information")
+                putExtra(Intent.EXTRA_TEXT, content)
+            }
+            startActivity(Intent.createChooser(shareIntent, "Share Application Information"))
+            LogManager.success(requireContext(), "App info shared", "Package: ${app.packageName}")
+        } catch (e: Exception) {
+            SnackbarHelper.showSnackbar(binding.root, "Share failed: ${e.message}")
+            LogManager.error(requireContext(), "App info share failed", e.message)
+        }
     }
 
     private fun toggleFavorite() {

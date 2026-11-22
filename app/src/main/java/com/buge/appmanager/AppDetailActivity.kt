@@ -22,7 +22,6 @@ import androidx.core.content.FileProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.buge.appmanager.adapter.PermissionDetailAdapter
-import com.buge.appmanager.data.AppRepository
 import com.buge.appmanager.databinding.ActivityAppDetailBinding
 import com.buge.appmanager.model.PermissionInfo
 import com.buge.appmanager.shizuku.ShizukuManager
@@ -863,13 +862,9 @@ class AppDetailActivity : BaseActivity() {
 
     private fun grantAllPermissions() {
         val permissions = viewModel.permissions.value ?: emptyList()
-        val targetPermissions = if (ShizukuManager.isDhizukuMode()) {
-            permissions.filter { it.isDangerous && !it.isGranted && it.name !in AppRepository.DHIZUKU_UNSUPPORTED_PERMISSIONS }
-        } else {
-            permissions.filter { it.isDangerous && !it.isGranted }
-        }
+        val dangerousPermissions = permissions.filter { it.isDangerous && !it.isGranted }
 
-        if (targetPermissions.isEmpty()) {
+        if (dangerousPermissions.isEmpty()) {
             Snackbar.make(binding.root, "All dangerous permissions are already granted", Snackbar.LENGTH_SHORT).show()
             return
         }
@@ -882,12 +877,12 @@ class AppDetailActivity : BaseActivity() {
 
         MaterialAlertDialogBuilder(this)
             .setTitle("Grant All Permissions")
-            .setMessage("Grant ${targetPermissions.size} dangerous permission(s) to ${app?.appName ?: packageName}?")
+            .setMessage("Grant ${dangerousPermissions.size} dangerous permission(s) to ${app?.appName ?: packageName}?")
             .setPositiveButton(R.string.confirm) { _, _ ->
                 lifecycleScope.launch {
                     var successCount = 0
                     var failCount = 0
-                    for (perm in targetPermissions) {
+                    for (perm in dangerousPermissions) {
                         val result = ShizukuManager.grantPermission(packageName, perm.name)
                         if (result.success) {
                             successCount++
@@ -912,13 +907,9 @@ class AppDetailActivity : BaseActivity() {
 
     private fun revokeAllPermissions() {
         val permissions = viewModel.permissions.value ?: emptyList()
-        val targetPermissions = if (ShizukuManager.isDhizukuMode()) {
-            permissions.filter { it.isDangerous && it.isGranted && it.name !in AppRepository.DHIZUKU_UNSUPPORTED_PERMISSIONS }
-        } else {
-            permissions.filter { it.isDangerous && it.isGranted }
-        }
+        val dangerousPermissions = permissions.filter { it.isDangerous && it.isGranted }
 
-        if (targetPermissions.isEmpty()) {
+        if (dangerousPermissions.isEmpty()) {
             Snackbar.make(binding.root, "No granted dangerous permissions to revoke", Snackbar.LENGTH_SHORT).show()
             return
         }
@@ -931,12 +922,12 @@ class AppDetailActivity : BaseActivity() {
 
         MaterialAlertDialogBuilder(this)
             .setTitle("Revoke All Permissions")
-            .setMessage("Revoke ${targetPermissions.size} dangerous permission(s) from ${app?.appName ?: packageName}?")
+            .setMessage("Revoke ${dangerousPermissions.size} dangerous permission(s) from ${app?.appName ?: packageName}?")
             .setPositiveButton(R.string.confirm) { _, _ ->
                 lifecycleScope.launch {
                     var successCount = 0
                     var failCount = 0
-                    for (perm in targetPermissions) {
+                    for (perm in dangerousPermissions) {
                         val result = ShizukuManager.revokePermission(packageName, perm.name)
                         if (result.success) {
                             successCount++
@@ -986,35 +977,15 @@ class AppDetailActivity : BaseActivity() {
                 showSystemOpBlockedDialog()
                 return@setupButtonAnimation
             }
-            val appName = app.appName.ifEmpty { binding.appName.text.toString() }
-            SystemOpChecker.checkDangerousPackage(
-                this,
-                packageName,
-                appName,
-                getString(R.string.dangerous_operation_force_stop)
-            ) {
-                MaterialAlertDialogBuilder(this)
-                    .setTitle(R.string.force_stop)
-                    .setMessage(getString(R.string.force_stop_confirm, appName))
-                    .setPositiveButton(R.string.confirm) { _, _ ->
-                        viewModel.forceStop()
-                        LogManager.info(this, "Force stop executed", "Package: $packageName")
-                    }
-                    .setNegativeButton(R.string.cancel, null)
-                    .show()
-            }.let { handled ->
-                if (!handled) {
-                    MaterialAlertDialogBuilder(this)
-                        .setTitle(R.string.force_stop)
-                        .setMessage(getString(R.string.force_stop_confirm, appName))
-                        .setPositiveButton(R.string.confirm) { _, _ ->
-                            viewModel.forceStop()
-                            LogManager.info(this, "Force stop executed", "Package: $packageName")
-                        }
-                        .setNegativeButton(R.string.cancel, null)
-                        .show()
+            MaterialAlertDialogBuilder(this)
+                .setTitle(R.string.force_stop)
+                .setMessage("Force stop ${binding.appName.text}?")
+                .setPositiveButton(R.string.confirm) { _, _ ->
+                    viewModel.forceStop()
+                    LogManager.info(this, "Force stop executed", "Package: $packageName")
                 }
-            }
+                .setNegativeButton(R.string.cancel, null)
+                .show()
         }
 
         setupButtonAnimation(binding.btnUninstall) {
@@ -1024,37 +995,16 @@ class AppDetailActivity : BaseActivity() {
                 showSystemOpBlockedDialog()
                 return@setupButtonAnimation
             }
-            val appName = app.appName.ifEmpty { binding.appName.text.toString() }
-            SystemOpChecker.checkDangerousPackage(
-                this,
-                packageName,
-                appName,
-                getString(R.string.dangerous_operation_uninstall)
-            ) {
-                MaterialAlertDialogBuilder(this)
-                    .setTitle(R.string.uninstall)
-                    .setMessage("Uninstall ${binding.appName.text}?")
-                    .setPositiveButton(R.string.confirm) { _, _ ->
-                        viewModel.uninstallApp()
-                        LogManager.info(this, "Uninstall initiated", "Package: $packageName")
-                        finish()
-                    }
-                    .setNegativeButton(R.string.cancel, null)
-                    .show()
-            }.let { handled ->
-                if (!handled) {
-                    MaterialAlertDialogBuilder(this)
-                        .setTitle(R.string.uninstall)
-                        .setMessage("Uninstall ${binding.appName.text}?")
-                        .setPositiveButton(R.string.confirm) { _, _ ->
-                            viewModel.uninstallApp()
-                            LogManager.info(this, "Uninstall initiated", "Package: $packageName")
-                            finish()
-                        }
-                        .setNegativeButton(R.string.cancel, null)
-                        .show()
+            MaterialAlertDialogBuilder(this)
+                .setTitle(R.string.uninstall)
+                .setMessage("Uninstall ${binding.appName.text}?")
+                .setPositiveButton(R.string.confirm) { _, _ ->
+                    viewModel.uninstallApp()
+                    LogManager.info(this, "Uninstall initiated", "Package: $packageName")
+                    finish()
                 }
-            }
+                .setNegativeButton(R.string.cancel, null)
+                .show()
         }
 
         setupButtonAnimation(binding.btnClearData) {
@@ -1064,35 +1014,15 @@ class AppDetailActivity : BaseActivity() {
                 showSystemOpBlockedDialog()
                 return@setupButtonAnimation
             }
-            val appName = app.appName.ifEmpty { binding.appName.text.toString() }
-            SystemOpChecker.checkDangerousPackage(
-                this,
-                packageName,
-                appName,
-                getString(R.string.dangerous_operation_clear_data)
-            ) {
-                MaterialAlertDialogBuilder(this)
-                    .setTitle(R.string.clear_data)
-                    .setMessage("Clear all data for ${binding.appName.text}? This cannot be undone.")
-                    .setPositiveButton(R.string.confirm) { _, _ ->
-                        viewModel.clearData()
-                        LogManager.info(this, "Clear data executed", "Package: $packageName")
-                    }
-                    .setNegativeButton(R.string.cancel, null)
-                    .show()
-            }.let { handled ->
-                if (!handled) {
-                    MaterialAlertDialogBuilder(this)
-                        .setTitle(R.string.clear_data)
-                        .setMessage("Clear all data for ${binding.appName.text}? This cannot be undone.")
-                        .setPositiveButton(R.string.confirm) { _, _ ->
-                            viewModel.clearData()
-                            LogManager.info(this, "Clear data executed", "Package: $packageName")
-                        }
-                        .setNegativeButton(R.string.cancel, null)
-                        .show()
+            MaterialAlertDialogBuilder(this)
+                .setTitle(R.string.clear_data)
+                .setMessage("Clear all data for ${binding.appName.text}? This cannot be undone.")
+                .setPositiveButton(R.string.confirm) { _, _ ->
+                    viewModel.clearData()
+                    LogManager.info(this, "Clear data executed", "Package: $packageName")
                 }
-            }
+                .setNegativeButton(R.string.cancel, null)
+                .show()
         }
 
         setupButtonAnimation(binding.btnDisableEnable) {
@@ -1102,48 +1032,13 @@ class AppDetailActivity : BaseActivity() {
                 showSystemOpBlockedDialog()
                 return@setupButtonAnimation
             }
-            val appName = app.appName.ifEmpty { binding.appName.text.toString() }
-            val operation = if (app.isEnabled) {
-                getString(R.string.dangerous_operation_disable)
+            if (app.isEnabled) {
+                viewModel.disableApp()
+                LogManager.info(this, "App disabled", "Package: $packageName")
             } else {
-                getString(R.string.dangerous_operation_enable)
+                viewModel.enableApp()
+                LogManager.info(this, "App enabled", "Package: $packageName")
             }
-            SystemOpChecker.checkDangerousPackage(
-                this,
-                packageName,
-                appName,
-                operation
-            ) {
-                performDisableEnable(app, appName)
-            }.let { handled ->
-                if (!handled) {
-                    performDisableEnable(app, appName)
-                }
-            }
-        }
-    }
-
-    private fun performDisableEnable(app: com.buge.appmanager.model.AppInfo, appName: String) {
-        if (app.isEnabled) {
-            MaterialAlertDialogBuilder(this)
-                .setTitle(R.string.disable_app)
-                .setMessage(getString(R.string.disable_app_confirm, appName))
-                .setPositiveButton(R.string.confirm) { _, _ ->
-                    viewModel.disableApp()
-                    LogManager.info(this, "App disabled", "Package: $packageName")
-                }
-                .setNegativeButton(R.string.cancel, null)
-                .show()
-        } else {
-            MaterialAlertDialogBuilder(this)
-                .setTitle(R.string.enable_app)
-                .setMessage(getString(R.string.enable_app_confirm, appName))
-                .setPositiveButton(R.string.confirm) { _, _ ->
-                    viewModel.enableApp()
-                    LogManager.info(this, "App enabled", "Package: $packageName")
-                }
-                .setNegativeButton(R.string.cancel, null)
-                .show()
         }
     }
 
@@ -1158,11 +1053,6 @@ class AppDetailActivity : BaseActivity() {
 
     private fun handlePermissionToggle(perm: PermissionInfo) {
         if (!checkShizuku()) return
-
-        if (ShizukuManager.isDhizukuMode() && perm.name in AppRepository.DHIZUKU_UNSUPPORTED_PERMISSIONS) {
-            Snackbar.make(binding.root, getString(R.string.dhizuku_unsupported_permission), Snackbar.LENGTH_LONG).show()
-            return
-        }
 
         val app = viewModel.appInfo.value
         if (app != null && !SystemOpChecker.canOperate(this, app.isSystemApp)) {
@@ -1259,17 +1149,11 @@ class AppDetailActivity : BaseActivity() {
         }
 
         viewModel.permissions.observe(this) { perms ->
-            val filtered = if (ShizukuManager.isDhizukuMode()) {
-                perms.filter { it.name !in AppRepository.DHIZUKU_UNSUPPORTED_PERMISSIONS }
+            if (perms.isNotEmpty()) {
+                permAdapter.submitList(perms)
+                binding.permCount.text = "${perms.count { it.isGranted }}/${perms.size}"
             } else {
-                perms
-            }
-            if (filtered.isNotEmpty()) {
-                permAdapter.submitList(filtered)
-                binding.permCount.text = "${filtered.count { it.isGranted }}/${filtered.size}"
-            } else {
-                permAdapter.submitList(emptyList())
-                binding.permCount.text = "0/0"
+                viewModel.loadApp(packageName)
             }
         }
 

@@ -236,21 +236,43 @@ class AppDetailActivity : BaseActivity() {
 
     private fun exportAppInfo() {
         val app = viewModel.appInfo.value
-        val permissions = viewModel.permissions.value
+        val permissions = viewModel.permissions.value ?: emptyList()
 
         if (app == null) {
-            Snackbar.make(binding.root, "Unable to export app info", Snackbar.LENGTH_SHORT).show()
+            Snackbar.make(binding.root, "Unable to share app info", Snackbar.LENGTH_SHORT).show()
             return
         }
 
         MaterialAlertDialogBuilder(this)
-            .setTitle("Export App Info")
-            .setMessage("Export detailed information for ${app.appName} to a text file?")
-            .setPositiveButton(R.string.confirm) { _, _ ->
-                doExportAppInfo(app, permissions ?: emptyList())
+            .setTitle("Application Information")
+            .setMessage("Choose how to export information for ${app.appName}.")
+            .setPositiveButton("Share") { _, _ ->
+                shareAppInfo(app, permissions)
+            }
+            .setNeutralButton("Save to file") { _, _ ->
+                doExportAppInfo(app, permissions)
             }
             .setNegativeButton(R.string.cancel, null)
             .show()
+    }
+
+    private fun shareAppInfo(
+        app: com.buge.appmanager.model.AppInfo,
+        permissions: List<PermissionInfo>
+    ) {
+        try {
+            val content = buildAppInfoContent(app, permissions)
+            val shareIntent = Intent(Intent.ACTION_SEND).apply {
+                type = "text/plain"
+                putExtra(Intent.EXTRA_SUBJECT, "${app.appName} - Application Information")
+                putExtra(Intent.EXTRA_TEXT, content)
+            }
+            startActivity(Intent.createChooser(shareIntent, "Share Application Information"))
+            LogManager.success(this, "App info shared", "Package: ${app.packageName}")
+        } catch (e: Exception) {
+            Snackbar.make(binding.root, "Share failed: ${e.message}", Snackbar.LENGTH_LONG).show()
+            LogManager.error(this, "App info share failed", e.message)
+        }
     }
 
     private fun doExportAppInfo(app: com.buge.appmanager.model.AppInfo, permissions: List<PermissionInfo>) {

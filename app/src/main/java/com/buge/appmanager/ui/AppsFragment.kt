@@ -3,6 +3,7 @@
 
 package com.buge.appmanager.ui
 
+import android.content.ClipData
 import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -10,6 +11,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.animation.OvershootInterpolator
 import androidx.activity.OnBackPressedCallback
+import androidx.core.content.FileProvider
 import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
@@ -34,8 +36,17 @@ import com.buge.appmanager.util.SplitPaneController
 import com.buge.appmanager.viewmodel.AppsViewModel
 import com.google.android.material.chip.Chip
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
+import java.io.BufferedInputStream
+import java.io.BufferedOutputStream
+import java.io.File
+import java.io.FileInputStream
+import java.io.FileOutputStream
+import java.util.zip.ZipEntry
+import java.util.zip.ZipOutputStream
 
 class AppsFragment : Fragment(), AppDetailFragment.OnDetailCloseListener {
 
@@ -482,7 +493,133 @@ class AppsFragment : Fragment(), AppDetailFragment.OnDetailCloseListener {
 
         binding.btnBatchShare.setOnClickListener {
             val selected = adapter.getSelectedItems()
-            if (selected.isEmpty()) return@setOnClickListener
+            if (selected.isEmpty()) {
+                SnackbarHelper.showSnackbar(binding.root, "Select at least one app")
+                return@setOnClickListener
+            }
+            shareSelectedApks(selected)
+        }
+    }
+
+    private fun shareSelectedApks(apps: List<AppInfo>) {
+        val context = requireContext()
+
+        lifecycleScope.launch {
+            try {
+                val archive = withContext(Dispatchers.IO) {
+                    val cacheDirectory = File(context.cacheDir, "apk_cache").apply {
+                        mkdirs()
+                    }
+
+                    val zipFile = File(
+                        cacheDirectory,
+                        "selected_apps_${System.currentTimeMillis()}.zip"
+                    )
+
+                    var copiedApkCount = 0
+
+                    ZipOutputStream(
+                        BufferedOutputStream(FileOutputStream(zipFile))
+                    ).use { zip ->
+                        apps.forEach { app ->
+                            val applicationInfo = context.packageManager
+                                .getApplicationInfo(app.packageName, 0)
+
+                            val apkPaths = buildList {
+                                add(applicationInfo.sourceDir)
+                                applicationInfo.splitSourceDirs?.let {
+                                    addAll(it)
+                                }
+                            }.filter {
+                                it.isNotBlank() && File(it).isFile
+                            }
+
+                            if (apkPaths.isEmpty()) {
+                                throw IllegalStateException(
+                                    "No APK files found for ${app.appName}"
+                                )
+                            }
+
+                            val safePackageName = app.packageName.replace("/", "_")
+
+                            apkPaths.forEachIndexed { index, path ->
+                                val sourceFile = File(path)
+                                val entryName =
+                                    "$safePackageName/${index + 1}_${sourceFile.name}"
+
+                                zip.putNextEntry(ZipEntry(entryName))
+
+                                BufferedInputStream(
+                                    FileInputStream(sourceFile)
+                                ).use { input ->
+                                    input.copyTo(zip)
+                                }
+
+                                zip.closeEntry()
+                                copiedApkCount++
+                            }
+                        }
+                    }
+
+                    if (copiedApkCount == 0) {
+                        zipFile.delete()
+                        throw IllegalStateException("No APK files were collected")
+                    }
+
+                    zipFile
+                }
+
+                val uri = FileProvider.getUriForFile(
+                    context,
+                    "com.buge.appmanager.fileprovider",
+                    archive
+                )
+
+                val sendIntent = Intent(Intent.ACTION_SEND).apply {
+                    type = "application/zip"
+                    putExtra(Intent.EXTRA_STREAM, uri)
+                    putExtra(Intent.EXTRA_SUBJECT, "Selected APKs")
+                    putExtra(
+                        Intent.EXTRA_TEXT,
+                        "${apps.size} app(s) shared from Buge App Manager"
+                    )
+                    clipData = ClipData.newUri(
+                        context.contentResolver,
+                        archive.name,
+                        uri
+                    )
+                    addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
+                }
+
+                startActivity(
+                    Intent.createChooser(sendIntent, "Share APKs")
+                )
+
+                SnackbarHelper.showSnackbar(
+                    binding.root,
+                    "${apps.size} app(s) ready to share"
+                )
+
+                adapter.clearSelection()
+                adapter.setSelectionMode(false)
+                hideBatchActionBar()
+
+                lifecycleScope.launch {
+                    kotlinx.coroutines.delay(60 * 60 * 1000L)
+                    archive.delete()
+                }
+            } catch (e: Exception) {
+                LogManager.error(
+                    context,
+                    "Batch APK share failed",
+                    e.message
+                )
+
+                SnackbarHelper.showSnackbar(
+                    binding.root,
+                    "Share failed: ${e.message ?: "Unknown error"}"
+                )
+            }
         }
     }
 

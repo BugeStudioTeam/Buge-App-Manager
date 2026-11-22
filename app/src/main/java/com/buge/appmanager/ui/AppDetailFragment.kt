@@ -6,6 +6,7 @@ package com.buge.appmanager.ui
 import android.content.Context
 import android.content.Intent
 import android.net.Uri
+import android.os.Build
 import android.os.Bundle
 import android.provider.Settings
 import android.view.LayoutInflater
@@ -14,6 +15,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.core.content.ContextCompat
+import androidx.core.content.FileProvider
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
@@ -32,9 +34,14 @@ import com.buge.appmanager.util.SystemOpChecker
 import com.buge.appmanager.viewmodel.AppDetailViewModel
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import kotlinx.coroutines.launch
+import java.io.File
+import java.io.FileInputStream
+import java.io.FileOutputStream
 import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
+import java.util.zip.ZipEntry
+import java.util.zip.ZipOutputStream
 
 class AppDetailFragment : Fragment() {
 
@@ -44,6 +51,7 @@ class AppDetailFragment : Fragment() {
 
     companion object {
         private const val ARG_PACKAGE_NAME = "arg_package_name"
+        private const val FILE_PROVIDER_AUTHORITY = "com.buge.appmanager.fileprovider"
         fun newInstance(packageName: String): AppDetailFragment {
             val fragment = AppDetailFragment()
             fragment.arguments = Bundle().apply {
@@ -124,6 +132,10 @@ class AppDetailFragment : Fragment() {
         when (item.itemId) {
             R.id.action_favorite -> {
                 toggleFavorite()
+                return true
+            }
+            R.id.action_share_apk -> {
+                shareApk()
                 return true
             }
             R.id.action_grant_all_permissions -> {
@@ -318,6 +330,265 @@ class AppDetailFragment : Fragment() {
             favoriteMenuItem?.icon = ContextCompat.getDrawable(requireContext(), R.drawable.ic_favorite_filled)
         } else {
             favoriteMenuItem?.icon = ContextCompat.getDrawable(requireContext(), R.drawable.ic_favorite)
+        }
+    }
+
+    private fun showShareMessage(message: String) {
+        if (isAdded && _binding != null) {
+            SnackbarHelper.showSnackbar(binding.root, message)
+        }
+    }
+
+    private fun isSplitApk(packageName: String): Boolean {
+        return try {
+            val appInfo = requireContext().packageManager.getApplicationInfo(packageName, 0)
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                val splitNames = appInfo.splitNames
+                splitNames != null && splitNames.isNotEmpty()
+            } else {
+                val splitNamesField = appInfo.javaClass.getDeclaredField("splitNames")
+                splitNamesField.isAccessible = true
+                val splitNames = splitNamesField.get(appInfo) as? Array<String>
+                splitNames != null && splitNames.isNotEmpty()
+            }
+        } catch (e: Exception) {
+            LogManager.warning(requireContext(), "Failed to detect split APK", e.message)
+            false
+        }
+    }
+
+    private fun shareApk() {
+        try {
+            val appInfo = viewModel.appInfo.value
+            if (appInfo == null) {
+                showShareMessage("App info not loaded")
+                return
+            }
+
+            val applicationInfo = requireContext().packageManager.getApplicationInfo(packageName, 0)
+            val sourcePath = applicationInfo.sourceDir
+
+            if (sourcePath.isNullOrEmpty()) {
+                showShareMessage("APK path not found")
+                LogManager.error(requireContext(), "APK share failed", "APK path not found for $packageName")
+                return
+            }
+
+            val appName = appInfo.appName
+            val isSplit = isSplitApk(packageName)
+
+            if (isSplit) {
+                shareSplitApk(packageName, appName)
+            } else {
+                shareSingleApk(sourcePath, appName)
+            }
+
+        } catch (e: Exception) {
+            e.printStackTrace()
+            showShareMessage("Share failed: ${e.message}")
+            LogManager.error(requireContext(), "APK share failed", e.message)
+        }
+    }
+
+    private fun shareSingleApk(sourcePath: String, appName: String) {
+        val context = requireContext()
+        try {
+            val baseCacheDir = context.externalCacheDir
+            if (baseCacheDir == null) {
+                showShareMessage("Cannot access cache directory")
+                return
+            }
+
+            val cacheDir = File(baseCacheDir, "apk_cache").apply { mkdirs() }
+            cleanupTempApkFiles(context, cacheDir)
+
+            val safeAppName = appName
+                .replace("/", "_")
+                .replace("\\", "_")
+                .replace(":", "_")
+                .replace("?", "_")
+                .replace("*", "_")
+                .replace(" ", "_")
+                .replace("'", "_")
+                .replace("\"", "_")
+
+            val tempFile = File(cacheDir, "${safeAppName}.apk")
+            if (tempFile.exists()) {
+                tempFile.delete()
+            }
+
+            val sourceFile = File(sourcePath)
+            if (!sourceFile.exists()) {
+                showShareMessage("APK file does not exist")
+                return
+            }
+
+            FileInputStream(sourceFile).use { input ->
+                FileOutputStream(tempFile).use { output ->
+                    input.copyTo(output)
+                }
+            }
+
+            val apkUri = FileProvider.getUriForFile(
+                context,
+                FILE_PROVIDER_AUTHORITY,
+                tempFile
+            )
+
+            val shareIntent = Intent(Intent.ACTION_SEND).apply {
+                type = "application/vnd.android.package-archive"
+                putExtra(Intent.EXTRA_STREAM, apkUri)
+                putExtra(Intent.EXTRA_SUBJECT, appName)
+                putExtra(Intent.EXTRA_TEXT, "$appName shared from Buge App Manager")
+                addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
+                addFlags(Intent.FLAG_GRANT_WRITE_URI_PERMISSION)
+                addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                clipData = android.content.ClipData.newRawUri(appName, apkUri)
+            }
+
+            val chooserIntent = Intent.createChooser(
+                shareIntent,
+                "Share APK: $appName"
+            )
+            chooserIntent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
+            chooserIntent.addFlags(Intent.FLAG_GRANT_WRITE_URI_PERMISSION)
+            chooserIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+
+            startActivity(chooserIntent)
+            LogManager.success(context, "APK shared", "Package: $packageName")
+
+            lifecycleScope.launch {
+                kotlinx.coroutines.delay(30000)
+                cleanupTempApkFiles(context, cacheDir)
+            }
+
+        } catch (e: Exception) {
+            showShareMessage("Share failed: ${e.message}")
+            LogManager.error(context, "APK share failed", e.message)
+        }
+    }
+
+    private fun shareSplitApk(packageName: String, appName: String) {
+        val context = requireContext()
+        lifecycleScope.launch {
+            try {
+                val result = ShizukuManager.executeCommand("pm path $packageName")
+                if (!result.success) {
+                    showShareMessage("Failed to get APK paths: ${result.error}")
+                    LogManager.error(context, "Split APK share failed", result.error)
+                    return@launch
+                }
+
+                val apkPaths = result.output.lines()
+                    .filter { it.startsWith("package:") }
+                    .map { it.removePrefix("package:").trim() }
+                    .filter { it.isNotEmpty() }
+
+                if (apkPaths.isEmpty()) {
+                    showShareMessage("No APK files found")
+                    return@launch
+                }
+
+                val baseCacheDir = context.externalCacheDir
+                if (baseCacheDir == null) {
+                    showShareMessage("Cannot access cache directory")
+                    return@launch
+                }
+
+                val cacheDir = File(baseCacheDir, "apk_cache").apply { mkdirs() }
+                cleanupTempApkFiles(context, cacheDir)
+
+                val safeAppName = appName
+                    .replace("/", "_")
+                    .replace("\\", "_")
+                    .replace(":", "_")
+                    .replace("?", "_")
+                    .replace("*", "_")
+                    .replace(" ", "_")
+                    .replace("'", "_")
+                    .replace("\"", "_")
+
+                val tempFile = File(cacheDir, "${safeAppName}.apks")
+                if (tempFile.exists()) {
+                    tempFile.delete()
+                }
+
+                ZipOutputStream(FileOutputStream(tempFile)).use { zos ->
+                    for (path in apkPaths) {
+                        val sourceFile = File(path)
+                        if (!sourceFile.exists()) {
+                            LogManager.warning(context, "Split APK file does not exist", sourceFile.absolutePath)
+                            continue
+                        }
+
+                        val originalFileName = sourceFile.name
+                        val entry = ZipEntry(originalFileName)
+                        zos.putNextEntry(entry)
+
+                        FileInputStream(sourceFile).use { input ->
+                            val buffer = ByteArray(8192)
+                            var length: Int
+                            while (input.read(buffer).also { length = it } != -1) {
+                                zos.write(buffer, 0, length)
+                            }
+                        }
+                        zos.closeEntry()
+                        LogManager.debug(context, "Added to .apks", originalFileName)
+                    }
+                }
+
+                val apkUri = FileProvider.getUriForFile(
+                    context,
+                    FILE_PROVIDER_AUTHORITY,
+                    tempFile
+                )
+
+                val shareIntent = Intent(Intent.ACTION_SEND).apply {
+                    type = "application/zip"
+                    putExtra(Intent.EXTRA_STREAM, apkUri)
+                    putExtra(Intent.EXTRA_SUBJECT, "APK: $appName (split)")
+                    putExtra(Intent.EXTRA_TEXT, "$appName (split) shared from Buge App Manager")
+                    addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
+                    addFlags(Intent.FLAG_GRANT_WRITE_URI_PERMISSION)
+                    addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                    clipData = android.content.ClipData.newRawUri(appName, apkUri)
+                }
+
+                val chooserIntent = Intent.createChooser(
+                    shareIntent,
+                    "Share APK: $appName (split)"
+                )
+                chooserIntent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
+                chooserIntent.addFlags(Intent.FLAG_GRANT_WRITE_URI_PERMISSION)
+                chooserIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+
+                startActivity(chooserIntent)
+                LogManager.success(context, "Split APK shared", "Package: $packageName, Splits: ${apkPaths.size}")
+
+                kotlinx.coroutines.delay(30000)
+                cleanupTempApkFiles(context, cacheDir)
+
+            } catch (e: Exception) {
+                LogManager.error(context, "Split APK share failed", e.message)
+                showShareMessage("Share failed: ${e.message}")
+            }
+        }
+    }
+
+    private fun cleanupTempApkFiles(context: Context, cacheDir: File) {
+        try {
+            val files = cacheDir.listFiles { file ->
+                (file.name.endsWith(".apk") || file.name.endsWith(".apks")) &&
+                file.lastModified() < System.currentTimeMillis() - (30 * 60 * 1000)
+            }
+            files?.forEach { file ->
+                if (file.exists()) {
+                    file.delete()
+                    LogManager.debug(context, "Cleaned up temp APK file", file.name)
+                }
+            }
+        } catch (e: Exception) {
+            LogManager.warning(context, "Failed to cleanup temp APK files", e.message)
         }
     }
 

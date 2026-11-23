@@ -1,0 +1,8 @@
+**13.95.164**
+
+**Fixes**
+- Fixed share function not working on app details page
+- Fixed inability to batch share from app list
+
+**Contributors of this version:**
+None

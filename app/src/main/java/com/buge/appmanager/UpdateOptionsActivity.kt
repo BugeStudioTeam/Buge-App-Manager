@@ -19,6 +19,7 @@ import androidx.core.content.FileProvider
 import androidx.lifecycle.lifecycleScope
 import com.buge.appmanager.databinding.ActivityUpdateOptionsBinding
 import com.buge.appmanager.shizuku.ShizukuManager
+import com.buge.appmanager.util.CornerPressAnimator
 import com.buge.appmanager.util.LogManager
 import com.buge.appmanager.util.PreferencesManager
 import com.buge.appmanager.util.SnackbarHelper
@@ -75,7 +76,13 @@ class UpdateOptionsActivity : BaseActivity() {
         setupUpdateSourceSelector()
         setupInstallerName()
         setupButtons()
+        setupCornerPress()
         registerDownloadReceiver()
+    }
+
+    private fun setupCornerPress() {
+        CornerPressAnimator.apply(binding.containerUpdateMethod, 24f, 4f)
+        CornerPressAnimator.apply(binding.containerUpdateSource, 4f, 24f)
     }
 
     override fun onDestroy() {

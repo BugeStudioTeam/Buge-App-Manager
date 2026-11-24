@@ -4,18 +4,24 @@
 package com.buge.appmanager.ui
 
 import android.animation.ValueAnimator
+import android.content.res.ColorStateList
 import android.view.LayoutInflater
+import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
+import android.view.animation.PathInterpolator
 import android.widget.FrameLayout
 import android.widget.ImageView
 import android.widget.TextView
-import androidx.core.animation.doOnEnd
 import androidx.recyclerview.widget.RecyclerView
 import com.buge.appmanager.R
 import com.buge.appmanager.shizuku.ShizukuManager
 import com.google.android.material.button.MaterialButton
+import com.google.android.material.color.MaterialColors
 import com.google.android.material.materialswitch.MaterialSwitch
+import com.google.android.material.shape.CornerFamily
+import com.google.android.material.shape.MaterialShapeDrawable
+import com.google.android.material.shape.ShapeAppearanceModel
 
 sealed class SettingItem {
     data class Header(val title: String) : SettingItem()
@@ -132,15 +138,69 @@ class SettingsAdapter(
                     (position + 1 < size && items[position + 1] is SettingItem.Header)
             val isFirstInGroup = position == 0 || items[position - 1] is SettingItem.Header
 
-            val background = when {
-                size == 1 -> R.drawable.bg_setting_item_single
-                isFirstInGroup && isLastInGroup -> R.drawable.bg_setting_item_single
-                isFirstInGroup -> R.drawable.bg_setting_item_top
-                isLastInGroup -> R.drawable.bg_setting_item_bottom
-                else -> R.drawable.bg_setting_item_middle
-            }
-            container.setBackgroundResource(background)
+            val density = container.resources.displayMetrics.density
+            val topRadius = if (isFirstInGroup) 24f * density else 4f * density
+            val bottomRadius = if (isLastInGroup) 24f * density else 4f * density
+            applyCornerBackground(container, topRadius, bottomRadius)
         }
+    }
+
+    private fun applyCornerBackground(container: View, topRadius: Float, bottomRadius: Float) {
+        (container.tag as? CornerState)?.animator?.cancel()
+        val density = container.resources.displayMetrics.density
+        val pressedRadius = 24f * density
+        val original = floatArrayOf(topRadius, topRadius, bottomRadius, bottomRadius)
+        val color = MaterialColors.getColor(container, R.attr.colorSurfaceContainerHigh)
+        val drawable = MaterialShapeDrawable().apply {
+            fillColor = ColorStateList.valueOf(color)
+            shapeAppearanceModel = cornerModel(original)
+        }
+        container.background = drawable
+        val state = CornerState(original)
+        container.tag = state
+        if (!container.isClickable) return
+        container.setOnTouchListener { view, event ->
+            when (event.actionMasked) {
+                MotionEvent.ACTION_DOWN -> {
+                    animateCorners(view, state, floatArrayOf(pressedRadius, pressedRadius, pressedRadius, pressedRadius))
+                }
+                MotionEvent.ACTION_UP, MotionEvent.ACTION_CANCEL -> {
+                    animateCorners(view, state, original)
+                }
+            }
+            false
+        }
+    }
+
+    private fun animateCorners(view: View, state: CornerState, target: FloatArray) {
+        val drawable = view.background as? MaterialShapeDrawable ?: return
+        state.animator?.cancel()
+        val start = state.current.copyOf()
+        state.animator = ValueAnimator.ofFloat(0f, 1f).apply {
+            duration = 180
+            interpolator = PathInterpolator(0.2f, 0f, 0f, 1f)
+            addUpdateListener { animator ->
+                val fraction = animator.animatedValue as Float
+                val radii = FloatArray(4) { index -> start[index] + (target[index] - start[index]) * fraction }
+                drawable.shapeAppearanceModel = cornerModel(radii)
+                state.current = radii
+            }
+            start()
+        }
+    }
+
+    private fun cornerModel(radii: FloatArray): ShapeAppearanceModel {
+        return ShapeAppearanceModel.builder()
+            .setTopLeftCorner(CornerFamily.ROUNDED, radii[0])
+            .setTopRightCorner(CornerFamily.ROUNDED, radii[1])
+            .setBottomRightCorner(CornerFamily.ROUNDED, radii[2])
+            .setBottomLeftCorner(CornerFamily.ROUNDED, radii[3])
+            .build()
+    }
+
+    private class CornerState(val original: FloatArray) {
+        var current: FloatArray = original.copyOf()
+        var animator: ValueAnimator? = null
     }
 
     override fun getItemCount(): Int = items.size
@@ -172,26 +232,6 @@ class SettingsAdapter(
                     (v.parent as? RecyclerView)?.let { rv ->
                         val position = rv.getChildAdapterPosition(v)
                         (rv.adapter as? SettingsAdapter)?.let { adapter ->
-                            ValueAnimator.ofFloat(1f, 0.96f).apply {
-                                duration = 80
-                                addUpdateListener { animator ->
-                                    val scale = animator.animatedValue as Float
-                                    v.scaleX = scale
-                                    v.scaleY = scale
-                                }
-                                doOnEnd {
-                                    ValueAnimator.ofFloat(0.96f, 1f).apply {
-                                        duration = 80
-                                        addUpdateListener { animator ->
-                                            val scale = animator.animatedValue as Float
-                                            v.scaleX = scale
-                                            v.scaleY = scale
-                                        }
-                                        start()
-                                    }
-                                }
-                                start()
-                            }
                             adapter.onItemClick(adapter.items[position])
                         }
                     }
@@ -241,26 +281,6 @@ class SettingsAdapter(
                 (v.parent as? RecyclerView)?.let { rv ->
                     val position = rv.getChildAdapterPosition(v)
                     (rv.adapter as? SettingsAdapter)?.let { adapter ->
-                        ValueAnimator.ofFloat(1f, 0.96f).apply {
-                            duration = 80
-                            addUpdateListener { animator ->
-                                val scale = animator.animatedValue as Float
-                                v.scaleX = scale
-                                v.scaleY = scale
-                            }
-                            doOnEnd {
-                                ValueAnimator.ofFloat(0.96f, 1f).apply {
-                                    duration = 80
-                                    addUpdateListener { animator ->
-                                        val scale = animator.animatedValue as Float
-                                        v.scaleX = scale
-                                        v.scaleY = scale
-                                    }
-                                    start()
-                                }
-                            }
-                            start()
-                        }
                         adapter.onItemClick(adapter.items[position])
                     }
                 }
@@ -280,26 +300,6 @@ class SettingsAdapter(
                 (v.parent as? RecyclerView)?.let { rv ->
                     val position = rv.getChildAdapterPosition(v)
                     (rv.adapter as? SettingsAdapter)?.let { adapter ->
-                        ValueAnimator.ofFloat(1f, 0.96f).apply {
-                            duration = 80
-                            addUpdateListener { animator ->
-                                val scale = animator.animatedValue as Float
-                                v.scaleX = scale
-                                v.scaleY = scale
-                            }
-                            doOnEnd {
-                                ValueAnimator.ofFloat(0.96f, 1f).apply {
-                                    duration = 80
-                                    addUpdateListener { animator ->
-                                        val scale = animator.animatedValue as Float
-                                        v.scaleX = scale
-                                        v.scaleY = scale
-                                    }
-                                    start()
-                                }
-                            }
-                            start()
-                        }
                         adapter.onItemClick(adapter.items[position])
                     }
                 }

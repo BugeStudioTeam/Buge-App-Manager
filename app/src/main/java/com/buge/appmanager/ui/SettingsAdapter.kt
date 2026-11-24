@@ -183,7 +183,6 @@ class SettingsAdapter(
             title.text = item.title
             switchControl.isChecked = item.isChecked
             switchControl.isEnabled = item.isEnabled
-            itemView.isClickable = item.isEnabled
             if (!item.isEnabled) {
                 itemView.alpha = 0.6f
             } else {
@@ -194,6 +193,7 @@ class SettingsAdapter(
                     switchControl.isChecked = !switchControl.isChecked
                 }
             }
+            itemView.isClickable = item.isEnabled
             switchControl.setOnCheckedChangeListener { _, isChecked ->
                 if (item.isEnabled) {
                     (itemView.parent as? RecyclerView)?.let { rv ->

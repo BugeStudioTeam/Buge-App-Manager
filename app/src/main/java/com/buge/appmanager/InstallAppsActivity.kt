@@ -19,10 +19,12 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.buge.appmanager.databinding.ActivityInstallAppsBinding
 import com.buge.appmanager.shizuku.ShizukuManager
+import com.buge.appmanager.util.CornerPressAnimator
 import com.buge.appmanager.util.LogManager
 import com.buge.appmanager.util.PreferencesManager
 import com.buge.appmanager.util.SnackbarHelper
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import com.google.android.material.materialswitch.MaterialSwitch
 import com.google.android.material.textfield.TextInputEditText
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -71,10 +73,30 @@ class InstallAppsActivity : BaseActivity() {
 
         setupToolbar()
         setupOptions()
+        setupCornerPress()
         setupRecyclerView()
         setupFab()
         setupInstallButton()
         updateEmptyState()
+    }
+
+    private fun setupCornerPress() {
+        CornerPressAnimator.apply(binding.installerNameItem, 24f, 4f)
+        applySwitchRow(binding.allowDowngradeSwitch, 4f, 4f)
+        applySwitchRow(binding.allowTestSwitch, 4f, 4f)
+        applySwitchRow(binding.allowSystemSwitch, 4f, 4f)
+        applySwitchRow(binding.allUsersSwitch, 4f, 24f)
+    }
+
+    private fun applySwitchRow(switch: MaterialSwitch, topRadius: Float, bottomRadius: Float) {
+        val container = switch.parent?.parent as? View ?: return
+        container.setOnClickListener {
+            if (switch.isEnabled) {
+                switch.isChecked = !switch.isChecked
+            }
+        }
+        container.isClickable = switch.isEnabled
+        CornerPressAnimator.apply(container, topRadius, bottomRadius)
     }
 
     private fun setupToolbar() {

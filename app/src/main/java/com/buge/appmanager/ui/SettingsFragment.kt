@@ -257,6 +257,12 @@ class SettingsFragment : Fragment() {
             UpdateOptionsActivity::class.java
         ))
         list.add(SubPageEntry(
+            getString(R.string.update_method_local),
+            getString(R.string.update_method_local) + " / " + getString(R.string.title_update_options),
+            R.drawable.ic_update,
+            UpdateOptionsActivity::class.java
+        ))
+        list.add(SubPageEntry(
             getString(R.string.installer_name),
             getString(R.string.installer_name) + " / " + getString(R.string.title_update_options),
             R.drawable.ic_settings,

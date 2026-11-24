@@ -15,6 +15,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.widget.TextView
 import androidx.appcompat.app.AlertDialog
+import androidx.core.content.FileProvider
 import androidx.lifecycle.lifecycleScope
 import com.buge.appmanager.databinding.ActivityUpdateOptionsBinding
 import com.buge.appmanager.shizuku.ShizukuManager
@@ -50,8 +51,10 @@ class UpdateOptionsActivity : BaseActivity() {
         .build()
 
     private enum class UpdateMethod {
-        BROWSER, SILENT
+        BROWSER, SILENT, LOCAL
     }
+
+    private val fileProviderAuthority = "com.buge.appmanager.fileprovider"
 
     private val downloadReceiver = object : BroadcastReceiver() {
         override fun onReceive(context: Context, intent: Intent) {
@@ -103,7 +106,11 @@ class UpdateOptionsActivity : BaseActivity() {
 
     private fun setupUpdateMethodSelector() {
         val savedMethod = PreferencesManager.getUpdateMethod(this)
-        updateMethod = if (savedMethod == "silent") UpdateMethod.SILENT else UpdateMethod.BROWSER
+        updateMethod = when (savedMethod) {
+            "silent" -> UpdateMethod.SILENT
+            "local" -> UpdateMethod.LOCAL
+            else -> UpdateMethod.BROWSER
+        }
         updateMethodDisplay()
 
         binding.containerUpdateMethod.setOnClickListener {
@@ -115,6 +122,7 @@ class UpdateOptionsActivity : BaseActivity() {
         val text = when (updateMethod) {
             UpdateMethod.BROWSER -> getString(R.string.update_method_browser)
             UpdateMethod.SILENT -> getString(R.string.update_method_silent)
+            UpdateMethod.LOCAL -> getString(R.string.update_method_local)
         }
         binding.updateMethodValue.text = text
     }
@@ -122,11 +130,13 @@ class UpdateOptionsActivity : BaseActivity() {
     private fun showUpdateMethodDialog() {
         val options = arrayOf(
             getString(R.string.update_method_browser),
-            getString(R.string.update_method_silent)
+            getString(R.string.update_method_silent),
+            getString(R.string.update_method_local)
         )
         val currentIndex = when (updateMethod) {
             UpdateMethod.BROWSER -> 0
             UpdateMethod.SILENT -> 1
+            UpdateMethod.LOCAL -> 2
         }
 
         MaterialAlertDialogBuilder(this)
@@ -135,15 +145,22 @@ class UpdateOptionsActivity : BaseActivity() {
                 val method = when (which) {
                     0 -> UpdateMethod.BROWSER
                     1 -> UpdateMethod.SILENT
+                    2 -> UpdateMethod.LOCAL
                     else -> UpdateMethod.BROWSER
                 }
                 updateMethod = method
-                PreferencesManager.setUpdateMethod(this, if (method == UpdateMethod.SILENT) "silent" else "browser")
+                PreferencesManager.setUpdateMethod(this, methodKey(method))
                 updateMethodDisplay()
                 dialog.dismiss()
             }
             .setNegativeButton(R.string.cancel, null)
             .show()
+    }
+
+    private fun methodKey(method: UpdateMethod): String = when (method) {
+        UpdateMethod.BROWSER -> "browser"
+        UpdateMethod.SILENT -> "silent"
+        UpdateMethod.LOCAL -> "local"
     }
 
     private fun setupUpdateSourceSelector() {
@@ -202,7 +219,7 @@ class UpdateOptionsActivity : BaseActivity() {
     private fun saveSettings() {
         val installerName = binding.installerNameInput.text?.toString()?.trim() ?: ""
         PreferencesManager.setInstallerName(this, installerName)
-        PreferencesManager.setUpdateMethod(this, if (updateMethod == UpdateMethod.SILENT) "silent" else "browser")
+        PreferencesManager.setUpdateMethod(this, methodKey(updateMethod))
         PreferencesManager.setAppSource(this, updateSource)
         SnackbarHelper.showSnackbar(binding.root, "Settings saved")
         LogManager.info(this, "Update settings saved", "Method: $updateMethod, Source: $updateSource, Installer: $installerName")
@@ -306,6 +323,9 @@ class UpdateOptionsActivity : BaseActivity() {
                 if (!checkShizuku()) return
                 startSilentDownload(apkUrl)
             }
+            UpdateMethod.LOCAL -> {
+                startLocalDownload(apkUrl)
+            }
         }
     }
 
@@ -354,6 +374,59 @@ class UpdateOptionsActivity : BaseActivity() {
             } finally {
                 isDownloading = false
             }
+        }
+    }
+
+    private fun startLocalDownload(url: String) {
+        if (isDownloading) return
+        isDownloading = true
+
+        binding.loadingOverlay.visibility = View.VISIBLE
+        binding.btnCheckUpdate.isEnabled = false
+        binding.btnSave.isEnabled = false
+
+        lifecycleScope.launch {
+            try {
+                val apkFile = downloadApkWithOkHttp(url)
+                if (apkFile != null) {
+                    tempApkFile = apkFile
+                    launchSystemInstaller(apkFile)
+                } else {
+                    binding.loadingOverlay.visibility = View.GONE
+                    binding.btnCheckUpdate.isEnabled = true
+                    binding.btnSave.isEnabled = true
+                    SnackbarHelper.showSnackbar(binding.root, getString(R.string.update_download_failed))
+                }
+            } catch (e: Exception) {
+                binding.loadingOverlay.visibility = View.GONE
+                binding.btnCheckUpdate.isEnabled = true
+                binding.btnSave.isEnabled = true
+                SnackbarHelper.showSnackbar(binding.root, "Download failed: ${e.message}")
+                LogManager.error(this@UpdateOptionsActivity, "Local install download failed", e.message)
+            } finally {
+                isDownloading = false
+            }
+        }
+    }
+
+    private fun launchSystemInstaller(apkFile: File) {
+        binding.loadingOverlay.visibility = View.GONE
+        binding.btnCheckUpdate.isEnabled = true
+        binding.btnSave.isEnabled = true
+
+        try {
+            val apkUri = FileProvider.getUriForFile(this, fileProviderAuthority, apkFile)
+            val intent = Intent(Intent.ACTION_VIEW).apply {
+                setDataAndType(apkUri, "application/vnd.android.package-archive")
+                addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
+                addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                clipData = android.content.ClipData.newRawUri("apk", apkUri)
+            }
+            startActivity(intent)
+            LogManager.info(this, "System installer opened", "File: ${apkFile.name}")
+        } catch (e: Exception) {
+            SnackbarHelper.showSnackbar(binding.root, "Cannot open installer: ${e.message}")
+            LogManager.error(this, "Failed to open system installer", e.message)
         }
     }
 

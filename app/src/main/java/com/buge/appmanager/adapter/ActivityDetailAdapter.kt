@@ -14,6 +14,7 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.buge.appmanager.R
 import com.buge.appmanager.model.ActivityDetail
+import com.buge.appmanager.util.CornerPressAnimator
 import com.google.android.material.button.MaterialButton
 
 class ActivityDetailAdapter(
@@ -72,13 +73,9 @@ class ActivityDetailAdapter(
         val container = holder.container
         val size = itemCount
 
-        val background = when {
-            size == 1 -> R.drawable.bg_setting_item_single
-            position == 0 -> R.drawable.bg_setting_item_top
-            position == size - 1 -> R.drawable.bg_setting_item_bottom
-            else -> R.drawable.bg_setting_item_middle
-        }
-        container.setBackgroundResource(background)
+        val topRadius = if (position == 0) 24f else 4f
+        val bottomRadius = if (position == size - 1) 24f else 4f
+        CornerPressAnimator.apply(container, topRadius, bottomRadius)
     }
 
     override fun submitList(list: List<ActivityDetail>?) {

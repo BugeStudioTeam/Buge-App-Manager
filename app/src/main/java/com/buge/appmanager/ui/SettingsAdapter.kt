@@ -150,7 +150,7 @@ class SettingsAdapter(
         val density = container.resources.displayMetrics.density
         val pressedRadius = 24f * density
         val original = floatArrayOf(topRadius, topRadius, bottomRadius, bottomRadius)
-        val color = MaterialColors.getColor(container, R.attr.colorSurfaceContainerHigh)
+        val color = MaterialColors.getColor(container, com.google.android.material.R.attr.colorSurfaceContainerHigh)
         val drawable = MaterialShapeDrawable().apply {
             fillColor = ColorStateList.valueOf(color)
             shapeAppearanceModel = cornerModel(original)

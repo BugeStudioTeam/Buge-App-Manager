@@ -11,6 +11,7 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatDelegate
 import com.buge.appmanager.databinding.ActivityAppearanceBinding
+import com.buge.appmanager.util.CornerPressAnimator
 import com.buge.appmanager.util.LocaleManager
 import com.buge.appmanager.util.PreferencesManager
 import com.buge.appmanager.util.ThemeManager
@@ -33,6 +34,16 @@ class AppearanceActivity : BaseActivity() {
         setupDynamicColor()
         setupColorThemeGroup()
         setupHideNavLabelsSwitch()
+        setupCornerPress()
+    }
+
+    private fun setupCornerPress() {
+        CornerPressAnimator.apply(binding.defaultPageItem, 24f, 4f)
+        CornerPressAnimator.apply(binding.languageItem, 4f, 24f)
+        CornerPressAnimator.apply(binding.themeItem, 24f, 4f)
+        CornerPressAnimator.apply(binding.dynamicColorContainer, 4f, 4f)
+        CornerPressAnimator.apply(binding.hideNavLabelsContainer, 4f, 4f)
+        CornerPressAnimator.apply(binding.colorThemeContainer, 4f, 24f)
     }
 
     private fun setupToolbar() {
@@ -109,6 +120,11 @@ class AppearanceActivity : BaseActivity() {
                 PreferencesManager.setDynamicColor(this, isChecked)
                 updateColorThemeUI(isChecked)
                 showDynamicColorRestartDialog(isChecked)
+            }
+
+            container.isClickable = true
+            container.setOnClickListener {
+                switch.isChecked = !switch.isChecked
             }
         } else {
             // fkkkkkkkkkkk * 6: hode dyn color on a11 n below
@@ -205,6 +221,10 @@ class AppearanceActivity : BaseActivity() {
         binding.hideNavLabelsSwitch.setOnCheckedChangeListener { _, isChecked ->
             PreferencesManager.setHideNavLabels(this, isChecked)
             applyHideNavLabelsToMainActivity()
+        }
+        binding.hideNavLabelsContainer.isClickable = true
+        binding.hideNavLabelsContainer.setOnClickListener {
+            binding.hideNavLabelsSwitch.isChecked = !binding.hideNavLabelsSwitch.isChecked
         }
     }
 

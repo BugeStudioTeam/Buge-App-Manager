@@ -249,6 +249,8 @@ object UpdateChecker {
                 "Open F-Droid page"
             } else if (updateMethod == "silent") {
                 "Silent install (Shizuku)"
+            } else if (updateMethod == "local") {
+                "Local install (System installer)"
             } else {
                 "Open in browser"
             }
@@ -308,6 +310,9 @@ object UpdateChecker {
                     return
                 }
                 UpdateHelper.startSilentUpdate(context, apkUrl, installerName)
+            }
+            "local" -> {
+                UpdateHelper.startLocalUpdate(context, apkUrl)
             }
             else -> {
                 try {

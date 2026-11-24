@@ -4,8 +4,10 @@
 package com.buge.appmanager.util
 
 import android.content.Context
+import android.content.Intent
 import android.os.Handler
 import android.os.Looper
+import androidx.core.content.FileProvider
 import com.buge.appmanager.shizuku.ShizukuManager
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import kotlinx.coroutines.Dispatchers
@@ -19,6 +21,8 @@ import java.io.FileOutputStream
 import java.util.concurrent.TimeUnit
 
 object UpdateHelper {
+
+    private const val FILE_PROVIDER_AUTHORITY = "com.buge.appmanager.fileprovider"
 
     private val okHttpClient = OkHttpClient.Builder()
         .connectTimeout(60, TimeUnit.SECONDS)
@@ -57,6 +61,56 @@ object UpdateHelper {
                 showToast(context, "Download failed: ${e.message}")
                 LogManager.error(context, "Silent update failed", e.message)
                 isDownloading = false
+            }
+        }
+    }
+
+    fun startLocalUpdate(context: Context, apkUrl: String) {
+        if (isDownloading) {
+            showToast(context, "Download already in progress")
+            return
+        }
+
+        isDownloading = true
+
+        showProgressDialog(context)
+
+        GlobalScope.launch {
+            try {
+                val apkFile = downloadApk(context, apkUrl)
+                if (apkFile != null) {
+                    tempApkFile = apkFile
+                    dismissProgressDialog()
+                    launchSystemInstaller(context, apkFile)
+                } else {
+                    dismissProgressDialog()
+                    showToast(context, "Download failed")
+                    isDownloading = false
+                }
+            } catch (e: Exception) {
+                dismissProgressDialog()
+                showToast(context, "Download failed: ${e.message}")
+                LogManager.error(context, "Local update failed", e.message)
+                isDownloading = false
+            }
+        }
+    }
+
+    private fun launchSystemInstaller(context: Context, apkFile: File) {
+        Handler(Looper.getMainLooper()).post {
+            try {
+                val apkUri = FileProvider.getUriForFile(context, FILE_PROVIDER_AUTHORITY, apkFile)
+                val intent = Intent(Intent.ACTION_VIEW).apply {
+                    setDataAndType(apkUri, "application/vnd.android.package-archive")
+                    addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
+                    addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                    clipData = android.content.ClipData.newRawUri("apk", apkUri)
+                }
+                context.startActivity(intent)
+                LogManager.info(context, "System installer opened", "File: ${apkFile.name}")
+            } catch (e: Exception) {
+                showToast(context, "Cannot open installer: ${e.message}")
+                LogManager.error(context, "Failed to open system installer", e.message)
             }
         }
     }

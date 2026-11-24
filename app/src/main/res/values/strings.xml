@@ -362,6 +362,7 @@
     <string name="title_update_options">Update Options</string>
     <string name="update_method_browser">Open in Browser</string>
     <string name="update_method_silent">Silent Install</string>
+    <string name="update_method_local">Local Install</string>
     <string name="installer_name">Installer Name</string>
     <string name="installer_name_hint">Enter installer name</string>
     <string name="update_downloading">Downloading update...</string>

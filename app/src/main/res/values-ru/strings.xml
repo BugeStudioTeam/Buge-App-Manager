@@ -349,6 +349,7 @@
     <string name="title_update_options">Параметры обновления</string>
     <string name="update_method_browser">Открыть в браузере</string>
     <string name="update_method_silent">Тихая установка</string>
+    <string name="update_method_local">Локальная установка</string>
     <string name="installer_name">Имя установщика</string>
     <string name="installer_name_hint">Введите имя установщика</string>
     <string name="update_downloading">Загрузка обновления...</string>

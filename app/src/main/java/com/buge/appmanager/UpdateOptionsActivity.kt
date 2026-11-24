@@ -632,7 +632,7 @@ class UpdateOptionsActivity : BaseActivity() {
     }
 
     private fun updateDownloadProgress(progress: Int, downloaded: Long, total: Long) {
-        progressDialogView?.findViewById<CircularProgressIndicator>(R.id.progress_indicator)?.setProgress(progress)
+        progressDialogView?.findViewById<CircularProgressIndicator>(R.id.progress_indicator)?.setProgressCompat(progress, true)
         progressDialogView?.findViewById<TextView>(R.id.progress_text)?.text = "$progress%"
         if (total > 0) {
             progressDialogView?.findViewById<TextView>(R.id.size_text)?.text = "${formatFileSize(downloaded)} / ${formatFileSize(total)}"

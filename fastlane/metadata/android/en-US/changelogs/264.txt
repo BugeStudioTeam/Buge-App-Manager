@@ -1,0 +1,15 @@
+**14.96.167**
+
+**Added**
+- Added Local Update update option
+
+**Fixes**
+- Fixed Google Service option not correctly using trigger conditions
+
+**Optimizations**
+- Large-scale UI renovation with a more refined Material Design 3 Expressive UI
+- Improved tabs
+- Improved update animations
+
+**Contributors of this version:**
+None

@@ -17,6 +17,7 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.buge.appmanager.R
 import com.buge.appmanager.model.AppInfo
+import com.buge.appmanager.util.CornerPressAnimator
 
 data class AppsItem(
     val app: AppInfo,
@@ -99,13 +100,9 @@ class AppsAdapter(
     private fun applyItemBackground(holder: AppViewHolder, position: Int) {
         val container = holder.itemView.findViewById<FrameLayout>(R.id.item_container)
         val size = currentList.size
-        val background = when {
-            size == 1 -> R.drawable.bg_setting_item_single
-            position == 0 -> R.drawable.bg_setting_item_top
-            position == size - 1 -> R.drawable.bg_setting_item_bottom
-            else -> R.drawable.bg_setting_item_middle
-        }
-        container.setBackgroundResource(background)
+        val topRadius = if (position == 0) 24f else 4f
+        val bottomRadius = if (position == size - 1) 24f else 4f
+        CornerPressAnimator.apply(container, topRadius, bottomRadius)
     }
 
     private fun setupItemClickListeners(holder: AppViewHolder, position: Int) {

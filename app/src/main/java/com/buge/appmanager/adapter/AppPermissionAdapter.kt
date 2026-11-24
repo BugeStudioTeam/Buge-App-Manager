@@ -18,6 +18,7 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.buge.appmanager.R
 import com.buge.appmanager.model.AppInfo
+import com.buge.appmanager.util.CornerPressAnimator
 import com.google.android.material.chip.Chip
 
 data class AppPermissionItem(
@@ -81,13 +82,9 @@ class AppPermissionAdapter(
         val container = holder.itemView.findViewById<FrameLayout>(R.id.item_container)
         val size = currentList.size
 
-        val background = when {
-            size == 1 -> R.drawable.bg_setting_item_single
-            position == 0 -> R.drawable.bg_setting_item_top
-            position == size - 1 -> R.drawable.bg_setting_item_bottom
-            else -> R.drawable.bg_setting_item_middle
-        }
-        container.setBackgroundResource(background)
+        val topRadius = if (position == 0) 24f else 4f
+        val bottomRadius = if (position == size - 1) 24f else 4f
+        CornerPressAnimator.apply(container, topRadius, bottomRadius)
 
         holder.itemView.setOnLongClickListener(null)
         holder.itemView.setOnLongClickListener {
@@ -105,7 +102,6 @@ class AppPermissionAdapter(
 
         holder.itemView.setOnClickListener(null)
         holder.itemView.setOnClickListener {
-            holder.animateClick()
             if (selectionMode) {
                 val item = getItem(holder.adapterPosition)
                 val newSelected = !item.isSelected
@@ -292,22 +288,6 @@ class AppPermissionAdapter(
                     }
                     .start()
             }
-        }
-
-        fun animateClick() {
-            cardView.animate()
-                .scaleX(0.98f)
-                .scaleY(0.98f)
-                .setDuration(80)
-                .setInterpolator(AccelerateDecelerateInterpolator())
-                .withEndAction {
-                    cardView.animate()
-                        .scaleX(1f)
-                        .scaleY(1f)
-                        .setDuration(80)
-                        .start()
-                }
-                .start()
         }
 
         fun animateCheckbox(checked: Boolean) {

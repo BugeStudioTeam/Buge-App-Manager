@@ -11,6 +11,7 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatDelegate
 import com.buge.appmanager.databinding.ActivityBackupBinding
 import com.buge.appmanager.util.BackupManager
+import com.buge.appmanager.util.CornerPressAnimator
 import com.buge.appmanager.util.LogManager
 import com.buge.appmanager.util.PreferencesManager
 import com.buge.appmanager.util.SnackbarHelper
@@ -53,6 +54,14 @@ class BackupActivity : BaseActivity() {
 
         setupToolbar()
         setupClickListeners()
+        setupCornerPress()
+    }
+
+    private fun setupCornerPress() {
+        CornerPressAnimator.apply(binding.backupAppSettingsItem, 24f, 4f)
+        CornerPressAnimator.apply(binding.backupAppListItem, 4f, 4f)
+        CornerPressAnimator.apply(binding.importAppSettingsItem, 4f, 24f)
+        CornerPressAnimator.apply(binding.backupSettingsItem, 24f, 24f)
     }
 
     private fun setupToolbar() {

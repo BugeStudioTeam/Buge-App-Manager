@@ -10,6 +10,7 @@ import android.widget.FrameLayout
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
+import com.buge.appmanager.util.CornerPressAnimator
 import com.google.android.material.materialswitch.MaterialSwitch
 
 class BackupSettingsAdapter(
@@ -76,6 +77,12 @@ class BackupSettingsAdapter(
                     holder.switch?.setOnCheckedChangeListener { _, isChecked ->
                         onAutoBackupToggle(isChecked)
                     }
+                    holder.itemView.isClickable = true
+                    holder.itemView.setOnClickListener {
+                        holder.switch?.let { sw ->
+                            if (sw.isEnabled) sw.isChecked = !sw.isChecked
+                        }
+                    }
                 }
                 BackupItemType.BACKUP -> {
                     holder.itemView.setOnClickListener { onBackupClick() }
@@ -112,15 +119,10 @@ class BackupSettingsAdapter(
 
         val isFirstInGroup = position == groupStart
         val isLastInGroup = position == groupEnd
-        val isSingleInGroup = isFirstInGroup && isLastInGroup
 
-        val background = when {
-            isSingleInGroup -> R.drawable.bg_setting_item_single
-            isFirstInGroup -> R.drawable.bg_setting_item_top
-            isLastInGroup -> R.drawable.bg_setting_item_bottom
-            else -> R.drawable.bg_setting_item_middle
-        }
-        container.setBackgroundResource(background)
+        val topRadius = if (isFirstInGroup) 24f else 4f
+        val bottomRadius = if (isLastInGroup) 24f else 4f
+        CornerPressAnimator.apply(container, topRadius, bottomRadius)
     }
 
     override fun getItemCount(): Int = items.size

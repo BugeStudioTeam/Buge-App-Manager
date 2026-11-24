@@ -349,6 +349,7 @@
     <string name="title_update_options">Options de mise à jour</string>
     <string name="update_method_browser">Ouvrir dans le navigateur</string>
     <string name="update_method_silent">Installation silencieuse</string>
+    <string name="update_method_local">Installation locale</string>
     <string name="installer_name">Nom de l\'installateur</string>
     <string name="installer_name_hint">Saisir le nom de l\'installateur</string>
     <string name="update_downloading">Téléchargement de la mise à jour...</string>

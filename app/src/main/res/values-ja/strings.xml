@@ -349,6 +349,7 @@
     <string name="title_update_options">アップデートオプション</string>
     <string name="update_method_browser">ブラウザで開く</string>
     <string name="update_method_silent">サイレントインストール</string>
+    <string name="update_method_local">ローカルインストール</string>
     <string name="installer_name">インストーラー名</string>
     <string name="installer_name_hint">インストーラー名を入力</string>
     <string name="update_downloading">アップデートをダウンロード中...</string>

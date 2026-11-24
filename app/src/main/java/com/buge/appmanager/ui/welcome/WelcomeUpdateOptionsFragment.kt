@@ -54,24 +54,33 @@ class WelcomeUpdateOptionsFragment : Fragment() {
     }
 
     private fun updateMethodDisplay() {
-        binding.updateMethodValue.text = if (updateMethod == "silent") {
-            getString(R.string.update_method_silent)
-        } else {
-            getString(R.string.update_method_browser)
+        binding.updateMethodValue.text = when (updateMethod) {
+            "silent" -> getString(R.string.update_method_silent)
+            "local" -> getString(R.string.update_method_local)
+            else -> getString(R.string.update_method_browser)
         }
     }
 
     private fun showUpdateMethodDialog() {
         val options = arrayOf(
             getString(R.string.update_method_browser),
-            getString(R.string.update_method_silent)
+            getString(R.string.update_method_silent),
+            getString(R.string.update_method_local)
         )
-        val currentIndex = if (updateMethod == "silent") 1 else 0
+        val currentIndex = when (updateMethod) {
+            "silent" -> 1
+            "local" -> 2
+            else -> 0
+        }
 
         MaterialAlertDialogBuilder(requireContext())
             .setTitle(R.string.welcome_update_options_title)
             .setSingleChoiceItems(options, currentIndex) { dialog, which ->
-                updateMethod = if (which == 1) "silent" else "browser"
+                updateMethod = when (which) {
+                    1 -> "silent"
+                    2 -> "local"
+                    else -> "browser"
+                }
                 PreferencesManager.setUpdateMethod(requireContext(), updateMethod)
                 updateMethodDisplay()
                 dialog.dismiss()

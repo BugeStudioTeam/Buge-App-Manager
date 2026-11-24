@@ -349,6 +349,7 @@
     <string name="title_update_options">Параметри оновлення</string>
     <string name="update_method_browser">Відкрити в браузері</string>
     <string name="update_method_silent">Тихе встановлення</string>
+    <string name="update_method_local">Локальне встановлення</string>
     <string name="installer_name">Ім\'я інсталятора</string>
     <string name="installer_name_hint">Введіть ім\'я інсталятора</string>
     <string name="update_downloading">Завантаження оновлення...</string>

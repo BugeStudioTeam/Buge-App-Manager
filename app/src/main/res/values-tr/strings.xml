@@ -349,6 +349,7 @@
     <string name="title_update_options">Güncelleme Seçenekleri</string>
     <string name="update_method_browser">Tarayıcıda Aç</string>
     <string name="update_method_silent">Sessiz Yükleme</string>
+    <string name="update_method_local">Yerel Yükleme</string>
     <string name="installer_name">Yükleyici Adı</string>
     <string name="installer_name_hint">Yükleyici adını girin</string>
     <string name="update_downloading">Güncelleme indiriliyor...</string>

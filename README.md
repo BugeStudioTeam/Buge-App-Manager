@@ -158,7 +158,7 @@ gradlew.bat assembleDebug # build debug apk
 
 ### Signature
 
-Create files: `/keystore.properties`
+Create file: `/keystore.properties`
 ```bash
 storeFile=keystore.jks
 storePassword=your_store_password

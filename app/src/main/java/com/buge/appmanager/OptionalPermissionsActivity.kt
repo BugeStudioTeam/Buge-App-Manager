@@ -34,20 +34,23 @@ class OptionalPermissionsActivity : BaseActivity() {
     private lateinit var adapter: OptionalPermissionAdapter
     private var permissionItems: List<OptionalPermissionItem> = emptyList()
 
-    companion object {
-        private val PERMISSIONS = listOf(
-            OptionalPermissionItem(
-                name = "Read External Storage",
-                permission = "android.permission.READ_EXTERNAL_STORAGE",
-                description = "Allows app to read files from external storage for APK export and sharing"
-            ),
-            OptionalPermissionItem(
-                name = "Write External Storage",
-                permission = "android.permission.WRITE_EXTERNAL_STORAGE",
-                description = "Allows app to write files to external storage for APK export and sharing"
-            )
+    private fun getPermissions(): List<OptionalPermissionItem> = listOf(
+        OptionalPermissionItem(
+            name = getString(R.string.perm_read_external_storage),
+            permission = "android.permission.READ_EXTERNAL_STORAGE",
+            description = getString(R.string.perm_read_external_storage_desc)
+        ),
+        OptionalPermissionItem(
+            name = getString(R.string.perm_write_external_storage),
+            permission = "android.permission.WRITE_EXTERNAL_STORAGE",
+            description = getString(R.string.perm_write_external_storage_desc)
+        ),
+        OptionalPermissionItem(
+            name = getString(R.string.perm_install_unknown),
+            permission = "android.permission.REQUEST_INSTALL_PACKAGES",
+            description = getString(R.string.perm_install_unknown_desc)
         )
-    }
+    )
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -94,7 +97,7 @@ class OptionalPermissionsActivity : BaseActivity() {
 
         lifecycleScope.launch {
             try {
-                val updatedItems = PERMISSIONS.map { perm ->
+                val updatedItems = getPermissions().map { perm ->
                     val isGranted = checkPermissionStatus(perm.permission)
                     perm.copy(isGranted = isGranted)
                 }
@@ -112,10 +115,12 @@ class OptionalPermissionsActivity : BaseActivity() {
 
     private suspend fun checkPermissionStatus(permission: String): Boolean {
         return try {
-            // use dumpsys package to check if permission is granted
-            val result = ShizukuManager.executeCommand("dumpsys package ${packageName} | grep \"$permission\"")
-            // check if permission is granted
-            result.output.contains("granted=true") || result.output.contains("$permission: granted=true")
+            if (permission == "android.permission.REQUEST_INSTALL_PACKAGES") {
+                ShizukuManager.getInstallUnknownAppsStatus(packageName) ?: false
+            } else {
+                val result = ShizukuManager.executeCommand("dumpsys package ${packageName} | grep \"$permission\"")
+                result.output.contains("granted=true") || result.output.contains("$permission: granted=true")
+            }
         } catch (e: Exception) {
             false
         }
@@ -131,7 +136,7 @@ class OptionalPermissionsActivity : BaseActivity() {
                 lifecycleScope.launch {
                     binding.loadingOverlay.visibility = View.VISIBLE
                     try {
-                        val result = ShizukuManager.executeCommand("pm grant ${packageName} ${perm.permission}")
+                        val result = ShizukuManager.grantPermission(packageName, perm.permission)
                         if (result.success) {
                             val updatedItems = permissionItems.map { item ->
                                 if (item.permission == perm.permission) {
@@ -170,7 +175,7 @@ class OptionalPermissionsActivity : BaseActivity() {
                 lifecycleScope.launch {
                     binding.loadingOverlay.visibility = View.VISIBLE
                     try {
-                        val result = ShizukuManager.executeCommand("pm revoke ${packageName} ${perm.permission}")
+                        val result = ShizukuManager.revokePermission(packageName, perm.permission)
                         if (result.success) {
                             val updatedItems = permissionItems.map { item ->
                                 if (item.permission == perm.permission) {

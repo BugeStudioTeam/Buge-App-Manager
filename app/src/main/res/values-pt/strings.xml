@@ -62,6 +62,8 @@
     <string name="log_copy">Copiar</string>
     <string name="log_cleared">Registos limpos</string>
     <string name="log_copied">Registos copiados para a área de transferência</string>
+    <string name="log_filter_title">Filtrar tipos de registo</string>
+    <string name="log_filter_select_all">Selecionar tudo</string>
 
     <!-- Default Page Dialog -->
     <string name="default_page_title">Página inicial predefinida</string>
@@ -153,6 +155,15 @@
     <string name="error_no_privilege">Nenhum backend de privilégios está disponível ou autorizado. Selecione um nas Definições.</string>
     <string name="request_auth">Autorizar</string>
     <string name="not_authorized">Não autorizado</string>
+    <string name="auth_mode_adb_command">Comando ADB</string>
+    <string name="adb_command_service_running">O serviço ADB shell está em execução</string>
+    <string name="adb_command_service_not_running">O serviço ADB shell não está em execução. Execute o script gerado via ADB shell.</string>
+    <string name="adb_command_title">Comando ADB</string>
+    <string name="adb_command_desc">Execute o script gerado com ADB a partir do seu computador para iniciar o serviço privilegiado.</string>
+    <string name="adb_command_show_command">Mostrar comando</string>
+    <string name="adb_command_message">Execute isto no seu computador:\n\n%1$s\n\nScript: %2$s</string>
+    <string name="adb_command_copy">Copiar</string>
+    <string name="adb_command_copied">Copiado</string>
 
     <!-- App List -->
     <string name="title_app_list">Apps instaladas</string>
@@ -246,8 +257,10 @@
     <string name="perm_calendar">Calendário</string>
     <string name="perm_body_sensors">Sensores corporais</string>
     <string name="perm_notifications">Notificações</string>
+    <string name="perm_vibrate">Vibrar</string>
     <string name="perm_overlay">Sobrepor a outras apps</string>
     <string name="perm_install_unknown">Instalar apps desconhecidas</string>
+    <string name="perm_install_unknown_desc">Permite à app instalar pacotes APK, necessário para a opção de atualização local</string>
     <string name="batch_revoke">Revogar permissão</string>
     <string name="batch_grant">Conceder permissão</string>
     <string name="confirm_revoke">Revogar permissão de %d app(s)?</string>

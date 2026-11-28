@@ -62,6 +62,8 @@
     <string name="log_copy">Копіювати</string>
     <string name="log_cleared">Журнали очищено</string>
     <string name="log_copied">Журнали скопійовано до буфера обміну</string>
+    <string name="log_filter_title">Фільтрувати типи журналів</string>
+    <string name="log_filter_select_all">Вибрати все</string>
 
     <!-- Default Page Dialog -->
     <string name="default_page_title">Типова початкова сторінка</string>
@@ -153,6 +155,15 @@
     <string name="error_no_privilege">Немає доступного або авторизованого бекенду привілеїв. Виберіть один у налаштуваннях.</string>
     <string name="request_auth">Авторизувати</string>
     <string name="not_authorized">Не авторизовано</string>
+    <string name="auth_mode_adb_command">Команда ADB</string>
+    <string name="adb_command_service_running">Служба ADB shell запущена</string>
+    <string name="adb_command_service_not_running">Служба ADB shell не запущена. Запустіть створений скрипт через ADB shell.</string>
+    <string name="adb_command_title">Команда ADB</string>
+    <string name="adb_command_desc">Запустіть створений скрипт за допомогою ADB з комп\'ютера, щоб запустити привілейовану службу.</string>
+    <string name="adb_command_show_command">Показати команду</string>
+    <string name="adb_command_message">Запустіть це на комп\'ютері:\n\n%1$s\n\nСкрипт: %2$s</string>
+    <string name="adb_command_copy">Копіювати</string>
+    <string name="adb_command_copied">Скопійовано</string>
 
     <!-- App List -->
     <string name="title_app_list">Встановлені застосунки</string>
@@ -246,8 +257,10 @@
     <string name="perm_calendar">Календар</string>
     <string name="perm_body_sensors">Датчики тіла</string>
     <string name="perm_notifications">Сповіщення</string>
+    <string name="perm_vibrate">Вібрація</string>
     <string name="perm_overlay">Поверх інших застосунків</string>
     <string name="perm_install_unknown">Встановлення невідомих застосунків</string>
+    <string name="perm_install_unknown_desc">Дозволяє застосунку встановлювати пакети APK, потрібно для параметра локального оновлення</string>
     <string name="batch_revoke">Відкликати дозвіл</string>
     <string name="batch_grant">Надати дозвіл</string>
     <string name="confirm_revoke">Відкликати дозвіл у %d застосунків?</string>

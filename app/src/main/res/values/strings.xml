@@ -261,6 +261,7 @@
     <string name="perm_vibrate">Vibrate</string>
     <string name="perm_overlay">Display Over Other Apps</string>
     <string name="perm_install_unknown">Install Unknown Apps</string>
+    <string name="perm_install_unknown_desc">Allows the app to install APK packages, required for the local update option</string>
     <string name="batch_revoke">Revoke Permission</string>
     <string name="batch_grant">Grant Permission</string>
     <string name="confirm_revoke">Revoke permission from %d app(s)?</string>

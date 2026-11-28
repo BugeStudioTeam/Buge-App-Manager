@@ -62,6 +62,8 @@
     <string name="log_copy">Kopyala</string>
     <string name="log_cleared">Günlükler temizlendi</string>
     <string name="log_copied">Günlükler panoya kopyalandı</string>
+    <string name="log_filter_title">Günlük türlerini filtrele</string>
+    <string name="log_filter_select_all">Tümünü seç</string>
 
     <!-- Default Page Dialog -->
     <string name="default_page_title">Varsayılan başlangıç sayfası</string>
@@ -153,6 +155,15 @@
     <string name="error_no_privilege">Kullanılabilir veya yetkilendirilmiş bir yetki arka ucu yok. Ayarlar\'dan birini seçin.</string>
     <string name="request_auth">Yetkilendir</string>
     <string name="not_authorized">Yetkilendirilmedi</string>
+    <string name="auth_mode_adb_command">ADB Komutu</string>
+    <string name="adb_command_service_running">ADB shell hizmeti çalışıyor</string>
+    <string name="adb_command_service_not_running">ADB shell hizmeti çalışmıyor. Oluşturulan betiği ADB shell üzerinden çalıştırın.</string>
+    <string name="adb_command_title">ADB Komutu</string>
+    <string name="adb_command_desc">Ayrıcalıklı hizmeti başlatmak için oluşturulan betiği bilgisayarınızdan ADB ile çalıştırın.</string>
+    <string name="adb_command_show_command">Komutu göster</string>
+    <string name="adb_command_message">Bunu bilgisayarınızda çalıştırın:\n\n%1$s\n\nBetik: %2$s</string>
+    <string name="adb_command_copy">Kopyala</string>
+    <string name="adb_command_copied">Kopyalandı</string>
 
     <!-- App List -->
     <string name="title_app_list">Yüklü Uygulamalar</string>
@@ -248,6 +259,7 @@
     <string name="perm_vibrate">Titreşim</string>
     <string name="perm_overlay">Diğer Uygulamaların Üzerinde Göster</string>
     <string name="perm_install_unknown">Bilinmeyen Uygulamaları Yükle</string>
+    <string name="perm_install_unknown_desc">Uygulamanın APK paketlerini yüklemesine izin verir, yerel güncelleme seçeneği için gereklidir</string>
     <string name="batch_revoke">İzni İptal Et</string>
     <string name="batch_grant">İzin Ver</string>
     <string name="confirm_revoke">%d uygulamadan izin iptal edilsin mi?</string>

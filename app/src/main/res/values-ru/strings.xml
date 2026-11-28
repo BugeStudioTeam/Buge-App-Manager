@@ -62,6 +62,8 @@
     <string name="log_copy">Копировать</string>
     <string name="log_cleared">Журналы очищены</string>
     <string name="log_copied">Журналы скопированы в буфер обмена</string>
+    <string name="log_filter_title">Фильтровать типы журналов</string>
+    <string name="log_filter_select_all">Выбрать все</string>
 
     <!-- Default Page Dialog -->
     <string name="default_page_title">Стартовая страница по умолчанию</string>
@@ -153,6 +155,15 @@
     <string name="error_no_privilege">Нет доступного или авторизованного бэкенда привилегий. Выберите один в настройках.</string>
     <string name="request_auth">Авторизовать</string>
     <string name="not_authorized">Не авторизовано</string>
+    <string name="auth_mode_adb_command">Команда ADB</string>
+    <string name="adb_command_service_running">Служба ADB shell запущена</string>
+    <string name="adb_command_service_not_running">Служба ADB shell не запущена. Запустите созданный скрипт через ADB shell.</string>
+    <string name="adb_command_title">Команда ADB</string>
+    <string name="adb_command_desc">Запустите созданный скрипт с помощью ADB с компьютера, чтобы запустить привилегированную службу.</string>
+    <string name="adb_command_show_command">Показать команду</string>
+    <string name="adb_command_message">Запустите это на компьютере:\n\n%1$s\n\nСкрипт: %2$s</string>
+    <string name="adb_command_copy">Копировать</string>
+    <string name="adb_command_copied">Скопировано</string>
 
     <!-- App List -->
     <string name="title_app_list">Установленные приложения</string>
@@ -246,8 +257,10 @@
     <string name="perm_calendar">Календарь</string>
     <string name="perm_body_sensors">Датчики тела</string>
     <string name="perm_notifications">Уведомления</string>
+    <string name="perm_vibrate">Вибрация</string>
     <string name="perm_overlay">Поверх других приложений</string>
     <string name="perm_install_unknown">Установка неизвестных приложений</string>
+    <string name="perm_install_unknown_desc">Позволяет приложению устанавливать пакеты APK, необходимо для параметра локального обновления</string>
     <string name="batch_revoke">Отозвать разрешение</string>
     <string name="batch_grant">Предоставить разрешение</string>
     <string name="confirm_revoke">Отозвать разрешение у %d приложений?</string>

@@ -19,9 +19,7 @@ jobs:
   translate:
     runs-on: ubuntu-latest
     env:
-      TRANSLATE_API_KEY: ${{ secrets.TRANSLATE_API_KEY }}
-      TRANSLATE_API_BASE: ${{ vars.TRANSLATE_API_BASE || 'https://api.openai.com/v1' }}
-      TRANSLATE_MODEL: ${{ vars.TRANSLATE_MODEL || 'gpt-4o-mini' }}
+      TRANSLATE_API_KEY: ${{ secrets.DEEPL_API_KEY }}
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -31,21 +29,24 @@ jobs:
         with:
           python-version: '3.12'
 
-      - name: Check translations exist
-        if: env.TRANSLATE_API_KEY == ''
-        run: python scripts/translate_readme.py --check
+      - name: Verify API key
+        run: |
+          if [ -z "$TRANSLATE_API_KEY" ]; then
+            echo "DEEPL_API_KEY secret is not set" >&2
+            exit 1
+          fi
 
       - name: Translate
-        if: env.TRANSLATE_API_KEY != ''
+        env:
+          LANGS: ${{ inputs.langs }}
         run: |
-          if [ -n "${{ inputs.langs }}" ]; then
-            python scripts/translate_readme.py --langs "${{ inputs.langs }}"
+          if [ -n "$LANGS" ]; then
+            python scripts/translate_readme.py --langs "$LANGS"
           else
             python scripts/translate_readme.py
           fi
 
       - name: Commit
-        if: env.TRANSLATE_API_KEY != ''
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"

@@ -5,6 +5,7 @@ import os
 import pathlib
 import sys
 import urllib.error
+import urllib.parse
 import urllib.request
 
 LANGS = {
@@ -24,23 +25,34 @@ LANGS = {
     "ko": "Korean",
 }
 
+DEEPL_LANG = {
+    "en": "EN",
+    "fr": "FR",
+    "de": "DE",
+    "ru": "RU",
+    "uk": "UK",
+    "tr": "TR",
+    "pt": "PT-PT",
+    "pt-rBR": "PT-BR",
+    "es": "ES",
+    "zh": "ZH",
+    "zh-rTW": "ZH-HANT",
+    "ar": "AR",
+    "ja": "JA",
+    "ko": "KO",
+}
+
 SWITCHER_ORDER = [
     "en", "fr", "de", "ru", "uk", "tr", "pt", "pt-rBR", "es", "zh", "zh-rTW", "ar", "ja", "ko"
 ]
 
-SYSTEM_PROMPT = (
-    "You translate GitHub README files. You keep the markdown structure, HTML tags, "
-    "image and badge URLs, tables, emoji, code blocks and horizontal rules exactly as they are. "
-    "You never translate the product name 'Buge App Manager', the names 'Shizuku', 'Dhizuku', "
-    "'ROOT', 'Android', 'Material Design 3 Expressive', 'F-Droid', 'GitHub', 'Telegram' or "
-    "'GNU General Public License v3.0'. You output only the translated markdown, with no "
-    "introduction, no notes and no code fences around it."
+DEEPL_CONTEXT = (
+    "This is a GitHub README for the Android app 'Buge App Manager'. "
+    "Do not translate the product name 'Buge App Manager', nor 'Shizuku', 'Dhizuku', "
+    "'ROOT', 'Android', 'Material Design 3 Expressive', 'F-Droid', 'GitHub', 'Telegram', "
+    "'GNU General Public License v3.0'. Keep URLs, HTML tags, markdown structure, "
+    "code blocks and emoji unchanged."
 )
-
-USER_PROMPT = """Translate this README into {language}. Keep every URL and every HTML attribute unchanged.
-
-{body}
-"""
 
 
 def relocate(body: str) -> str:
@@ -50,45 +62,36 @@ def relocate(body: str) -> str:
     return body
 
 
-def chat(base_url: str, api_key: str, model: str, body: str, language: str, timeout: int) -> str:
-    payload = {
-        "model": model,
-        "temperature": 0.2,
-        "messages": [
-            {"role": "system", "content": SYSTEM_PROMPT},
-            {"role": "user", "content": USER_PROMPT.format(language=language, body=body)},
-        ],
-    }
+def deepl_translate(api_key: str, text: str, target_lang: str, timeout: int) -> str:
+    endpoint = "https://api-free.deepl.com/v2/translate"
+    data = urllib.parse.urlencode({
+        "text": text,
+        "target_lang": target_lang,
+        "context": DEEPL_CONTEXT,
+        "preserve_formatting": "1",
+    }).encode("utf-8")
     request = urllib.request.Request(
-        base_url.rstrip("/") + "/chat/completions",
-        data=json.dumps(payload).encode("utf-8"),
+        endpoint,
+        data=data,
         headers={
-            "Content-Type": "application/json",
-            "Authorization": "Bearer " + api_key,
+            "Content-Type": "application/x-www-form-urlencoded",
+            "Authorization": "DeepL-Auth-Key " + api_key,
         },
         method="POST",
     )
     try:
         with urllib.request.urlopen(request, timeout=timeout) as response:
-            data = json.loads(response.read().decode("utf-8"))
+            payload = json.loads(response.read().decode("utf-8"))
     except urllib.error.HTTPError as error:
         detail = error.read().decode("utf-8", "replace")[:500]
-        raise SystemExit("request failed for %s: HTTP %s %s" % (language, error.code, detail))
+        raise SystemExit("DeepL request failed for %s: HTTP %s %s" % (target_lang, error.code, detail))
     except urllib.error.URLError as error:
-        raise SystemExit("request failed for %s: %s" % (language, error.reason))
+        raise SystemExit("DeepL request failed for %s: %s" % (target_lang, error.reason))
 
     try:
-        content = data["choices"][0]["message"]["content"]
+        return payload["translations"][0]["text"].strip() + "\n"
     except (KeyError, IndexError):
-        raise SystemExit("unexpected response for %s: %s" % (language, json.dumps(data)[:500]))
-
-    content = content.strip()
-    if content.startswith("```"):
-        content = content.split("\n", 1)[-1]
-        if content.rstrip().endswith("```"):
-            content = content.rstrip()[:-3]
-        content = content.strip()
-    return content + "\n"
+        raise SystemExit("unexpected DeepL response for %s: %s" % (target_lang, json.dumps(payload)[:500]))
 
 
 def main() -> int:
@@ -132,17 +135,16 @@ def main() -> int:
         print("TRANSLATE_API_KEY is not set", file=sys.stderr)
         return 1
 
-    base_url = os.environ.get("TRANSLATE_API_BASE") or "https://api.openai.com/v1"
-    model = os.environ.get("TRANSLATE_MODEL") or "gpt-4o-mini"
-    timeout = int(os.environ.get("TRANSLATE_TIMEOUT") or "180")
+    timeout = int(os.environ.get("TRANSLATE_TIMEOUT") or "120")
 
     for code in codes:
-        language = LANGS[code]
-        if args.dry_run or code == "en":
+        if code == "en":
+            text = body
+        elif args.dry_run:
             text = body
         else:
-            print("translating %s (%s)" % (code, language))
-            text = chat(base_url, api_key, model, body, language, timeout)
+            print("translating %s (%s)" % (code, LANGS[code]))
+            text = deepl_translate(api_key, body, DEEPL_LANG[code], timeout)
         target = docs / code / "README.md"
         target.parent.mkdir(parents=True, exist_ok=True)
         target.write_text(text, encoding="utf-8", newline="\n")

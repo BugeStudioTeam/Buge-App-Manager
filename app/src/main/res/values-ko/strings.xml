@@ -62,6 +62,8 @@
     <string name="log_copy">복사</string>
     <string name="log_cleared">로그가 지워졌습니다</string>
     <string name="log_copied">로그가 클립보드에 복사되었습니다</string>
+    <string name="log_filter_title">로그 유형 필터</string>
+    <string name="log_filter_select_all">모두 선택</string>
 
     <!-- Default Page Dialog -->
     <string name="default_page_title">기본 시작 페이지</string>
@@ -153,6 +155,15 @@
     <string name="error_no_privilege">사용 가능하거나 승인된 권한 백엔드가 없습니다. 설정에서 하나를 선택하세요.</string>
     <string name="request_auth">승인</string>
     <string name="not_authorized">승인되지 않음</string>
+    <string name="auth_mode_adb_command">ADB 명령</string>
+    <string name="adb_command_service_running">ADB 셸 서비스가 실행 중입니다</string>
+    <string name="adb_command_service_not_running">ADB 셸 서비스가 실행 중이 아닙니다. 생성된 스크립트를 ADB 셸을 통해 실행하세요.</string>
+    <string name="adb_command_title">ADB 명령</string>
+    <string name="adb_command_desc">컴퓨터에서 ADB를 사용하여 생성된 스크립트를 실행하여 권한 있는 서비스를 시작하세요.</string>
+    <string name="adb_command_show_command">명령 표시</string>
+    <string name="adb_command_message">컴퓨터에서 다음을 실행하세요:\n\n%1$s\n\n스크립트: %2$s</string>
+    <string name="adb_command_copy">복사</string>
+    <string name="adb_command_copied">복사됨</string>
 
     <!-- App List -->
     <string name="title_app_list">설치된 앱</string>
@@ -246,8 +257,10 @@
     <string name="perm_calendar">캘린더</string>
     <string name="perm_body_sensors">신체 센서</string>
     <string name="perm_notifications">알림</string>
+    <string name="perm_vibrate">진동</string>
     <string name="perm_overlay">다른 앱 위에 표시</string>
     <string name="perm_install_unknown">알 수 없는 앱 설치</string>
+    <string name="perm_install_unknown_desc">앱이 APK 패키지를 설치할 수 있도록 허용하며, 로컬 업데이트 옵션에 필요합니다</string>
     <string name="batch_revoke">권한 취소</string>
     <string name="batch_grant">권한 허용</string>
     <string name="confirm_revoke">%d개의 앱에서 권한을 취소하시겠습니까?</string>

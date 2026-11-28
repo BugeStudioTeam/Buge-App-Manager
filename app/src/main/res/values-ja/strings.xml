@@ -62,6 +62,8 @@
     <string name="log_copy">コピー</string>
     <string name="log_cleared">ログを消去しました</string>
     <string name="log_copied">ログをクリップボードにコピーしました</string>
+    <string name="log_filter_title">ログの種類をフィルター</string>
+    <string name="log_filter_select_all">すべて選択</string>
 
     <!-- Default Page Dialog -->
     <string name="default_page_title">デフォルトの開始ページ</string>
@@ -153,6 +155,15 @@
     <string name="error_no_privilege">利用可能または認証済みの特権バックエンドがありません。設定で選択してください。</string>
     <string name="request_auth">認証</string>
     <string name="not_authorized">未認証</string>
+    <string name="auth_mode_adb_command">ADB コマンド</string>
+    <string name="adb_command_service_running">ADB シェルサービスが実行中です</string>
+    <string name="adb_command_service_not_running">ADB シェルサービスが実行されていません。生成されたスクリプトを ADB シェル経由で実行してください。</string>
+    <string name="adb_command_title">ADB コマンド</string>
+    <string name="adb_command_desc">コンピューターから ADB を使用して生成されたスクリプトを実行し、特権サービスを開始します。</string>
+    <string name="adb_command_show_command">コマンドを表示</string>
+    <string name="adb_command_message">コンピューターでこれを実行してください:\n\n%1$s\n\nスクリプト: %2$s</string>
+    <string name="adb_command_copy">コピー</string>
+    <string name="adb_command_copied">コピーしました</string>
 
     <!-- App List -->
     <string name="title_app_list">インストール済みアプリ</string>
@@ -246,8 +257,10 @@
     <string name="perm_calendar">カレンダー</string>
     <string name="perm_body_sensors">生体センサー</string>
     <string name="perm_notifications">通知</string>
+    <string name="perm_vibrate">振動</string>
     <string name="perm_overlay">他のアプリの上に表示</string>
     <string name="perm_install_unknown">不明なアプリをインストール</string>
+    <string name="perm_install_unknown_desc">アプリが APK パッケージをインストールできるようにします。ローカル更新オプションに必要です</string>
     <string name="batch_revoke">権限を取り消し</string>
     <string name="batch_grant">権限を許可</string>
     <string name="confirm_revoke">%d 個のアプリから権限を取り消しますか？</string>

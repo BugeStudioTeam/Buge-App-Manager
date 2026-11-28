@@ -62,6 +62,8 @@
     <string name="log_copy">复制</string>
     <string name="log_cleared">日志已清除</string>
     <string name="log_copied">日志已复制到剪贴板</string>
+    <string name="log_filter_title">筛选日志类型</string>
+    <string name="log_filter_select_all">全选</string>
 
     <!-- Default Page Dialog -->
     <string name="default_page_title">默认启动页</string>
@@ -153,6 +155,15 @@
     <string name="error_no_privilege">没有可用或已授权的权限后端。请在设置中选择一个。</string>
     <string name="request_auth">授权</string>
     <string name="not_authorized">未授权</string>
+    <string name="auth_mode_adb_command">ADB 命令</string>
+    <string name="adb_command_service_running">ADB shell 服务正在运行</string>
+    <string name="adb_command_service_not_running">ADB shell 服务未运行。请通过 ADB shell 运行生成的脚本。</string>
+    <string name="adb_command_title">ADB 命令</string>
+    <string name="adb_command_desc">在电脑上使用 ADB 运行生成的脚本以启动特权服务。</string>
+    <string name="adb_command_show_command">显示命令</string>
+    <string name="adb_command_message">在电脑上运行以下内容：\n\n%1$s\n\n脚本：%2$s</string>
+    <string name="adb_command_copy">复制</string>
+    <string name="adb_command_copied">已复制</string>
 
     <!-- App List -->
     <string name="title_app_list">已安装的应用</string>
@@ -246,8 +257,10 @@
     <string name="perm_calendar">日历</string>
     <string name="perm_body_sensors">身体传感器</string>
     <string name="perm_notifications">通知</string>
+    <string name="perm_vibrate">振动</string>
     <string name="perm_overlay">显示在其他应用上层</string>
     <string name="perm_install_unknown">安装未知应用</string>
+    <string name="perm_install_unknown_desc">允许应用安装 APK 包，本地更新选项需要此权限</string>
     <string name="batch_revoke">撤销权限</string>
     <string name="batch_grant">授予权限</string>
     <string name="confirm_revoke">撤销 %d 个应用的权限？</string>

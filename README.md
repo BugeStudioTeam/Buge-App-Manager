@@ -45,6 +45,7 @@
 | **Shizuku Integration**             | Operates with Shizuku authorization for elevated control without requiring root  |
 | **Dhizuku Integration**             | Operates with Dhizuku Device Admin authorization for elevated control without requiring root  |
 | **ROOT Integration**                | Operates with ROOT authorization for elevated control                            |
+| **ADB Command**                | Operates with ADB Command for elevated control without requiring root    |
 | **App Management**                  | Browse and manage both user-installed and system applications with ease          |
 | **Material Design 3 Expressive UI** | Clean, system-themed interface that follows the latest Android design guidelines |
 
@@ -83,8 +84,9 @@
 | Shizuku     | Installed and authorized              |
 | Dhizuku     | Installed and authorized              |
 | ROOT        | Device has been rooted and authorized |
+| ADB Command | Device has been connected to another device and run the command with adb shell |
 
-Choose between **Shizuku**, **Dhizuku** or **ROOT** authorization.
+Choose between **Shizuku**, **Dhizuku**, **ROOT** or **ADB Command** authorization.
 
 > **Note**: [Shizuku](https://shizuku.rikka.app/) or [Dhizuku](https://github.com/iamr0s/Dhizuku) is required for advanced permission management features.
 

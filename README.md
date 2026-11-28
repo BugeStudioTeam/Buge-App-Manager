@@ -129,7 +129,45 @@ Choose between **Shizuku**, **Dhizuku**, **ROOT** or **ADB Command** authorizati
 ## Installation
 
 [![Get it on GitHub](assets/readme/release/get-it-on-github.svg)](https://github.com/BugeStudioTeam/Buge-App-Manager/releases) [![Get it on Telegram](assets/readme/release/get-it-on-telegram.svg)](https://t.me/bugestudio) [![Get it on F-Droid](assets/readme/release/get-it-on-fdroid.svg)](https://f-droid.org/packages/com.buge.appmanager/)
- 
+
+---
+
+## Build
+
+---
+
+## Build
+
+### Requirements
+
+- JDK 17
+- Android NDK (optional, only support old version)
+- Android SDK
+
+### Build command
+
+```bash
+# Linux
+./gradlew assembleRelease # build release apk
+./gradlew assembleDebug # build debug apk
+
+# Windows
+gradlew.bat assembleRelease # build debug apk
+gradlew.bat assembleDebug # build debug apk
+```
+
+### Signature
+
+Create files: `/keystore.properties`
+```bash
+storeFile=keystore.jks
+storePassword=your_store_password
+keyAlias=your_key_alias
+keyPassword=your_key_password
+```
+
+Generate your own `keystore.jks` and place it at `/app/keystore.jks`
+
 ---
 
 ## Star History

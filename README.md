@@ -134,14 +134,10 @@ Choose between **Shizuku**, **Dhizuku**, **ROOT** or **ADB Command** authorizati
 
 ## Build
 
----
-
-## Build
-
 ### Requirements
 
 - JDK 17
-- Android NDK (optional, only support old version)
+- Android NDK (optional, only few versions need it)
 - Android SDK
 
 ### Build command

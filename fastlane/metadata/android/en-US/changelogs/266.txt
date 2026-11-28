@@ -1,0 +1,10 @@
+**14.97.168**
+
+**Added**
+- Added control options for installation location apps in Optional Settings
+
+**Optimizations**
+- Synced language files
+
+**Contributors of this version:**
+None
